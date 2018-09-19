@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--exit",
+        "--require",
+        "${workspaceFolder}/test/setup.js",
+        "--recursive",
+        "${workspaceFolder}/test/unit/app/controllers/transactions/tx-controller-test.js"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "runtimeVersion": "8.12.0",
+      "environment": [
+        {
+          "name":"METAMASK_ENV", "value":"test"
+        }
+      ]
+    }
+  ]
+}

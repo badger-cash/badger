@@ -13,6 +13,9 @@ const asStream = require('obs-store/lib/asStream')
 const AccountTracker = require('./lib/account-tracker')
 const RpcEngine = require('json-rpc-engine')
 const debounce = require('debounce')
+// TODO: setup BCH & tokens middleware
+// const createBCHMiddleware = require('./lib/createBCHMiddleware')
+// const createTokensMiddleware = require('./lib/createTokensMiddleware')
 const createEngineStream = require('json-rpc-middleware-stream/engineStream')
 const createFilterMiddleware = require('eth-json-rpc-filters')
 const createOriginMiddleware = require('./lib/createOriginMiddleware')
@@ -1249,6 +1252,10 @@ module.exports = class MetamaskController extends EventEmitter {
 
     engine.push(createOriginMiddleware({ origin }))
     engine.push(createLoggerMiddleware({ origin }))
+
+    // TODO: BCH and tokens middleware
+ 
+
     engine.push(filterMiddleware)
     engine.push(this.preferencesController.requestWatchAsset.bind(this.preferencesController))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData', 'V1').bind(this))

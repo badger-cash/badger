@@ -1,0 +1,39 @@
+<html>
+<body>
+  <script>
+    console.log(web3)
+
+    if (typeof web3 !== 'undefined') {
+      web3 = new Web3(web3.currentProvider)
+
+      let start = new Promise(function (resolve, reject) {
+        // Retrieve network ID
+        web3.version.getNetwork((err, networkId) => {
+          if (err) {
+            // If we can't find a networkId keep result the same and reject the promise
+            reject(new Error('Unable to retrieve network ID'))
+          } else {
+            console.log('netid', networkId)
+            // Assign the networkId property to our result and resolve promise
+            result = Object.assign({}, { networkId })
+            resolve(result)
+          }
+        })
+      }).then(result => {
+        return new Promise(function (resolve, reject) {
+          web3.bch.getBalance('1FbBbv5oYqFKwiPm4CAqvAy8345n8AQ74b', (err, res) => {
+            if (err) {
+              console.log('bch_bal_err', err)
+              reject(new Error('Unable to retrieve balance'))
+            } else {
+              console.log('bch_bal_res', res)
+              resolve(res)
+            }
+          })
+        })
+      })
+    }
+  </script>
+</body>
+
+</html>

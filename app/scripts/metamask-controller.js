@@ -13,9 +13,6 @@ const asStream = require('obs-store/lib/asStream')
 const AccountTracker = require('./lib/account-tracker')
 const RpcEngine = require('json-rpc-engine')
 const debounce = require('debounce')
-// TODO: setup BCH & tokens middleware
-// const createBCHMiddleware = require('./lib/createBCHMiddleware')
-// const createTokensMiddleware = require('./lib/createTokensMiddleware')
 const createEngineStream = require('json-rpc-middleware-stream/engineStream')
 const createFilterMiddleware = require('eth-json-rpc-filters')
 const createOriginMiddleware = require('./lib/createOriginMiddleware')
@@ -54,6 +51,13 @@ const LedgerBridgeKeyring = require('eth-ledger-bridge-keyring')
 const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
+
+// TODO: setup BCH & tokens middleware
+// const createBCHMiddleware = require('./lib/createBCHMiddleware')
+// const createTokensMiddleware = require('./lib/createTokensMiddleware')
+
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
 
 module.exports = class MetamaskController extends EventEmitter {
 
@@ -1253,11 +1257,11 @@ module.exports = class MetamaskController extends EventEmitter {
     engine.push(createOriginMiddleware({ origin }))
     engine.push(createLoggerMiddleware({ origin }))
 
-    // TODO: BCH and tokens middleware
- 
+    // TODO: BCH and tokens middleware 
 
     engine.push(filterMiddleware)
     engine.push(this.preferencesController.requestWatchAsset.bind(this.preferencesController))
+    engine.push(this.createBchGetBalanceMiddleware('bch_getBalance', 'V1'))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData', 'V1').bind(this))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData_v1', 'V1').bind(this))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData_v3', 'V3').bind(this))
@@ -1513,6 +1517,41 @@ module.exports = class MetamaskController extends EventEmitter {
         }, req, version)
         this.sendUpdate()
         this.opts.showUnconfirmedMessage()
+        try {
+          res.result = await promise
+          end()
+        } catch (error) {
+          end(error)
+        }
+      } else {
+        next()
+      }
+    }
+  }
+
+  getBchBalance (address) {
+    return new Promise((resolve, reject) => {
+      BITBOX.Address.utxo(address).then((result) => {
+          console.log('badger bal utxo result: ', result)
+          const balance = result.length > 0 ? result[0].satoshis : 0
+          resolve(balance)
+      }, (err) => {
+          console.log('badger bal err', err)
+          reject(err)
+      })
+    })
+  }
+
+  createBchGetBalanceMiddleware (methodName, version) {
+    return async (req, res, next, end) => {
+      const { method, params } = req
+      if (method === methodName) {
+        console.log('checking bch bal')
+        const promise = this.getBchBalance(
+          params.length >= 1 && params[0],
+          req,
+          version
+        )
         try {
           res.result = await promise
           end()

@@ -88,6 +88,7 @@
     "babel-runtime": "^6.23.0",
     "bignumber.js": "^4.1.0",
     "bip39": "^2.2.0",
+    "bitbox-cli": "^1.6.5",
     "bluebird": "^3.5.0",
     "bn.js": "^4.11.7",
     "boron": "^0.2.3",

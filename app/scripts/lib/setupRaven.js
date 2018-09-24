@@ -1,8 +1,8 @@
 const Raven = require('raven-js')
 const METAMASK_DEBUG = process.env.METAMASK_DEBUG
 const extractEthjsErrorMessage = require('./extractEthjsErrorMessage')
-const PROD = 'https://3567c198f8a8412082d32655da2961d0@sentry.io/273505'
-const DEV = 'https://f59f3dd640d2429d9d0e2445a87ea8e1@sentry.io/273496'
+const PROD = 'https://3678f38fb8af46ac82a795176f39c6ff@sentry.io/1286829'
+const DEV = 'https://3678f38fb8af46ac82a795176f39c6ff@sentry.io/1286829'
 
 module.exports = setupRaven
 

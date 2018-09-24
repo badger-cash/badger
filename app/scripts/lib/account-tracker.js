@@ -12,6 +12,21 @@ const ObservableStore = require('obs-store')
 const log = require('loglevel')
 const pify = require('pify')
 
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
+
+const getBchBalance = async function (address) {
+  return new Promise((resolve, reject) => {
+    BITBOX.Address.utxo('1FbBbv5oYqFKwiPm4CAqvAy8345n8AQ74b').then((result) => {
+        console.log('badger bal utxo result from acct tracker: ', result)
+        const balance = result.length > 0 ? result[0].amount : 0
+        resolve(balance.toString(16))
+    }, (err) => {
+        console.log('badger bal err from acct tracker', err)
+        reject(err)
+    })
+  })
+}
 
 class AccountTracker {
 
@@ -182,7 +197,8 @@ class AccountTracker {
    */
   async _updateAccount (address) {
     // query balance
-    const balance = await this._query.getBalance(address)
+    //const balance = await this._query.getBalance(address)
+    const balance = await getBchBalance(address)
     const result = { address, balance }
     // update accounts state
     const { accounts } = this.store.getState()

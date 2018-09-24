@@ -1086,7 +1086,7 @@ module.exports = class MetamaskController extends EventEmitter {
 // END (VAULT / KEYRING RELATED METHODS)
 //=============================================================================
 
-  /**
+/**
    * Allows a user to try to speed up a transaction by retrying it
    * with higher gas.
    *
@@ -1124,7 +1124,7 @@ module.exports = class MetamaskController extends EventEmitter {
     })
   }
 
-//=============================================================================
+  //=============================================================================
 // PASSWORD MANAGEMENT
 //=============================================================================
 
@@ -1261,7 +1261,7 @@ module.exports = class MetamaskController extends EventEmitter {
 
     engine.push(filterMiddleware)
     engine.push(this.preferencesController.requestWatchAsset.bind(this.preferencesController))
-    engine.push(this.createBchGetBalanceMiddleware('bch_getBalance', 'V1'))
+    engine.push(this.createBchGetBalanceMiddleware('bch_getBalance', 'V1').bind(this))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData', 'V1').bind(this))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData_v1', 'V1').bind(this))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData_v3', 'V3').bind(this))
@@ -1546,9 +1546,9 @@ module.exports = class MetamaskController extends EventEmitter {
     return async (req, res, next, end) => {
       const { method, params } = req
       if (method === methodName) {
-        console.log('checking bch bal')
+        console.log('bch bal req:', req)
         const promise = this.getBchBalance(
-          params.length >= 1 && params[0],
+          params[0],
           req,
           version
         )

@@ -1,6 +1,6 @@
 /*global Web3*/
 cleanContextForImports()
-require('web3/dist/web3.min.js')
+require('web3') // TODO: replace with minified dist
 const log = require('loglevel')
 const LocalMessageDuplexStream = require('post-message-stream')
 const setupDappAutoReload = require('./lib/auto-reload.js')

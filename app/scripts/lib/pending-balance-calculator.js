@@ -14,8 +14,8 @@ class PendingBalanceCalculator {
    *
    */
   constructor ({ getBalance, getPendingTransactions }) {
-    this.getPendingTransactions = getPendingTransactions
     this.getNetworkBalance = getBalance
+    this.getPendingTransactions = getPendingTransactions
   }
 
   /**

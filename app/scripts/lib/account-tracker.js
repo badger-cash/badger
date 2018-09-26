@@ -17,12 +17,12 @@ const BITBOX = new BITBOXCli()
 
 const getBchBalance = async function (address) {
   return new Promise((resolve, reject) => {
-    BITBOX.Address.utxo('1FbBbv5oYqFKwiPm4CAqvAy8345n8AQ74b').then((result) => {
-        console.log('badger bal utxo result from acct tracker: ', result)
+    BITBOX.Address.utxo(address).then((result) => {
+        console.log('AccountTracker::getBchBalance', result)
         const balance = result.length > 0 ? result[0].amount : 0
         resolve(balance.toString(16))
     }, (err) => {
-        console.log('badger bal err from acct tracker', err)
+        console.error('AccountTracker::getBchBalance', err)
         reject(err)
     })
   })

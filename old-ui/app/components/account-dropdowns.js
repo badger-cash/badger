@@ -2,13 +2,17 @@ const Component = require('react').Component
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
 const actions = require('../../../ui/app/actions')
-const genAccountLink = require('etherscan-link').createAccountLink
+// const genAccountLink = require('etherscan-link').createAccountLink
 const connect = require('react-redux').connect
 const Dropdown = require('./dropdown').Dropdown
 const DropdownMenuItem = require('./dropdown').DropdownMenuItem
 const Identicon = require('./identicon')
 const ethUtil = require('ethereumjs-util')
 const copyToClipboard = require('copy-to-clipboard')
+
+const genAccountLink = function(address, network) {
+  return `https://explorer.bitcoin.com/bch/address/${address}`
+}
 
 class AccountDropdowns extends Component {
   constructor (props) {
@@ -193,7 +197,7 @@ class AccountDropdowns extends Component {
               global.platform.openWindow({ url })
             },
           },
-          'View account on Etherscan',
+          'View account on bitcoin.com',
         ),
         h(
           DropdownMenuItem,

@@ -48,7 +48,7 @@ AccountPanel.prototype.render = function () {
           address: panelState.identiconKey,
           imageify: state.imageifyIdenticons,
         }),
-        h('span.font-small', panelState.identiconLabel.substring(0, 7) + '...'),
+        h('span.font-small', panelState.identiconLabel.substring(13)),
       ]),
 
       // account address, balance

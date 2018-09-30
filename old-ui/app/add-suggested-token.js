@@ -165,7 +165,7 @@ AddSuggestedTokenScreen.prototype.validateInputs = function (opts) {
   let msg = ''
   const identitiesList = Object.keys(this.props.identities)
   const { address, symbol, decimals } = opts
-  const standardAddress = ethUtil.addHexPrefix(address).toLowerCase()
+  const standardAddress = address.toLowerCase()
 
   const validAddress = ethUtil.isValidAddress(address)
   if (!validAddress) {

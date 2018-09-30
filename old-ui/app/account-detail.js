@@ -45,7 +45,8 @@ function AccountDetailScreen () {
 AccountDetailScreen.prototype.render = function () {
   var props = this.props
   var selected = props.address || Object.keys(props.accounts)[0]
-  var checksumAddress = selected && ethUtil.toChecksumAddress(selected)
+  // var checksumAddress = selected && ethUtil.toChecksumAddress(selected)
+  var checksumAddress = selected.slice(12)
   var identity = props.identities[selected]
   var account = props.accounts[selected]
   const { network, conversionRate, currentCurrency } = props

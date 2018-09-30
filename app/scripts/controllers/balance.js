@@ -15,7 +15,6 @@ class BalanceController {
    * for which this BalanceController manages balance.
    * @property {TransactionController} txController Stores, tracks and manages transactions. Here used to create a listener for
    * transaction updates.
-   * @property {BlockTracker} blockTracker Tracks updates to blocks. On new blocks, this BalanceController updates its balance
    * @property {Object} store The store for the ethBalance
    * @property {string} store.ethBalance A base 16 hex string. The balance for the current account.
    * @property {PendingBalanceCalculator} balanceCalc Used to calculate the accounts balance with possible pending
@@ -24,12 +23,11 @@ class BalanceController {
    */
   constructor (opts = {}) {
     this._validateParams(opts)
-    const { address, accountTracker, txController, blockTracker } = opts
+    const { address, accountTracker, txController } = opts
 
     this.address = address
     this.accountTracker = accountTracker
     this.txController = txController
-    this.blockTracker = blockTracker
 
     const initState = {
       ethBalance: undefined,
@@ -80,7 +78,6 @@ class BalanceController {
       }
     })
     this.accountTracker.store.subscribe(update)
-    //this.blockTracker.on('latest', update)
   }
 
   /**
@@ -95,7 +92,7 @@ class BalanceController {
     const { accounts } = this.accountTracker.store.getState()
     const entry = accounts[this.address]
     const balance = entry.balance
-    return balance ? new BN(balance.substring(2), 16) : undefined
+    return balance ? new BN(balance, 16) : undefined
   }
 
   /**
@@ -119,14 +116,14 @@ class BalanceController {
    * Validates that the passed options have all required properties.
    *
    * @param {Object} opts The options object to validate
-   * @throws {string} Throw a custom error indicating that address, accountTracker, txController and blockTracker are
+   * @throws {string} Throw a custom error indicating that address, accountTracker, and txController are
    * missing and at least one is required
    *
    */
   _validateParams (opts) {
-    const { address, accountTracker, txController, blockTracker } = opts
-    if (!address || !accountTracker || !txController || !blockTracker) {
-      const error = 'Cannot construct a balance checker without address, accountTracker, txController, and blockTracker.'
+    const { address, accountTracker, txController } = opts
+    if (!address || !accountTracker || !txController) {
+      const error = 'Cannot construct a balance checker without address, accountTracker, and txController.'
       throw new Error(error)
     }
   }

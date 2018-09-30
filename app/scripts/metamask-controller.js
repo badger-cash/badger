@@ -28,7 +28,6 @@ const ShapeShiftController = require('./controllers/shapeshift')
 const AddressBookController = require('./controllers/address-book')
 const InfuraController = require('./controllers/infura')
 const BlacklistController = require('./controllers/blacklist')
-const RecentBlocksController = require('./controllers/recent-blocks')
 const MessageManager = require('./lib/message-manager')
 const PersonalMessageManager = require('./lib/personal-message-manager')
 const TypedMessageManager = require('./lib/typed-message-manager')
@@ -118,22 +117,15 @@ module.exports = class MetamaskController extends EventEmitter {
     // rpc provider
     this.initializeProvider()
     this.provider = this.networkController.getProviderAndBlockTracker().provider
-    this.blockTracker = this.networkController.getProviderAndBlockTracker().blockTracker
 
     // token exchange rate tracker
     this.tokenRatesController = new TokenRatesController({
       preferences: this.preferencesController.store,
     })
 
-    this.recentBlocksController = new RecentBlocksController({
-      blockTracker: this.blockTracker,
-      provider: this.provider,
-    })
-
     // account tracker watches balances, nonces, and any code at their address.
     this.accountTracker = new AccountTracker({
       provider: this.provider,
-      blockTracker: this.blockTracker,
     })
     // start and stop polling for balances based on activeControllerConnections
     this.on('controllerConnectionChanged', (activeControllerConnections) => {
@@ -176,8 +168,8 @@ module.exports = class MetamaskController extends EventEmitter {
       txHistoryLimit: 40,
       getNetwork: this.networkController.getNetworkState.bind(this),
       signTransaction: this.keyringController.signTransaction.bind(this.keyringController),
+      exportKeyPair: this.keyringController.exportKeyPair.bind(this.keyringController),
       provider: this.provider,
-      blockTracker: this.blockTracker,
       getGasPrice: this.getGasPrice.bind(this),
     })
     this.txController.on('newUnapprovedTx', () => opts.showUnapprovedTx())
@@ -193,7 +185,6 @@ module.exports = class MetamaskController extends EventEmitter {
     this.balancesController = new BalancesController({
       accountTracker: this.accountTracker,
       txController: this.txController,
-      blockTracker: this.blockTracker,
     })
     this.networkController.on('networkDidChange', () => {
       this.balancesController.updateAllBalances()
@@ -240,7 +231,6 @@ module.exports = class MetamaskController extends EventEmitter {
       TypesMessageManager: this.typedMessageManager.memStore,
       KeyringController: this.keyringController.memStore,
       PreferencesController: this.preferencesController.store,
-      RecentBlocksController: this.recentBlocksController.store,
       AddressBookController: this.addressBookController.store,
       CurrencyController: this.currencyController.store,
       NoticeController: this.noticeController.memStore,
@@ -406,7 +396,6 @@ module.exports = class MetamaskController extends EventEmitter {
       updateTransaction: nodeify(txController.updateTransaction, txController),
       updateAndApproveTransaction: nodeify(txController.updateAndApproveTransaction, txController),
       retryTransaction: nodeify(this.retryTransaction, this),
-      createCancelTransaction: nodeify(this.createCancelTransaction, this),
       getFilteredTxList: nodeify(txController.getFilteredTxList, txController),
       isNonceTaken: nodeify(txController.isNonceTaken, txController),
       estimateGas: nodeify(this.estimateGas, this),
@@ -488,7 +477,7 @@ module.exports = class MetamaskController extends EventEmitter {
 
       const ethQuery = new EthQuery(this.provider)
       accounts = await keyringController.getAccounts()
-      lastBalance = await this.getBalance(accounts[accounts.length - 1], ethQuery)
+      lastBalance = await this.getBalance(accounts[accounts.length - 1])
 
       const primaryKeyring = keyringController.getKeyringsByType('HD Key Tree')[0]
       if (!primaryKeyring) {
@@ -496,10 +485,10 @@ module.exports = class MetamaskController extends EventEmitter {
       }
 
       // seek out the first zero balance
-      while (lastBalance !== '0x0') {
+      while (lastBalance !== '0') {
         await keyringController.addNewAccount(primaryKeyring)
         accounts = await keyringController.getAccounts()
-        lastBalance = await this.getBalance(accounts[accounts.length - 1], ethQuery)
+        lastBalance = await this.getBalance(accounts[accounts.length - 1])
       }
 
       // set new identities
@@ -518,21 +507,22 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param {string} address - The account address
    * @param {EthQuery} ethQuery - The EthQuery instance to use when asking the network
    */
-  getBalance (address, ethQuery) {
+  getBalance (address) {
     return new Promise((resolve, reject) => {
       const cached = this.accountTracker.store.getState().accounts[address]
 
       if (cached && cached.balance) {
         resolve(cached.balance)
       } else {
-        ethQuery.getBalance(address, (error, balance) => {
-          if (error) {
-            reject(error)
-            log.error(error)
-          } else {
-            resolve(balance || '0x0')
-          }
-        })
+        console.log("MetamaskController::getBalance balance not cached")
+        // ethQuery.getBalance(address, (error, balance) => {
+        //   if (error) {
+        //     reject(error)
+        //     log.error(error)
+        //   } else {
+        //     resolve(balance || '0x0')
+        //   }
+        // })
       }
     })
   }
@@ -1099,19 +1089,6 @@ module.exports = class MetamaskController extends EventEmitter {
     return state
   }
 
-  /**
-   * Allows a user to attempt to cancel a previously submitted transaction by creating a new
-   * transaction.
-   * @param {number} originalTxId - the id of the txMeta that you want to attempt to cancel
-   * @param {string=} customGasPrice - the hex value to use for the cancel transaction
-   * @returns {object} MetaMask state
-   */
-  async createCancelTransaction (originalTxId, customGasPrice, cb) {
-    await this.txController.createCancelTransaction(originalTxId, customGasPrice)
-    const state = await this.getState()
-    return state
-  }
-
   estimateGas (estimateGasParams) {
     return new Promise((resolve, reject) => {
       return this.txController.txGasUtil.query.estimateGas(estimateGasParams, (err, res) => {
@@ -1251,7 +1228,6 @@ module.exports = class MetamaskController extends EventEmitter {
     // create filter polyfill middleware
     const filterMiddleware = createFilterMiddleware({
       provider: this.provider,
-      blockTracker: this.blockTracker,
     })
 
     engine.push(createOriginMiddleware({ origin }))
@@ -1347,30 +1323,8 @@ module.exports = class MetamaskController extends EventEmitter {
    * @returns {string} A hex representation of the suggested wei gas price.
    */
   getGasPrice () {
-    const { recentBlocksController } = this
-    const { recentBlocks } = recentBlocksController.store.getState()
-
-    // Return 1 gwei if no blocks have been observed:
-    if (recentBlocks.length === 0) {
-      return '0x' + GWEI_BN.toString(16)
-    }
-
-    const lowestPrices = recentBlocks.map((block) => {
-      if (!block.gasPrices || block.gasPrices.length < 1) {
-        return GWEI_BN
-      }
-      return block.gasPrices
-      .map(hexPrefix => hexPrefix.substr(2))
-      .map(hex => new BN(hex, 16))
-      .sort((a, b) => {
-        return a.gt(b) ? 1 : -1
-      })[0]
-    })
-    .map(number => number.div(GWEI_BN).toNumber())
-
-    const percentileNum = percentile(50, lowestPrices)
-    const percentileNumBn = new BN(percentileNum)
-    return '0x' + percentileNumBn.mul(GWEI_BN).toString(16)
+    // 1sat/byte network fee
+    return 1
   }
 
 //=============================================================================

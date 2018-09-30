@@ -9,7 +9,6 @@ const log = require('loglevel')
 const createMetamaskMiddleware = require('./createMetamaskMiddleware')
 const createInfuraClient = require('./createInfuraClient')
 const createJsonRpcClient = require('./createJsonRpcClient')
-const createLocalhostClient = require('./createLocalhostClient')
 const { createSwappableProxy, createEventEmitterProxy } = require('swappable-obj-proxy')
 
 const {
@@ -41,12 +40,10 @@ module.exports = class NetworkController extends EventEmitter {
     this.networkStore = new ObservableStore('loading')
     this.store = new ComposedStore({ provider: this.providerStore, network: this.networkStore })
     this.on('networkDidChange', this.lookupNetwork)
-    // provider and block tracker
+    // provider
     this._provider = null
-    this._blockTracker = null
     // provider and block tracker proxies - because the network changes
     this._providerProxy = null
-    this._blockTrackerProxy = null
   }
 
   initializeProvider (providerParams) {
@@ -59,8 +56,7 @@ module.exports = class NetworkController extends EventEmitter {
   // return the proxies so the references will always be good
   getProviderAndBlockTracker () {
     const provider = this._providerProxy
-    const blockTracker = this._blockTrackerProxy
-    return { provider, blockTracker }
+    return { provider }
   }
 
   verifyNetwork () {
@@ -137,9 +133,6 @@ module.exports = class NetworkController extends EventEmitter {
     const isInfura = INFURA_PROVIDER_TYPES.includes(type)
     if (isInfura) {
       this._configureInfuraProvider(opts)
-    // other type-based rpc endpoints
-    } else if (type === LOCALHOST) {
-      this._configureLocalhostProvider()
     // url-based rpc endpoints
     } else if (type === 'rpc') {
       this._configureStandardProvider({ rpcUrl: rpcTarget })
@@ -154,42 +147,30 @@ module.exports = class NetworkController extends EventEmitter {
     this._setNetworkClient(networkClient)
   }
 
-  _configureLocalhostProvider () {
-    log.info('NetworkController - configureLocalhostProvider')
-    const networkClient = createLocalhostClient()
-    this._setNetworkClient(networkClient)
-  }
-
   _configureStandardProvider ({ rpcUrl }) {
     log.info('NetworkController - configureStandardProvider', rpcUrl)
     const networkClient = createJsonRpcClient({ rpcUrl })
     this._setNetworkClient(networkClient)
   }
 
-  _setNetworkClient ({ networkMiddleware, blockTracker }) {
+  _setNetworkClient ({ networkMiddleware }) {
     const metamaskMiddleware = createMetamaskMiddleware(this._baseProviderParams)
     const engine = new JsonRpcEngine()
     engine.push(metamaskMiddleware)
     engine.push(networkMiddleware)
     const provider = providerFromEngine(engine)
-    this._setProviderAndBlockTracker({ provider, blockTracker })
+    this._setProviderAndBlockTracker({ provider })
   }
 
-  _setProviderAndBlockTracker ({ provider, blockTracker }) {
+  _setProviderAndBlockTracker ({ provider }) {
     // update or intialize proxies
     if (this._providerProxy) {
       this._providerProxy.setTarget(provider)
     } else {
       this._providerProxy = createSwappableProxy(provider)
     }
-    if (this._blockTrackerProxy) {
-      this._blockTrackerProxy.setTarget(blockTracker)
-    } else {
-      this._blockTrackerProxy = createEventEmitterProxy(blockTracker, { eventFilter: 'skipInternal' })
-    }
-    // set new provider and blockTracker
+    // set new provider
     this._provider = provider
-    this._blockTracker = blockTracker
   }
 
   _logBlock (block) {

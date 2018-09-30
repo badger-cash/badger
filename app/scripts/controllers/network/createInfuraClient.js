@@ -1,5 +1,4 @@
 const mergeMiddleware = require('json-rpc-engine/src/mergeMiddleware')
-const createBlockReEmitMiddleware = require('eth-json-rpc-middleware/block-reemit')
 const createBlockCacheMiddleware = require('eth-json-rpc-middleware/block-cache')
 const createInflightMiddleware = require('eth-json-rpc-middleware/inflight-cache')
 const createBlockTrackerInspectorMiddleware = require('eth-json-rpc-middleware/block-tracker-inspector')
@@ -17,7 +16,6 @@ function createInfuraClient ({ network }) {
   const networkMiddleware = mergeMiddleware([
     createBlockCacheMiddleware({ blockTracker }),
     createInflightMiddleware(),
-    createBlockReEmitMiddleware({ blockTracker, provider: blockProvider }),
     createBlockTrackerInspectorMiddleware({ blockTracker }),
     infuraMiddleware,
   ])

@@ -11,7 +11,6 @@ const EthQuery = require('ethjs-query')
 <br>
 @param config {object} - non optional configuration object consists of:
     @param {Object} config.provider - A network provider.
-    @param {Object} config.nonceTracker see nonce tracker
     @param {function} config.getPendingTransactions a function for getting an array of transactions,
     @param {function} config.publishTransaction a async function for publishing raw transactions,
 
@@ -23,7 +22,6 @@ class PendingTransactionTracker extends EventEmitter {
   constructor (config) {
     super()
     this.query = new EthQuery(config.provider)
-    this.nonceTracker = config.nonceTracker
     this.getPendingTransactions = config.getPendingTransactions
     this.getCompletedTransactions = config.getCompletedTransactions
     this.publishTransaction = config.publishTransaction
@@ -34,8 +32,6 @@ class PendingTransactionTracker extends EventEmitter {
     checks the network for signed txs and releases the nonce global lock if it is
   */
   async updatePendingTxs () {
-    // in order to keep the nonceTracker accurate we block it while updating pending transactions
-    const nonceGlobalLock = await this.nonceTracker.getGlobalLock()
     try {
       const pendingTxs = this.getPendingTransactions()
       await Promise.all(pendingTxs.map((txMeta) => this._checkPendingTx(txMeta)))
@@ -43,7 +39,6 @@ class PendingTransactionTracker extends EventEmitter {
       log.error('PendingTransactionTracker - Error updating pending transactions')
       log.error(err)
     }
-    nonceGlobalLock.releaseLock()
   }
 
   /**

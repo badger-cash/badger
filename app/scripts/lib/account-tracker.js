@@ -19,8 +19,8 @@ const getBchBalance = async function (address) {
   return new Promise((resolve, reject) => {
     BITBOX.Address.utxo(address).then((result) => {
         console.log('AccountTracker::getBchBalance', result)
-        const balance = result.length > 0 ? result[0].amount : 0
-        resolve(balance.toString(16))
+        const balance = result.length > 0 ? result[0].satoshis : 0
+        resolve(balance)
     }, (err) => {
         console.error('AccountTracker::getBchBalance', err)
         reject(err)
@@ -43,9 +43,7 @@ class AccountTracker {
    * @property {string} store.currentBlockGasLimit A hex string indicating the gas limit of the current block
    * @property {Object} _provider A provider needed to create the EthQuery instance used within this AccountTracker.
    * @property {EthQuery} _query An EthQuery instance used to access account information from the blockchain
-   * @property {BlockTracker} _blockTracker A BlockTracker instance. Needed to ensure that accounts and their info updates
    * when a new block is created.
-   * @property {Object} _currentBlockNumber Reference to a property on the _blockTracker: the number (i.e. an id) of the the current block
    *
    */
   constructor (opts = {}) {
@@ -56,29 +54,15 @@ class AccountTracker {
     this.store = new ObservableStore(initState)
 
     this._provider = opts.provider
-    this._query = pify(new EthQuery(this._provider))
-    this._blockTracker = opts.blockTracker
-    // blockTracker.currentBlock may be null
-    this._currentBlockNumber = this._blockTracker.getCurrentBlock()
-    this._blockTracker.once('latest', blockNumber => {
-      this._currentBlockNumber = blockNumber
-    })
-    // bind function for easier listener syntax
-    this._updateForBlock = this._updateForBlock.bind(this)
+    //this._query = pify(new EthQuery(this._provider))
   }
 
   start () {
-    // remove first to avoid double add
-    this._blockTracker.removeListener('latest', this._updateForBlock)
-    // add listener
-    this._blockTracker.addListener('latest', this._updateForBlock)
     // fetch account balances
     this._updateAccounts()
   }
 
   stop () {
-    // remove listener
-    this._blockTracker.removeListener('latest', this._updateForBlock)
   }
 
   /**
@@ -129,8 +113,7 @@ class AccountTracker {
     })
     // save accounts state
     this.store.updateState({ accounts })
-    // fetch balances for the accounts if there is block number ready
-    if (!this._currentBlockNumber) return
+    // fetch balances for the accounts
     addresses.forEach(address => this._updateAccount(address))
   }
 
@@ -148,31 +131,6 @@ class AccountTracker {
     })
     // save accounts state
     this.store.updateState({ accounts })
-  }
-
-  /**
-   * Given a block, updates this AccountTracker's currentBlockGasLimit, and then updates each local account's balance
-   * via EthQuery
-   *
-   * @private
-   * @param {number} blockNumber the block number to update to.
-   * @fires 'block' The updated state, if all account updates are successful
-   *
-   */
-  async _updateForBlock (blockNumber) {
-    this._currentBlockNumber = blockNumber
-
-    // block gasLimit polling shouldn't be in account-tracker shouldn't be here...
-    const currentBlock = await this._query.getBlockByNumber(blockNumber, false)
-    if (!currentBlock) return
-    const currentBlockGasLimit = currentBlock.gasLimit
-    this.store.updateState({ currentBlockGasLimit })
-
-    try {
-      await this._updateAccounts()
-    } catch (err) {
-      log.error(err)
-    }
   }
 
   /**
@@ -197,7 +155,6 @@ class AccountTracker {
    */
   async _updateAccount (address) {
     // query balance
-    //const balance = await this._query.getBalance(address)
     const balance = await getBchBalance(address)
     const result = { address, balance }
     // update accounts state

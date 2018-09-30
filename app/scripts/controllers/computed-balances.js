@@ -6,7 +6,6 @@ const BalanceController = require('./balance')
  * @typedef {Object} ComputedBalancesOptions
  * @property {Object} accountTracker Account tracker store reference
  * @property {Object} txController Token controller reference
- * @property {Object} blockTracker Block tracker reference
  * @property {Object} initState Initial state to populate this internal store with
  */
 
@@ -21,10 +20,9 @@ class ComputedbalancesController {
    * @param {ComputedBalancesOptions} [opts] Controller configuration parameters
    */
   constructor (opts = {}) {
-    const { accountTracker, txController, blockTracker } = opts
+    const { accountTracker, txController } = opts
     this.accountTracker = accountTracker
     this.txController = txController
-    this.blockTracker = blockTracker
 
     const initState = extend({
       computedBalances: {},
@@ -105,7 +103,6 @@ class ComputedbalancesController {
       address,
       accountTracker: this.accountTracker,
       txController: this.txController,
-      blockTracker: this.blockTracker,
     })
     updater.store.subscribe((accountBalance) => {
       const newState = this.store.getState()

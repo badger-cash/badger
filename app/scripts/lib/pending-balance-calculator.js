@@ -53,14 +53,19 @@ class PendingBalanceCalculator {
   calculateMaxCost (tx) {
     const txValue = tx.txParams.value
     const value = this.hexToBn(txValue)
-    const gasPrice = this.hexToBn(tx.txParams.gasPrice)
 
-    const gas = tx.txParams.gas
-    const gasLimit = tx.txParams.gasLimit
-    const gasLimitBn = this.hexToBn(gas || gasLimit)
+    // TODO: Calculate BCH tx fee and add to value
 
-    const gasCost = gasPrice.mul(gasLimitBn)
-    return value.add(gasCost)
+    // const gasPrice = this.hexToBn(tx.txParams.gasPrice)
+
+    // const gas = tx.txParams.gas
+    // const gasLimit = tx.txParams.gasLimit
+    // const gasLimitBn = this.hexToBn(gas || gasLimit)
+
+    // const gasCost = gasPrice.mul(gasLimitBn)
+    // return value.add(gasCost)
+
+    return value
   }
 
   /**

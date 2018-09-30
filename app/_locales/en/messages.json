@@ -283,11 +283,11 @@
     "message": "Direct Deposit"
   },
   "directDepositEther": {
-    "message": "Directly Deposit Ether"
+    "message": "Directly Deposit Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "If you already have some Ether, the quickest way to get Ether in your new wallet by direct deposit."
+      "If you already have some Bitcoin Cash, the quickest way to get BCH in your new wallet by direct deposit."
   },
   "done": {
     "message": "Done"

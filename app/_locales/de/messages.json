@@ -186,7 +186,8 @@
     "message": "Dezimalangabe der Präzision"
   },
   "defaultNetwork": {
-    "message": "Das Standardnetzwerk für Ether Transaktionen ist das Main Net."
+    "message":
+      "Das Standardnetzwerk für Bitcoin Cash Transaktionen ist das Main Net."
   },
   "denExplainer": {
     "message":
@@ -207,7 +208,7 @@
     "message": "Eth kaufen"
   },
   "depositEther": {
-    "message": "Ether einzahlen"
+    "message": "Bitcoin Cash einzahlen"
   },
   "depositFiat": {
     "message": "Fiat einzahlen"
@@ -229,11 +230,11 @@
     "message": "Sofortige Einzahlung"
   },
   "directDepositEther": {
-    "message": "Sofort Ether einzahlen"
+    "message": "Sofort Bitcoin Cash einzahlen"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Wenn du bereits Ether besitzt, ist die sofortige Einzahlung die schnellste Methode Ether in deine neue Wallet zu bekommen."
+      "Wenn du bereits Bitcoin Cash besitzt, ist die sofortige Einzahlung die schnellste Methode Bitcoin Cash in deine neue Wallet zu bekommen."
   },
   "done": {
     "message": "Fertig"
@@ -338,11 +339,11 @@
     "message": "Gaspreis benötigt"
   },
   "getEther": {
-    "message": "Ether holen"
+    "message": "Bitcoin Cash holen"
   },
   "getEtherFromFaucet": {
-    "message": "Ether für $1 vom Faucet holen",
-    "description": "Zeigt den Netzwerknamen für den Ether Faucet an"
+    "message": "Bitcoin Cash für $1 vom Faucet holen",
+    "description": "Zeigt den Netzwerknamen für den Bitcoin Cash Faucet an"
   },
   "greaterThanMin": {
     "message": "Muss größer oder gleich $1 sein.",
@@ -366,7 +367,7 @@
     "message": "Token ausblenden?"
   },
   "howToDeposit": {
-    "message": "Wie möchtest du Ether einzahlen?"
+    "message": "Wie möchtest du Bitcoin Cash einzahlen?"
   },
   "holdEther": {
     "message":
@@ -493,7 +494,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Um dezentralisierte Applikationen mit Badger verwenden zu können, benötigst du Ether in deiner Wallet."
+      "Um dezentralisierte Applikationen mit Badger verwenden zu können, benötigst du Bitcoin Cash in deiner Wallet."
   },
   "needImportFile": {
     "message": "Für den Import musst du eine Datei auswählen.",

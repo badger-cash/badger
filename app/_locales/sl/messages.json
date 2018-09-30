@@ -319,7 +319,7 @@
   },
   "getEtherFromFaucet": {
     "message": "Pridobite ether iz fauceta za $1",
-    "description": "Displays network name for Ether faucet"
+    "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
     "message": "mora biti višji ali enak $1.",

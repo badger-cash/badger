@@ -34,7 +34,11 @@ const {
 } = require('./lib/enums')
 
 // METAMASK_TEST_CONFIG is used in e2e tests to set the default network to localhost
-const firstTimeState = Object.assign({}, rawFirstTimeState, global.METAMASK_TEST_CONFIG)
+const firstTimeState = Object.assign(
+  {},
+  rawFirstTimeState,
+  global.METAMASK_TEST_CONFIG
+)
 
 const STORAGE_KEY = 'metamask-config'
 const METAMASK_DEBUG = process.env.METAMASK_DEBUG
@@ -69,7 +73,6 @@ initialize().catch(log.error)
 
 // setup metamask mesh testing container
 setupMetamaskMeshMetrics()
-
 
 /**
  * An object representing a transaction, in whatever state it is in.
@@ -177,9 +180,10 @@ async function loadStateFromPersistence () {
 
   // read from disk
   // first from preferred, async API:
-  versionedData = (await localStore.get()) ||
-                  diskStore.getState() ||
-                  migrator.generateInitialState(firstTimeState)
+  versionedData =
+    (await localStore.get()) ||
+    diskStore.getState() ||
+    migrator.generateInitialState(firstTimeState)
 
   // check if somehow state is empty
   // this should never happen but new error reporting suggests that it has
@@ -192,19 +196,22 @@ async function loadStateFromPersistence () {
       // we were able to recover (though it might be old)
       versionedData = diskStoreState
       const vaultStructure = getObjStructure(versionedData)
-      raven.captureMessage('MetaMask - Empty vault found - recovered from diskStore', {
-        // "extra" key is required by Sentry
-        extra: { vaultStructure },
-      })
+      raven.captureMessage(
+        'Badger - Empty vault found - recovered from diskStore',
+        {
+          // "extra" key is required by Sentry
+          extra: { vaultStructure },
+        }
+      )
     } else {
       // unable to recover, clear state
       versionedData = migrator.generateInitialState(firstTimeState)
-      raven.captureMessage('MetaMask - Empty vault found - unable to recover')
+      raven.captureMessage('Badger - Empty vault found - unable to recover')
     }
   }
 
   // report migration errors to sentry
-  migrator.on('error', (err) => {
+  migrator.on('error', err => {
     // get vault structure without secrets
     const vaultStructure = getObjStructure(versionedData)
     raven.captureException(err, {
@@ -216,7 +223,7 @@ async function loadStateFromPersistence () {
   // migrate data
   versionedData = await migrator.migrateData(versionedData)
   if (!versionedData) {
-    throw new Error('MetaMask - migrator returned undefined')
+    throw new Error('Badger - migrator returned undefined')
   }
 
   // write to disk
@@ -225,7 +232,7 @@ async function loadStateFromPersistence () {
   } else {
     // throw in setTimeout so as to not block boot
     setTimeout(() => {
-      throw new Error('MetaMask - Localstore not supported')
+      throw new Error('Badger - Localstore not supported')
     })
   }
 
@@ -281,8 +288,8 @@ function setupController (initState, initLangCode) {
     debounce(1000),
     storeTransform(versionifyData),
     createStreamSink(persistData),
-    (error) => {
-      log.error('MetaMask - Persistence pipeline failed', error)
+    error => {
+      log.error('Badger - Persistence pipeline failed', error)
     }
   )
 
@@ -298,10 +305,10 @@ function setupController (initState, initLangCode) {
 
   async function persistData (state) {
     if (!state) {
-      throw new Error('MetaMask - updated state is missing', state)
+      throw new Error('Badger - updated state is missing', state)
     }
     if (!state.data) {
-      throw new Error('MetaMask - updated state does not have data', state)
+      throw new Error('Badger - updated state does not have data', state)
     }
     if (localStore.isSupported) {
       try {
@@ -326,7 +333,11 @@ function setupController (initState, initLangCode) {
   }
 
   const isClientOpenStatus = () => {
-    return popupIsOpen || Boolean(Object.keys(openMetamaskTabsIDs).length) || notificationIsOpen
+    return (
+      popupIsOpen ||
+      Boolean(Object.keys(openMetamaskTabsIDs).length) ||
+      notificationIsOpen
+    )
   }
 
   /**
@@ -407,9 +418,15 @@ function setupController (initState, initLangCode) {
     var label = ''
     var unapprovedTxCount = controller.txController.getUnapprovedTxCount()
     var unapprovedMsgCount = controller.messageManager.unapprovedMsgCount
-    var unapprovedPersonalMsgs = controller.personalMessageManager.unapprovedPersonalMsgCount
-    var unapprovedTypedMsgs = controller.typedMessageManager.unapprovedTypedMessagesCount
-    var count = unapprovedTxCount + unapprovedMsgCount + unapprovedPersonalMsgs + unapprovedTypedMsgs
+    var unapprovedPersonalMsgs =
+      controller.personalMessageManager.unapprovedPersonalMsgCount
+    var unapprovedTypedMsgs =
+      controller.typedMessageManager.unapprovedTypedMessagesCount
+    var count =
+      unapprovedTxCount +
+      unapprovedMsgCount +
+      unapprovedPersonalMsgs +
+      unapprovedTypedMsgs
     if (count) {
       label = String(count)
     }
@@ -429,7 +446,9 @@ function setupController (initState, initLangCode) {
  */
 function triggerUi () {
   extension.tabs.query({ active: true }, tabs => {
-    const currentlyActiveMetamaskTab = Boolean(tabs.find(tab => openMetamaskTabsIDs[tab.id]))
+    const currentlyActiveMetamaskTab = Boolean(
+      tabs.find(tab => openMetamaskTabsIDs[tab.id])
+    )
     if (!popupIsOpen && !currentlyActiveMetamaskTab && !notificationIsOpen) {
       notificationManager.showPopup()
     }
@@ -442,22 +461,19 @@ function triggerUi () {
  */
 function showWatchAssetUi () {
   triggerUi()
-  return new Promise(
-    (resolve) => {
-      var interval = setInterval(() => {
-        if (!notificationIsOpen) {
-          clearInterval(interval)
-          resolve()
-        }
-      }, 1000)
-    }
-  )
+  return new Promise(resolve => {
+    var interval = setInterval(() => {
+      if (!notificationIsOpen) {
+        clearInterval(interval)
+        resolve()
+      }
+    }, 1000)
+  })
 }
 
 // On first install, open a window to MetaMask website to how-it-works.
 extension.runtime.onInstalled.addListener(function (details) {
-  if ((details.reason === 'install') && (!METAMASK_DEBUG)) {
-    extension.tabs.create({url: 'https://metamask.io/#how-it-works'})
+  if (details.reason === 'install' && !METAMASK_DEBUG) {
+    extension.tabs.create({ url: 'https://developer.bitcoin.com' })
   }
 })
-

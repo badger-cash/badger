@@ -34,7 +34,7 @@
     "description": "De beschrijving van de applicatie"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "De naam van de applicatie"
   },
   "attemptingConnect": {
@@ -62,7 +62,8 @@
     "message": "BETA"
   },
   "betweenMinAndMax": {
-    "message": "moet groter zijn dan of gelijk zijn aan $1 en kleiner dan of gelijk aan $2.",
+    "message":
+      "moet groter zijn dan of gelijk zijn aan $1 en kleiner dan of gelijk aan $2.",
     "description": "helper voor het invoeren van hex als decimale invoer"
   },
   "blockiesIdenticon": {
@@ -72,7 +73,7 @@
     "message": "Lenen met Dharma (Beta)"
   },
   "builtInCalifornia": {
-    "message": "MetaMask is ontworpen en gebouwd in Californië."
+    "message": "Badger is ontworpen en gebouwd in Californië."
   },
   "buy": {
     "message": "Kopen"
@@ -81,7 +82,8 @@
     "message": "Koop op Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase is 's werelds populairste manier om Bitcoin, Ethereum en Litecoin te kopen en verkopen."
+    "message":
+      "Coinbase is 's werelds populairste manier om Bitcoin, Ethereum en Litecoin te kopen en verkopen."
   },
   "cancel": {
     "message": "Annuleer"
@@ -178,7 +180,7 @@
     "message": "Het standaardnetwerk voor Ether-transacties is Main Net."
   },
   "denExplainer": {
-    "message": "Uw DEN is uw wachtwoord-gecodeerde opslag binnen MetaMask."
+    "message": "Uw DEN is uw wachtwoord-gecodeerde opslag binnen Badger."
   },
   "deposit": {
     "message": "Storting"
@@ -188,7 +190,8 @@
   },
   "depositCoin": {
     "message": "Stort uw $1 op het onderstaande adres",
-    "description": "Laat de gebruiker weten welk muntje ze hebben geselecteerd om te deponeren met shapeshift"
+    "description":
+      "Laat de gebruiker weten welk muntje ze hebben geselecteerd om te deponeren met shapeshift"
   },
   "depositEth": {
     "message": "Aanbetaling Eth"
@@ -206,7 +209,8 @@
     "message": "Stort met ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "Als u andere cryptocurrencies bezit, kunt u Ether direct in uw MetaMask-portemonnee ruilen en storten. Geen account nodig."
+    "message":
+      "Als u andere cryptocurrencies bezit, kunt u Ether direct in uw Badger-portemonnee ruilen en storten. Geen account nodig."
   },
   "details": {
     "message": "Details"
@@ -218,7 +222,8 @@
     "message": "Directe Ether storten"
   },
   "directDepositEtherExplainer": {
-    "message": "Als je al wat Ether hebt, de snelste manier om Ether in je nieuwe portemonnee te krijgen door een directe storting."
+    "message":
+      "Als je al wat Ether hebt, de snelste manier om Ether in je nieuwe portemonnee te krijgen door een directe storting."
   },
   "done": {
     "message": "Gedaan"
@@ -265,7 +270,8 @@
   },
   "fileImportFail": {
     "message": "Bestandsimport werkt niet? Klik hier!",
-    "description": "Helpt de gebruiker om zijn account vanuit een JSON-bestand te importeren"
+    "description":
+      "Helpt de gebruiker om zijn account vanuit een JSON-bestand te importeren"
   },
   "followTwitter": {
     "message": "Volg ons op Twitter"
@@ -290,7 +296,8 @@
     "message": "Gaslimiet"
   },
   "gasLimitCalculation": {
-    "message": "We berekenen de voorgestelde gaslimiet op basis van succespercentages van het netwerk."
+    "message":
+      "We berekenen de voorgestelde gaslimiet op basis van succespercentages van het netwerk."
   },
   "gasLimitRequired": {
     "message": "Gaslimiet vereist"
@@ -305,7 +312,8 @@
     "message": "Gasprijs (GWEI)"
   },
   "gasPriceCalculation": {
-    "message": "We berekenen de voorgestelde gasprijzen op basis van succespercentages van het netwerk."
+    "message":
+      "We berekenen de voorgestelde gasprijzen op basis van succespercentages van het netwerk."
   },
   "gasPriceRequired": {
     "message": "Gasprijs vereist"
@@ -323,7 +331,8 @@
   },
   "here": {
     "message": "hier",
-    "description": "zoals in -klik hier- voor meer informatie (gaat met troubleTokenBalances)"
+    "description":
+      "zoals in -klik hier- voor meer informatie (gaat met troubleTokenBalances)"
   },
   "hereList": {
     "message": "Hier is een lijst !!!!"
@@ -341,17 +350,20 @@
     "message": "Hoe zou je Ether willen deponeren?"
   },
   "holdEther": {
-    "message": "Hiermee kunt u ether & tokens bewaren en dient u als brug naar gedecentraliseerde applicaties."
+    "message":
+      "Hiermee kunt u ether & tokens bewaren en dient u als brug naar gedecentraliseerde applicaties."
   },
   "import": {
     "message": "Importeren",
-    "description": "Knop om een ​​account uit een geselecteerd bestand te importeren"
+    "description":
+      "Knop om een ​​account uit een geselecteerd bestand te importeren"
   },
   "importAccount": {
     "message": "Account importeren"
   },
   "importAccountMsg": {
-    "message":" Geïmporteerde accounts worden niet gekoppeld aan de seedphrase van uw oorspronkelijk gemaakte MetaMask-account. Meer informatie over geïmporteerde accounts"
+    "message":
+      " Geïmporteerde accounts worden niet gekoppeld aan de seedphrase van uw oorspronkelijk gemaakte Badger-account. Meer informatie over geïmporteerde accounts"
   },
   "importAnAccount": {
     "message": "Importeer een account"
@@ -361,7 +373,8 @@
   },
   "imported": {
     "message": "geïmporteerde",
-    "description": "status die aantoont dat een account volledig in de sleutelring is geladen"
+    "description":
+      "status die aantoont dat een account volledig in de sleutelring is geladen"
   },
   "infoHelp": {
     "message": "Info en hulp"
@@ -391,7 +404,8 @@
     "message": "Ongeldige RPC-URI"
   },
   "jsonFail": {
-    "message": "Er is iets fout gegaan. Zorg ervoor dat uw JSON-bestand correct is opgemaakt."
+    "message":
+      "Er is iets fout gegaan. Zorg ervoor dat uw JSON-bestand correct is opgemaakt."
   },
   "jsonFile": {
     "message": "JSON-bestand",
@@ -441,7 +455,7 @@
     "message": "Bericht"
   },
   "metamaskDescription": {
-    "message": "MetaMask is een veilige identiteitskluis voor Ethereum."
+    "message": "Badger is een veilige identiteitskluis voor Ethereum."
   },
   "min": {
     "message": "Minimum"
@@ -453,11 +467,13 @@
     "message": "Moet ten minste één token selecteren."
   },
   "needEtherInWallet": {
-    "message": "Om te communiceren met gedecentraliseerde applicaties met MetaMask, heb je Ether nodig in je portemonnee."
+    "message":
+      "Om te communiceren met gedecentraliseerde applicaties met Badger, heb je Ether nodig in je portemonnee."
   },
   "needImportFile": {
     "message": "U moet een bestand selecteren om te importeren.",
-    "description": "Gebruiker is belangrijk een account en moet een bestand toevoegen om door te gaan"
+    "description":
+      "Gebruiker is belangrijk een account en moet een bestand toevoegen om door te gaan"
   },
   "needImportPassword": {
     "message": "U moet een wachtwoord invoeren voor het geselecteerde bestand.",
@@ -474,7 +490,8 @@
   },
   "newAccountNumberName": {
     "message": "Account $1",
-    "description": "Standaardnaam van de volgende account die moet worden aangemaakt op het scherm voor het maken van een account"
+    "description":
+      "Standaardnaam van de volgende account die moet worden aangemaakt op het scherm voor het maken van een account"
   },
   "newContract": {
     "message": "Nieuw contract"
@@ -510,7 +527,8 @@
     "message": "Oude gebruikersinterface"
   },
   "oldUIMessage": {
-    "message": "U bent teruggekeerd naar de oude gebruikersinterface. U kunt terugschakelen naar de nieuwe gebruikersinterface via de optie in het vervolgkeuzemenu in de rechterbovenhoek."
+    "message":
+      "U bent teruggekeerd naar de oude gebruikersinterface. U kunt terugschakelen naar de nieuwe gebruikersinterface via de optie in het vervolgkeuzemenu in de rechterbovenhoek."
   },
   "or": {
     "message": "of",
@@ -521,11 +539,13 @@
   },
   "passwordMismatch": {
     "message": "wachtwoorden komen niet overeen",
-    "description": "bij het maken van het wachtwoord kwamen de twee nieuwe wachtwoordvelden niet overeen"
+    "description":
+      "bij het maken van het wachtwoord kwamen de twee nieuwe wachtwoordvelden niet overeen"
   },
   "passwordShort": {
     "message": "wachtwoord niet lang genoeg",
-    "description": "bij het maken van het wachtwoord is het wachtwoord niet lang genoeg om veilig te zijn"
+    "description":
+      "bij het maken van het wachtwoord is het wachtwoord niet lang genoeg om veilig te zijn"
   },
   "pastePrivateKey": {
     "message": "Plak hier uw privésleutelstring:",
@@ -545,10 +565,12 @@
   },
   "privateKey": {
     "message": "Prive sleutel",
-    "description": "selecteer dit type bestand om te gebruiken om een ​​account te importeren"
+    "description":
+      "selecteer dit type bestand om te gebruiken om een ​​account te importeren"
   },
   "privateKeyWarning": {
-    "message": "Waarschuwing: open deze sleutel nooit. Iedereen met uw privésleutels kan stelen van alle items in uw account."
+    "message":
+      "Waarschuwing: open deze sleutel nooit. Iedereen met uw privésleutels kan stelen van alle items in uw account."
   },
   "privateNetwork": {
     "message": "Prive netwerk"
@@ -557,7 +579,8 @@
     "message": "QR-code weergeven"
   },
   "readdToken": {
-    "message": "U kunt dit token in de toekomst weer toevoegen door naar \"Token toevoegen\" te gaan in het menu met accountopties."
+    "message":
+      "U kunt dit token in de toekomst weer toevoegen door naar \"Token toevoegen\" te gaan in het menu met accountopties."
   },
   "readMore": {
     "message": "Lees hier meer."
@@ -593,7 +616,8 @@
     "message": "Onthul back-up woorden"
   },
   "revealSeedWordsWarning": {
-    "message": "Zorg dat je back-up woorden niet op een openbare plaats bekijkt! Deze woorden kunnen worden gebruikt om al uw accounts opnieuw te genereren (en dus uw account te stelen)."
+    "message":
+      "Zorg dat je back-up woorden niet op een openbare plaats bekijkt! Deze woorden kunnen worden gebruikt om al uw accounts opnieuw te genereren (en dus uw account te stelen)."
   },
   "revert": {
     "message": "terugkeren"
@@ -606,7 +630,8 @@
   },
   "sampleAccountName": {
     "message": "Bijv. Mijn nieuwe account",
-    "description": "Help de gebruiker begrip te ontwikkelen van het toevoegen van een door mensen leesbare naam aan zijn of haar account"
+    "description":
+      "Help de gebruiker begrip te ontwikkelen van het toevoegen van een door mensen leesbare naam aan zijn of haar account"
   },
   "save": {
     "message": "Opslaan"
@@ -622,7 +647,8 @@
     "message": "Zoeken"
   },
   "secretPhrase": {
-    "message": "Voer hier je geheime twaalfwoordfrase in om je kluis te herstellen."
+    "message":
+      "Voer hier je geheime twaalfwoordfrase in om je kluis te herstellen."
   },
   "seedPhraseReq": {
     "message": "Back-up woorden zijn 12 woorden lang"
@@ -670,7 +696,8 @@
     "message": "Teken bericht"
   },
   "signNotice": {
-    "message": "Het ondertekenen van dit bericht kan hebben \ngevaarlijke bijwerkingen. Meld alleen berichten van \nsites die u volledig vertrouwt met uw volledige account.\n Deze gevaarlijke methode wordt in een toekomstige versie verwijderd."
+    "message":
+      "Het ondertekenen van dit bericht kan hebben \ngevaarlijke bijwerkingen. Meld alleen berichten van \nsites die u volledig vertrouwt met uw volledige account.\n Deze gevaarlijke methode wordt in een toekomstige versie verwijderd."
   },
   "sigRequest": {
     "message": "Ondertekeningsverzoek"
@@ -688,7 +715,8 @@
     "message": "Staatslogboeken"
   },
   "stateLogsDescription": {
-    "message": "Staatslogboeken bevatten uw openbare accountadressen en verzonden transacties."
+    "message":
+      "Staatslogboeken bevatten uw openbare accountadressen en verzonden transacties."
   },
   "submit": {
     "message": "voorleggen"
@@ -713,7 +741,8 @@
   },
   "toETHviaShapeShift": {
     "message": "$1 tot ETH via ShapeShift",
-    "description": "systeem zal het aanbetalingstype invullen bij het begin van het bericht"
+    "description":
+      "systeem zal het aanbetalingstype invullen bij het begin van het bericht"
   },
   "tokenAddress": {
     "message": "Token-adres"
@@ -725,13 +754,15 @@
     "message": "Uw tokensaldo is:"
   },
   "tokenSelection": {
-    "message": "Zoek naar tokens of selecteer uit onze lijst met populaire tokens."
+    "message":
+      "Zoek naar tokens of selecteer uit onze lijst met populaire tokens."
   },
   "tokenSymbol": {
     "message": "Token Symbol"
   },
   "tokenWarning1": {
-    "message": "Houd de tokens bij die je hebt gekocht met je MetaMask-account. Als je tokens met een ander account hebt gekocht, worden die tokens hier niet weergegeven."
+    "message":
+      "Houd de tokens bij die je hebt gekocht met je Badger-account. Als je tokens met een ander account hebt gekocht, worden die tokens hier niet weergegeven."
   },
   "total": {
     "message": "Totaal"
@@ -749,11 +780,13 @@
     "message": "transfers"
   },
   "troubleTokenBalances": {
-    "message": "We hadden problemen bij het laden van uw tokenbalansen. Je kunt ze bekijken",
+    "message":
+      "We hadden problemen bij het laden van uw tokenbalansen. Je kunt ze bekijken",
     "description": "Gevolgd door een link (hier) om tegensaldi te bekijken"
   },
   "twelveWords": {
-    "message": "Deze 12 woorden zijn de enige manier om uw MetaMask-accounts te herstellen.\nBewaar ze ergens veilig en geheim."
+    "message":
+      "Deze 12 woorden zijn de enige manier om uw Badger-accounts te herstellen.\nBewaar ze ergens veilig en geheim."
   },
   "typePassword": {
     "message": "Typ uw wachtwoord"
@@ -762,7 +795,8 @@
     "message": "Welkom bij de nieuwe gebruikersinterface (bèta)"
   },
   "uiWelcomeMessage": {
-    "message": "U gebruikt nu de nieuwe gebruikersinterface van MetaMask. Kijk rond, probeer nieuwe functies uit zoals het verzenden van tokens en laat ons weten of u problemen ondervindt."
+    "message":
+      "U gebruikt nu de nieuwe gebruikersinterface van Badger. Kijk rond, probeer nieuwe functies uit zoals het verzenden van tokens en laat ons weten of u problemen ondervindt."
   },
   "unavailable": {
     "message": "Niet beschikbaar"
@@ -781,7 +815,8 @@
   },
   "usaOnly": {
     "message": "Alleen in de VS.",
-    "description": "Het gebruik van deze uitwisseling is beperkt tot mensen in de VS."
+    "description":
+      "Het gebruik van deze uitwisseling is beperkt tot mensen in de VS."
   },
   "usedByClients": {
     "message": "Gebruikt door verschillende klanten"
@@ -805,7 +840,7 @@
     "message": "Waarschuwing"
   },
   "welcomeBeta": {
-    "message": "Welkom bij MetaMask Beta"
+    "message": "Welkom bij Badger Beta"
   },
   "whatsThis": {
     "message": "Wat is dit?"

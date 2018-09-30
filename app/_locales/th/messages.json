@@ -34,7 +34,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "The name of the application"
   },
   "attemptingConnect": {
@@ -72,7 +72,7 @@
     "message": "ยืมด้วย Dharma (เบต้า)"
   },
   "builtInCalifornia": {
-    "message": "MetaMask ออกแบบและพัฒนาที่แคลิฟอร์เนีย"
+    "message": "Badger ออกแบบและพัฒนาที่แคลิฟอร์เนีย"
   },
   "buy": {
     "message": "ซื้อ"
@@ -81,7 +81,8 @@
     "message": "ซื้อด้วย Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase เป็นแหล่งซื้อขายบิตคอยน์ไลท์คอยน์และอีเธอเรียมที่ได้รับความนิยมสูงสุดในโลก"
+    "message":
+      "Coinbase เป็นแหล่งซื้อขายบิตคอยน์ไลท์คอยน์และอีเธอเรียมที่ได้รับความนิยมสูงสุดในโลก"
   },
   "cancel": {
     "message": "ยกเลิก"
@@ -178,7 +179,8 @@
     "message": "ค่าเริ่มต้นของเครือข่ายสำหรับทำรายการธุรกรรมอีเธอร์คือ Main Net"
   },
   "denExplainer": {
-    "message": "DEN ของคุณคือตัวเก็บข้อมูลที่เข้ารหัสไว้ด้วยรหัสผ่านของคุณภายใน MetaMask "
+    "message":
+      "DEN ของคุณคือตัวเก็บข้อมูลที่เข้ารหัสไว้ด้วยรหัสผ่านของคุณภายใน Badger "
   },
   "deposit": {
     "message": "ฝาก"
@@ -188,7 +190,8 @@
   },
   "depositCoin": {
     "message": "ฝาก $1 ของคุณไปที่แอดเดรสด้านล่างนี้:",
-    "description": "Tells the user what coin they have selected to deposit with shapeshift"
+    "description":
+      "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
     "message": "การฝากอีเธอร์"
@@ -206,7 +209,8 @@
     "message": "ฝากด้วย ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "ถ้ามีเงินสกุลอื่นอยู่ก็สามารถแลกเงินและฝากเป็นอีเธอร์ได้โดยตรงเข้ากระเป๋า MetaMask ได้เลยไม่ต้องสมัครบัญชี"
+    "message":
+      "ถ้ามีเงินสกุลอื่นอยู่ก็สามารถแลกเงินและฝากเป็นอีเธอร์ได้โดยตรงเข้ากระเป๋า Badger ได้เลยไม่ต้องสมัครบัญชี"
   },
   "details": {
     "message": "รายละเอียด"
@@ -218,7 +222,8 @@
     "message": "ฝากอีเธอร์โดยตรง"
   },
   "directDepositEtherExplainer": {
-    "message": "ถ้าคุณมีอีเธอร์อยู่แล้ววิธีการที่เร็วที่สุดในการเอาเงินเข้ากระเป๋าใหม่ก็คือการโอนตรงๆ"
+    "message":
+      "ถ้าคุณมีอีเธอร์อยู่แล้ววิธีการที่เร็วที่สุดในการเอาเงินเข้ากระเป๋าใหม่ก็คือการโอนตรงๆ"
   },
   "done": {
     "message": "เสร็จสิ้น"
@@ -323,7 +328,8 @@
   },
   "here": {
     "message": "ที่นี่",
-    "description": "as in -click here- for more information (goes with troubleTokenBalances)"
+    "description":
+      "as in -click here- for more information (goes with troubleTokenBalances)"
   },
   "hereList": {
     "message": "รายการอยู่ที่นี่!!!!"
@@ -341,7 +347,8 @@
     "message": "คุณต้องการฝากอีเธอร์อย่างไร?"
   },
   "holdEther": {
-    "message": "ช่วยคุณถืออีเทอร์และโทเค็นและทำหน้าที่เป็นสะพานเชื่อมต่อกับแอพพลิเคชันแบบกระจาย"
+    "message":
+      "ช่วยคุณถืออีเทอร์และโทเค็นและทำหน้าที่เป็นสะพานเชื่อมต่อกับแอพพลิเคชันแบบกระจาย"
   },
   "import": {
     "message": "นำเข้า",
@@ -351,7 +358,8 @@
     "message": "นำเข้าบัญชี"
   },
   "importAccountMsg": {
-    "message":"บัญชีที่นำเข้าจะไม่ถูกรวมกับบัญชีที่สร้างด้วยคำเเริ่มต้นบนเมต้ามาร์สในตอนแรก เรียนรู้เพิ่มเติมเกี่ยวกับบัญชีที่นำเข้า"
+    "message":
+      "บัญชีที่นำเข้าจะไม่ถูกรวมกับบัญชีที่สร้างด้วยคำเเริ่มต้นบนเมต้ามาร์สในตอนแรก เรียนรู้เพิ่มเติมเกี่ยวกับบัญชีที่นำเข้า"
   },
   "importAnAccount": {
     "message": "นำเข้าบัญชี"
@@ -361,7 +369,8 @@
   },
   "imported": {
     "message": "นำเข้าเรียบร้อย",
-    "description": "status showing that an account has been fully loaded into the keyring"
+    "description":
+      "status showing that an account has been fully loaded into the keyring"
   },
   "infoHelp": {
     "message": "ข้อมูลและความช่วยเหลือ"
@@ -391,7 +400,8 @@
     "message": "RPC URI ไม่ถูกต้อง"
   },
   "jsonFail": {
-    "message": "เกิดบางอย่างผิดพลาด โปรดตรวจสอบว่าไฟล์ JSON ของคุณมีรูปแบบที่ถูกต้อง."
+    "message":
+      "เกิดบางอย่างผิดพลาด โปรดตรวจสอบว่าไฟล์ JSON ของคุณมีรูปแบบที่ถูกต้อง."
   },
   "jsonFile": {
     "message": "ไฟล์ JSON",
@@ -441,7 +451,7 @@
     "message": "ข้อความ"
   },
   "metamaskDescription": {
-    "message": "MetaMask คือที่เก็บตัวตนนิรภัยสำหรับอีเธอเรียม"
+    "message": "Badger คือที่เก็บตัวตนนิรภัยสำหรับอีเธอเรียม"
   },
   "min": {
     "message": "ขั้นต่ำ"
@@ -453,11 +463,13 @@
     "message": "ต้องเลือกอย่างน้อย 1 โทเค็น"
   },
   "needEtherInWallet": {
-    "message": "คุณจะต้องมีอีเธอร์ในกระเป๋าเงินของคุณในการใช้งานกับแอพพลิเคชันแบบกระจายด้วย MetaMask"
+    "message":
+      "คุณจะต้องมีอีเธอร์ในกระเป๋าเงินของคุณในการใช้งานกับแอพพลิเคชันแบบกระจายด้วย Badger"
   },
   "needImportFile": {
     "message": "คุณต้องเลือกไฟล์ที่จะนำเข้า",
-    "description": "User is important an account and needs to add a file to continue"
+    "description":
+      "User is important an account and needs to add a file to continue"
   },
   "needImportPassword": {
     "message": "คุณต้องป้อนรหัสผ่านสำหรับไฟล์ที่เลือก",
@@ -474,7 +486,8 @@
   },
   "newAccountNumberName": {
     "message": "บัญชี $1",
-    "description": "Default name of next account to be created on create account screen"
+    "description":
+      "Default name of next account to be created on create account screen"
   },
   "newContract": {
     "message": "สร้างสัญญาใหม่"
@@ -510,7 +523,8 @@
     "message": "หน้าตาแบบเก่า"
   },
   "oldUIMessage": {
-    "message": "คุณได้เปลี่ยนเป็นหน้าตาแบบเก่าแล้ว คุณสามารถเปลี่ยนเป็นหน้าตาแบบใหม่ได้โดยไปที่ตัวเลือกตรงเมนูมุมขวาบน"
+    "message":
+      "คุณได้เปลี่ยนเป็นหน้าตาแบบเก่าแล้ว คุณสามารถเปลี่ยนเป็นหน้าตาแบบใหม่ได้โดยไปที่ตัวเลือกตรงเมนูมุมขวาบน"
   },
   "or": {
     "message": "หรือ",
@@ -521,11 +535,13 @@
   },
   "passwordMismatch": {
     "message": "รหัสผ่านไม่ตรงกัน",
-    "description": "in password creation process, the two new password fields did not match"
+    "description":
+      "in password creation process, the two new password fields did not match"
   },
   "passwordShort": {
     "message": "รหัสผ่านไม่ยาวพอ",
-    "description": "in password creation process, the password is not long enough to be secure"
+    "description":
+      "in password creation process, the password is not long enough to be secure"
   },
   "pastePrivateKey": {
     "message": "วางคีย์ส่วนตัวของคุณที่นี่:",
@@ -548,7 +564,8 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "คำเตือน: ห้ามเปิดเผยคีย์นี้ ทุกคนที่มีคีย์ส่วนตัวสามารถขโมยข้อมูลใด ๆ ที่เก็บไว้ในบัญชีของคุณได้"
+    "message":
+      "คำเตือน: ห้ามเปิดเผยคีย์นี้ ทุกคนที่มีคีย์ส่วนตัวสามารถขโมยข้อมูลใด ๆ ที่เก็บไว้ในบัญชีของคุณได้"
   },
   "privateNetwork": {
     "message": "เครือข่ายส่วนตัว"
@@ -557,7 +574,8 @@
     "message": "แสดง QR Code"
   },
   "readdToken": {
-    "message": "คุณสามารถเพิ่มโทเค็นนี้ในอนาคตได้โดยไปที่ “เพิ่มโทเค็น” ในเมนูตัวเลือกบัญชีของคุณ"
+    "message":
+      "คุณสามารถเพิ่มโทเค็นนี้ในอนาคตได้โดยไปที่ “เพิ่มโทเค็น” ในเมนูตัวเลือกบัญชีของคุณ"
   },
   "readMore": {
     "message": "อ่านเพิ่มเติมที่นี่"
@@ -593,7 +611,8 @@
     "message": "เปิดเผยกลุ่มคำชีด"
   },
   "revealSeedWordsWarning": {
-    "message": "อย่าเปิดเผยคำกลุ่มคำชีดของคุณในที่สาธารณะ! คำเหล่านี้สามารถใช้เพื่อขโมยบัญชีทั้งหมดของคุณ"
+    "message":
+      "อย่าเปิดเผยคำกลุ่มคำชีดของคุณในที่สาธารณะ! คำเหล่านี้สามารถใช้เพื่อขโมยบัญชีทั้งหมดของคุณ"
   },
   "revert": {
     "message": "ย้อนกลับ"
@@ -606,7 +625,8 @@
   },
   "sampleAccountName": {
     "message": "เช่น บัญชีเฮงเฮงของฉัน",
-    "description": "Help user understand concept of adding a human-readable name to their account"
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
   },
   "save": {
     "message": "บันทึก"
@@ -670,7 +690,8 @@
     "message": "เซ็นชื่อในข้อความ"
   },
   "signNotice": {
-    "message": "การเซ็นชื่อในข้อความนี้อาจจะเป็นอันตรายได้ \nเซ็นชื่อเฉพาะข้อความจากแหล่งที่คุณไว้วางใจได้จริง ๆ เท่านั้น \nวิธีที่อันตรายนี้จะถูกลบออกในอนาคต"
+    "message":
+      "การเซ็นชื่อในข้อความนี้อาจจะเป็นอันตรายได้ \nเซ็นชื่อเฉพาะข้อความจากแหล่งที่คุณไว้วางใจได้จริง ๆ เท่านั้น \nวิธีที่อันตรายนี้จะถูกลบออกในอนาคต"
   },
   "sigRequest": {
     "message": "ขอลายเซ็น"
@@ -731,7 +752,8 @@
     "message": "สัญลักษณ์ประจำตัว"
   },
   "tokenWarning1": {
-    "message": "ติดตามโทเค็นที่คุณซื้อด้วยบัญชี MetaMask ของคุณ หากคุณซื้อโทเค็นโดยใช้บัญชีอื่นโทเค็นเหล่านั้นจะไม่ปรากฏที่นี่"
+    "message":
+      "ติดตามโทเค็นที่คุณซื้อด้วยบัญชี Badger ของคุณ หากคุณซื้อโทเค็นโดยใช้บัญชีอื่นโทเค็นเหล่านั้นจะไม่ปรากฏที่นี่"
   },
   "total": {
     "message": "รวม"
@@ -753,7 +775,8 @@
     "description": "Followed by a link (here) to view token balances"
   },
   "twelveWords": {
-    "message": "กลุ่มคำ 12 คำเหล่านี้เป็นวิธีเดียวที่จะกู้คืนบัญชี MetaMask ของคุณ \n กรุณาเก็บไว้ในที่ปลอดภัยและเก็บเป็นความลับ"
+    "message":
+      "กลุ่มคำ 12 คำเหล่านี้เป็นวิธีเดียวที่จะกู้คืนบัญชี Badger ของคุณ \n กรุณาเก็บไว้ในที่ปลอดภัยและเก็บเป็นความลับ"
   },
   "typePassword": {
     "message": "พิมพ์รหัสผ่านของคุณ"
@@ -762,7 +785,8 @@
     "message": "ยินดีต้อนรับสู่หน้าตาใหม่ (เบต้า)"
   },
   "uiWelcomeMessage": {
-    "message": "ขณะนี้คุณใช้งาน MetaMask หน้าตาใหม่แล้ว ลองใช้ความสามรถใหม่ ๆ เช่นการส่งโทเค็นและหากพบปัญหากรุณาแจ้งให้เราทราบ"
+    "message":
+      "ขณะนี้คุณใช้งาน Badger หน้าตาใหม่แล้ว ลองใช้ความสามรถใหม่ ๆ เช่นการส่งโทเค็นและหากพบปัญหากรุณาแจ้งให้เราทราบ"
   },
   "unavailable": {
     "message": "ใช้งานไม่ได้"
@@ -805,7 +829,7 @@
     "message": "คำเตือน"
   },
   "welcomeBeta": {
-    "message": "ยินดีต้อนรับสู่ MetaMask เบต้า"
+    "message": "ยินดีต้อนรับสู่ Badger เบต้า"
   },
   "whatsThis": {
     "message": "นี่คืออะไร?"

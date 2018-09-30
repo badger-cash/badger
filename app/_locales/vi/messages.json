@@ -29,7 +29,7 @@
   },
   "appName": {
     "description": "Tên phần mềm",
-    "message": "MetaMask"
+    "message": "Badger"
   },
   "attemptingConnect": {
     "message": "Đang kết nối đến blockchain."
@@ -63,7 +63,8 @@
     "message": "Mua trên Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase là dịch vụ ví điện tử thông dụng nhất thế giới để mua bán Bitcoin, Ethereum, và Litecoin"
+    "message":
+      "Coinbase là dịch vụ ví điện tử thông dụng nhất thế giới để mua bán Bitcoin, Ethereum, và Litecoin"
   },
   "cancel": {
     "message": "Hủy"
@@ -136,10 +137,12 @@
     "message": "Tùy chỉnh"
   },
   "defaultNetwork": {
-    "message": "Mạng lưới mặc định dùng cho các giao dịch Ether là Main Net (tiền ETH thật)."
+    "message":
+      "Mạng lưới mặc định dùng cho các giao dịch Ether là Main Net (tiền ETH thật)."
   },
   "denExplainer": {
-    "message": "Số DEN của bạn là mật khẩu đã được mã hóa và lưu trữ trong MetaMask"
+    "message":
+      "Số DEN của bạn là mật khẩu đã được mã hóa và lưu trữ trong Badger"
   },
   "deposit": {
     "message": "Ký gửi/nạp tiền"
@@ -148,7 +151,8 @@
     "message": "Ký gửi BTC đến địa chỉ sau:"
   },
   "depositCoin": {
-    "description": "Báo cho người dùng biết đồng tiền nào họ đã chọn để ký gửi với ShapeShift",
+    "description":
+      "Báo cho người dùng biết đồng tiền nào họ đã chọn để ký gửi với ShapeShift",
     "message": "Ký gửi $1 đến địa chỉ sau:"
   },
   "depositEth": {
@@ -167,7 +171,8 @@
     "message": "Ký gửi với ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "Nếu bạn sở hữu các đồng tiền điện tử khác, bạn có thể giao dịch và ký gửi Ether trực tiếp vào ví MetaMask của bạn. Không cần tạo thêm tài khoản."
+    "message":
+      "Nếu bạn sở hữu các đồng tiền điện tử khác, bạn có thể giao dịch và ký gửi Ether trực tiếp vào ví Badger của bạn. Không cần tạo thêm tài khoản."
   },
   "details": {
     "message": "Chi tiết"
@@ -179,7 +184,8 @@
     "message": "Ký gửi Ether trực tiếp"
   },
   "directDepositEtherExplainer": {
-    "message": "Nếu bạn đã có sẵn vài Ether, cách nhanh nhất để thêm Ether vào ví tiền mới của bạn là bằng ký gửi trực tiếp."
+    "message":
+      "Nếu bạn đã có sẵn vài Ether, cách nhanh nhất để thêm Ether vào ví tiền mới của bạn là bằng ký gửi trực tiếp."
   },
   "done": {
     "message": "Hoàn tất"
@@ -236,7 +242,8 @@
     "message": "Hạn mức ga"
   },
   "gasLimitCalculation": {
-    "message": "Chúng tôi tính toán và gợi ý một hạn mức ga cụ thể dựa trên tỷ lệ thành công của hệ thống."
+    "message":
+      "Chúng tôi tính toán và gợi ý một hạn mức ga cụ thể dựa trên tỷ lệ thành công của hệ thống."
   },
   "gasLimitRequired": {
     "message": "Hạn mức ga được yêu cầu"
@@ -248,7 +255,8 @@
     "message": "Giá ga (GWEI)"
   },
   "gasPriceCalculation": {
-    "message": "Chúng tôi tính toán và gợi ý một giá ga cụ thể dựa trên tỷ lệ thành công của hệ thống."
+    "message":
+      "Chúng tôi tính toán và gợi ý một giá ga cụ thể dựa trên tỷ lệ thành công của hệ thống."
   },
   "gasPriceRequired": {
     "message": "Giá ga được yêu cầu"
@@ -265,7 +273,8 @@
     "message": "phải nhiều hơn hoặc bằng $1"
   },
   "here": {
-    "description": "như trong -Nhấp vào đây để xem thêm thông tin- (dùng với các số dư token có vấn đề)",
+    "description":
+      "như trong -Nhấp vào đây để xem thêm thông tin- (dùng với các số dư token có vấn đề)",
     "message": "tại đây"
   },
   "hide": {
@@ -294,7 +303,8 @@
     "message": "Nhập mã DEN hiện hành"
   },
   "imported": {
-    "description": "Trạng thái hiển thị cho một tài khoản đã được tải toàn bộ vào chùm chìa khóa",
+    "description":
+      "Trạng thái hiển thị cho một tài khoản đã được tải toàn bộ vào chùm chìa khóa",
     "message": "Đã nhập"
   },
   "infoHelp": {
@@ -354,10 +364,12 @@
     "message": "Tài khoản của tôi"
   },
   "needEtherInWallet": {
-    "message": "Để tương tác với các ứng dụng phân tán bằng MetaMask, bạn sẽ phải cần có Ether trong ví của bạn."
+    "message":
+      "Để tương tác với các ứng dụng phân tán bằng Badger, bạn sẽ phải cần có Ether trong ví của bạn."
   },
   "needImportFile": {
-    "description": "Người dùng đang nhập một tài khoản và cần thêm tập tin để tiếp tục",
+    "description":
+      "Người dùng đang nhập một tài khoản và cần thêm tập tin để tiếp tục",
     "message": "Bạn phải chọn một tập tin để nhập."
   },
   "needImportPassword": {
@@ -371,7 +383,8 @@
     "message": "Tài khoản mới"
   },
   "newAccountNumberName": {
-    "description": "Tên mặc định của tài khoản tiếp theo để tạo trên màn hình tài khoản",
+    "description":
+      "Tên mặc định của tài khoản tiếp theo để tạo trên màn hình tài khoản",
     "message": "Tài khoản $1"
   },
   "newContract": {
@@ -405,18 +418,21 @@
     "message": "Giao diện cũ"
   },
   "oldUIMessage": {
-    "message": "Bạn vừa quay về giao diện cũ. Bạn có thể chuyển đổi sang giao diện mới bằng tùy chọn trong menu ở góc phải trên cùng."
+    "message":
+      "Bạn vừa quay về giao diện cũ. Bạn có thể chuyển đổi sang giao diện mới bằng tùy chọn trong menu ở góc phải trên cùng."
   },
   "or": {
     "description": "lựa chọn giữa tạo hay nhập một tài khoản mới",
     "message": "hoặc"
   },
   "passwordMismatch": {
-    "description": "trong quá trình tạo mật khẩu, hai trường mật khẩu mới không khớp",
+    "description":
+      "trong quá trình tạo mật khẩu, hai trường mật khẩu mới không khớp",
     "message": "mật khẩu không khớp"
   },
   "passwordShort": {
-    "description": "trong quá trình tạo mật khẩu, mật khẩu không đủ dài để đảm bảo an toàn",
+    "description":
+      "trong quá trình tạo mật khẩu, mật khẩu không đủ dài để đảm bảo an toàn",
     "message": "mật khẩu không đủ dài"
   },
   "pastePrivateKey": {
@@ -434,7 +450,8 @@
     "message": "Khóa Bí Mật"
   },
   "privateKeyWarning": {
-    "message": "Cảnh báo: Không bao giờ được tiết lộ khóa này. Bất kỳ ai có Khóa Bí Mật của bạn đều có thể đánh cắp tài sản được giữ trong tài khoản của bạn."
+    "message":
+      "Cảnh báo: Không bao giờ được tiết lộ khóa này. Bất kỳ ai có Khóa Bí Mật của bạn đều có thể đánh cắp tài sản được giữ trong tài khoản của bạn."
   },
   "privateNetwork": {
     "message": "Mạng lưới riêng"
@@ -446,7 +463,8 @@
     "message": "Đọc thêm tại đây."
   },
   "readdToken": {
-    "message": "Bạn có thể thêm trở lại mã token này bằng cách nhấn \"Thêm mã token\" trong menu tùy chọn trong tài khoản của bạn."
+    "message":
+      "Bạn có thể thêm trở lại mã token này bằng cách nhấn \"Thêm mã token\" trong menu tùy chọn trong tài khoản của bạn."
   },
   "receive": {
     "message": "Nhận"
@@ -476,7 +494,8 @@
     "message": "Mạng thử nghiệm Ropsten"
   },
   "sampleAccountName": {
-    "description": "Giúp người dùng hiểu khái niệm thêm một cái tên có thể đọc được vào tài khoản của họ",
+    "description":
+      "Giúp người dùng hiểu khái niệm thêm một cái tên có thể đọc được vào tài khoản của họ",
     "message": "Ví dụ, Tài khoản mới của tôi"
   },
   "save": {
@@ -523,7 +542,8 @@
     "message": "Ký nhận tin nhắn"
   },
   "signNotice": {
-    "message": "Ký nhận vào tin nhắn này có thể gây nguy hiểm. Chỉ nên ký nhận tin nhắn từ những nguồn bạn hoàn toàn tin tưởng có thể dùng với tài khoản của bạn. Cách thức nguy hiểm này sẽ bị xóa trong phiên bản sắp tới."
+    "message":
+      "Ký nhận vào tin nhắn này có thể gây nguy hiểm. Chỉ nên ký nhận tin nhắn từ những nguồn bạn hoàn toàn tin tưởng có thể dùng với tài khoản của bạn. Cách thức nguy hiểm này sẽ bị xóa trong phiên bản sắp tới."
   },
   "status": {
     "message": "Trạng thái"
@@ -561,7 +581,8 @@
   },
   "troubleTokenBalances": {
     "description": "Kèm theo một đường link (tại đây) để xem số dư token.",
-    "message": "Chúng tôi gặp sự cố khi tải số dư token của bạn. Xin vui lòng xem lại"
+    "message":
+      "Chúng tôi gặp sự cố khi tải số dư token của bạn. Xin vui lòng xem lại"
   },
   "typePassword": {
     "message": "Điền mật khẩu của bạn"
@@ -570,7 +591,8 @@
     "message": "Chào mừng bạn đến với giao diện mới (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "Bạn đang sử dụng giao diện mới của MetaMask. Chúng tôi khuyến khích bạn thử nghiệm và khám phá các tính năng mới như gửi token, và nếu bạn có gặp phải vấn đề gì khó khăn, xin hãy liên hệ ngay để chúng tôi có thể giúp đỡ bạn."
+    "message":
+      "Bạn đang sử dụng giao diện mới của Badger. Chúng tôi khuyến khích bạn thử nghiệm và khám phá các tính năng mới như gửi token, và nếu bạn có gặp phải vấn đề gì khó khăn, xin hãy liên hệ ngay để chúng tôi có thể giúp đỡ bạn."
   },
   "unavailable": {
     "message": "Không có sẵn"
@@ -585,7 +607,8 @@
     "message": "ID không xác định"
   },
   "usaOnly": {
-    "description": "Việc sử dụng hệ thống giao dịch này chỉ giới hạn cho người dùng ở Mỹ",
+    "description":
+      "Việc sử dụng hệ thống giao dịch này chỉ giới hạn cho người dùng ở Mỹ",
     "message": "Chỉ áp dụng cho người dùng ở Mỹ"
   },
   "usedByClients": {
@@ -605,5 +628,5 @@
   },
   "yourSigRequested": {
     "message": "Chữ ký của bạn đang được yêu cầu"
-   }
+  }
 }

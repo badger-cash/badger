@@ -16,7 +16,7 @@
   },
   "addCustomToken": {
     "message": "カスタムトークンを追加"
-  },  
+  },
   "addToken": {
     "message": "トークンを追加"
   },
@@ -34,7 +34,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "The name of the application"
   },
   "attemptingConnect": {
@@ -75,7 +75,8 @@
     "message": "Coinbaseのサイトで購入"
   },
   "buyCoinbaseExplainer": {
-    "message": "Etherを購入できます。Coinbaseは、世界的なBitcoin、Ethereum、そしてLitecoinの取引所です。"
+    "message":
+      "Etherを購入できます。Coinbaseは、世界的なBitcoin、Ethereum、そしてLitecoinの取引所です。"
   },
   "cancel": {
     "message": "キャンセル"
@@ -164,12 +165,13 @@
   },
   "decimal": {
     "message": "小数点桁数"
-  }, 
+  },
   "defaultNetwork": {
     "message": "デフォルトのEther送受信ネットワークはメインネットです。"
   },
   "denExplainer": {
-    "message": "DENとは、あなたのパスワードが暗号化されたMetaMask内のストレージです。"
+    "message":
+      "DENとは、あなたのパスワードが暗号化されたBadger内のストレージです。"
   },
   "deposit": {
     "message": "振込"
@@ -179,7 +181,8 @@
   },
   "depositCoin": {
     "message": "$1を下記のアドレスへ振込んでください",
-    "description": "Tells the user what coin they have selected to deposit with shapeshift"
+    "description":
+      "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
     "message": "ETHを入金"
@@ -197,7 +200,8 @@
     "message": "ShapeShiftで交換"
   },
   "depositShapeShiftExplainer": {
-    "message": "他の暗号通貨とEtherを交換して、MetaMaskのウォレットへ入金できます。アカウント作成は不要です。"
+    "message":
+      "他の暗号通貨とEtherを交換して、Badgerのウォレットへ入金できます。アカウント作成は不要です。"
   },
   "details": {
     "message": "詳細"
@@ -209,7 +213,8 @@
     "message": "Etherを直接入金"
   },
   "directDepositEtherExplainer": {
-    "message": "既にEtherをお持ちなら、MetaMaskの新しいウォレットにEtherを送信することができます。"
+    "message":
+      "既にEtherをお持ちなら、Badgerの新しいウォレットにEtherを送信することができます。"
   },
   "done": {
     "message": "完了"
@@ -296,7 +301,8 @@
   },
   "here": {
     "message": "ここ",
-    "description": "as in -click here- for more information (goes with troubleTokenBalances)"
+    "description":
+      "as in -click here- for more information (goes with troubleTokenBalances)"
   },
   "hide": {
     "message": "隠す"
@@ -318,7 +324,8 @@
     "message": "アカウントのインポート"
   },
   "importAccountMsg": {
-    "message":"追加したアカウントはMetaMaskのアカウントパスフレーズとは関連付けられません。インポートしたアカウントについての詳細は"
+    "message":
+      "追加したアカウントはBadgerのアカウントパスフレーズとは関連付けられません。インポートしたアカウントについての詳細は"
   },
   "importAnAccount": {
     "message": "アカウントをインポート"
@@ -328,7 +335,8 @@
   },
   "imported": {
     "message": "インポート完了",
-    "description": "status showing that an account has been fully loaded into the keyring"
+    "description":
+      "status showing that an account has been fully loaded into the keyring"
   },
   "infoHelp": {
     "message": "情報とヘルプ"
@@ -353,7 +361,7 @@
     "description": "format for importing an account"
   },
   "keepTrackTokens": {
-    "message": "MetaMaskアカウントで入手したトークンを検索できます。"
+    "message": "Badgerアカウントで入手したトークンを検索できます。"
   },
   "kovan": {
     "message": "Kovanテストネットワーク"
@@ -414,11 +422,13 @@
     "message": "一つ以上のトークンを選択してください。"
   },
   "needEtherInWallet": {
-    "message": "MetaMaskで分散型アプリケーションを使用するためには、このウォレットにEtherが必要です。"
+    "message":
+      "Badgerで分散型アプリケーションを使用するためには、このウォレットにEtherが必要です。"
   },
   "needImportFile": {
     "message": "インポートするファイルを選択してください。",
-    "description": "User is important an account and needs to add a file to continue"
+    "description":
+      "User is important an account and needs to add a file to continue"
   },
   "needImportPassword": {
     "message": "選択したファイルのパスワードを入力してください。",
@@ -432,7 +442,8 @@
   },
   "newAccountNumberName": {
     "message": "アカウント $1",
-    "description": "Default name of next account to be created on create account screen"
+    "description":
+      "Default name of next account to be created on create account screen"
   },
   "newContract": {
     "message": "新規コントラクト"
@@ -468,7 +479,8 @@
     "message": "旧UI"
   },
   "oldUIMessage": {
-    "message": "旧UIを表示しています。右上のドロップダウンメニューのオプションより、新UIへ切り替えが可能です。"
+    "message":
+      "旧UIを表示しています。右上のドロップダウンメニューのオプションより、新UIへ切り替えが可能です。"
   },
   "openInTab": {
     "message": "タブを開く"
@@ -482,11 +494,13 @@
   },
   "passwordMismatch": {
     "message": "パスワードが一致しません。",
-    "description": "in password creation process, the two new password fields did not match"
+    "description":
+      "in password creation process, the two new password fields did not match"
   },
   "passwordShort": {
     "message": "パスワードが短すぎます。",
-    "description": "in password creation process, the password is not long enough to be secure"
+    "description":
+      "in password creation process, the password is not long enough to be secure"
   },
   "pastePrivateKey": {
     "message": "秘密鍵をここにペーストして下さい:",
@@ -509,7 +523,8 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "警告: この鍵は絶対に公開しないで下さい。公開すると、誰でもあなたのアカウント内の資産を盗むことができてしまいます。"
+    "message":
+      "警告: この鍵は絶対に公開しないで下さい。公開すると、誰でもあなたのアカウント内の資産を盗むことができてしまいます。"
   },
   "privateNetwork": {
     "message": "プライベート・ネットワーク"
@@ -518,7 +533,8 @@
     "message": "QRコードを表示"
   },
   "readdToken": {
-    "message": "アカウントのオプションメニューから「トークンを追加」すれば、将来このトークンを追加し直すことができます。"
+    "message":
+      "アカウントのオプションメニューから「トークンを追加」すれば、将来このトークンを追加し直すことができます。"
   },
   "readMore": {
     "message": "もっと読む"
@@ -567,7 +583,8 @@
   },
   "sampleAccountName": {
     "message": "例.新しいマイアカウント",
-    "description": "Help user understand concept of adding a human-readable name to their account"
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
   },
   "save": {
     "message": "保存"
@@ -641,7 +658,8 @@
     "message": "メッセージに署名"
   },
   "signNotice": {
-    "message": "このメッセージへの署名は危険となる可能性があります。\n完全に信頼するサイトからのメッセージのみ、\nあなたのアカウントで署名して下さい。今後のバージョンでは、\nこの危険なメソッドは削除される予定です。"
+    "message":
+      "このメッセージへの署名は危険となる可能性があります。\n完全に信頼するサイトからのメッセージのみ、\nあなたのアカウントで署名して下さい。今後のバージョンでは、\nこの危険なメソッドは削除される予定です。"
   },
   "sigRequest": {
     "message": "署名リクエスト"
@@ -687,7 +705,8 @@
     "message": "トークンシンボル"
   },
   "tokenWarning1": {
-    "message": "MetaMaskのアカウントで取得したアカウントのみ追加できます。他のアカウントを使用して取得したトークンは、カスタムトークンを使用してください。"
+    "message":
+      "Badgerのアカウントで取得したアカウントのみ追加できます。他のアカウントを使用して取得したトークンは、カスタムトークンを使用してください。"
   },
   "total": {
     "message": "合計"
@@ -715,7 +734,8 @@
     "message": "新UIへようこそ! (ベータ版)"
   },
   "uiWelcomeMessage": {
-    "message": "現在、MetaMask の新しいUIをお使いになっています。トークン送信など、新たな機能を試してみましょう! 何か問題があればご報告ください。"
+    "message":
+      "現在、Badger の新しいUIをお使いになっています。トークン送信など、新たな機能を試してみましょう! 何か問題があればご報告ください。"
   },
   "unavailable": {
     "message": "有効ではありません。"
@@ -752,7 +772,7 @@
     "message": "おかえりなさい!"
   },
   "welcomeBeta": {
-    "message": "MetaMask ベータ版へようこそ!"
+    "message": "Badger ベータ版へようこそ!"
   },
   "whatsThis": {
     "message": "この機能について"

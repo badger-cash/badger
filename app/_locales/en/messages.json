@@ -335,7 +335,7 @@
     "message": "Passwords Don't Match"
   },
   "etherscanView": {
-    "message": "View account on Etherscan"
+    "message": "View account on explorer"
   },
   "exchangeRate": {
     "message": "Exchange Rate"

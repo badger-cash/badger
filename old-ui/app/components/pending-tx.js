@@ -14,10 +14,9 @@ const Copyable = require('./copyable')
 const EthBalance = require('./eth-balance')
 const addressSummary = util.addressSummary
 const nameForAddress = require('../../lib/contract-namer')
-const BNInput = require('./bn-as-decimal-input')
 
-const MIN_GAS_PRICE_BN = new BN('0')
-const MIN_GAS_LIMIT_BN = new BN('21000')
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
 
 module.exports = PendingTx
 inherits(PendingTx, Component)
@@ -32,54 +31,29 @@ function PendingTx () {
 
 PendingTx.prototype.render = function () {
   const props = this.props
-  const { currentCurrency, blockGasLimit } = props
+  const { currentCurrency } = props
 
   const conversionRate = props.conversionRate
   const txMeta = this.gatherTxMeta()
   const txParams = txMeta.txParams || {}
 
-  // Allow retry txs
-  const { lastGasPrice } = txMeta
-  let forceGasMin
-  if (lastGasPrice) {
-    const stripped = ethUtil.stripHexPrefix(lastGasPrice)
-    const lastGas = new BN(stripped, 16)
-    const priceBump = lastGas.divn('10')
-    forceGasMin = lastGas.add(priceBump)
-  }
-
   // Account Details
   const address = txParams.from || props.selectedAddress
   const identity = props.identities[address] || { address: address }
   const account = props.accounts[address]
-  const balance = account ? account.balance : '0x0'
+  const balance = account ? account.balance : '0'
 
   // recipient check
   const isValidAddress = !txParams.to || util.isValidAddress(txParams.to)
 
-  // Gas
-  const gas = txParams.gas
-  const gasBn = hexToBn(gas)
-  // default to 8MM gas limit
-  const gasLimit = new BN(parseInt(blockGasLimit) || '8000000')
-  const safeGasLimitBN = this.bnMultiplyByFraction(gasLimit, 99, 100)
-  const saferGasLimitBN = this.bnMultiplyByFraction(gasLimit, 98, 100)
-  const safeGasLimit = safeGasLimitBN.toString(10)
+  // Calculate fee @ 1 sat/byte
+  const txFeeBn = BITBOX.BitcoinCash.getByteCount({ P2PKH: 1 }, { P2PKH: 2 })
 
-  // Gas Price
-  const gasPrice = txParams.gasPrice || MIN_GAS_PRICE_BN.toString(16)
-  const gasPriceBn = hexToBn(gasPrice)
+  const valueBn = BITBOX.BitcoinCash.toSatoshi(txParams.value) // new BN(txParams.value)
+  const maxCost = txFeeBn + valueBn // txFeeBn.add(valueBn)
 
-  const txFeeBn = gasBn.mul(gasPriceBn)
-  const valueBn = hexToBn(txParams.value)
-  const maxCost = txFeeBn.add(valueBn)
-
-  const dataLength = txParams.data ? (txParams.data.length - 2) / 2 : 0
-
-  const balanceBn = hexToBn(balance)
-  const insufficientBalance = balanceBn.lt(maxCost)
-  const dangerousGasLimit = gasBn.gte(saferGasLimitBN)
-  const gasLimitSpecified = txMeta.gasLimitSpecified
+  const balanceBn = balance // new BN(balance)
+  const insufficientBalance = balanceBn < maxCost // balanceBn.lt(maxCost)
   const buyDisabled = insufficientBalance || !this.state.valid || !isValidAddress || this.state.submitting
   const showRejectAll = props.unconfTxListLength > 1
 
@@ -171,60 +145,13 @@ PendingTx.prototype.render = function () {
             // in the way that gas and gasLimit currently are.
             h('.row', [
               h('.cell.label', 'Amount'),
-              h(EthBalance, { value: txParams.value, currentCurrency, conversionRate }),
-            ]),
-
-            // Gas Limit (customizable)
-            h('.cell.row', [
-              h('.cell.label', 'Gas Limit'),
-              h('.cell.value', {
-              }, [
-                h(BNInput, {
-                  name: 'Gas Limit',
-                  value: gasBn,
-                  precision: 0,
-                  scale: 0,
-                  // The hard lower limit for gas.
-                  min: MIN_GAS_LIMIT_BN,
-                  max: safeGasLimit,
-                  suffix: 'UNITS',
-                  style: {
-                    position: 'relative',
-                    top: '5px',
-                  },
-                  onChange: this.gasLimitChanged.bind(this),
-
-                  ref: (hexInput) => { this.inputs.push(hexInput) },
-                }),
-              ]),
-            ]),
-
-            // Gas Price (customizable)
-            h('.cell.row', [
-              h('.cell.label', 'Gas Price'),
-              h('.cell.value', {
-              }, [
-                h(BNInput, {
-                  name: 'Gas Price',
-                  value: gasPriceBn,
-                  precision: 9,
-                  scale: 9,
-                  suffix: 'GWEI',
-                  min: forceGasMin || MIN_GAS_PRICE_BN,
-                  style: {
-                    position: 'relative',
-                    top: '5px',
-                  },
-                  onChange: this.gasPriceChanged.bind(this),
-                  ref: (hexInput) => { this.inputs.push(hexInput) },
-                }),
-              ]),
+              h(EthBalance, { value: valueBn, currentCurrency, conversionRate }),
             ]),
 
             // Max Transaction Fee (calculated)
             h('.cell.row', [
-              h('.cell.label', 'Max Transaction Fee'),
-              h(EthBalance, { value: txFeeBn.toString(16), currentCurrency, conversionRate }),
+              h('.cell.label', 'Transaction Fee'),
+              h(EthBalance, { value: txFeeBn.toString(), currentCurrency, conversionRate }),
             ]),
 
             h('.cell.row', {
@@ -234,7 +161,7 @@ PendingTx.prototype.render = function () {
                 padding: '10px 25px',
               },
             }, [
-              h('.cell.label', 'Max Total'),
+              h('.cell.label', 'Total'),
               h('.cell.value', {
                 style: {
                   display: 'flex',
@@ -242,7 +169,7 @@ PendingTx.prototype.render = function () {
                 },
               }, [
                 h(EthBalance, {
-                  value: maxCost.toString(16),
+                  value: maxCost.toString(),
                   currentCurrency,
                   conversionRate,
                   inline: true,
@@ -250,22 +177,6 @@ PendingTx.prototype.render = function () {
                   fontSize: '16px',
                 }),
               ]),
-            ]),
-
-            // Data size row:
-            h('.cell.row', {
-              style: {
-                background: '#f7f7f7',
-                paddingBottom: '0px',
-              },
-            }, [
-              h('.cell.label'),
-              h('.cell.value', {
-                style: {
-                  fontFamily: 'Montserrat Light',
-                  fontSize: '11px',
-                },
-              }, `Data included: ${dataLength} bytes`),
             ]),
           ]), // End of Table
 
@@ -305,14 +216,6 @@ PendingTx.prototype.render = function () {
               },
             }, 'Insufficient balance for transaction')
           : null,
-
-          (dangerousGasLimit && !gasLimitSpecified) ?
-            h('span.error', {
-              style: {
-                fontSize: '0.9em',
-              },
-            }, 'Gas limit set dangerously high. Approving this transaction is liable to fail.')
-          : null,
         ]),
 
 
@@ -324,15 +227,8 @@ PendingTx.prototype.render = function () {
             margin: '14px 25px',
           },
         }, [
-          h('button', {
-            onClick: (event) => {
-              this.resetGasFields()
-              event.preventDefault()
-            },
-          }, 'Reset'),
-
           // Accept Button or Buy Button
-          insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy Ether') :
+          insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy BCH') :
             h('input.confirm.btn-green', {
               type: 'submit',
               value: 'SUBMIT',
@@ -405,50 +301,15 @@ PendingTx.prototype.miniAccountPanelForRecipient = function () {
   }
 }
 
-PendingTx.prototype.gasPriceChanged = function (newBN, valid) {
-  log.info(`Gas price changed to: ${newBN.toString(10)}`)
-  const txMeta = this.gatherTxMeta()
-  txMeta.txParams.gasPrice = '0x' + newBN.toString('hex')
-  this.setState({
-    txData: clone(txMeta),
-    valid,
-  })
-}
-
-PendingTx.prototype.gasLimitChanged = function (newBN, valid) {
-  log.info(`Gas limit changed to ${newBN.toString(10)}`)
-  const txMeta = this.gatherTxMeta()
-  txMeta.txParams.gas = '0x' + newBN.toString('hex')
-  this.setState({
-    txData: clone(txMeta),
-    valid,
-  })
-}
-
-PendingTx.prototype.resetGasFields = function () {
-  log.debug(`pending-tx resetGasFields`)
-
-  this.inputs.forEach((hexInput) => {
-    if (hexInput) {
-      hexInput.setValid()
-    }
-  })
-
-  this.setState({
-    txData: null,
-    valid: true,
-  })
-}
-
 PendingTx.prototype.onSubmit = function (event) {
   event.preventDefault()
   const txMeta = this.gatherTxMeta()
   const valid = this.checkValidity()
   this.setState({ valid, submitting: true })
-  if (valid && this.verifyGasParams()) {
+  if (valid) {
     this.props.sendTransaction(txMeta, event)
   } else {
-    this.props.dispatch(actions.displayWarning('Invalid Gas Parameters'))
+    this.props.dispatch(actions.displayWarning('Invalid Transaction'))
     this.setState({ submitting: false })
   }
 }
@@ -477,19 +338,6 @@ PendingTx.prototype.gatherTxMeta = function () {
 
   log.debug(`UI has defaulted to tx meta ${JSON.stringify(txData)}`)
   return txData
-}
-
-PendingTx.prototype.verifyGasParams = function () {
-  // We call this in case the gas has not been modified at all
-  if (!this.state) { return true }
-  return (
-    this._notZeroOrEmptyString(this.state.gas) &&
-    this._notZeroOrEmptyString(this.state.gasPrice)
-  )
-}
-
-PendingTx.prototype._notZeroOrEmptyString = function (obj) {
-  return obj !== '' && obj !== '0x0'
 }
 
 PendingTx.prototype.bnMultiplyByFraction = function (targetBN, numerator, denominator) {

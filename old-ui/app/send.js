@@ -11,6 +11,8 @@ const isHex = require('./util').isHex
 const EthBalance = require('./components/eth-balance')
 const EnsInput = require('./components/ens-input')
 const ethUtil = require('ethereumjs-util')
+const log = require('loglevel')
+
 module.exports = connect(mapStateToProps)(SendTransactionScreen)
 
 function mapStateToProps (state) {
@@ -192,35 +194,6 @@ SendTransactionScreen.prototype.render = function () {
         }, 'Next'),
 
       ]),
-
-      //
-      // Optional Fields
-      //
-      h('h3.flex-center.text-transform-uppercase', {
-        style: {
-          background: '#EBEBEB',
-          color: '#AEAEAE',
-          marginTop: '16px',
-          marginBottom: '16px',
-        },
-      }, [
-        'Transaction Data (optional)',
-      ]),
-
-      // 'data' field
-      h('section.flex-column.flex-center', [
-        h('input.large-input', {
-          name: 'txData',
-          placeholder: '0x01234',
-          style: {
-            width: '100%',
-            resize: 'none',
-          },
-          dataset: {
-            persistentFormId: 'tx-data',
-          },
-        }),
-      ]),
     ])
   )
 }
@@ -252,46 +225,47 @@ SendTransactionScreen.prototype.onSubmit = function () {
   let message
 
   if (isNaN(input) || input === '') {
-    message = 'Invalid ether value.'
+    message = 'Invalid BCH value.'
     return this.props.dispatch(actions.displayWarning(message))
   }
 
   if (parts[1]) {
     var decimal = parts[1]
-    if (decimal.length > 18) {
-      message = 'Ether amount is too precise.'
+    if (decimal.length > 8) {
+      message = 'BCH amount is too precise.'
       return this.props.dispatch(actions.displayWarning(message))
     }
   }
 
-  const value = util.normalizeEthStringToWei(input)
-  const txData = document.querySelector('input[name="txData"]').value
+  //const value = util.normalizeEthStringToWei(input)
+  const value = input
   const balance = this.props.balance
 
-  if (value.gt(balance)) {
-    message = 'Insufficient funds.'
-    return this.props.dispatch(actions.displayWarning(message))
-  }
+  // TODO: Validations
+  // if (value.gt(balance)) {
+  //   message = 'Insufficient funds.'
+  //   return this.props.dispatch(actions.displayWarning(message))
+  // }
 
-  if (input < 0) {
-    message = 'Can not send negative amounts of ETH.'
-    return this.props.dispatch(actions.displayWarning(message))
-  }
+  // if (input < 0) {
+  //   message = 'Can not send negative amounts of ETH.'
+  //   return this.props.dispatch(actions.displayWarning(message))
+  // }
 
-  if ((util.isInvalidChecksumAddress(recipient))) {
-    message = 'Recipient address checksum is invalid.'
-    return this.props.dispatch(actions.displayWarning(message))
-  }
+  // if ((util.isInvalidChecksumAddress(recipient))) {
+  //   message = 'Recipient address checksum is invalid.'
+  //   return this.props.dispatch(actions.displayWarning(message))
+  // }
 
-  if ((!util.isValidAddress(recipient) && !txData) || (!recipient && !txData)) {
-    message = 'Recipient address is invalid.'
-    return this.props.dispatch(actions.displayWarning(message))
-  }
+  // if ((!util.isValidAddress(recipient) && !txData) || (!recipient && !txData)) {
+  //   message = 'Recipient address is invalid.'
+  //   return this.props.dispatch(actions.displayWarning(message))
+  // }
 
-  if (!isHex(ethUtil.stripHexPrefix(txData)) && txData) {
-    message = 'Transaction data must be hex string.'
-    return this.props.dispatch(actions.displayWarning(message))
-  }
+  // if (!isHex(ethUtil.stripHexPrefix(txData)) && txData) {
+  //   message = 'Transaction data must be hex string.'
+  //   return this.props.dispatch(actions.displayWarning(message))
+  // }
 
   this.props.dispatch(actions.hideWarning())
 
@@ -299,11 +273,10 @@ SendTransactionScreen.prototype.onSubmit = function () {
 
   var txParams = {
     from: this.props.address,
-    value: '0x' + value.toString(16),
+    value: value.toString(),
   }
 
-  if (recipient) txParams.to = ethUtil.addHexPrefix(recipient)
-  if (txData) txParams.data = txData
+  if (recipient) txParams.to = recipient
 
   this.props.dispatch(actions.signTx(txParams))
 }

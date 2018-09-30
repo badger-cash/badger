@@ -2,7 +2,7 @@
 <body>
   <form action="">
       <input type="button" id="eatBchButton" value="EatBCH Button"/>
-   </form> 
+   </form>
   <script>
     let eatBchBtn = document.getElementById('eatBchButton')
     eatBchBtn.addEventListener('click', function(event) {
@@ -15,6 +15,7 @@
           value: '0.00001347'
         }
         web4bch.bch.sendTransaction(txParams, (err, res) => {
+          console.log(txParams)
           if (err) {
             console.log('send err', err)
           } else {

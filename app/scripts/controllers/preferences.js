@@ -1,7 +1,10 @@
 const ObservableStore = require('obs-store')
-const normalizeAddress = require('eth-sig-util').normalize
 const { isValidAddress } = require('ethereumjs-util')
 const extend = require('xtend')
+
+// TODO: normalize bch and token addresses
+function normalizeAddress (address) { return address }
+// const normalizeAddress = require('eth-sig-util').normalize
 
 
 class PreferencesController {

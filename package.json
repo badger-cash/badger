@@ -1,6 +1,6 @@
 {
-  "name": "metamask-crx",
-  "version": "0.0.0",
+  "name": "badger",
+  "version": "0.0.1",
   "public": false,
   "private": true,
   "scripts": {

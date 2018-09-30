@@ -91,7 +91,7 @@ ExportAccountView.prototype.render = function () {
   }
 
   if (accountExported) {
-    const plainKey = ethUtil.stripHexPrefix(accountDetail.privateKey)
+    const plainKey = accountDetail.privateKey
 
     return h('div.privateKey', {
       style: {
@@ -107,7 +107,7 @@ ExportAccountView.prototype.render = function () {
           maxWidth: '275px',
         },
         onClick: function (event) {
-          copyToClipboard(ethUtil.stripHexPrefix(accountDetail.privateKey))
+          copyToClipboard(accountDetail.privateKey)
         },
       }, plainKey),
       h('button', {

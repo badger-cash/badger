@@ -2,7 +2,7 @@
 <body>
   <form action="">
       <input type="button" id="eatBchButton" value="EatBCH Button"/>
-   </form> 
+   </form>
   <script>
     let eatBchBtn = document.getElementById('eatBchButton')
     eatBchBtn.addEventListener('click', function(event) {
@@ -11,7 +11,7 @@
 
         let txParams = {
           to: 'bitcoincash:pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g',
-          from: 'bitcoincash:qqeuq3yxsr9rys39am985gcv7xg6hzzqqgu9x00ua2', // set to your address
+          from: '', // set to your address
           value: '0.00001347'
         }
         web4bch.bch.sendTransaction(txParams, (err, res) => {

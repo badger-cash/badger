@@ -150,8 +150,8 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
-  if (seed.split(' ').length !== 12) {
-    this.warning = 'seed phrases are 12 words long'
+  if (seed.split(' ').length !== 24) {
+    this.warning = 'seed phrases are 24 words long'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }

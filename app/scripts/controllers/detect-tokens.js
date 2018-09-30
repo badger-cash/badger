@@ -1,4 +1,4 @@
-const Web3 = require('web3')
+const Web4Bch = require('web4bch')
 const contracts = require('eth-contract-metadata')
 const { warn } = require('loglevel')
 const { MAINNET } = require('./network/enums')
@@ -30,7 +30,7 @@ class DetectTokensController {
   async detectNewTokens () {
     if (!this.isActive) { return }
     if (this._network.store.getState().provider.type !== MAINNET) { return }
-    this.web3.setProvider(this._network._provider)
+    this.web4bch.setProvider(this._network._provider)
     for (const contractAddress in contracts) {
       if (contracts[contractAddress].erc20 && !(this.tokenAddresses.includes(contractAddress.toLowerCase()))) {
         this.detectTokenBalance(contractAddress)
@@ -46,7 +46,7 @@ class DetectTokensController {
    *
    */
   async detectTokenBalance (contractAddress) {
-    const ethContract = this.web3.eth.contract(ERC20_ABI).at(contractAddress)
+    const ethContract = this.web4bch.eth.contract(ERC20_ABI).at(contractAddress)
     ethContract.balanceOf(this.selectedAddress, (error, result) => {
       if (!error) {
         if (!result.isZero()) {
@@ -100,7 +100,7 @@ class DetectTokensController {
   set network (network) {
     if (!network) { return }
     this._network = network
-    this.web3 = new Web3(network._provider)
+    this.web4bch = new Web4Bch(network._provider)
   }
 
   /**

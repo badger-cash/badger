@@ -36,7 +36,7 @@
   "globals": {
     "document": false,
     "navigator": false,
-    "web3": true,
+    "web4bch": true,
     "window": false,
     "$": false,
     "QUnit": false

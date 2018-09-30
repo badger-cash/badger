@@ -1,6 +1,6 @@
-/*global Web3*/
+/*global Web4Bch*/
 cleanContextForImports()
-require('web3') // TODO: replace with minified dist
+require('web4bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js') 
 const log = require('loglevel')
 const LocalMessageDuplexStream = require('post-message-stream')
 const setupDappAutoReload = require('./lib/auto-reload.js')
@@ -45,20 +45,20 @@ window.ethereum = inpageProvider
 // setup web3
 //
 
-if (typeof window.web3 !== 'undefined') {
-  throw new Error(`MetaMask detected another web3.
-     MetaMask will not work reliably with another web3 extension.
+if (typeof window.web4bch !== 'undefined') {
+  throw new Error(`Badger detected another web4bch.
+     MetaMask will not work reliably with another web4bch extension.
      This usually happens if you have two MetaMasks installed,
-     or MetaMask and another web3 extension. Please remove one
+     or MetaMask and another web4bch extension. Please remove one
      and try again.`)
 }
-var web3 = new Web3(inpageProvider)
-web3.setProvider = function () {
-  log.debug('MetaMask - overrode web3.setProvider')
+var web4bch = new Web4Bch(inpageProvider)
+web4bch.setProvider = function () {
+  log.debug('Badger - overrode web4bch.setProvider')
 }
-log.debug('MetaMask - injected web3')
+log.debug('Badger - injected web4bch')
 
-setupDappAutoReload(web3, inpageProvider.publicConfigStore)
+setupDappAutoReload(web4bch, inpageProvider.publicConfigStore)
 
 // export global web3, with usage-detection and deprecation warning
 
@@ -81,9 +81,9 @@ global.web3 = new Proxy(web3, {
 })
 */
 
-// set web3 defaultAccount
+// set web4bch defaultAccount
 inpageProvider.publicConfigStore.subscribe(function (state) {
-  web3.eth.defaultAccount = state.selectedAddress
+  web4bch.eth.defaultAccount = state.selectedAddress
 })
 
 // need to make sure we aren't affected by overlapping namespaces

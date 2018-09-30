@@ -28,7 +28,7 @@
     "description": "La description de l'application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "Le nom de l'application"
   },
   "attemptingConnect": {
@@ -63,7 +63,8 @@
     "message": "Acheter sur Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase est le moyen le plus populaire au monde d'acheter et de vendre du Bitcoin, de l'Ethereum et du Litecoin."
+    "message":
+      "Coinbase est le moyen le plus populaire au monde d'acheter et de vendre du Bitcoin, de l'Ethereum et du Litecoin."
   },
   "cancel": {
     "message": "Annuler"
@@ -139,7 +140,8 @@
     "message": "Le réseau par défaut pour les transactions Ether est Main Net."
   },
   "denExplainer": {
-    "message": "Votre DEN est votre stockage crypté par mot de passe dans MetaMask."
+    "message":
+      "Votre DEN est votre stockage crypté par mot de passe dans Badger."
   },
   "deposit": {
     "message": "Dépôt"
@@ -149,7 +151,8 @@
   },
   "depositCoin": {
     "message": "Déposez votre $1 à l'adresse ci-dessous",
-    "description": "Indique à l'utilisateur quelle monnaie il a choisi de déposer avec shapeshift"
+    "description":
+      "Indique à l'utilisateur quelle monnaie il a choisi de déposer avec shapeshift"
   },
   "depositEth": {
     "message": "Dépôt Eth"
@@ -167,7 +170,8 @@
     "message": "Déposez avec ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "Si vous possédez d'autres crypto-monnaies, vous pouvez échanger et déposer de l'Ether directement dans votre portefeuille MetaMask. Aucun compte n'est requis."
+    "message":
+      "Si vous possédez d'autres crypto-monnaies, vous pouvez échanger et déposer de l'Ether directement dans votre portefeuille Badger. Aucun compte n'est requis."
   },
   "details": {
     "message": "Détails"
@@ -179,7 +183,8 @@
     "message": "Dépôt direct d'Ether"
   },
   "directDepositEtherExplainer": {
-    "message": "Si vous avez déjà de l'Ether, le moyen le plus rapide d'obtenir des Ether dans votre nouveau portefeuille est par dépôt direct."
+    "message":
+      "Si vous avez déjà de l'Ether, le moyen le plus rapide d'obtenir des Ether dans votre nouveau portefeuille est par dépôt direct."
   },
   "done": {
     "message": "Fait"
@@ -217,7 +222,8 @@
   },
   "fileImportFail": {
     "message": "L'importation de fichier ne fonctionne pas? Cliquez ici!",
-    "description": "Aide l'utilisateur à importer son compte à partir d'un fichier JSON"
+    "description":
+      "Aide l'utilisateur à importer son compte à partir d'un fichier JSON"
   },
   "from": {
     "message": "de"
@@ -236,7 +242,8 @@
     "message": "Limite de gaz"
   },
   "gasLimitCalculation": {
-    "message": "Nous calculons la limite de gaz suggérée en fonction des taux de réussite du réseau."
+    "message":
+      "Nous calculons la limite de gaz suggérée en fonction des taux de réussite du réseau."
   },
   "gasLimitRequired": {
     "message": "Limite de gaz requise"
@@ -248,7 +255,8 @@
     "message": "Prix du gaz (GWEI)"
   },
   "gasPriceCalculation": {
-    "message": "Nous calculons les prix du gaz proposés en fonction des taux de réussite du réseau."
+    "message":
+      "Nous calculons les prix du gaz proposés en fonction des taux de réussite du réseau."
   },
   "gasPriceRequired": {
     "message": "Prix du gaz requis"
@@ -266,7 +274,8 @@
   },
   "here": {
     "message": "ici",
-    "description": "comme dans -cliquer ici- pour plus d'informations (en rapport avec troubleTokenBalances)"
+    "description":
+      "comme dans -cliquer ici- pour plus d'informations (en rapport avec troubleTokenBalances)"
   },
   "hide": {
     "message": "Cacher"
@@ -282,7 +291,8 @@
   },
   "import": {
     "message": "Importer",
-    "description": "Bouton pour importer un compte à partir d'un fichier sélectionné"
+    "description":
+      "Bouton pour importer un compte à partir d'un fichier sélectionné"
   },
   "importAccount": {
     "message": "Importer compte"
@@ -295,7 +305,8 @@
   },
   "imported": {
     "message": "Importé",
-    "description": "statut indiquant qu'un compte a été entièrement chargé dans le trousseau de clés"
+    "description":
+      "statut indiquant qu'un compte a été entièrement chargé dans le trousseau de clés"
   },
   "infoHelp": {
     "message": "Info & Aide"
@@ -354,7 +365,8 @@
     "message": "Mes comptes"
   },
   "needEtherInWallet": {
-    "message": "Pour interagir avec des applications décentralisées à l'aide de MetaMask, vous aurez besoin d'Ether dans votre portefeuille."
+    "message":
+      "Pour interagir avec des applications décentralisées à l'aide de Badger, vous aurez besoin d'Ether dans votre portefeuille."
   },
   "needImportFile": {
     "message": "Vous devez sélectionner un fichier à importer.",
@@ -372,7 +384,8 @@
   },
   "newAccountNumberName": {
     "message": "Compte $1",
-    "description": "Nom par défaut du compte suivant à créer sur l'écran de création de compte"
+    "description":
+      "Nom par défaut du compte suivant à créer sur l'écran de création de compte"
   },
   "newContract": {
     "message": "Nouveau contrat"
@@ -405,19 +418,23 @@
     "message": "Ancienne interface utilisateur"
   },
   "oldUIMessage": {
-    "message": "Vous êtes revenu à l'ancienne interface utilisateur.Vous pouvez revenir à la nouvelle interface via l'option dans le menu déroulant en haut à droite."
+    "message":
+      "Vous êtes revenu à l'ancienne interface utilisateur.Vous pouvez revenir à la nouvelle interface via l'option dans le menu déroulant en haut à droite."
   },
   "or": {
     "message": "ou",
-    "description": "choix entre la création ou l'importation d'un nouveau compte"
+    "description":
+      "choix entre la création ou l'importation d'un nouveau compte"
   },
   "passwordMismatch": {
     "message": "les mots de passe ne correspondent pas",
-    "description": "dans le processus de création de mot de passe, les deux nouveaux champs de mot de passe ne correspondent pas"
+    "description":
+      "dans le processus de création de mot de passe, les deux nouveaux champs de mot de passe ne correspondent pas"
   },
   "passwordShort": {
     "message": "mot de passe pas assez long",
-    "description": "dans le processus de création de mot de passe, le mot de passe n'est pas assez long pour être sécurisé"
+    "description":
+      "dans le processus de création de mot de passe, le mot de passe n'est pas assez long pour être sécurisé"
   },
   "pastePrivateKey": {
     "message": "Collez votre clé privée ici:",
@@ -431,10 +448,12 @@
   },
   "privateKey": {
     "message": "Clé privée",
-    "description": "sélectionnez ce type de fichier à utiliser pour importer un compte"
+    "description":
+      "sélectionnez ce type de fichier à utiliser pour importer un compte"
   },
   "privateKeyWarning": {
-    "message": "Avertissement: Ne divulguez jamais cette clé, quiconque avec vos clés privées peut voler tous les actifs de votre compte."
+    "message":
+      "Avertissement: Ne divulguez jamais cette clé, quiconque avec vos clés privées peut voler tous les actifs de votre compte."
   },
   "privateNetwork": {
     "message": "Réseau privé"
@@ -443,7 +462,8 @@
     "message": "Afficher le QR Code"
   },
   "readdToken": {
-    "message": "Vous pouvez ajouter ce jeton dans le futur en allant sur “Ajouter un jeton” dans le menu des options de votre compte."
+    "message":
+      "Vous pouvez ajouter ce jeton dans le futur en allant sur “Ajouter un jeton” dans le menu des options de votre compte."
   },
   "readMore": {
     "message": "En savoir plus ici."
@@ -477,7 +497,8 @@
   },
   "sampleAccountName": {
     "message": "Par exemple mon nouveau compte",
-    "description": "Aidez l'utilisateur à comprendre le concept d'ajout d'un nom lisible par un humain à son compte"
+    "description":
+      "Aidez l'utilisateur à comprendre le concept d'ajout d'un nom lisible par un humain à son compte"
   },
   "save": {
     "message": "Enregistrer"
@@ -496,7 +517,8 @@
     "message": "Envoyer des jetons"
   },
   "sendTokensAnywhere": {
-    "message": "Envoyer des jetons à toute personne possédant un compte Ethereum"
+    "message":
+      "Envoyer des jetons à toute personne possédant un compte Ethereum"
   },
   "settings": {
     "message": "Paramètres"
@@ -517,7 +539,8 @@
     "message": "Signer le message"
   },
   "signNotice": {
-    "message": "La signature de ce message peut avoir des effets secondaires \ndangereux. Signer uniquement les messages de \nsites auxquels vous faites entièrement confiance avec votre compte.\n Cette méthode dangereuse sera supprimée dans une future version."
+    "message":
+      "La signature de ce message peut avoir des effets secondaires \ndangereux. Signer uniquement les messages de \nsites auxquels vous faites entièrement confiance avec votre compte.\n Cette méthode dangereuse sera supprimée dans une future version."
   },
   "sigRequest": {
     "message": "Demande de signature"
@@ -560,7 +583,8 @@
     "message": "Transferts"
   },
   "troubleTokenBalances": {
-    "message": "Nous avons eu du mal à charger votre balance de jetons, vous pouvez la consulter ",
+    "message":
+      "Nous avons eu du mal à charger votre balance de jetons, vous pouvez la consulter ",
     "description": "Suivi par un lien (ici) pour voir les soldes des jetons"
   },
   "typePassword": {
@@ -570,7 +594,8 @@
     "message": "Bienvenue dans la nouvelle interface utilisateur (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "Vous utilisez maintenant la nouvelle interface utilisateur MetaMask. Jetez un coup d'oeil, essayez de nouvelles fonctionnalités comme l'envoi de jetons, et faites-nous savoir si vous avez des problèmes."
+    "message":
+      "Vous utilisez maintenant la nouvelle interface utilisateur Badger. Jetez un coup d'oeil, essayez de nouvelles fonctionnalités comme l'envoi de jetons, et faites-nous savoir si vous avez des problèmes."
   },
   "unavailable": {
     "message": "Indisponible"
@@ -586,7 +611,8 @@
   },
   "usaOnly": {
     "message": "Etats-Unis seulement",
-    "description": "Utiliser cet échange est limité aux personnes à l'intérieur des Etats-Unis"
+    "description":
+      "Utiliser cet échange est limité aux personnes à l'intérieur des Etats-Unis"
   },
   "usedByClients": {
     "message": "Utilisé par une variété de clients différents"

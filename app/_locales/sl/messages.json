@@ -34,7 +34,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "The name of the application"
   },
   "attemptingConnect": {
@@ -72,7 +72,7 @@
     "message": "Izposoja z Dharma (Beta)"
   },
   "builtInCalifornia": {
-    "message": "MetaMask je ustvarjen v Kaliforniji."
+    "message": "Badger je ustvarjen v Kaliforniji."
   },
   "buy": {
     "message": "Kupi"
@@ -81,7 +81,8 @@
     "message": "Kupi na Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase je najpopularnejši načun za kupovanje in prodajo bitcoinov, ethereuma, in litecoina."
+    "message":
+      "Coinbase je najpopularnejši načun za kupovanje in prodajo bitcoinov, ethereuma, in litecoina."
   },
   "cancel": {
     "message": "Prekliči"
@@ -173,12 +174,12 @@
   },
   "decimal": {
     "message": "Decimalke natančnosti"
-  }, 
+  },
   "defaultNetwork": {
     "message": "Privzeto omrežje za transakcije je Main Net."
   },
   "denExplainer": {
-    "message": "DEN je vaša šifrirana shramba v MetaMasku."
+    "message": "DEN je vaša šifrirana shramba v Badgeru."
   },
   "deposit": {
     "message": "Vplačaj"
@@ -188,7 +189,8 @@
   },
   "depositCoin": {
     "message": "Vplačajte $1 na spodnji naslov",
-    "description": "Tells the user what coin they have selected to deposit with shapeshift"
+    "description":
+      "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
     "message": "Vplačilo ETH"
@@ -206,7 +208,8 @@
     "message": "Vplačilo z ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "Če imate druge kriptovalute, lahko vpačate ether neposredno v MetaMask. Brez računov."
+    "message":
+      "Če imate druge kriptovalute, lahko vpačate ether neposredno v Badger. Brez računov."
   },
   "details": {
     "message": "Podrobnosti"
@@ -218,7 +221,8 @@
     "message": "Direktno vplačilo ehera"
   },
   "directDepositEtherExplainer": {
-    "message": "Če že imate ether, ga lahko najhitreje dobite v MetaMask z direktnim vplačilom."
+    "message":
+      "Če že imate ether, ga lahko najhitreje dobite v Badger z direktnim vplačilom."
   },
   "done": {
     "message": "Končano"
@@ -323,7 +327,8 @@
   },
   "here": {
     "message": "tukaj",
-    "description": "as in -click here- for more information (goes with troubleTokenBalances)"
+    "description":
+      "as in -click here- for more information (goes with troubleTokenBalances)"
   },
   "hereList": {
     "message": "Tukaj je seznam!!!"
@@ -341,7 +346,8 @@
     "message": "Kako želite vplačati ether?"
   },
   "holdEther": {
-    "message": "Omogoča vam, da imate eter in žetone in služi kot most za decentralizirane aplikacije."
+    "message":
+      "Omogoča vam, da imate eter in žetone in služi kot most za decentralizirane aplikacije."
   },
   "import": {
     "message": "Uvozi",
@@ -351,7 +357,8 @@
     "message": "Uvozi račun"
   },
   "importAccountMsg": {
-    "message":" Uvoženi računi ne bodo povezani s prvotnim seedphaseom. Preberite več o uvoženih računih "
+    "message":
+      " Uvoženi računi ne bodo povezani s prvotnim seedphaseom. Preberite več o uvoženih računih "
   },
   "importAnAccount": {
     "message": "Uvozi račun"
@@ -361,7 +368,8 @@
   },
   "imported": {
     "message": "Uvoženo",
-    "description": "status showing that an account has been fully loaded into the keyring"
+    "description":
+      "status showing that an account has been fully loaded into the keyring"
   },
   "infoHelp": {
     "message": "Info & Pomoč"
@@ -391,7 +399,8 @@
     "message": "Napačen RPC URI"
   },
   "jsonFail": {
-    "message": "Nekaj je bilo narobe. Prepričajte se, da je JSON datoteka pravilno oblikovana."
+    "message":
+      "Nekaj je bilo narobe. Prepričajte se, da je JSON datoteka pravilno oblikovana."
   },
   "jsonFile": {
     "message": "JSON datoteka",
@@ -441,7 +450,7 @@
     "message": "Sporočilo"
   },
   "metamaskDescription": {
-    "message": "MetaMask je varen identitetni sklad za Ethereum."
+    "message": "Badger je varen identitetni sklad za Ethereum."
   },
   "min": {
     "message": "Najmanj"
@@ -453,11 +462,13 @@
     "message": "Izbran mora biti vsaj 1 žeton."
   },
   "needEtherInWallet": {
-    "message": "Za interakcijo z decentraliziranimi aplikacijami, ki uporabljajo MetaMask, boste v svoji denarnici potrebovali eter."
+    "message":
+      "Za interakcijo z decentraliziranimi aplikacijami, ki uporabljajo Badger, boste v svoji denarnici potrebovali eter."
   },
   "needImportFile": {
     "message": "Za uvoz morate izbrati datoteko.",
-    "description": "User is important an account and needs to add a file to continue"
+    "description":
+      "User is important an account and needs to add a file to continue"
   },
   "needImportPassword": {
     "message": "Za izbrano datoteko morate vnesti geslo.",
@@ -474,7 +485,8 @@
   },
   "newAccountNumberName": {
     "message": "Račun $1",
-    "description": "Default name of next account to be created on create account screen"
+    "description":
+      "Default name of next account to be created on create account screen"
   },
   "newContract": {
     "message": "Nova pogodba"
@@ -510,7 +522,8 @@
     "message": "Star UI"
   },
   "oldUIMessage": {
-    "message": "Vrnili ste se v star uporabniški vmesnik. V novega se lahko vrnete z možnostjo v spustnem meniju v zgornjem desnem kotu."
+    "message":
+      "Vrnili ste se v star uporabniški vmesnik. V novega se lahko vrnete z možnostjo v spustnem meniju v zgornjem desnem kotu."
   },
   "or": {
     "message": "ali",
@@ -521,11 +534,13 @@
   },
   "passwordMismatch": {
     "message": "gesli se ne ujemata",
-    "description": "in password creation process, the two new password fields did not match"
+    "description":
+      "in password creation process, the two new password fields did not match"
   },
   "passwordShort": {
     "message": "geslo ni dovolj dolgo",
-    "description": "in password creation process, the password is not long enough to be secure"
+    "description":
+      "in password creation process, the password is not long enough to be secure"
   },
   "pastePrivateKey": {
     "message": "Tukaj prilepite zasebni ključ:",
@@ -548,7 +563,8 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "Opozorilo: Nikoli ne razkrijte tega ključa. Vsakdo s svojimi zasebnimi ključi lahko ukrade vse premoženje v računu."
+    "message":
+      "Opozorilo: Nikoli ne razkrijte tega ključa. Vsakdo s svojimi zasebnimi ključi lahko ukrade vse premoženje v računu."
   },
   "privateNetwork": {
     "message": "Zasebno omrežje"
@@ -557,7 +573,8 @@
     "message": "Prikaži QR kodo"
   },
   "readdToken": {
-    "message": "Ta žeton lahko dodate tudi v prihodnosti, tako da odprete možnost »Dodaj žeton« v meniju z računi."
+    "message":
+      "Ta žeton lahko dodate tudi v prihodnosti, tako da odprete možnost »Dodaj žeton« v meniju z računi."
   },
   "readMore": {
     "message": "Preberite več."
@@ -593,7 +610,8 @@
     "message": "Prikaži seed words"
   },
   "revealSeedWordsWarning": {
-    "message": "Ne obnovite seed words na javnem mestu! Te besede se lahko uporabijo za krajo vseh vaših računov."
+    "message":
+      "Ne obnovite seed words na javnem mestu! Te besede se lahko uporabijo za krajo vseh vaših računov."
   },
   "revert": {
     "message": "Povrni"
@@ -606,7 +624,8 @@
   },
   "sampleAccountName": {
     "message": "npr. Moj nov račun",
-    "description": "Help user understand concept of adding a human-readable name to their account"
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
   },
   "save": {
     "message": "Shrani"
@@ -670,7 +689,8 @@
     "message": "Podpiši sporočilo"
   },
   "signNotice": {
-    "message": "To podpisovanje lahko povzroči \nnevarne stranske učinke. Podpisujte samo sporočila \nstrani, ki jim zaupate s svojim celotnim računom.\n Ta nevarna funkcija bo odstranjena v prihodnji različici. "
+    "message":
+      "To podpisovanje lahko povzroči \nnevarne stranske učinke. Podpisujte samo sporočila \nstrani, ki jim zaupate s svojim celotnim računom.\n Ta nevarna funkcija bo odstranjena v prihodnji različici. "
   },
   "sigRequest": {
     "message": "Zahteva za podpis"
@@ -688,7 +708,8 @@
     "message": "State dnevniki"
   },
   "stateLogsDescription": {
-    "message": "State dnevniki vsebujejo naslove vašega računa in poslane transakcije.."
+    "message":
+      "State dnevniki vsebujejo naslove vašega računa in poslane transakcije.."
   },
   "submit": {
     "message": "Potrdi"
@@ -725,13 +746,15 @@
     "message": "Vaš znesek žetona:"
   },
   "tokenSelection": {
-    "message": "Poiščite žetone ali jih izberite z našega seznama priljubljenih žetonov."
+    "message":
+      "Poiščite žetone ali jih izberite z našega seznama priljubljenih žetonov."
   },
   "tokenSymbol": {
     "message": "Simbol žetona"
   },
   "tokenWarning1": {
-    "message": "Spremljajte žetone, ki ste jih kupili s svojim MetaMask računom. Če ste kupili žetone z drugačnim računom, ti žetoni ne bodo prikazani tukaj."
+    "message":
+      "Spremljajte žetone, ki ste jih kupili s svojim Badger računom. Če ste kupili žetone z drugačnim računom, ti žetoni ne bodo prikazani tukaj."
   },
   "total": {
     "message": "Skupno"
@@ -749,11 +772,13 @@
     "message": "Prenosi"
   },
   "troubleTokenBalances": {
-    "message": "Imeli smo težave pri nalaganju vaših žetonov. Ogledate si jih lahko ",
+    "message":
+      "Imeli smo težave pri nalaganju vaših žetonov. Ogledate si jih lahko ",
     "description": "Followed by a link (here) to view token balances"
   },
   "twelveWords": {
-    "message": "Edini način za obnovitev MetaMask računa, je teh 12 besed.\nShranite jih na varno in skrivno mesto."
+    "message":
+      "Edini način za obnovitev Badger računa, je teh 12 besed.\nShranite jih na varno in skrivno mesto."
   },
   "typePassword": {
     "message": "Vpišite vaše geslo"
@@ -762,7 +787,8 @@
     "message": "Dobrodošli v nov UI (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "Zdaj uporabljate novi MetaMask uporabniški vmesnik. Razglejte se, preizkusite nove funkcije, kot so pošiljanje žetonov, in nas obvestite, če imate kakšne težave."
+    "message":
+      "Zdaj uporabljate novi Badger uporabniški vmesnik. Razglejte se, preizkusite nove funkcije, kot so pošiljanje žetonov, in nas obvestite, če imate kakšne težave."
   },
   "unavailable": {
     "message": "Ni na voljo"
@@ -800,12 +826,12 @@
   },
   "visitWebSite": {
     "message": "Obiščite našo spletno stran"
-  }, 
+  },
   "warning": {
     "message": "Opozorilo"
   },
   "welcomeBeta": {
-    "message": "Dobrodošli v MetaMask Beta"
+    "message": "Dobrodošli v Badger Beta"
   },
   "whatsThis": {
     "message": "Kaj je to?"

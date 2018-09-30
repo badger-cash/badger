@@ -34,7 +34,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "The name of the application"
   },
   "approved": {
@@ -75,7 +75,7 @@
     "message": "Взять в долг на Dharma (Beta)"
   },
   "builtInCalifornia": {
-    "message": "MetaMask спроектирован и разработан в Калифорнии."
+    "message": "Badger спроектирован и разработан в Калифорнии."
   },
   "buy": {
     "message": "Купить"
@@ -84,7 +84,8 @@
     "message": "Купить на Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Биржа Coinbase – это наиболее популярный способ купить или продать Bitcoin, Ethereum и Litecoin."
+    "message":
+      "Биржа Coinbase – это наиболее популярный способ купить или продать Bitcoin, Ethereum и Litecoin."
   },
   "ok": {
     "message": "ОК"
@@ -181,16 +182,18 @@
     "message": "Пользовательский RPC"
   },
   "decimalsMustZerotoTen": {
-    "message": "Количество десятичных разрядов должно быть минимум 0 и максимум 36."
+    "message":
+      "Количество десятичных разрядов должно быть минимум 0 и максимум 36."
   },
   "decimal": {
     "message": "Количество десятичных разрядов"
   },
   "defaultNetwork": {
-    "message": "Основная сеть Ethereum – это сеть по умолчанию для Ether транзакций."
+    "message":
+      "Основная сеть Ethereum – это сеть по умолчанию для Ether транзакций."
   },
   "denExplainer": {
-    "message": "DEN – это зашифрованное паролем хранилище внутри MetaMask."
+    "message": "DEN – это зашифрованное паролем хранилище внутри Badger."
   },
   "deposit": {
     "message": "Пополнить"
@@ -200,7 +203,8 @@
   },
   "depositCoin": {
     "message": "Отправьте ваш $1 на адрес ниже",
-    "description": "Tells the user what coin they have selected to deposit with shapeshift"
+    "description":
+      "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
     "message": "Пополнить Eth"
@@ -218,7 +222,8 @@
     "message": "Пополнить через ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "Если у вас есть другие криптовалюты, вы можете торговать и пополнять Ether напрямую в ваш MetaMask кошелек. Нет необходимости в счете."
+    "message":
+      "Если у вас есть другие криптовалюты, вы можете торговать и пополнять Ether напрямую в ваш Badger кошелек. Нет необходимости в счете."
   },
   "details": {
     "message": "Детали"
@@ -230,7 +235,8 @@
     "message": "Прямое пополнение Ether"
   },
   "directDepositEtherExplainer": {
-    "message": "Если у вас уже есть Ether, то самый быстрый способ получить Ether в ваш новый кошелек – это прямое пополнение."
+    "message":
+      "Если у вас уже есть Ether, то самый быстрый способ получить Ether в ваш новый кошелек – это прямое пополнение."
   },
   "done": {
     "message": "Готово"
@@ -305,7 +311,8 @@
     "message": "Лимит газа"
   },
   "gasLimitCalculation": {
-    "message": "Мы расчитываем предлагаемый лимит газа на основании успешных ставок в сети."
+    "message":
+      "Мы расчитываем предлагаемый лимит газа на основании успешных ставок в сети."
   },
   "gasLimitRequired": {
     "message": "Установите лимит газа"
@@ -320,7 +327,8 @@
     "message": "Цена за газ (GWEI)"
   },
   "gasPriceCalculation": {
-    "message": "Мы расчитываем предлагаемые цены за газ на основании успешных ставок в сети."
+    "message":
+      "Мы расчитываем предлагаемые цены за газ на основании успешных ставок в сети."
   },
   "gasPriceRequired": {
     "message": "Установите стоимость газа"
@@ -338,7 +346,8 @@
   },
   "here": {
     "message": "тут",
-    "description": "as in -click here- for more information (goes with troubleTokenBalances)"
+    "description":
+      "as in -click here- for more information (goes with troubleTokenBalances)"
   },
   "hereList": {
     "message": "Вот список!!!!"
@@ -356,7 +365,8 @@
     "message": "Как бы вы хотели пополнить Ether?"
   },
   "holdEther": {
-    "message": "Позволяет вам хранить ether и токены и служит в качестве моста в децентрализированные приложения."
+    "message":
+      "Позволяет вам хранить ether и токены и служит в качестве моста в децентрализированные приложения."
   },
   "import": {
     "message": "Импортировать",
@@ -366,7 +376,8 @@
     "message": "Импортировать счет"
   },
   "importAccountMsg": {
-    "message":" Импортированные счета не будут ассоциированы с вашей ключевой фразой, созданной MetaMask. Узнать больше про импорт счетов "
+    "message":
+      " Импортированные счета не будут ассоциированы с вашей ключевой фразой, созданной Badger. Узнать больше про импорт счетов "
   },
   "importAnAccount": {
     "message": "Импортировать аккаунт"
@@ -376,7 +387,8 @@
   },
   "imported": {
     "message": "Импортирован",
-    "description": "status showing that an account has been fully loaded into the keyring"
+    "description":
+      "status showing that an account has been fully loaded into the keyring"
   },
   "infoHelp": {
     "message": "Информация и помощь"
@@ -406,14 +418,15 @@
     "message": "Неверный RPC URI"
   },
   "jsonFail": {
-    "message": "Что-то пошло не так. Убедитесь, что ваш JSON файл правильно отформатирован."
+    "message":
+      "Что-то пошло не так. Убедитесь, что ваш JSON файл правильно отформатирован."
   },
   "jsonFile": {
     "message": "JSON файл",
     "description": "format for importing an account"
   },
   "keepTrackTokens": {
-    "message": "Следите за купленными вами токенами с помощью аккаунта MetaMask."
+    "message": "Следите за купленными вами токенами с помощью аккаунта Badger."
   },
   "kovan": {
     "message": "Тестовая сеть Kovan"
@@ -468,7 +481,7 @@
     "message": "Сообщение"
   },
   "metamaskDescription": {
-    "message": "MetaMask – безопасный кошелек для Ethereum."
+    "message": "Badger – безопасный кошелек для Ethereum."
   },
   "min": {
     "message": "Минимум"
@@ -480,11 +493,13 @@
     "message": "Необходимо выбрать как минимум 1 токен."
   },
   "needEtherInWallet": {
-    "message": "Для взаимодействия с децентрализованными приложениями с помощью MetaMask нужен Ether в вашем кошельке."
+    "message":
+      "Для взаимодействия с децентрализованными приложениями с помощью Badger нужен Ether в вашем кошельке."
   },
   "needImportFile": {
     "message": "Вы должны выбрать файл для импорта.",
-    "description": "User is important an account and needs to add a file to continue"
+    "description":
+      "User is important an account and needs to add a file to continue"
   },
   "needImportPassword": {
     "message": "Вы должны ввести пароль для выбранного файла.",
@@ -501,7 +516,8 @@
   },
   "newAccountNumberName": {
     "message": "Счет $1",
-    "description": "Default name of next account to be created on create account screen"
+    "description":
+      "Default name of next account to be created on create account screen"
   },
   "newContract": {
     "message": "Новый контракт"
@@ -537,7 +553,8 @@
     "message": "Старая версия интерфейса"
   },
   "oldUIMessage": {
-    "message": "Вы вернулись к старой версии интерфейса пользователя. Вы можете переключиться на новую с помощью опции выпадающего меню в правом верхнем углу."
+    "message":
+      "Вы вернулись к старой версии интерфейса пользователя. Вы можете переключиться на новую с помощью опции выпадающего меню в правом верхнем углу."
   },
   "or": {
     "message": "или",
@@ -548,11 +565,13 @@
   },
   "passwordMismatch": {
     "message": "пароли не совпадают",
-    "description": "in password creation process, the two new password fields did not match"
+    "description":
+      "in password creation process, the two new password fields did not match"
   },
   "passwordShort": {
     "message": "пароль недостаточно длинный",
-    "description": "in password creation process, the password is not long enough to be secure"
+    "description":
+      "in password creation process, the password is not long enough to be secure"
   },
   "pastePrivateKey": {
     "message": "Вставьте ваш закрытый ключ тут:",
@@ -578,7 +597,8 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "Предупреждение: Никогда не раскрывайте этот ключ. Любой, у кого есть ваши закрытые ключи, может украсть любые активы, хранящиеся на счету."
+    "message":
+      "Предупреждение: Никогда не раскрывайте этот ключ. Любой, у кого есть ваши закрытые ключи, может украсть любые активы, хранящиеся на счету."
   },
   "privateNetwork": {
     "message": "Частная сеть"
@@ -587,7 +607,8 @@
     "message": "Показать QR-код"
   },
   "readdToken": {
-    "message": "Вы можете в будущем добавить обратно этот токен, выбрав пункт меню “Добавить токен”."
+    "message":
+      "Вы можете в будущем добавить обратно этот токен, выбрав пункт меню “Добавить токен”."
   },
   "readMore": {
     "message": "Узнать больше тут."
@@ -620,7 +641,8 @@
     "message": "Обязательное поле"
   },
   "retryWithMoreGas": {
-    "message": "Повторите попытку с большей ценой за газRetry with a higher gas price here"
+    "message":
+      "Повторите попытку с большей ценой за газRetry with a higher gas price here"
   },
   "walletSeed": {
     "message": "Ключевая фраза кошелька"
@@ -629,7 +651,8 @@
     "message": "Показать ключевую фразу"
   },
   "revealSeedWordsWarning": {
-    "message": "Не восстанавливайте ключевую фразу в общественном месте! Она может быть использована для кражи всех ваших счетов."
+    "message":
+      "Не восстанавливайте ключевую фразу в общественном месте! Она может быть использована для кражи всех ваших счетов."
   },
   "revert": {
     "message": "Восстановить"
@@ -660,7 +683,8 @@
   },
   "sampleAccountName": {
     "message": "Например, Мой новый счет",
-    "description": "Help user understand concept of adding a human-readable name to their account"
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
   },
   "save": {
     "message": "Сохранить"
@@ -676,7 +700,8 @@
     "message": "Поиск"
   },
   "secretPhrase": {
-    "message": "Введите вашу ключевую фразу из 12 слов, чтобы восстановить кошелек."
+    "message":
+      "Введите вашу ключевую фразу из 12 слов, чтобы восстановить кошелек."
   },
   "newPassword8Chars": {
     "message": "Новый пароль (мин. 8 символов)"
@@ -739,7 +764,8 @@
     "message": "Подписать сообщение"
   },
   "signNotice": {
-    "message": "Подпись этого сообщения может иметь \nопасные побочные эффекты. Подписывайте только сообщения \nс сайтов, которым вы полностью доверяете свой аккаунт. Этот опасный метод будет удален в будущей версии."
+    "message":
+      "Подпись этого сообщения может иметь \nопасные побочные эффекты. Подписывайте только сообщения \nс сайтов, которым вы полностью доверяете свой аккаунт. Этот опасный метод будет удален в будущей версии."
   },
   "sigRequest": {
     "message": "Запрос подписи"
@@ -757,7 +783,8 @@
     "message": "Журнал состояния"
   },
   "stateLogsDescription": {
-    "message": "Журнал состояния содержит ваши публичные адреса счетов и совершенные транзакции."
+    "message":
+      "Журнал состояния содержит ваши публичные адреса счетов и совершенные транзакции."
   },
   "stateLogError": {
     "message": "Ошибка при получении журнала состояния."
@@ -806,7 +833,8 @@
     "message": "Символ токена"
   },
   "tokenWarning1": {
-    "message": "Отслеживаются токены, купленные на счет в MetaMask. Если вы купили токены, используя другой счет, такие токены не будут тут отображены."
+    "message":
+      "Отслеживаются токены, купленные на счет в Badger. Если вы купили токены, используя другой счет, такие токены не будут тут отображены."
   },
   "total": {
     "message": "Всего"
@@ -824,11 +852,13 @@
     "message": "Переводы"
   },
   "troubleTokenBalances": {
-    "message": "Возникли проблемы при загрузке балансов токенов. Вы можете посмотреть их ",
+    "message":
+      "Возникли проблемы при загрузке балансов токенов. Вы можете посмотреть их ",
     "description": "Followed by a link (here) to view token balances"
   },
   "twelveWords": {
-    "message": "Эти 12 слов являются единственной возможностью восстановить ваши счета в MetaMask.\nСохраните из в надежном секретном месте."
+    "message":
+      "Эти 12 слов являются единственной возможностью восстановить ваши счета в Badger.\nСохраните из в надежном секретном месте."
   },
   "typePassword": {
     "message": "Введите пароль"
@@ -837,7 +867,8 @@
     "message": "Новый интерфейс (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "Теперь вы используете новый интерфейс пользователя MetaMask. Осмотритесь, попробуйте новые функции, например, отправить токены и, если возникнут проблемы, сообщите нам."
+    "message":
+      "Теперь вы используете новый интерфейс пользователя Badger. Осмотритесь, попробуйте новые функции, например, отправить токены и, если возникнут проблемы, сообщите нам."
   },
   "unapproved": {
     "message": "Не одобрена"
@@ -883,7 +914,7 @@
     "message": "Предупреждение"
   },
   "welcomeBeta": {
-    "message": "Добро пожаловать в MetaMask Beta"
+    "message": "Добро пожаловать в Badger Beta"
   },
   "whatsThis": {
     "message": "Что это?"

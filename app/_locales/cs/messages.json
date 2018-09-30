@@ -34,7 +34,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "The name of the application"
   },
   "approved": {
@@ -75,7 +75,7 @@
     "message": "Pújčit si přes Dharma (Beta)"
   },
   "builtInCalifornia": {
-    "message": "MetaMask je navržen a vytvořen v Kalifornii."
+    "message": "Badger je navržen a vytvořen v Kalifornii."
   },
   "buy": {
     "message": "Koupit"
@@ -84,7 +84,8 @@
     "message": "Nákup na Coinbase"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase je světově nejoblíbenější místo k nákupu a prodeji bitcoinu, etherea nebo litecoinu."
+    "message":
+      "Coinbase je světově nejoblíbenější místo k nákupu a prodeji bitcoinu, etherea nebo litecoinu."
   },
   "ok": {
     "message": "Ok"
@@ -190,7 +191,7 @@
     "message": "Výchozí síť pro Etherové transakce je Main Net."
   },
   "denExplainer": {
-    "message": "Váš DEN je heslem šifrované uložiště v MetaMasku."
+    "message": "Váš DEN je heslem šifrované uložiště v Badgeru."
   },
   "deposit": {
     "message": "Vklad"
@@ -200,7 +201,8 @@
   },
   "depositCoin": {
     "message": "Vložte $1 na níže uvedenou adresu",
-    "description": "Tells the user what coin they have selected to deposit with shapeshift"
+    "description":
+      "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
     "message": "Vložit Eth"
@@ -218,7 +220,8 @@
     "message": "Vklad přes ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "Pokud vlastníte jiné kryptoměny, můžete je směnit Ether a vložit ho přímo do peněženky MetaMask. Bez založení účtu."
+    "message":
+      "Pokud vlastníte jiné kryptoměny, můžete je směnit Ether a vložit ho přímo do peněženky Badger. Bez založení účtu."
   },
   "details": {
     "message": "Podrobnosti"
@@ -230,7 +233,8 @@
     "message": "Vložit Ether přímo"
   },
   "directDepositEtherExplainer": {
-    "message": "Pokud už vlastníte nějaký Ether, nejrychleji ho dostanete do peněženky přímým vkladem."
+    "message":
+      "Pokud už vlastníte nějaký Ether, nejrychleji ho dostanete do peněženky přímým vkladem."
   },
   "done": {
     "message": "Hotovo"
@@ -344,7 +348,8 @@
   },
   "here": {
     "message": "zde",
-    "description": "as in -click here- for more information (goes with troubleTokenBalances)"
+    "description":
+      "as in -click here- for more information (goes with troubleTokenBalances)"
   },
   "hereList": {
     "message": "Tady je seznam!!!!"
@@ -362,7 +367,8 @@
     "message": "Jakým způsobem chcete vložit Ether?"
   },
   "holdEther": {
-    "message": "Dovoluje vám držet ether a tokeny a slouží jako most k decentralizovaným aplikacím."
+    "message":
+      "Dovoluje vám držet ether a tokeny a slouží jako most k decentralizovaným aplikacím."
   },
   "import": {
     "message": "Import",
@@ -372,7 +378,8 @@
     "message": "Import účtu"
   },
   "importAccountMsg": {
-    "message":"Importované účty nebudou spojeny s vaší původní MetaMaskovou klíčovou frází. Zjistěte více o importovaných účtech "
+    "message":
+      "Importované účty nebudou spojeny s vaší původní Badgerovou klíčovou frází. Zjistěte více o importovaných účtech "
   },
   "importAnAccount": {
     "message": "Import účtu"
@@ -382,7 +389,8 @@
   },
   "imported": {
     "message": "Importováno",
-    "description": "status showing that an account has been fully loaded into the keyring"
+    "description":
+      "status showing that an account has been fully loaded into the keyring"
   },
   "infoHelp": {
     "message": "Informace a nápověda"
@@ -412,14 +420,16 @@
     "message": "Neplatné RPC URI"
   },
   "jsonFail": {
-    "message": "Něco se pokazilo. Prosím, ujistěte se, že váš JSON soubor má správný formát."
+    "message":
+      "Něco se pokazilo. Prosím, ujistěte se, že váš JSON soubor má správný formát."
   },
   "jsonFile": {
     "message": "JSON soubor",
     "description": "format for importing an account"
   },
   "keepTrackTokens": {
-    "message": "Udržujte si záznamy o tokenech, které jste koupili s účtem v MetaMasku."
+    "message":
+      "Udržujte si záznamy o tokenech, které jste koupili s účtem v Badgeru."
   },
   "kovan": {
     "message": "Kovan Test Network"
@@ -474,7 +484,7 @@
     "message": "Zpráva"
   },
   "metamaskDescription": {
-    "message": "MetaMask je bezpečný osobní trezor pro Ethereum."
+    "message": "Badger je bezpečný osobní trezor pro Ethereum."
   },
   "min": {
     "message": "Minimum"
@@ -486,11 +496,13 @@
     "message": "Musíte zvolit aspoň 1 token."
   },
   "needEtherInWallet": {
-    "message": "Potřebujete Ether v peněžence, abyste mohli pomocí MetaMasku interagovat s decentralizovanými aplikacemi."
+    "message":
+      "Potřebujete Ether v peněžence, abyste mohli pomocí Badgeru interagovat s decentralizovanými aplikacemi."
   },
   "needImportFile": {
     "message": "Musíte zvolit soubor k importu.",
-    "description": "User is important an account and needs to add a file to continue"
+    "description":
+      "User is important an account and needs to add a file to continue"
   },
   "needImportPassword": {
     "message": "Musíte zadat heslo pro zvolený soubor.",
@@ -507,7 +519,8 @@
   },
   "newAccountNumberName": {
     "message": "Účet $1",
-    "description": "Default name of next account to be created on create account screen"
+    "description":
+      "Default name of next account to be created on create account screen"
   },
   "newContract": {
     "message": "Nový kontrakt"
@@ -543,7 +556,8 @@
     "message": "Staré rozhraní"
   },
   "oldUIMessage": {
-    "message": "Vrátili jste se ke starému rozhraní. Můžete přepnout na nové rozhraní v nastavení v pravém horním menu."
+    "message":
+      "Vrátili jste se ke starému rozhraní. Můžete přepnout na nové rozhraní v nastavení v pravém horním menu."
   },
   "or": {
     "message": "nebo",
@@ -554,11 +568,13 @@
   },
   "passwordMismatch": {
     "message": "hesla nesouhlasí",
-    "description": "in password creation process, the two new password fields did not match"
+    "description":
+      "in password creation process, the two new password fields did not match"
   },
   "passwordShort": {
     "message": "heslo je krátké",
-    "description": "in password creation process, the password is not long enough to be secure"
+    "description":
+      "in password creation process, the password is not long enough to be secure"
   },
   "pastePrivateKey": {
     "message": "Vložte zde svůj privátní klíč:",
@@ -584,7 +600,8 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "Upozornění: Nikdy nezveřejněte tento klíč. Kdokoli může s vaším privátním klíčem odcizit vaše aktiva z účtu."
+    "message":
+      "Upozornění: Nikdy nezveřejněte tento klíč. Kdokoli může s vaším privátním klíčem odcizit vaše aktiva z účtu."
   },
   "privateNetwork": {
     "message": "Soukromá síť"
@@ -593,7 +610,8 @@
     "message": "Ukázat QR kód"
   },
   "readdToken": {
-    "message": "Tento token můžete v budoucnu přidat zpět s „Přidat token“ v nastavení účtu."
+    "message":
+      "Tento token můžete v budoucnu přidat zpět s „Přidat token“ v nastavení účtu."
   },
   "readMore": {
     "message": "Přečtěte si více zde."
@@ -635,7 +653,8 @@
     "message": "Zobrazit slova klíčové fráze"
   },
   "revealSeedWordsWarning": {
-    "message": "Nebnovujte slova klíčové fráze na veřejnosti! Tato slova mohou být použita k odcizení veškerých vyašich účtů."
+    "message":
+      "Nebnovujte slova klíčové fráze na veřejnosti! Tato slova mohou být použita k odcizení veškerých vyašich účtů."
   },
   "revert": {
     "message": "Zvrátit"
@@ -666,7 +685,8 @@
   },
   "sampleAccountName": {
     "message": "Např. můj nový účet",
-    "description": "Help user understand concept of adding a human-readable name to their account"
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
   },
   "save": {
     "message": "Uložit"
@@ -675,7 +695,8 @@
     "message": "Změnit cenu transakce"
   },
   "reprice_subtitle": {
-    "message": "Navyšte cenu paliva ve snaze k přepsání a urychlení vyší transakce"
+    "message":
+      "Navyšte cenu paliva ve snaze k přepsání a urychlení vyší transakce"
   },
   "saveAsFile": {
     "message": "Uložit do souboru",
@@ -730,7 +751,7 @@
     "message": "Nastavení"
   },
   "info": {
-  "message": "Informace"
+    "message": "Informace"
   },
   "shapeshiftBuy": {
     "message": "Nakoupit na ShapeShift"
@@ -751,7 +772,8 @@
     "message": "Podepsat zprávu"
   },
   "signNotice": {
-    "message": "Podepsání zprávy může mít \nnebezpečný vedlejší učinek. Podepisujte zprávy pouze ze \nstránek, kterým plně důvěřujete celým svým účtem.\n Tato nebezpečná metoda bude odebrána v budoucí verzi. "
+    "message":
+      "Podepsání zprávy může mít \nnebezpečný vedlejší učinek. Podepisujte zprávy pouze ze \nstránek, kterým plně důvěřujete celým svým účtem.\n Tato nebezpečná metoda bude odebrána v budoucí verzi. "
   },
   "sigRequest": {
     "message": "Požadavek podpisu"
@@ -769,7 +791,8 @@
     "message": "Stavové protokoly"
   },
   "stateLogsDescription": {
-    "message": "Stavové protokoly obsahují vaše veřejné adresy účtů a odeslané transakce."
+    "message":
+      "Stavové protokoly obsahují vaše veřejné adresy účtů a odeslané transakce."
   },
   "stateLogError": {
     "message": "Chyba během získávání stavových protokolů."
@@ -812,13 +835,15 @@
     "message": "Váš zůstatek tokenu je:"
   },
   "tokenSelection": {
-    "message": "Vyhledejte token nebo je vyberte z našeho seznamu oblíbených tokenů."
+    "message":
+      "Vyhledejte token nebo je vyberte z našeho seznamu oblíbených tokenů."
   },
   "tokenSymbol": {
     "message": "Symbol tokenu"
   },
   "tokenWarning1": {
-    "message": "Mějte přehled o tokenech, které jste koupili s účtem MetaMasku. Pokud jste koupili tokeny s jiným účtem, tyto tokeny se zde nezobrazí."
+    "message":
+      "Mějte přehled o tokenech, které jste koupili s účtem Badgeru. Pokud jste koupili tokeny s jiným účtem, tyto tokeny se zde nezobrazí."
   },
   "total": {
     "message": "Celkem"
@@ -839,11 +864,13 @@
     "message": "Převody"
   },
   "troubleTokenBalances": {
-    "message": "Měli jsme problém s načtením vašich tokenových zůstatků. Můžete je vidět ",
+    "message":
+      "Měli jsme problém s načtením vašich tokenových zůstatků. Můžete je vidět ",
     "description": "Followed by a link (here) to view token balances"
   },
   "twelveWords": {
-    "message": "Těchto 12 slov je jedinou možností, jak obnovit MetaMask účet. \nUložte je na bezpečné a neveřejné místo."
+    "message":
+      "Těchto 12 slov je jedinou možností, jak obnovit Badger účet. \nUložte je na bezpečné a neveřejné místo."
   },
   "typePassword": {
     "message": "Zadejte své heslo"
@@ -852,7 +879,8 @@
     "message": "Vítejte v novém rozhraní (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "Používáte nyní nové rozhraní MetaMasku. Rozhlédněte se kolem, vyzkoušejte nové funkce, jako jsou zasílání tokenů, a dejte nám vědět, pokud narazíte na problém."
+    "message":
+      "Používáte nyní nové rozhraní Badgeru. Rozhlédněte se kolem, vyzkoušejte nové funkce, jako jsou zasílání tokenů, a dejte nám vědět, pokud narazíte na problém."
   },
   "unapproved": {
     "message": "Neschváleno"
@@ -898,7 +926,7 @@
     "message": "Varování"
   },
   "welcomeBeta": {
-    "message": "Vítejte v MetaMask Beta"
+    "message": "Vítejte v Badger Beta"
   },
   "whatsThis": {
     "message": "Co to je?"

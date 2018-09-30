@@ -34,7 +34,7 @@
     "description": "Die Beschreibung der Erweiterung"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Badger",
     "description": "Der Name der Erweiterung"
   },
   "approved": {
@@ -68,14 +68,14 @@
     "message": "Muss größer oder gleich $1 und kleiner oder gleich $2 sein.",
     "description": "Helfer für die Eingabe von hex als dezimal"
   },
-    "blockiesIdenticon": {
+  "blockiesIdenticon": {
     "message": "Blockies Identicon verwenden"
   },
   "borrowDharma": {
     "message": "Mit Dharma ausleihen (Beta)"
   },
-    "builtInCalifornia": {
-    "message": "MetaMask wurde in Kalifornien entwickelt und gebaut."
+  "builtInCalifornia": {
+    "message": "Badger wurde in Kalifornien entwickelt und gebaut."
   },
   "buy": {
     "message": "Kaufen"
@@ -84,15 +84,16 @@
     "message": "Auf Coinbase kaufen"
   },
   "buyCoinbaseExplainer": {
-    "message": "Coinbase ist die weltweit bekannteste Art und Weise um Bitcoin, Ethereum und Litecoin zu kaufen und verkaufen."
+    "message":
+      "Coinbase ist die weltweit bekannteste Art und Weise um Bitcoin, Ethereum und Litecoin zu kaufen und verkaufen."
   },
-    "ok": {
+  "ok": {
     "message": "Ok"
   },
   "cancel": {
     "message": "Abbrechen"
   },
-    "classicInterface": {
+  "classicInterface": {
     "message": "Klassische Oberfläche verwenden"
   },
   "clickCopy": {
@@ -101,7 +102,7 @@
   "confirm": {
     "message": "Bestätigen"
   },
-    "confirmed": {
+  "confirmed": {
     "message": "Bestätigt"
   },
   "confirmContract": {
@@ -178,7 +179,8 @@
     "message": "Spezieller RPC"
   },
   "decimalsMustZerotoTen": {
-    "message": "Die Dezimalangabe muss mindestens 0 und nicht höher als 36 sein."
+    "message":
+      "Die Dezimalangabe muss mindestens 0 und nicht höher als 36 sein."
   },
   "decimal": {
     "message": "Dezimalangabe der Präzision"
@@ -187,7 +189,8 @@
     "message": "Das Standardnetzwerk für Ether Transaktionen ist das Main Net."
   },
   "denExplainer": {
-    "message": "Dein DEN ist dein passwortverschlüsselter Speicher innerhalb von MetaMask."
+    "message":
+      "Dein DEN ist dein passwortverschlüsselter Speicher innerhalb von Badger."
   },
   "deposit": {
     "message": "Einzahlen"
@@ -197,7 +200,8 @@
   },
   "depositCoin": {
     "message": "Zahle deine $1 in die unten stehende Adresse ein",
-    "description": "Teilt dem Benutzer mit welchen Token er beim Einzahlen mit Shapeshift ausgewählt hat"
+    "description":
+      "Teilt dem Benutzer mit welchen Token er beim Einzahlen mit Shapeshift ausgewählt hat"
   },
   "depositEth": {
     "message": "Eth kaufen"
@@ -215,7 +219,8 @@
     "message": "Mit ShapeShift einzahlen"
   },
   "depositShapeShiftExplainer": {
-    "message": "Wenn du andere Kryptowährungen besitzt, kannst du diese direkt mit Hilfe deiner MetaMask Wallet handeln und einzahlen. Du benötigst keinen Account."
+    "message":
+      "Wenn du andere Kryptowährungen besitzt, kannst du diese direkt mit Hilfe deiner Badger Wallet handeln und einzahlen. Du benötigst keinen Account."
   },
   "details": {
     "message": "Details"
@@ -227,7 +232,8 @@
     "message": "Sofort Ether einzahlen"
   },
   "directDepositEtherExplainer": {
-    "message": "Wenn du bereits Ether besitzt, ist die sofortige Einzahlung die schnellste Methode Ether in deine neue Wallet zu bekommen."
+    "message":
+      "Wenn du bereits Ether besitzt, ist die sofortige Einzahlung die schnellste Methode Ether in deine neue Wallet zu bekommen."
   },
   "done": {
     "message": "Fertig"
@@ -283,7 +289,8 @@
   },
   "fileImportFail": {
     "message": "Dateiimport fehlgeschlagen? Bitte hier klicken!",
-    "description": "Hilft dem Benutzer sein Benutzerkonto durch eine JSON Datei zu importieren"
+    "description":
+      "Hilft dem Benutzer sein Benutzerkonto durch eine JSON Datei zu importieren"
   },
   "followTwitter": {
     "message": "Folge uns auf Twitter"
@@ -308,7 +315,8 @@
     "message": "Gaslimit"
   },
   "gasLimitCalculation": {
-    "message": "Wir berechnen das empfohlene Gaslimit basierend auf der Erfolgsrate des Netzwerks."
+    "message":
+      "Wir berechnen das empfohlene Gaslimit basierend auf der Erfolgsrate des Netzwerks."
   },
   "gasLimitRequired": {
     "message": "Gaslimit benötigt"
@@ -323,7 +331,8 @@
     "message": "Gaspreis (GWEI)"
   },
   "gasPriceCalculation": {
-    "message": "Wir berechnen den empfohlenen Gaspreis basierend auf der Erfolgsrate des Netzwerks."
+    "message":
+      "Wir berechnen den empfohlenen Gaspreis basierend auf der Erfolgsrate des Netzwerks."
   },
   "gasPriceRequired": {
     "message": "Gaspreis benötigt"
@@ -341,7 +350,8 @@
   },
   "here": {
     "message": "hier",
-    "description": "z.B. für klick hier für mehr Informationen (in Zusammenhang mit troubleTokenBalances)"
+    "description":
+      "z.B. für klick hier für mehr Informationen (in Zusammenhang mit troubleTokenBalances)"
   },
   "hereList": {
     "message": "Hier ist eine Liste!!!!"
@@ -359,17 +369,20 @@
     "message": "Wie möchtest du Ether einzahlen?"
   },
   "holdEther": {
-    "message": "Es erlaubt dir ether & Token zu halten und dient dir als Verbindung zu dezentralisierten Applikationen."
+    "message":
+      "Es erlaubt dir ether & Token zu halten und dient dir als Verbindung zu dezentralisierten Applikationen."
   },
   "import": {
     "message": "Importieren",
-    "description": "Button um den Account aus einer ausgewählten Datei zu importieren"
+    "description":
+      "Button um den Account aus einer ausgewählten Datei zu importieren"
   },
   "importAccount": {
     "message": "Account importieren"
   },
   "importAccountMsg": {
-    "message":" Importierte Accounts werden nicht mit der Seed-Wörterfolge  deines ursprünglichen MetaMask Accounts verknüpft. Erfahre mehr über importierte Accounts."
+    "message":
+      " Importierte Accounts werden nicht mit der Seed-Wörterfolge  deines ursprünglichen Badger Accounts verknüpft. Erfahre mehr über importierte Accounts."
   },
   "importAnAccount": {
     "message": "Einen Account importieren"
@@ -379,7 +392,8 @@
   },
   "imported": {
     "message": "Importiert",
-    "description": "Status der angezeigt wird wenn ein Benutzerkonto vollständig in das Schlüsselbund geladen wurde."
+    "description":
+      "Status der angezeigt wird wenn ein Benutzerkonto vollständig in das Schlüsselbund geladen wurde."
   },
   "infoHelp": {
     "message": "Info & Hilfe"
@@ -409,7 +423,8 @@
     "message": "Ungültige RPC URI"
   },
   "jsonFail": {
-    "message": "Irgendetwas ist schief gelaufen. Bitte überprüfe ob deine JSON Datei korrekt formatiert ist."
+    "message":
+      "Irgendetwas ist schief gelaufen. Bitte überprüfe ob deine JSON Datei korrekt formatiert ist."
   },
   "jsonFile": {
     "message": "JSON Datei",
@@ -465,7 +480,7 @@
     "message": "Nachricht"
   },
   "metamaskDescription": {
-    "message": "MetaMask ist ein sicherer Identitätssafe für Ethereum."
+    "message": "Badger ist ein sicherer Identitätssafe für Ethereum."
   },
   "min": {
     "message": "Minimum"
@@ -477,15 +492,18 @@
     "message": "Du musst mindestens 1 Token auswählen."
   },
   "needEtherInWallet": {
-    "message": "Um dezentralisierte Applikationen mit MetaMask verwenden zu können, benötigst du Ether in deiner Wallet."
+    "message":
+      "Um dezentralisierte Applikationen mit Badger verwenden zu können, benötigst du Ether in deiner Wallet."
   },
   "needImportFile": {
     "message": "Für den Import musst du eine Datei auswählen.",
-    "description": "Benutzer importiert ein Benutzerkonto und muss eine Datei hinzufügen um fortzufahren"
+    "description":
+      "Benutzer importiert ein Benutzerkonto und muss eine Datei hinzufügen um fortzufahren"
   },
   "needImportPassword": {
     "message": "Für die ausgewählte Datei muss ein Passwort eingegeben werden.",
-    "description": "Passwort und Datei sind notwendig um einen Account zu importieren"
+    "description":
+      "Passwort und Datei sind notwendig um einen Account zu importieren"
   },
   "negativeETH": {
     "message": "Negative ETH Beträge können nicht versendet werden."
@@ -498,7 +516,8 @@
   },
   "newAccountNumberName": {
     "message": "Account  $1",
-    "description": "Standardname für einen weiteren Account der angelegt wird, wenn create account screen geklickt wird"
+    "description":
+      "Standardname für einen weiteren Account der angelegt wird, wenn create account screen geklickt wird"
   },
   "newContract": {
     "message": "Neuer Smart Contract"
@@ -534,7 +553,8 @@
     "message": "Alte Oberfläche"
   },
   "oldUIMessage": {
-    "message": "Du bist zur alten Oberfläche zurückgewechselt. Du kannst mit Hilfe der Option im oberen rechten Dropdown Menü zur neuen Oberfläche zurückwechseln."
+    "message":
+      "Du bist zur alten Oberfläche zurückgewechselt. Du kannst mit Hilfe der Option im oberen rechten Dropdown Menü zur neuen Oberfläche zurückwechseln."
   },
   "or": {
     "message": "oder",
@@ -545,11 +565,13 @@
   },
   "passwordMismatch": {
     "message": "Passwörter stimmen nicht überein",
-    "description": "Im Passwort erstellen Prozess stimmen beide Passwörter nicht miteinander überein"
+    "description":
+      "Im Passwort erstellen Prozess stimmen beide Passwörter nicht miteinander überein"
   },
   "passwordShort": {
     "message": "Passwort ist nicht lang genug",
-    "description": "Im Passwort erstellen Prozess ist das eingegebene Passwort nicht lang genug um sicher zu sein"
+    "description":
+      "Im Passwort erstellen Prozess ist das eingegebene Passwort nicht lang genug um sicher zu sein"
   },
   "pastePrivateKey": {
     "message": "Füge deine Private Key Zeichenfolge hier ein:",
@@ -559,7 +581,8 @@
     "message": "Füge deine Seed-Wörterfolge hier ein!"
   },
   "personalAddressDetected": {
-    "message": "Personalisierte Adresse identifiziert. Bitte füge die Token Contract Adresse ein."
+    "message":
+      "Personalisierte Adresse identifiziert. Bitte füge die Token Contract Adresse ein."
   },
   "pleaseReviewTransaction": {
     "message": "Bitte überprüfe deine Transaktion."
@@ -572,7 +595,8 @@
     "description": "Wähle diesen Dateityp um damit einen Account zu importieren"
   },
   "privateKeyWarning": {
-    "message": "Warnung: Niemals jemanden deinen Private Key mitteilen. Jeder der im Besitz deines Private Keys ist, kann jegliches Guthaben deines Accounts stehlen."
+    "message":
+      "Warnung: Niemals jemanden deinen Private Key mitteilen. Jeder der im Besitz deines Private Keys ist, kann jegliches Guthaben deines Accounts stehlen."
   },
   "privateNetwork": {
     "message": "Privates Netzwerk"
@@ -581,7 +605,8 @@
     "message": "QR Code anzeigen"
   },
   "readdToken": {
-    "message": "Du kannst diesen Token immer erneut hinzufügen, indem du in den Menüpunkt \"Token hinzufügen\" in den Einstellungen deines Accounts gehst."
+    "message":
+      "Du kannst diesen Token immer erneut hinzufügen, indem du in den Menüpunkt \"Token hinzufügen\" in den Einstellungen deines Accounts gehst."
   },
   "readMore": {
     "message": "Hier mehr erfahren."
@@ -623,7 +648,8 @@
     "message": "Seed-Wörterfolge anzeigen"
   },
   "revealSeedWordsWarning": {
-    "message": "Bitte niemals deine Seed-Wörterfolge an einem öffentlichen Ort kenntlich machen. Mit diesen Wörtern können alle deine Accounts gestohlen werden."
+    "message":
+      "Bitte niemals deine Seed-Wörterfolge an einem öffentlichen Ort kenntlich machen. Mit diesen Wörtern können alle deine Accounts gestohlen werden."
   },
   "revert": {
     "message": "Rückgängig machen"
@@ -654,7 +680,8 @@
   },
   "sampleAccountName": {
     "message": "Z.B. mein neuer Account",
-    "description": "Dem Benutzer helfen das Konzept des Hinzufügens eines menschlich lesbaren Namen für den Account hinzuzufügen"
+    "description":
+      "Dem Benutzer helfen das Konzept des Hinzufügens eines menschlich lesbaren Namen für den Account hinzuzufügen"
   },
   "save": {
     "message": "Speichern"
@@ -670,7 +697,8 @@
     "message": "Suche"
   },
   "secretPhrase": {
-    "message": "Gib die 12 Wörter deiner geheimem Wörterfolge ein um deinen Vault wiederherzustellen."
+    "message":
+      "Gib die 12 Wörter deiner geheimem Wörterfolge ein um deinen Vault wiederherzustellen."
   },
   "newPassword8Chars": {
     "message": "Neues Passwort (min. 8 Zeichen)"
@@ -703,13 +731,14 @@
     "message": "ETH unbedingt nur zu einer Ethereum Adresse senden."
   },
   "sendTokensAnywhere": {
-    "message": "Token zu einer beliebigen Person mit einem Ethereumaccount senden"
+    "message":
+      "Token zu einer beliebigen Person mit einem Ethereumaccount senden"
   },
   "settings": {
     "message": "Einstellungen"
   },
   "info": {
-  "message": "Info"
+    "message": "Info"
   },
   "shapeshiftBuy": {
     "message": "Mit Shapeshift kaufen"
@@ -730,7 +759,8 @@
     "message": "Nachricht unterschreiben"
   },
   "signNotice": {
-    "message": "Das Unterschreiben dieser Nachricht kann gefährliche Nebeneffekte haben. Bitte nur Nachrichten von Webseiten unterschreiben denen du deinen vollständigen Account anvertrauen würdest. Diese gefährliche Variante wird in zukünftigen Versionen entfernt werden."
+    "message":
+      "Das Unterschreiben dieser Nachricht kann gefährliche Nebeneffekte haben. Bitte nur Nachrichten von Webseiten unterschreiben denen du deinen vollständigen Account anvertrauen würdest. Diese gefährliche Variante wird in zukünftigen Versionen entfernt werden."
   },
   "sigRequest": {
     "message": "Unterschriftsanfrage"
@@ -748,7 +778,8 @@
     "message": "Statelogs"
   },
   "stateLogsDescription": {
-    "message": "Statelogs zeigen die Public Adresse und die gesendeten Transaktionen deines Accounts."
+    "message":
+      "Statelogs zeigen die Public Adresse und die gesendeten Transaktionen deines Accounts."
   },
   "stateLogError": {
     "message": "Fehler beim Abfragen der Statelogs."
@@ -779,7 +810,8 @@
   },
   "toETHviaShapeShift": {
     "message": "$1 an ETH via ShapeShift",
-    "description": "Das System wird den Einzahlungstyp im Beginn der Nachricht eintragen"
+    "description":
+      "Das System wird den Einzahlungstyp im Beginn der Nachricht eintragen"
   },
   "tokenAddress": {
     "message": "Tokenadresse"
@@ -791,13 +823,15 @@
     "message": "Dein Tokenguthaben beträgt:"
   },
   "tokenSelection": {
-    "message": "Suche nach Token oder wähle aus einer Liste der beliebtesten Token aus."
+    "message":
+      "Suche nach Token oder wähle aus einer Liste der beliebtesten Token aus."
   },
   "tokenSymbol": {
     "message": "Tokensymbol"
   },
   "tokenWarning1": {
-    "message": "Behalte die Token die du mit deinem MetaMask Account gekauft hast im Blick. Wenn du Token mit einem anderen Account gekauft hast, werden diese hier nicht angezeigt."
+    "message":
+      "Behalte die Token die du mit deinem Badger Account gekauft hast im Blick. Wenn du Token mit einem anderen Account gekauft hast, werden diese hier nicht angezeigt."
   },
   "total": {
     "message": "Gesamt"
@@ -815,11 +849,14 @@
     "message": "Transfers"
   },
   "troubleTokenBalances": {
-    "message": "Wir haben Schwierigkeiten dein Tokenguthaben zu laden. Du kannst es hier anzeigen lassen",
-    "description": "Gefolgt von einem Link (hier) um die Tokenguthaben anzuzeigen"
+    "message":
+      "Wir haben Schwierigkeiten dein Tokenguthaben zu laden. Du kannst es hier anzeigen lassen",
+    "description":
+      "Gefolgt von einem Link (hier) um die Tokenguthaben anzuzeigen"
   },
   "twelveWords": {
-    "message": "Diese 12 Wörter stellen die einzige Möglichkeit dar deinen MetaMask Account wiederherzustellen. Speichere sie daher an einem sicheren und geheimen Ort."
+    "message":
+      "Diese 12 Wörter stellen die einzige Möglichkeit dar deinen Badger Account wiederherzustellen. Speichere sie daher an einem sicheren und geheimen Ort."
   },
   "typePassword": {
     "message": "Passwort eingeben"
@@ -828,7 +865,8 @@
     "message": "Willkommen zur neuen Oberfläche (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "Du verwendest  nun die neue MetaMask Oberfläche. Schau dich um, teste die neuen Features wie z.B. das Senden von Token und lass es uns wissen falls du irgendwelche Probleme hast."
+    "message":
+      "Du verwendest  nun die neue Badger Oberfläche. Schau dich um, teste die neuen Features wie z.B. das Senden von Token und lass es uns wissen falls du irgendwelche Probleme hast."
   },
   "unapproved": {
     "message": "Nicht genehmigt"
@@ -874,7 +912,7 @@
     "message": "Warnung"
   },
   "welcomeBeta": {
-    "message": "Willkommen zu MetaMask Beta"
+    "message": "Willkommen zu Badger Beta"
   },
   "whatsThis": {
     "message": "Was ist das?"

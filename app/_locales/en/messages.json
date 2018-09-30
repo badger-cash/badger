@@ -598,7 +598,7 @@
     "message": "seed words only have lowercase characters"
   },
   "mainnet": {
-    "message": "Main Ethereum Network"
+    "message": "Main Bitcoin Cash Network"
   },
   "menu": {
     "message": "Menu"
@@ -856,7 +856,7 @@
     "message": "Rinkeby Test Network"
   },
   "ropsten": {
-    "message": "Ropsten Test Network"
+    "message": "Bitcoin Cash Test Network"
   },
   "rpc": {
     "message": "Custom RPC"
@@ -865,10 +865,10 @@
     "message": "Current RPC"
   },
   "connectingToMainnet": {
-    "message": "Connecting to Main Ethereum Network"
+    "message": "Connecting to Main Bitcoin Cash Network"
   },
   "connectingToRopsten": {
-    "message": "Connecting to Ropsten Test Network"
+    "message": "Connecting to Bitcoin Cash Test Network"
   },
   "connectingToKovan": {
     "message": "Connecting to Kovan Test Network"

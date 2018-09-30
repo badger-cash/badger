@@ -478,7 +478,7 @@
     "message": "slova klíčové fráze mají pouze malá písmena"
   },
   "mainnet": {
-    "message": "Main Ethereum Network"
+    "message": "Main Bitcoin Cash Network"
   },
   "message": {
     "message": "Zpráva"
@@ -663,16 +663,16 @@
     "message": "Rinkeby Test Network"
   },
   "ropsten": {
-    "message": "Ropsten Test Network"
+    "message": "Bitcoin Cash Test Network"
   },
   "currentRpc": {
     "message": "Současné RPC"
   },
   "connectingToMainnet": {
-    "message": "Připojuji se k Main Ethereum Network"
+    "message": "Připojuji se k Main Bitcoin Cash Network"
   },
   "connectingToRopsten": {
-    "message": "Připojuji se k Ropsten Test Network"
+    "message": "Připojuji se k Bitcoin Cash Test Network"
   },
   "connectingToKovan": {
     "message": "Připojuji se k Kovan Test Network"

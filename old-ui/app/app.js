@@ -297,9 +297,9 @@ App.prototype.getNetworkName = function () {
   let name
 
   if (providerName === 'mainnet') {
-    name = 'Main Ethereum Network'
+    name = 'Main Bitcoin Cash Network'
   } else if (providerName === 'ropsten') {
-    name = 'Ropsten Test Network'
+    name = 'Bitcoin Cash Test Network'
   } else if (providerName === 'kovan') {
     name = 'Kovan Test Network'
   } else if (providerName === 'rinkeby') {

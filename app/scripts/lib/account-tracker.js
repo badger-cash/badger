@@ -15,19 +15,6 @@ const pify = require('pify')
 const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
 const BITBOX = new BITBOXCli()
 
-const getBchBalance = async function (address) {
-  return new Promise((resolve, reject) => {
-    BITBOX.Address.utxo(address).then((result) => {
-        console.log('AccountTracker::getBchBalance', result)
-        const balance = result.length > 0 ? result[0].satoshis : 0
-        resolve(balance)
-    }, (err) => {
-        console.error('AccountTracker::getBchBalance', err)
-        reject(err)
-    })
-  })
-}
-
 class AccountTracker {
 
   /**
@@ -155,7 +142,7 @@ class AccountTracker {
    */
   async _updateAccount (address) {
     // query balance
-    const balance = await getBchBalance(address)
+    const balance = await this.getBchBalance(address)
     const result = { address, balance }
     // update accounts state
     const { accounts } = this.store.getState()
@@ -163,6 +150,18 @@ class AccountTracker {
     if (!accounts[address]) return
     accounts[address] = result
     this.store.updateState({ accounts })
+  }
+
+  async getBchBalance (address) {
+    return new Promise((resolve, reject) => {
+      BITBOX.Address.utxo(address).then((result) => {
+          const balance = result.length > 0 ? result[0].satoshis : 0
+          resolve(balance)
+      }, (err) => {
+          log.error('AccountTracker::getBchBalance', err)
+          reject(err)
+      })
+    })
   }
 
 }

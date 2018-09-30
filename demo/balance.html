@@ -11,14 +11,14 @@
 
         let txParams = {
           to: 'bitcoincash:pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g',
-          from: '<your_from_address>',
+          from: 'bitcoincash:qqeuq3yxsr9rys39am985gcv7xg6hzzqqgu9x00ua2', // set to your address
           value: '0.00001347'
         }
         web4bch.bch.sendTransaction(txParams, (err, res) => {
           if (err) {
-            reject(new Error(err))
+            console.log('send err', err)
           } else {
-            resolve(res)
+            console.log('send success:', res)
           }
         })
       }

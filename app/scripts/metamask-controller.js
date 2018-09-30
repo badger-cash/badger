@@ -485,7 +485,7 @@ module.exports = class MetamaskController extends EventEmitter {
       }
 
       // seek out the first zero balance
-      while (lastBalance !== '0') {
+      while (parseFloat(lastBalance) !== 0) {
         await keyringController.addNewAccount(primaryKeyring)
         accounts = await keyringController.getAccounts()
         lastBalance = await this.getBalance(accounts[accounts.length - 1])
@@ -508,21 +508,19 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param {EthQuery} ethQuery - The EthQuery instance to use when asking the network
    */
   getBalance (address) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const cached = this.accountTracker.store.getState().accounts[address]
 
       if (cached && cached.balance) {
         resolve(cached.balance)
       } else {
-        console.log("MetamaskController::getBalance balance not cached")
-        // ethQuery.getBalance(address, (error, balance) => {
-        //   if (error) {
-        //     reject(error)
-        //     log.error(error)
-        //   } else {
-        //     resolve(balance || '0x0')
-        //   }
-        // })
+        try {
+          const balance = await this.accountTracker.getBchBalance(address)
+          resolve(balance)
+        } catch (err) {
+          log.error(err)
+          reject(err)
+        }
       }
     })
   }

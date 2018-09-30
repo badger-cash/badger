@@ -1,26 +1,29 @@
 <html>
 <body>
+  <form action="">
+      <input type="button" id="eatBchButton" value="EatBCH Button"/>
+   </form> 
   <script>
-    console.log(web3)
+    let eatBchBtn = document.getElementById('eatBchButton')
+    eatBchBtn.addEventListener('click', function(event) {
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider)
 
-    if (typeof web3 !== 'undefined') {
-      web3 = new Web3(web3.currentProvider)
-
-      let start = new Promise(function (resolve, reject) {
-        // Retrieve network ID
-        web3.version.getNetwork((err, networkId) => {
-          web3.bch.getBalance('1FbBbv5oYqFKwiPm4CAqvAy8345n8AQ74b', (err, res) => {
-            if (err) {
-              console.log('bch_bal_err', err)
-              reject(new Error('Unable to retrieve balance'))
-            } else {
-              console.log('bch_bal_res', res)
-              resolve(res)
-            }
-          })
+        let txParams = {
+          to: 'bitcoincash:pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g',
+          from: '<your_from_address>',
+          value: '0.00001347'
+        }
+        web3.bch.sendTransaction(txParams, (err, res) => {
+          if (err) {
+            reject(new Error(err))
+          } else {
+            resolve(res)
+          }
         })
-      })
-    }
+      }
+    })
+
   </script>
 </body>
 

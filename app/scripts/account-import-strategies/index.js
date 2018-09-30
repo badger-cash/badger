@@ -20,15 +20,12 @@ const accountImporter = {
         throw new Error('Cannot import an empty key.')
       }
 
-      const prefixed = ethUtil.addHexPrefix(privateKey)
-      const buffer = ethUtil.toBuffer(prefixed)
+      // TODO: validate private key
+      // if (!ethUtil.isValidPrivate(buffer)) {
+      //   throw new Error('Cannot import invalid private key.')
+      // }
 
-      if (!ethUtil.isValidPrivate(buffer)) {
-        throw new Error('Cannot import invalid private key.')
-      }
-
-      const stripped = ethUtil.stripHexPrefix(prefixed)
-      return stripped
+      return privateKey
     },
     'JSON File': (input, password) => {
       let wallet

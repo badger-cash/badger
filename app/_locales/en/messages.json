@@ -607,7 +607,7 @@
     "message": "Message"
   },
   "metamaskDescription": {
-    "message": "Badger is a secure identity vault for Ethereum."
+    "message": "Badger is a secure identity vault for Bitcoin Cash."
   },
   "metamaskSeedWords": {
     "message": "Badger Seed Words"
@@ -623,7 +623,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "To interact with decentralized applications using Badger, you’ll need Ether in your wallet."
+      "To interact with decentralized applications using Badger, you’ll need Bitcoin Cash in your wallet."
   },
   "needImportFile": {
     "message": "You must select a file to import.",
@@ -635,7 +635,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Can not send negative amounts of ETH."
+    "message": "Can not send negative amounts of BCH."
   },
   "networks": {
     "message": "Networks"
@@ -945,7 +945,7 @@
     "message": "Send"
   },
   "sendETH": {
-    "message": "Send ETH"
+    "message": "Send BCH"
   },
   "sendTokens": {
     "message": "Send Tokens"
@@ -960,10 +960,10 @@
     "message": "Separate each word with a single space"
   },
   "onlySendToEtherAddress": {
-    "message": "Only send ETH to an Ethereum address."
+    "message": "Only send BCH to a Bitcoin Cash address."
   },
   "onlySendTokensToAccountAddress": {
-    "message": "Only send $1 to an Ethereum account address.",
+    "message": "Only send $1 to a Bitcoin Cash account address.",
     "description": "displays token symbol"
   },
   "orderOneHere": {
@@ -1098,7 +1098,7 @@
     "message": "To"
   },
   "toETHviaShapeShift": {
-    "message": "$1 to ETH via ShapeShift",
+    "message": "$1 to BCH via ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "token": {

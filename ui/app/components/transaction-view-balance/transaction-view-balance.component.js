@@ -5,7 +5,7 @@ import Identicon from '../identicon'
 import TokenBalance from '../token-balance'
 import CurrencyDisplay from '../currency-display'
 import { SEND_ROUTE } from '../../routes'
-import { ETH } from '../../constants/common'
+import { BCH } from '../../constants/common'
 
 export default class TransactionViewBalance extends PureComponent {
   static contextTypes = {
@@ -24,27 +24,26 @@ export default class TransactionViewBalance extends PureComponent {
   renderBalance () {
     const { selectedToken, balance } = this.props
 
-    return selectedToken
-      ? (
-        <TokenBalance
-          token={selectedToken}
-          withSymbol
-          className="transaction-view-balance__token-balance"
+    return selectedToken ? (
+      <TokenBalance
+        token={selectedToken}
+        withSymbol
+        className="transaction-view-balance__token-balance"
+      />
+    ) : (
+      <div className="transaction-view-balance__balance">
+        <CurrencyDisplay
+          className="transaction-view-balance__primary-balance"
+          value={balance}
+          currency={BCH}
+          numberOfDecimals={3}
         />
-      ) : (
-        <div className="transaction-view-balance__balance">
-          <CurrencyDisplay
-            className="transaction-view-balance__primary-balance"
-            value={balance}
-            currency={ETH}
-            numberOfDecimals={3}
-          />
-          <CurrencyDisplay
-            className="transaction-view-balance__secondary-balance"
-            value={balance}
-          />
-        </div>
-      )
+        <CurrencyDisplay
+          className="transaction-view-balance__secondary-balance"
+          value={balance}
+        />
+      </div>
+    )
   }
 
   renderButtons () {
@@ -53,23 +52,21 @@ export default class TransactionViewBalance extends PureComponent {
 
     return (
       <div className="transaction-view-balance__buttons">
-        {
-          !selectedToken && (
-            <Button
-              type="primary"
-              className="transaction-view-balance__button"
-              onClick={() => showDepositModal()}
-            >
-              { t('deposit') }
-            </Button>
-          )
-        }
+        {!selectedToken && (
+          <Button
+            type="primary"
+            className="transaction-view-balance__button"
+            onClick={() => showDepositModal()}
+          >
+            {t('deposit')}
+          </Button>
+        )}
         <Button
           type="primary"
           className="transaction-view-balance__button"
           onClick={() => history.push(SEND_ROUTE)}
         >
-          { t('send') }
+          {t('send')}
         </Button>
       </div>
     )
@@ -87,9 +84,9 @@ export default class TransactionViewBalance extends PureComponent {
             network={network}
             image={assetImage}
           />
-          { this.renderBalance() }
+          {this.renderBalance()}
         </div>
-        { this.renderButtons() }
+        {this.renderButtons()}
       </div>
     )
   }

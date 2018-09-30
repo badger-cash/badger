@@ -2,6 +2,9 @@ const ObservableStore = require('obs-store')
 const extend = require('xtend')
 const log = require('loglevel')
 
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
+
 // every ten minutes
 const POLLING_INTERVAL = 600000
 
@@ -107,10 +110,9 @@ class CurrencyController {
     let currentCurrency
     try {
       currentCurrency = this.getCurrentCurrency()
-      const response = await fetch(`https://api.infura.io/v1/ticker/eth${currentCurrency.toLowerCase()}`)
-      const parsedResponse = await response.json()
-      this.setConversionRate(Number(parsedResponse.bid))
-      this.setConversionDate(Number(parsedResponse.timestamp))
+      const rate = await BITBOX.Price.current(currentCurrency.toLowerCase())
+      this.setConversionRate(Number(rate))
+      this.setConversionDate(Number(new Date()))
     } catch (err) {
       log.warn(`MetaMask - Failed to query currency conversion:`, currentCurrency, err)
       this.setConversionRate(0)

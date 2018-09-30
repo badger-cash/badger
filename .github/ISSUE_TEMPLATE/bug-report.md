@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
 **Browser details (please complete the following information):**
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
- - MetaMask Version [e.g. 4.9.0]
+ - Badger Version [e.g. 4.9.0]
  - Old UI or New / Beta UI?
 
 **Additional context**

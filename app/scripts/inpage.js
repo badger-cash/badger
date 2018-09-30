@@ -47,9 +47,9 @@ window.ethereum = inpageProvider
 
 if (typeof window.web4bch !== 'undefined') {
   throw new Error(`Badger detected another web4bch.
-     MetaMask will not work reliably with another web4bch extension.
+     Badger will not work reliably with another web4bch extension.
      This usually happens if you have two MetaMasks installed,
-     or MetaMask and another web4bch extension. Please remove one
+     or Badger and another web4bch extension. Please remove one
      and try again.`)
 }
 var web4bch = new Web4Bch(inpageProvider)

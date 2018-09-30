@@ -76,7 +76,7 @@ async function start () {
   }
 
   function displayCriticalError (err) {
-    container.innerHTML = '<div class="critical-error">The MetaMask app failed to load: please open and close MetaMask again to restart.</div>'
+    container.innerHTML = '<div class="critical-error">The Badger app failed to load: please open and close Badger again to restart.</div>'
     container.style.height = '80px'
     log.error(err.stack)
     throw err

@@ -4,7 +4,7 @@
 npm run version:bump patch
 ```
 
-MetaMask publishes using a loose [semver](https://semver.org/) interpretation. We divide the three segments of our version into three types of version bump:
+Badger publishes using a loose [semver](https://semver.org/) interpretation. We divide the three segments of our version into three types of version bump:
 
 ## Major
 

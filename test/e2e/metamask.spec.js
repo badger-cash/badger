@@ -66,7 +66,7 @@ describe('Metamask popup page', function () {
 
   describe('Account Creation', () => {
 
-    it('matches MetaMask title', async () => {
+    it('matches Badger title', async () => {
       const title = await driver.getTitle()
       assert.equal(title, 'MetaMask', 'title matches MetaMask')
       await delay(300)
@@ -268,7 +268,7 @@ describe('Metamask popup page', function () {
     })
 
     // There is an issue with blank confirmation window in Firefox, but the button is still there and the driver is able to clicked (?.?)
-    it('confirms transaction in MetaMask popup', async function () {
+    it('confirms transaction in Badger popup', async function () {
       const windowHandles = await driver.getAllWindowHandles()
       await driver.switchTo().window(windowHandles[windowHandles.length - 1])
       const byMetamaskSubmit = By.css('#pending-tx-form > div.flex-row.flex-space-around.conf-buttons > input')
@@ -285,7 +285,7 @@ describe('Metamask popup page', function () {
       await delay(500)
     })
 
-    it('navigates back to MetaMask popup in the tab', async function () {
+    it('navigates back to Badger popup in the tab', async function () {
       await driver.get(extensionUri)
       await delay(700)
     })

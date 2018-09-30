@@ -682,7 +682,7 @@ describe('MetaMaskController', function () {
         await metamaskController.newUnsignedPersonalMessage(msgParams)
         assert.fail('should have thrown')
       } catch (error) {
-        assert.equal(error.message, 'MetaMask Message Signature: from field is required.')
+        assert.equal(error.message, 'Badger Message Signature: from field is required.')
       }
     })
 

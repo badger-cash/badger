@@ -20,7 +20,7 @@ const {
 } = require('./helpers')
 
 
-describe('Using MetaMask with an existing account', function () {
+describe('Using Badger with an existing account', function () {
   let extensionId
   let driver
 

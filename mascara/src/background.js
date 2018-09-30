@@ -38,10 +38,10 @@ const dbController = new DbController({
 start().catch(log.error)
 
 async function start () {
-  log.debug('MetaMask initializing...')
+  log.debug('Badger initializing...')
   const initState = await loadStateFromPersistence()
   await setupController(initState)
-  log.debug('MetaMask initialization complete.')
+  log.debug('Badger initialization complete.')
 }
 
 //
@@ -61,7 +61,7 @@ async function loadStateFromPersistence () {
 async function setupController (initState, client) {
 
   //
-  // MetaMask Controller
+  // Badger Controller
   //
 
   const platform = new SwPlatform()

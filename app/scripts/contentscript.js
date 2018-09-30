@@ -16,7 +16,7 @@ const inpageBundle = inpageContent + inpageSuffix
 //
 // But for now that is only Firefox
 // If we create a FireFox-only code path using that API,
-// MetaMask will be much faster loading and performant on Firefox.
+// Badger will be much faster loading and performant on Firefox.
 
 if (shouldInjectWeb3()) {
   setupInjection()
@@ -58,7 +58,7 @@ function setupStreams () {
     pageStream,
     pluginStream,
     pageStream,
-    (err) => logStreamDisconnectWarning('MetaMask Contentscript Forwarding', err)
+    (err) => logStreamDisconnectWarning('Badger Contentscript Forwarding', err)
   )
 
   // setup local multistream channels
@@ -69,13 +69,13 @@ function setupStreams () {
     mux,
     pageStream,
     mux,
-    (err) => logStreamDisconnectWarning('MetaMask Inpage', err)
+    (err) => logStreamDisconnectWarning('Badger Inpage', err)
   )
   pump(
     mux,
     pluginStream,
     mux,
-    (err) => logStreamDisconnectWarning('MetaMask Background', err)
+    (err) => logStreamDisconnectWarning('Badger Background', err)
   )
 
   // connect ping stream
@@ -84,7 +84,7 @@ function setupStreams () {
     mux,
     pongStream,
     mux,
-    (err) => logStreamDisconnectWarning('MetaMask PingPongStream', err)
+    (err) => logStreamDisconnectWarning('Badger PingPongStream', err)
   )
 
   // connect phishing warning stream

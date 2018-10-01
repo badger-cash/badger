@@ -1,6 +1,6 @@
-# MetaMask Translation Guide
+# Badger Translation Guide
 
-The MetaMask browser extension supports new translations added in the form of new locales files added in `app/_locales`.
+The Badger browser extension supports new translations added in the form of new locales files added in `app/_locales`.
 
 - [The MDN Guide to Internationalizing Extensions](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Internationalization)
 
@@ -13,7 +13,7 @@ The MetaMask browser extension supports new translations added in the form of ne
 - Add the language to the [locales index](https://github.com/MetaMask/metamask-extension/blob/master/app/_locales/index.json) `app/_locales/index.json` 
 
 
-That's it! When MetaMask is loaded on a computer with that language set as the system language, they will see your translation instead of the default one.
+That's it! When Badger is loaded on a computer with that language set as the system language, they will see your translation instead of the default one.
 
 ## Testing
 

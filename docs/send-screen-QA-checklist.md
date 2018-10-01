@@ -9,10 +9,10 @@ Additional features or functionality on the send screen should include an update
 ## Send Eth mode
   - [ ] **Header** _It should:_
     - [ ] have title "Send ETH"
-    - [ ] have sub title "Only send ETH to an Ethereum address."
+    - [ ] have sub title "Only send BCH to a Bitcoin Cash address."
     - [ ] return user to main screen when top right X is clicked
   - [ ] **From row** _It should:_
-    - [ ] show the currently selected account by default 
+    - [ ] show the currently selected account by default
     - [ ] show a dropdown with all of the users accounts
     - [ ] contain the following info for each account: identicon, account name, balance in ETH, balance in current currency
     - [ ] change the account selected in the dropdown (but not the app-wide selected account) when one in the dropdown is clicked

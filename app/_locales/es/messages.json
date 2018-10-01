@@ -201,7 +201,7 @@
   },
   "defaultNetwork": {
     "message":
-      "La red por defecto para las transacciones de Ether es MainNet (red principal)"
+      "La red por defecto para las transacciones de Bitcoin Cash es MainNet (red principal)"
   },
   "denExplainer": {
     "message": "El DEN es tu contraseña encriptada almacenada dentro de Badger"
@@ -234,7 +234,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Si posees otras criptomonedas, puedes intercambiar y depositar Ether directamente en tu billetera de Badger. No necesitas tener una cuenta."
+      "Si posees otras criptomonedas, puedes intercambiar y depositar Bitcoin Cash directamente en tu billetera de Badger. No necesitas tener una cuenta."
   },
   "details": {
     "message": "Detalles"
@@ -243,7 +243,7 @@
     "message": "Depósito directo"
   },
   "directDepositEther": {
-    "message": "Depositar Ether directamente"
+    "message": "Depositar Bitcoin Cash directamente"
   },
   "directDepositEtherExplainer": {
     "message":
@@ -348,7 +348,7 @@
     "message": "Conseguir Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Obtenga Ether de un faucet (grifo) por $1",
+    "message": "Obtenga Bitcoin Cash de un faucet (grifo) por $1",
     "description": "Muestra el nombre de la red para el faucet (grifo) de Ether"
   },
   "greaterThanMin": {
@@ -501,7 +501,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Para interactuar con una aplicación descentralizada usando Badger, necesitas tener Ether en tu billetera"
+      "Para interactuar con una aplicación descentralizada usando Badger, necesitas tener Bitcoin Cash en tu billetera"
   },
   "needImportFile": {
     "message": "Debes seleccionar un archivo para importar",

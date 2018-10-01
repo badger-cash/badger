@@ -12,7 +12,6 @@ RestoreVaultScreen.contextTypes = {
 
 module.exports = connect(mapStateToProps)(RestoreVaultScreen)
 
-
 inherits(RestoreVaultScreen, PersistentForm)
 function RestoreVaultScreen () {
   PersistentForm.call(this)
@@ -29,11 +28,10 @@ RestoreVaultScreen.prototype.render = function () {
   var state = this.props
   this.persistentFormParentId = 'restore-vault-form'
 
-  return (
-
-    h('.initialize-screen.flex-column.flex-center.flex-grow', [
-
-      h('h3.flex-center.text-transform-uppercase', {
+  return h('.initialize-screen.flex-column.flex-center.flex-grow', [
+    h(
+      'h3.flex-center.text-transform-uppercase',
+      {
         style: {
           background: '#EBEBEB',
           color: '#AEAEAE',
@@ -42,91 +40,98 @@ RestoreVaultScreen.prototype.render = function () {
           fontSize: '20px',
           padding: 6,
         },
-      }, [
-        this.context.t('restoreVault'),
-      ]),
+      },
+      [this.context.t('restoreVault')]
+    ),
 
-      // wallet seed entry
-      h('h3', this.context.t('walletSeed')),
-      h('textarea.twelve-word-phrase.letter-spacey', {
-        dataset: {
-          persistentFormId: 'wallet-seed',
-        },
-        placeholder: this.context.t('secretPhrase'),
-      }),
+    // wallet seed entry
+    h('h3', this.context.t('walletSeed')),
+    h('textarea.twelve-word-phrase.letter-spacey', {
+      dataset: {
+        persistentFormId: 'wallet-seed',
+      },
+      placeholder: this.context.t('secretPhrase'),
+    }),
 
-      // password
-      h('input.large-input.letter-spacey', {
-        type: 'password',
-        id: 'password-box',
-        placeholder: this.context.t('newPassword8Chars'),
-        dataset: {
-          persistentFormId: 'password',
-        },
-        style: {
-          width: 260,
-          marginTop: 12,
-        },
-      }),
+    // password
+    h('input.large-input.letter-spacey', {
+      type: 'password',
+      id: 'password-box',
+      placeholder: this.context.t('newPassword8Chars'),
+      dataset: {
+        persistentFormId: 'password',
+      },
+      style: {
+        width: 260,
+        marginTop: 12,
+      },
+    }),
 
-      // confirm password
-      h('input.large-input.letter-spacey', {
-        type: 'password',
-        id: 'password-box-confirm',
-        placeholder: this.context.t('confirmPassword'),
-        onKeyPress: this.createOnEnter.bind(this),
-        dataset: {
-          persistentFormId: 'password-confirmation',
-        },
-        style: {
-          width: 260,
-          marginTop: 16,
-        },
-      }),
+    // confirm password
+    h('input.large-input.letter-spacey', {
+      type: 'password',
+      id: 'password-box-confirm',
+      placeholder: this.context.t('confirmPassword'),
+      onKeyPress: this.createOnEnter.bind(this),
+      dataset: {
+        persistentFormId: 'password-confirmation',
+      },
+      style: {
+        width: 260,
+        marginTop: 16,
+      },
+    }),
 
-      (state.warning) && (
-        h('span.error.in-progress-notification', state.warning)
-      ),
+    state.warning && h('span.error.in-progress-notification', state.warning),
 
-      // submit
+    // submit
 
-      h('.flex-row.flex-space-between', {
+    h(
+      '.flex-row.flex-space-between',
+      {
         style: {
           marginTop: 30,
           width: '50%',
         },
-      }, [
-
+      },
+      [
         // cancel
-        h('button.primary', {
-          onClick: this.showInitializeMenu.bind(this),
-          style: {
-            textTransform: 'uppercase',
+        h(
+          'button.primary',
+          {
+            onClick: this.showInitializeMenu.bind(this),
+            style: {
+              textTransform: 'uppercase',
+            },
           },
-        }, this.context.t('cancel')),
+          this.context.t('cancel')
+        ),
 
         // submit
-        h('button.primary', {
-          onClick: this.createNewVaultAndRestore.bind(this),
-          style: {
-            textTransform: 'uppercase',
+        h(
+          'button.primary',
+          {
+            onClick: this.createNewVaultAndRestore.bind(this),
+            style: {
+              textTransform: 'uppercase',
+            },
           },
-        }, this.context.t('ok')),
-      ]),
-    ])
-  )
+          this.context.t('ok')
+        ),
+      ]
+    ),
+  ])
 }
 
 RestoreVaultScreen.prototype.showInitializeMenu = function () {
   const { dispatch, forgottenPassword } = this.props
-  dispatch(actions.unMarkPasswordForgotten())
-    .then(() => {
-      if (forgottenPassword) {
-        dispatch(actions.backToUnlockView())
-      } else {
-        dispatch(actions.showInitializeMenu())
-      }
-    })
+  dispatch(actions.unMarkPasswordForgotten()).then(() => {
+    if (forgottenPassword) {
+      dispatch(actions.backToUnlockView())
+    } else {
+      dispatch(actions.showInitializeMenu())
+    }
+  })
 }
 
 RestoreVaultScreen.prototype.createOnEnter = function (event) {
@@ -165,7 +170,7 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   // true if seed contains a character that is not between a-z or a space
   if (!seed.match(/^[a-z ]+$/)) {
     this.warning = this.context.t('loweCaseWords')
-      this.props.dispatch(actions.displayWarning(this.warning))
+    this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
   if (seed.split(' ').length !== 12) {
@@ -176,6 +181,7 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   // submit
   this.warning = null
   this.props.dispatch(actions.displayWarning(this.warning))
-  this.props.dispatch(actions.createNewVaultAndRestore(password, seed))
+  this.props
+    .dispatch(actions.createNewVaultAndRestore(password, seed))
     .catch(err => log.error(err.message))
 }

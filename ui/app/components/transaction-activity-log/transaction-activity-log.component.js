@@ -3,8 +3,11 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { getActivities } from './transaction-activity-log.util'
 import Card from '../card'
-import { getEthConversionFromWeiHex, getValueFromWeiHex } from '../../helpers/conversions.util'
-import { ETH } from '../../constants/common'
+import {
+  getEthConversionFromWeiHex,
+  getValueFromWeiHex,
+} from '../../helpers/conversions.util'
+import { BCH, ETH } from '../../constants/common'
 import { formatDate } from '../../util'
 
 export default class TransactionActivityLog extends PureComponent {
@@ -43,28 +46,29 @@ export default class TransactionActivityLog extends PureComponent {
   renderActivity (activity, index) {
     const { conversionRate } = this.props
     const { eventKey, value, timestamp } = activity
-    const ethValue = index === 0
-      ? `${getValueFromWeiHex({
-        value,
-        toCurrency: ETH,
-        conversionRate,
-        numberOfDecimals: 6,
-      })} ${ETH}`
-      : getEthConversionFromWeiHex({ value, toCurrency: ETH, conversionRate })
+    const ethValue =
+      index === 0
+        ? `${getValueFromWeiHex({
+            value,
+            toCurrency: ETH,
+            conversionRate,
+            numberOfDecimals: 6,
+          })} ${BCH}`
+        : getEthConversionFromWeiHex({ value, toCurrency: ETH, conversionRate })
     const formattedTimestamp = formatDate(timestamp)
-    const activityText = this.context.t(eventKey, [ethValue, formattedTimestamp])
+    const activityText = this.context.t(eventKey, [
+      ethValue,
+      formattedTimestamp,
+    ])
 
     return (
-      <div
-        key={index}
-        className="transaction-activity-log__activity"
-      >
+      <div key={index} className="transaction-activity-log__activity">
         <div className="transaction-activity-log__activity-icon" />
         <div
           className="transaction-activity-log__activity-text"
           title={activityText}
         >
-          { activityText }
+          {activityText}
         </div>
       </div>
     )
@@ -82,7 +86,9 @@ export default class TransactionActivityLog extends PureComponent {
           className="transaction-activity-log__card"
         >
           <div className="transaction-activity-log__activities-container">
-            { activities.map((activity, index) => this.renderActivity(activity, index)) }
+            {activities.map((activity, index) =>
+              this.renderActivity(activity, index)
+            )}
           </div>
         </Card>
       </div>

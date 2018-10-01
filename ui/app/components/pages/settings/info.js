@@ -25,7 +25,7 @@ class Info extends Component {
         h('div.settings__info-link-header', this.context.t('links')),
         h('div.settings__info-link-item', [
           h('a', {
-            href: 'https://metamask.io/privacy.html',
+            href: 'https://badgerwallet.cash/privacy.html',
             target: '_blank',
           }, [
             h('span.settings__info-link', this.context.t('privacyMsg')),
@@ -33,7 +33,7 @@ class Info extends Component {
         ]),
         h('div.settings__info-link-item', [
           h('a', {
-            href: 'https://metamask.io/terms.html',
+            href: 'https://badgerwallet.cash/terms.html',
             target: '_blank',
           }, [
             h('span.settings__info-link', this.context.t('terms')),
@@ -41,7 +41,7 @@ class Info extends Component {
         ]),
         h('div.settings__info-link-item', [
           h('a', {
-            href: 'https://metamask.io/attributions.html',
+            href: 'https://badgerwallet.cash/attributions.html',
             target: '_blank',
           }, [
             h('span.settings__info-link', this.context.t('attributions')),
@@ -58,7 +58,7 @@ class Info extends Component {
         ]),
         h('div.settings__info-link-item', [
           h('a', {
-            href: 'https://metamask.io/',
+            href: 'https://badgerwallet.cash/',
             target: '_blank',
           }, [
             h('span.settings__info-link', this.context.t('visitWebSite')),
@@ -83,7 +83,7 @@ class Info extends Component {
           h('div.settings__content-item.settings__content-item--without-height', [
             this.renderLogo(),
             h('div.settings__info-item', [
-              h('div.settings__info-version-header', 'MetaMask Version'),
+              h('div.settings__info-version-header', 'Badger Version'),
               h('div.settings__info-version-number', this.state.version),
             ]),
             h('div.settings__info-item', [

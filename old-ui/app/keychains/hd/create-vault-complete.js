@@ -72,7 +72,7 @@ CreateVaultCompleteScreen.prototype.render = function () {
       }, 'I\'ve copied it somewhere safe'),
 
       h('button.primary', {
-        onClick: () => exportAsFile(`MetaMask Seed Words`, seed),
+        onClick: () => exportAsFile(`Badger Seed Words`, seed),
         style: {
           margin: '10px',
           fontSize: '0.9em',

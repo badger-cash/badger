@@ -2,7 +2,7 @@ Hi, and welcome to MetaMask.
 
 Today we’re happy to share our gift to the Ethereum ecosystem.
 
-The MetaMask browser extension turns Google Chrome into an Ethereum browser, letting websites retrieve data from the blockchain, and letting users securely manage identities and sign transactions.
+The Badger browser extension turns Google Chrome into an Ethereum browser, letting websites retrieve data from the blockchain, and letting users securely manage identities and sign transactions.
 
 When you start up MetaMask, you are given a seed phrase that can be used to restore all the accounts you ever create within MetaMask.
 
@@ -14,7 +14,7 @@ At first glance, Metamask enables you to send ether like a normal wallet applica
 
 Here’s a simple Ethereum distributed app, or Ðapp, called Tokens, that lets you easily deploy your own currency.
 
-When you visit a Dapp like Tokens with MetaMask installed, that website has access to the Ethereum blockchain via the standard Web3 Javascript API. When it wants to write to the blockchain, it asks web3 to send the transaction, prompting MetaMask to ask for user confirmation.
+When you visit a Dapp like Tokens with Badger installed, that website has access to the Ethereum blockchain via the standard Web3 Javascript API. When it wants to write to the blockchain, it asks web3 to send the transaction, prompting Badger to ask for user confirmation.
 
 After you submit a transaction, wait for the next block for the change to be reflected on the website...and there it is!
 
@@ -22,9 +22,9 @@ Now I have my own MetaMaskCoins! I can check my balance or, if I want to send so
 
 This has been nice, but it’s all been on the Morden test net. But with Metamask, I can always switch what network I’m working on, say the main network, and I’m ready issue a token with the full security of the main Ethereum blockchain.
 
-MetaMask connects to these blockchains with no synchronization time because we host blockchain nodes by default. You can always point MetaMask at your own Ethereum RPC Server, and fully control your connection to the blockchain.
+Badger connects to these blockchains with no synchronization time because we host blockchain nodes by default. You can always point Badger at your own Ethereum RPC Server, and fully control your connection to the blockchain.
 
-And that’s how MetaMask lets ordinary websites talk to a trusted Ethereum provider, all while letting the user store and manage their own private keys. We hope this will make it easier than ever for people to get started creating and using a new wave of blockchain-enabled websites.
+And that’s how Badger lets ordinary websites talk to a trusted Ethereum provider, all while letting the user store and manage their own private keys. We hope this will make it easier than ever for people to get started creating and using a new wave of blockchain-enabled websites.
 
 If you’d like to get started with Metamask right now, go ahead and click here to get the Chrome extension.
 

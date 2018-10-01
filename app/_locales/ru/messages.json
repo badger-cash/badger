@@ -190,7 +190,7 @@
   },
   "defaultNetwork": {
     "message":
-      "Основная сеть Ethereum – это сеть по умолчанию для Ether транзакций."
+      "Основная сеть Ethereum – это сеть по умолчанию для Bitcoin Cash транзакций."
   },
   "denExplainer": {
     "message": "DEN – это зашифрованное паролем хранилище внутри Badger."
@@ -223,7 +223,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Если у вас есть другие криптовалюты, вы можете торговать и пополнять Ether напрямую в ваш Badger кошелек. Нет необходимости в счете."
+      "Если у вас есть другие криптовалюты, вы можете торговать и пополнять Bitcoin Cash напрямую в ваш Badger кошелек. Нет необходимости в счете."
   },
   "details": {
     "message": "Детали"
@@ -236,7 +236,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Если у вас уже есть Ether, то самый быстрый способ получить Ether в ваш новый кошелек – это прямое пополнение."
+      "Если у вас уже есть Ether, то самый быстрый способ получить Bitcoin Cash в ваш новый кошелек – это прямое пополнение."
   },
   "done": {
     "message": "Готово"
@@ -337,8 +337,8 @@
     "message": "Получить Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Получить Ether из крана для $1",
-    "description": "Displays network name for Ether faucet"
+    "message": "Получить Bitcoin Cash из крана для $1",
+    "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
     "message": "должно быть больше или равно $1.",
@@ -494,7 +494,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Для взаимодействия с децентрализованными приложениями с помощью Badger нужен Ether в вашем кошельке."
+      "Для взаимодействия с децентрализованными приложениями с помощью Badger нужен Bitcoin Cash в вашем кошельке."
   },
   "needImportFile": {
     "message": "Вы должны выбрать файл для импорта.",

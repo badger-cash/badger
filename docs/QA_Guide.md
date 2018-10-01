@@ -3,7 +3,7 @@
 Steps to mark a full pass of QA complete.
 * Browsers: Opera, Chrome, Firefox, Edge.
 * OS: Ubuntu, Mac OSX, Windows
-* Load older version of MetaMask and attempt to simulate updating the extension.
+* Load older version of Badger and attempt to simulate updating the extension.
 * Open Developer Console in background and popup, inspect errors.
 * Watch the state logs 
   * Transactions (unapproved txs -> rejected/submitted -> confirmed)

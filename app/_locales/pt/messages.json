@@ -176,7 +176,8 @@
     "message": "Precisão em Decimais"
   },
   "defaultNetwork": {
-    "message": "A rede pré definida para transações em Ether é a Main Net."
+    "message":
+      "A rede pré definida para transações em Bitcoin Cash é a Main Net."
   },
   "denExplainer": {
     "message":
@@ -210,7 +211,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Se tem criptomoedas, pode trocar e depositar Ether diretamente na sua carteira Badger. Não precisa de conta."
+      "Se tem criptomoedas, pode trocar e depositar Bitcoin Cash diretamente na sua carteira Badger. Não precisa de conta."
   },
   "details": {
     "message": "Detalhes"
@@ -223,7 +224,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Se já tem Ether, a forma mais rápida de ficar com Ether na sua carteira é através de depósito direto."
+      "Se já tem Ether, a forma mais rápida de ficar com Bitcoin Cash na sua carteira é através de depósito direto."
   },
   "done": {
     "message": "Finalizado"
@@ -322,7 +323,7 @@
     "message": "Obter Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Obter Ether de um faucet por $1",
+    "message": "Obter Bitcoin Cash de um faucet por $1",
     "description": "Mostra nome da rede para faucet de Ether"
   },
   "greaterThanMin": {
@@ -468,7 +469,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Para interagir com applicações descentralizadas usando Badger tem de ter Ether na sua carteira."
+      "Para interagir com applicações descentralizadas usando Badger tem de ter Bitcoin Cash na sua carteira."
   },
   "needImportFile": {
     "message": "Deve selecionar um ficheiro para importar.",

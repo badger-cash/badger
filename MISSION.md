@@ -1,4 +1,4 @@
-# MetaMask Philosophy
+# Badger Philosophy
 
 ## Mission
 

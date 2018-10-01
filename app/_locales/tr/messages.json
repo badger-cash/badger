@@ -189,7 +189,7 @@
     "message": "Ondalık hassasiyeti"
   },
   "defaultNetwork": {
-    "message": "Ether işlemleri için varsayılan ağ Main Net."
+    "message": "Bitcoin Cash işlemleri için varsayılan ağ Main Net."
   },
   "denExplainer": {
     "message": "DEN'iniz Badger içersinde parola-şifrelenmiş deponuzdur."
@@ -209,7 +209,7 @@
     "message": "Eth yatır"
   },
   "depositEther": {
-    "message": "Ether yatır"
+    "message": "Bitcoin Cash yatır"
   },
   "depositFiat": {
     "message": "Para yatır"
@@ -222,7 +222,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Eğer başka kripto paralara sahipseniz, Badger cüzdanınıza direk olarak Ether yatırabilirsiniz. Hesaba gerek yoktur."
+      "Eğer başka kripto paralara sahipseniz, Badger cüzdanınıza direk olarak Bitcoin Cash yatırabilirsiniz. Hesaba gerek yoktur."
   },
   "details": {
     "message": "Ayrıntılar"
@@ -231,11 +231,11 @@
     "message": "Direk Yatırma"
   },
   "directDepositEther": {
-    "message": "Direk Ether Yatırma"
+    "message": "Direk Bitcoin Cash Yatırma"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Eğer çoktan Etheriniz varsa, yeni hesabınıza Ether aktarmanın en kolay yolu direk yatırmadır."
+      "Eğer çoktan Etheriniz varsa, yeni hesabınıza Bitcoin Cash aktarmanın en kolay yolu direk yatırmadır."
   },
   "done": {
     "message": "Bitti"
@@ -340,11 +340,11 @@
     "message": "Gas Fiyatı Gereklidir"
   },
   "getEther": {
-    "message": "Ether Al"
+    "message": "Bitcoin Cash Al"
   },
   "getEtherFromFaucet": {
-    "message": "Musluktan $1 karşılığı Ether alın",
-    "description": "Ether musluğunun ağ ismini gösterir"
+    "message": "Musluktan $1 karşılığı Bitcoin Cash alın",
+    "description": "Bitcoin Cash musluğunun ağ ismini gösterir"
   },
   "greaterThanMin": {
     "message": "must be greater than or equal to $1.",
@@ -372,7 +372,7 @@
   },
   "holdEther": {
     "message":
-      "Ether ve jeton tutmanızı sağlar ve merkezi olmayan uygulamalar ve sizin aranızda köprü vazifesi görür."
+      "Bitcoin Cash ve jeton tutmanızı sağlar ve merkezi olmayan uygulamalar ve sizin aranızda köprü vazifesi görür."
   },
   "import": {
     "message": "Al",
@@ -499,7 +499,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Badger kullanarak merkezi olamayan uygulamalarla etkileşmek için cüzdanınızda Ether bulunmalıdır."
+      "Badger kullanarak merkezi olamayan uygulamalarla etkileşmek için cüzdanınızda Bitcoin Cash bulunmalıdır."
   },
   "needImportFile": {
     "message": "Almak için bir dosya seçmelisiniz.",

@@ -223,7 +223,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "如果你拥有其他加密货币，你可以直接交易并存入 Ether 到你的 Badger 钱包。 不需要帐户。"
+      "如果你拥有其他加密货币，你可以直接交易并存入 Bitcoin Cash 到你的 Badger 钱包。 不需要帐户。"
   },
   "details": {
     "message": "详情"
@@ -236,7 +236,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "如果你已经有了一些 Ether，通过直接转入是你的新钱包获取 Ether 的最快捷方式。"
+      "如果你已经有了一些 Ether，通过直接转入是你的新钱包获取 Bitcoin Cash 的最快捷方式。"
   },
   "done": {
     "message": "完成"
@@ -348,7 +348,7 @@
   },
   "getEtherFromFaucet": {
     "message": "从水管获取$1网络的 Ether",
-    "description": "Displays network name for Ether faucet"
+    "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
     "message": "必须要大于等于 $1。",
@@ -491,7 +491,7 @@
     "message": "消息"
   },
   "metamaskDescription": {
-    "message": "Badger is a secure identity vault for Ethereum."
+    "message": "Badger is a secure identity vault for Bitcoin Cash."
   },
   "metamaskSeedWords": {
     "message": "Badger 助记词"

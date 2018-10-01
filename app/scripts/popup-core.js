@@ -10,7 +10,7 @@ const setupMultiplex = require('./lib/stream-utils.js').setupMultiplex
 module.exports = initializePopup
 
 /**
- * Asynchronously initializes the MetaMask popup UI
+ * Asynchronously initializes the Badger popup UI
  *
  * @param {{ container: Element, connectionStream: * }} config Popup configuration object
  * @param {Function} cb Called when initialization is complete

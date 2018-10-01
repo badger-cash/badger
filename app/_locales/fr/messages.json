@@ -137,7 +137,8 @@
     "message": "RPC personnalisé"
   },
   "defaultNetwork": {
-    "message": "Le réseau par défaut pour les transactions Ether est Main Net."
+    "message":
+      "Le réseau par défaut pour les transactions Bitcoin Cash est Main Net."
   },
   "denExplainer": {
     "message":
@@ -171,7 +172,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Si vous possédez d'autres crypto-monnaies, vous pouvez échanger et déposer de l'Ether directement dans votre portefeuille Badger. Aucun compte n'est requis."
+      "Si vous possédez d'autres crypto-monnaies, vous pouvez échanger et déposer de l'Bitcoin Cash directement dans votre portefeuille Badger. Aucun compte n'est requis."
   },
   "details": {
     "message": "Détails"
@@ -184,7 +185,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Si vous avez déjà de l'Ether, le moyen le plus rapide d'obtenir des Ether dans votre nouveau portefeuille est par dépôt direct."
+      "Si vous avez déjà de l'Ether, le moyen le plus rapide d'obtenir des Bitcoin Cash dans votre nouveau portefeuille est par dépôt direct."
   },
   "done": {
     "message": "Fait"
@@ -265,7 +266,7 @@
     "message": "Obtenir des Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Obtenir de l'Ether d'une faucet pour $1",
+    "message": "Obtenir de l'Bitcoin Cash d'une faucet pour $1",
     "description": "Affiche le nom du réseau pour la faucet d'Ether"
   },
   "greaterThanMin": {
@@ -366,7 +367,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Pour interagir avec des applications décentralisées à l'aide de Badger, vous aurez besoin d'Ether dans votre portefeuille."
+      "Pour interagir avec des applications décentralisées à l'aide de Badger, vous aurez besoin d'Bitcoin Cash dans votre portefeuille."
   },
   "needImportFile": {
     "message": "Vous devez sélectionner un fichier à importer.",

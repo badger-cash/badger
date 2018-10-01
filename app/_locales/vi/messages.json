@@ -138,7 +138,7 @@
   },
   "defaultNetwork": {
     "message":
-      "Mạng lưới mặc định dùng cho các giao dịch Ether là Main Net (tiền ETH thật)."
+      "Mạng lưới mặc định dùng cho các giao dịch Bitcoin Cash là Main Net (tiền ETH thật)."
   },
   "denExplainer": {
     "message":
@@ -172,7 +172,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Nếu bạn sở hữu các đồng tiền điện tử khác, bạn có thể giao dịch và ký gửi Ether trực tiếp vào ví Badger của bạn. Không cần tạo thêm tài khoản."
+      "Nếu bạn sở hữu các đồng tiền điện tử khác, bạn có thể giao dịch và ký gửi Bitcoin Cash trực tiếp vào ví Badger của bạn. Không cần tạo thêm tài khoản."
   },
   "details": {
     "message": "Chi tiết"
@@ -181,11 +181,11 @@
     "message": "Ký gửi trực tiếp"
   },
   "directDepositEther": {
-    "message": "Ký gửi Ether trực tiếp"
+    "message": "Ký gửi Bitcoin Cash trực tiếp"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Nếu bạn đã có sẵn vài Ether, cách nhanh nhất để thêm Ether vào ví tiền mới của bạn là bằng ký gửi trực tiếp."
+      "Nếu bạn đã có sẵn vài Ether, cách nhanh nhất để thêm Bitcoin Cash vào ví tiền mới của bạn là bằng ký gửi trực tiếp."
   },
   "done": {
     "message": "Hoàn tất"
@@ -266,7 +266,7 @@
   },
   "getEtherFromFaucet": {
     "description": "Hiển thị tên mạng cho vòi Ether",
-    "message": "Lấy Ether từ vòi với giá $1"
+    "message": "Lấy Bitcoin Cash từ vòi với giá $1"
   },
   "greaterThanMin": {
     "description": "trợ giúp để nhập hex dưới dạng số thập phân",
@@ -287,7 +287,7 @@
     "message": "Ẩn mã token?"
   },
   "howToDeposit": {
-    "message": "Bạn muốn ký gửi Ether bằng cách nào?"
+    "message": "Bạn muốn ký gửi Bitcoin Cash bằng cách nào?"
   },
   "import": {
     "description": "Nút để nhập tài khoản từ một tập tin đã chọn",
@@ -365,7 +365,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Để tương tác với các ứng dụng phân tán bằng Badger, bạn sẽ phải cần có Ether trong ví của bạn."
+      "Để tương tác với các ứng dụng phân tán bằng Badger, bạn sẽ phải cần có Bitcoin Cash trong ví của bạn."
   },
   "needImportFile": {
     "description":

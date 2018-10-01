@@ -241,7 +241,7 @@
     "message": "Decimals of Precision"
   },
   "defaultNetwork": {
-    "message": "The default network for Ether transactions is Main Net."
+    "message": "The default network for Bitcoin Cash transactions is Main Net."
   },
   "denExplainer": {
     "message": "Your DEN is your password-encrypted storage within Badger."
@@ -274,7 +274,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "If you own other cryptocurrencies, you can trade and deposit Ether directly into your Badger wallet. No Account Needed."
+      "If you own other cryptocurrencies, you can trade and deposit Bitcoin Cash directly into your Badger wallet. No Account Needed."
   },
   "details": {
     "message": "Details"
@@ -283,11 +283,11 @@
     "message": "Direct Deposit"
   },
   "directDepositEther": {
-    "message": "Directly Deposit Ether"
+    "message": "Directly Deposit Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "If you already have some Ether, the quickest way to get Ether in your new wallet by direct deposit."
+      "If you already have some Bitcoin Cash, the quickest way to get BCH in your new wallet by direct deposit."
   },
   "done": {
     "message": "Done"
@@ -421,8 +421,8 @@
     "message": "Get Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Get Ether from a faucet for the $1",
-    "description": "Displays network name for Ether faucet"
+    "message": "Get Bitcoin Cashfrom a faucet for the $1",
+    "description": "Displays network name for Bitcoin Cashfaucet"
   },
   "getHelp": {
     "message": "Get Help."
@@ -607,7 +607,7 @@
     "message": "Message"
   },
   "metamaskDescription": {
-    "message": "Badger is a secure identity vault for Ethereum."
+    "message": "Badger is a secure identity vault for Bitcoin Cash."
   },
   "metamaskSeedWords": {
     "message": "Badger Seed Words"
@@ -623,7 +623,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "To interact with decentralized applications using Badger, you’ll need Ether in your wallet."
+      "To interact with decentralized applications using Badger, you’ll need Bitcoin Cash in your wallet."
   },
   "needImportFile": {
     "message": "You must select a file to import.",
@@ -635,7 +635,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Can not send negative amounts of ETH."
+    "message": "Can not send negative amounts of BCH."
   },
   "networks": {
     "message": "Networks"
@@ -945,7 +945,7 @@
     "message": "Send"
   },
   "sendETH": {
-    "message": "Send ETH"
+    "message": "Send BCH"
   },
   "sendTokens": {
     "message": "Send Tokens"
@@ -960,10 +960,10 @@
     "message": "Separate each word with a single space"
   },
   "onlySendToEtherAddress": {
-    "message": "Only send ETH to an Ethereum address."
+    "message": "Only send BCH to a Bitcoin Cash address."
   },
   "onlySendTokensToAccountAddress": {
-    "message": "Only send $1 to an Ethereum account address.",
+    "message": "Only send $1 to a Bitcoin Cash account address.",
     "description": "displays token symbol"
   },
   "orderOneHere": {
@@ -1098,7 +1098,7 @@
     "message": "To"
   },
   "toETHviaShapeShift": {
-    "message": "$1 to ETH via ShapeShift",
+    "message": "$1 to BCH via ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "token": {

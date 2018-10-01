@@ -221,7 +221,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "Pokud vlastníte jiné kryptoměny, můžete je směnit Ether a vložit ho přímo do peněženky Badger. Bez založení účtu."
+      "Pokud vlastníte jiné kryptoměny, můžete je směnit Bitcoin Cash a vložit ho přímo do peněženky Badger. Bez založení účtu."
   },
   "details": {
     "message": "Podrobnosti"
@@ -230,7 +230,7 @@
     "message": "Přímý vklad"
   },
   "directDepositEther": {
-    "message": "Vložit Ether přímo"
+    "message": "Vložit Bitcoin Cash přímo"
   },
   "directDepositEtherExplainer": {
     "message":
@@ -339,8 +339,8 @@
     "message": "Získejte Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Získejte Ether z faucetu za $1.",
-    "description": "Displays network name for Ether faucet"
+    "message": "Získejte Bitcoin Cash z faucetu za $1.",
+    "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
     "message": "musí být větší nebo roven $1.",
@@ -497,7 +497,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Potřebujete Ether v peněžence, abyste mohli pomocí Badgeru interagovat s decentralizovanými aplikacemi."
+      "Potřebujete Bitcoin Cash v peněžence, abyste mohli pomocí Badgeru interagovat s decentralizovanými aplikacemi."
   },
   "needImportFile": {
     "message": "Musíte zvolit soubor k importu.",

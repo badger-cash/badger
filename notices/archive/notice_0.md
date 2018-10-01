@@ -6,7 +6,7 @@ _Our Terms of Use have been updated as of September 5, 2016_
 
 ## 1. Acceptance of Terms
 
-Badger provides a platform for managing Bitcoin Cash (or "BCH") accounts, and allowing ordinary websites to interact with the Bitcoin Cash blockchain, while keeping the user in control over what transactions they approve, through our website located at[ ](http://metamask.io)[https://metamask.io/](https://metamask.io/) and browser plugin (the "Site") — which includes text, images, audio, code and other materials (collectively, the “Content”) and all of the features, and services provided. The Site, and any other features, tools, materials, or other services offered from time to time by Badger are referred to here as the “Service.” Please read these Terms of Use (the “Terms” or “Terms of Use”) carefully before using the Service. By using or otherwise accessing the Services, or clicking to accept or agree to these Terms where that option is made available, you (1) accept and agree to these Terms (2) consent to the collection, use, disclosure and other handling of information as described in our Privacy Policy and (3) any additional terms, rules and conditions of participation issued by Badger from time to time. If you do not agree to the Terms, then you may not access or use the Content or Services.
+Badger provides a platform for managing Bitcoin Cash (or "BCH") accounts, and allowing ordinary websites to interact with the Bitcoin Cash blockchain, while keeping the user in control over what transactions they approve, through our website located at[ ](http://metamask.io)[https://badgerwallet.cash/](https://badgerwallet.cash/) and browser plugin (the "Site") — which includes text, images, audio, code and other materials (collectively, the “Content”) and all of the features, and services provided. The Site, and any other features, tools, materials, or other services offered from time to time by Badger are referred to here as the “Service.” Please read these Terms of Use (the “Terms” or “Terms of Use”) carefully before using the Service. By using or otherwise accessing the Services, or clicking to accept or agree to these Terms where that option is made available, you (1) accept and agree to these Terms (2) consent to the collection, use, disclosure and other handling of information as described in our Privacy Policy and (3) any additional terms, rules and conditions of participation issued by Badger from time to time. If you do not agree to the Terms, then you may not access or use the Content or Services.
 
 ## 2. Modification of Terms of Use
 
@@ -60,7 +60,7 @@ SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMIT
 
 ## 8. Our Proprietary Rights
 
-All title, ownership and intellectual property rights in and to the Service are owned by Badger or its licensors. You acknowledge and agree that the Service contains proprietary and confidential information that is protected by applicable intellectual property and other laws. Except as expressly authorized by Badger, you agree not to copy, modify, rent, lease, loan, sell, distribute, perform, display or create derivative works based on the Service, in whole or in part. Badger issues a license for Badger, found [here](https://github.com/Badger/metamask-plugin/blob/master/LICENSE). For information on other licenses utilized in the development of Badger, please see our attribution page at: [https://metamask.io/attributions.html](https://metamask.io/attributions.html)
+All title, ownership and intellectual property rights in and to the Service are owned by Badger or its licensors. You acknowledge and agree that the Service contains proprietary and confidential information that is protected by applicable intellectual property and other laws. Except as expressly authorized by Badger, you agree not to copy, modify, rent, lease, loan, sell, distribute, perform, display or create derivative works based on the Service, in whole or in part. Badger issues a license for Badger, found [here](https://github.com/Badger/metamask-plugin/blob/master/LICENSE). For information on other licenses utilized in the development of Badger, please see our attribution page at: [https://badgerwallet.cash/attributions.html](https://badgerwallet.cash/attributions.html)
 
 ## 9. Links
 
@@ -170,8 +170,8 @@ Users with questions, complaints or claims with respect to the Service may conta
 
 ## 15 Related Links
 
-**[Terms of Use](https://metamask.io/terms.html)**
+**[Terms of Use](https://badgerwallet.cash/terms.html)**
 
-**[Privacy](https://metamask.io/privacy.html)**
+**[Privacy](https://badgerwallet.cash/privacy.html)**
 
-**[Attributions](https://metamask.io/attributions.html)**
+**[Attributions](https://badgerwallet.cash/attributions.html)**

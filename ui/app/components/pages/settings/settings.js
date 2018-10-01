@@ -17,7 +17,9 @@ import Button from '../../button'
 
 const getInfuraCurrencyOptions = () => {
   const sortedCurrencies = infuraCurrencies.objects.sort((a, b) => {
-    return a.quote.name.toLocaleLowerCase().localeCompare(b.quote.name.toLocaleLowerCase())
+    return a.quote.name
+      .toLocaleLowerCase()
+      .localeCompare(b.quote.name.toLocaleLowerCase())
   })
 
   return sortedCurrencies.map(({ quote: { code, name } }) => {
@@ -30,7 +32,7 @@ const getInfuraCurrencyOptions = () => {
 }
 
 const getLocaleOptions = () => {
-  return locales.map((locale) => {
+  return locales.map(locale => {
     return {
       displayValue: `${locale.name}`,
       key: locale.code,
@@ -49,7 +51,10 @@ class Settings extends Component {
   }
 
   renderBlockieOptIn () {
-    const { metamask: { useBlockie }, setUseBlockie } = this.props
+    const {
+      metamask: { useBlockie },
+      setUseBlockie,
+    } = this.props
 
     return h('div.settings__content-row', [
       h('div.settings__content-item', [
@@ -59,7 +64,7 @@ class Settings extends Component {
         h('div.settings__content-item-col', [
           h(ToggleButton, {
             value: useBlockie,
-            onToggle: (value) => setUseBlockie(!value),
+            onToggle: value => setUseBlockie(!value),
             activeLabel: '',
             inactiveLabel: '',
           }),
@@ -69,7 +74,12 @@ class Settings extends Component {
   }
 
   renderHexDataOptIn () {
-    const { metamask: { featureFlags: { sendHexData } }, setHexDataFeatureFlag } = this.props
+    const {
+      metamask: {
+        featureFlags: { sendHexData },
+      },
+      setHexDataFeatureFlag,
+    } = this.props
 
     return h('div.settings__content-row', [
       h('div.settings__content-item', [
@@ -83,7 +93,7 @@ class Settings extends Component {
         h('div.settings__content-item-col', [
           h(ToggleButton, {
             value: sendHexData,
-            onToggle: (value) => setHexDataFeatureFlag(!value),
+            onToggle: value => setHexDataFeatureFlag(!value),
             activeLabel: '',
             inactiveLabel: '',
           }),
@@ -93,12 +103,18 @@ class Settings extends Component {
   }
 
   renderCurrentConversion () {
-    const { metamask: { currentCurrency, conversionDate }, setCurrentCurrency } = this.props
+    const {
+      metamask: { currentCurrency, conversionDate },
+      setCurrentCurrency,
+    } = this.props
 
     return h('div.settings__content-row', [
       h('div.settings__content-item', [
         h('span', this.context.t('currentConversion')),
-        h('span.settings__content-description', `Updated ${Date(conversionDate)}`),
+        h(
+          'span.settings__content-description',
+          `Updated ${Date(conversionDate)}`
+        ),
       ]),
       h('div.settings__content-item', [
         h('div.settings__content-item-col', [
@@ -115,7 +131,9 @@ class Settings extends Component {
 
   renderCurrentLocale () {
     const { updateCurrentLocale, currentLocale } = this.props
-    const currentLocaleMeta = locales.find(locale => locale.code === currentLocale)
+    const currentLocaleMeta = locales.find(
+      locale => locale.code === currentLocale
+    )
     const currentLocaleName = currentLocaleMeta ? currentLocaleMeta.name : ''
 
     return h('div.settings__content-row', [
@@ -129,7 +147,7 @@ class Settings extends Component {
             placeholder: 'Select Locale',
             options: getLocaleOptions(),
             selectedOption: currentLocale,
-            onSelect: async (newLocale) => {
+            onSelect: async newLocale => {
               updateCurrentLocale(newLocale)
             },
           }),
@@ -139,11 +157,12 @@ class Settings extends Component {
   }
 
   renderCurrentProvider () {
-    const { metamask: { provider = {} } } = this.props
+    const {
+      metamask: { provider = {} },
+    } = this.props
     let title, value, color
 
     switch (provider.type) {
-
       case 'mainnet':
         title = this.context.t('currentNetwork')
         value = this.context.t('mainnet')
@@ -187,32 +206,32 @@ class Settings extends Component {
   }
 
   renderNewRpcUrl () {
-    return (
-      h('div.settings__content-row', [
-        h('div.settings__content-item', [
-          h('span', this.context.t('newRPC')),
-        ]),
-        h('div.settings__content-item', [
-          h('div.settings__content-item-col', [
-            h('input.settings__input', {
-              placeholder: this.context.t('newRPC'),
-              onChange: event => this.setState({ newRpc: event.target.value }),
-              onKeyPress: event => {
-                if (event.key === 'Enter') {
-                  this.validateRpc(this.state.newRpc)
-                }
-              },
-            }),
-            h('div.settings__rpc-save-button', {
+    return h('div.settings__content-row', [
+      h('div.settings__content-item', [h('span', this.context.t('newRPC'))]),
+      h('div.settings__content-item', [
+        h('div.settings__content-item-col', [
+          h('input.settings__input', {
+            placeholder: this.context.t('newRPC'),
+            onChange: event => this.setState({ newRpc: event.target.value }),
+            onKeyPress: event => {
+              if (event.key === 'Enter') {
+                this.validateRpc(this.state.newRpc)
+              }
+            },
+          }),
+          h(
+            'div.settings__rpc-save-button',
+            {
               onClick: event => {
                 event.preventDefault()
                 this.validateRpc(this.state.newRpc)
               },
-            }, this.context.t('save')),
-          ]),
+            },
+            this.context.t('save')
+          ),
         ]),
-      ])
-    )
+      ]),
+    ])
   }
 
   validateRpc (newRpc) {
@@ -232,46 +251,51 @@ class Settings extends Component {
   }
 
   renderStateLogs () {
-    return (
-      h('div.settings__content-row', [
-        h('div.settings__content-item', [
-          h('div', this.context.t('stateLogs')),
+    return h('div.settings__content-row', [
+      h('div.settings__content-item', [
+        h('div', this.context.t('stateLogs')),
+        h(
+          'div.settings__content-description',
+          this.context.t('stateLogsDescription')
+        ),
+      ]),
+      h('div.settings__content-item', [
+        h('div.settings__content-item-col', [
           h(
-            'div.settings__content-description',
-            this.context.t('stateLogsDescription')
-          ),
-        ]),
-        h('div.settings__content-item', [
-          h('div.settings__content-item-col', [
-            h(Button, {
+            Button,
+            {
               type: 'primary',
               large: true,
               className: 'settings__button',
               onClick (event) {
                 window.logStateString((err, result) => {
                   if (err) {
-                    this.state.dispatch(actions.displayWarning(this.context.t('stateLogError')))
+                    this.state.dispatch(
+                      actions.displayWarning(this.context.t('stateLogError'))
+                    )
                   } else {
                     exportAsFile('Badger State Logs.json', result)
                   }
                 })
               },
-            }, this.context.t('downloadStateLogs')),
-          ]),
+            },
+            this.context.t('downloadStateLogs')
+          ),
         ]),
-      ])
-    )
+      ]),
+    ])
   }
 
   renderSeedWords () {
     const { history } = this.props
 
-    return (
-      h('div.settings__content-row', [
-        h('div.settings__content-item', this.context.t('revealSeedWords')),
-        h('div.settings__content-item', [
-          h('div.settings__content-item-col', [
-            h(Button, {
+    return h('div.settings__content-row', [
+      h('div.settings__content-item', this.context.t('revealSeedWords')),
+      h('div.settings__content-item', [
+        h('div.settings__content-item-col', [
+          h(
+            Button,
+            {
               type: 'primary',
               large: true,
               className: 'settings__button--red',
@@ -279,22 +303,24 @@ class Settings extends Component {
                 event.preventDefault()
                 history.push(REVEAL_SEED_ROUTE)
               },
-            }, this.context.t('revealSeedWords')),
-          ]),
+            },
+            this.context.t('revealSeedWords')
+          ),
         ]),
-      ])
-    )
+      ]),
+    ])
   }
 
   renderOldUI () {
     const { setFeatureFlagToBeta } = this.props
 
-    return (
-      h('div.settings__content-row', [
-        h('div.settings__content-item', this.context.t('useOldUI')),
-        h('div.settings__content-item', [
-          h('div.settings__content-item-col', [
-            h(Button, {
+    return h('div.settings__content-row', [
+      h('div.settings__content-item', this.context.t('useOldUI')),
+      h('div.settings__content-item', [
+        h('div.settings__content-item-col', [
+          h(
+            Button,
+            {
               type: 'primary',
               large: true,
               className: 'settings__button--orange',
@@ -302,11 +328,12 @@ class Settings extends Component {
                 event.preventDefault()
                 setFeatureFlagToBeta()
               },
-            }, this.context.t('useOldUI')),
-          ]),
+            },
+            this.context.t('useOldUI')
+          ),
         ]),
-      ])
-    )
+      ]),
+    ])
   }
 
   renderResetAccount () {
@@ -316,38 +343,40 @@ class Settings extends Component {
       h('div.settings__content-item', this.context.t('resetAccount')),
       h('div.settings__content-item', [
         h('div.settings__content-item-col', [
-          h(Button, {
-            type: 'primary',
-            large: true,
-            className: 'settings__button--orange',
-            onClick (event) {
-              event.preventDefault()
-              showResetAccountConfirmationModal()
+          h(
+            Button,
+            {
+              type: 'primary',
+              large: true,
+              className: 'settings__button--orange',
+              onClick (event) {
+                event.preventDefault()
+                showResetAccountConfirmationModal()
+              },
             },
-          }, this.context.t('resetAccount')),
+            this.context.t('resetAccount')
+          ),
         ]),
       ]),
     ])
   }
 
   render () {
-    const { warning, isMascara } = this.props
+    const { warning } = this.props
 
-    return (
-      h('div.settings__content', [
-        warning && h('div.settings__error', warning),
-        this.renderCurrentConversion(),
-        this.renderCurrentLocale(),
-        // this.renderCurrentProvider(),
-        this.renderNewRpcUrl(),
-        this.renderStateLogs(),
-        this.renderSeedWords(),
-        !isMascara && this.renderOldUI(),
-        this.renderResetAccount(),
-        this.renderBlockieOptIn(),
-        this.renderHexDataOptIn(),
-      ])
-    )
+    return h('div.settings__content', [
+      warning && h('div.settings__error', warning),
+      this.renderCurrentConversion(),
+      this.renderCurrentLocale(),
+      // this.renderCurrentProvider(),
+      this.renderNewRpcUrl(),
+      this.renderStateLogs(),
+      this.renderSeedWords(),
+      // !isMascara && this.renderOldUI(),
+      this.renderResetAccount(),
+      this.renderBlockieOptIn(),
+      this.renderHexDataOptIn(),
+    ])
   }
 }
 
@@ -380,17 +409,22 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setCurrentCurrency: currency => dispatch(actions.setCurrentCurrency(currency)),
+    setCurrentCurrency: currency =>
+      dispatch(actions.setCurrentCurrency(currency)),
     setRpcTarget: newRpc => dispatch(actions.setRpcTarget(newRpc)),
     displayWarning: warning => dispatch(actions.displayWarning(warning)),
     revealSeedConfirmation: () => dispatch(actions.revealSeedConfirmation()),
     setUseBlockie: value => dispatch(actions.setUseBlockie(value)),
     updateCurrentLocale: key => dispatch(actions.updateCurrentLocale(key)),
     setFeatureFlagToBeta: () => {
-      return dispatch(actions.setFeatureFlag('betaUI', false, 'OLD_UI_NOTIFICATION_MODAL'))
+      return dispatch(
+        actions.setFeatureFlag('betaUI', false, 'OLD_UI_NOTIFICATION_MODAL')
+      )
     },
-    setHexDataFeatureFlag: (featureFlagShowState) => {
-      return dispatch(actions.setFeatureFlag('sendHexData', featureFlagShowState))
+    setHexDataFeatureFlag: featureFlagShowState => {
+      return dispatch(
+        actions.setFeatureFlag('sendHexData', featureFlagShowState)
+      )
     },
     showResetAccountConfirmationModal: () => {
       return dispatch(actions.showModal({ name: 'CONFIRM_RESET_ACCOUNT' }))
@@ -404,5 +438,8 @@ Settings.contextTypes = {
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Settings)

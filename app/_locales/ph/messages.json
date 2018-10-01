@@ -356,7 +356,7 @@
     "message": "Loose"
   },
   "mainnet": {
-    "message": "Main Bitcoin Cash Network"
+    "message": "Mainnet"
   },
   "message": {
     "message": "Mensahe"
@@ -497,7 +497,7 @@
     "message": "Rinkeby Test Network"
   },
   "ropsten": {
-    "message": "Bitcoin Cash Test Network"
+    "message": "Testnet"
   },
   "sampleAccountName": {
     "message": "Halimbawa: Ang aking bagong account",

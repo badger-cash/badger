@@ -41,13 +41,13 @@ Network.prototype.render = function () {
       h('i.fa.fa-caret-down'),
     ])
   } else if (providerName === 'mainnet') {
-    hoverText = 'Main Bitcoin Cash Network'
+    hoverText = 'Mainnet'
     iconName = 'ethereum-network'
   } else if (providerName === 'ropsten') {
-    hoverText = 'Bitcoin Cash Test Network'
+    hoverText = 'Testnet'
     iconName = 'ropsten-test-network'
   } else if (parseInt(networkNumber) === 3) {
-    hoverText = 'Bitcoin Cash Test Network'
+    hoverText = 'Testnet'
     iconName = 'ropsten-test-network'
   } else if (providerName === 'kovan') {
     hoverText = 'Kovan Test Network'

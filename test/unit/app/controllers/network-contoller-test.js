@@ -91,7 +91,7 @@ describe('Network utils', () => {
         expected: 'Kovan',
       }, {
         input: 'mainnet',
-        expected: 'Main Bitcoin Cash Network',
+        expected: 'Mainnet',
       },
     ]
 

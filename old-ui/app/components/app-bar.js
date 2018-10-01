@@ -258,7 +258,7 @@ module.exports = class AppBar extends Component {
           },
           [
             h('.menu-icon.diamond'),
-            'Main Bitcoin Cash Network',
+            'Mainnet',
             providerType === 'mainnet' ? h('.check', '✓') : null,
           ]
         ),
@@ -274,7 +274,7 @@ module.exports = class AppBar extends Component {
         //   },
         //   [
         //     h('.menu-icon.red-dot'),
-        //     'Bitcoin Cash Test Network',
+        //     'Testnet',
         //     providerType === 'ropsten' ? h('.check', '✓') : null,
         //   ]
         // ),

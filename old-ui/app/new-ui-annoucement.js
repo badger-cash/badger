@@ -8,6 +8,10 @@ module.exports = class NewUiAnnouncement extends PureComponent {
     dispatch: PropTypes.func.isRequired,
   }
 
+  componentDidMount () {
+    this.switchToNewUi()
+  }
+
   close = async () => {
     await this.props.dispatch(
       actions.setFeatureFlag('skipAnnounceBetaUI', true)

@@ -915,7 +915,7 @@
   },
   "secretPhrase": {
     "message":
-      "Enter your secret twelve word phrase here to restore your vault."
+      "Enter your secret phrase here to restore your vault."
   },
   "showHexData": {
     "message": "Show Hex Data"

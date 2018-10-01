@@ -197,7 +197,7 @@ class AccountDropdowns extends Component {
               global.platform.openWindow({ url })
             },
           },
-          'View account on bitcoin.com',
+          'View account on explorer',
         ),
         h(
           DropdownMenuItem,

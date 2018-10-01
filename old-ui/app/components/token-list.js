@@ -55,7 +55,8 @@ TokenList.prototype.render = function () {
   })
 
   return h('.full-flex-height', [
-    this.renderTokenStatusBar(),
+    this.renderComingSoon(),
+    // this.renderTokenStatusBar(),
 
     h('ol.full-flex-height.flex-column', {
       style: {
@@ -128,6 +129,22 @@ TokenList.prototype.renderTokenStatusBar = function () {
     }, [
       'ADD TOKEN',
     ]),
+  ])
+}
+
+TokenList.prototype.renderComingSoon = function () {
+  let msg = 'Tokens coming soon'
+
+  return h('div', {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      minHeight: '70px',
+      padding: '10px',
+    },
+  }, [
+    h('span', msg),
   ])
 }
 

@@ -59,7 +59,7 @@ module.exports = class AppBar extends Component {
     }
 
     return h('div.app-bar', [
-      this.renderAppBarNewUiNotice(),
+      // this.renderAppBarNewUiNotice(),
       this.renderAppBarAppHeader(),
     ])
   }
@@ -262,70 +262,70 @@ module.exports = class AppBar extends Component {
             providerType === 'mainnet' ? h('.check', '✓') : null,
           ]
         ),
-        h(
-          DropdownMenuItem,
-          {
-            key: 'ropsten',
-            closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
-            onClick: () => dispatch(actions.setProviderType('ropsten')),
-            style: {
-              fontSize: '18px',
-            },
-          },
-          [
-            h('.menu-icon.red-dot'),
-            'Bitcoin Cash Test Network',
-            providerType === 'ropsten' ? h('.check', '✓') : null,
-          ]
-        ),
-        h(
-          DropdownMenuItem,
-          {
-            key: 'kovan',
-            closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
-            onClick: () => dispatch(actions.setProviderType('kovan')),
-            style: {
-              fontSize: '18px',
-            },
-          },
-          [
-            h('.menu-icon.hollow-diamond'),
-            'Kovan Test Network',
-            providerType === 'kovan' ? h('.check', '✓') : null,
-          ]
-        ),
-        h(
-          DropdownMenuItem,
-          {
-            key: 'rinkeby',
-            closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
-            onClick: () => dispatch(actions.setProviderType('rinkeby')),
-            style: {
-              fontSize: '18px',
-            },
-          },
-          [
-            h('.menu-icon.golden-square'),
-            'Rinkeby Test Network',
-            providerType === 'rinkeby' ? h('.check', '✓') : null,
-          ]
-        ),
-        h(
-          DropdownMenuItem,
-          {
-            key: 'default',
-            closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
-            onClick: () => dispatch(actions.setProviderType('localhost')),
-            style: {
-              fontSize: '18px',
-            },
-          },
-          [
-            h('i.fa.fa-question-circle.fa-lg.menu-icon'),
-            'Localhost 8545',
-            activeNetwork === LOCALHOST_RPC_URL ? h('.check', '✓') : null,
-          ]
-        ),
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     key: 'ropsten',
+        //     closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        //     onClick: () => dispatch(actions.setProviderType('ropsten')),
+        //     style: {
+        //       fontSize: '18px',
+        //     },
+        //   },
+        //   [
+        //     h('.menu-icon.red-dot'),
+        //     'Bitcoin Cash Test Network',
+        //     providerType === 'ropsten' ? h('.check', '✓') : null,
+        //   ]
+        // ),
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     key: 'kovan',
+        //     closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        //     onClick: () => dispatch(actions.setProviderType('kovan')),
+        //     style: {
+        //       fontSize: '18px',
+        //     },
+        //   },
+        //   [
+        //     h('.menu-icon.hollow-diamond'),
+        //     'Kovan Test Network',
+        //     providerType === 'kovan' ? h('.check', '✓') : null,
+        //   ]
+        // ),
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     key: 'rinkeby',
+        //     closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        //     onClick: () => dispatch(actions.setProviderType('rinkeby')),
+        //     style: {
+        //       fontSize: '18px',
+        //     },
+        //   },
+        //   [
+        //     h('.menu-icon.golden-square'),
+        //     'Rinkeby Test Network',
+        //     providerType === 'rinkeby' ? h('.check', '✓') : null,
+        //   ]
+        // ),
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     key: 'default',
+        //     closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        //     onClick: () => dispatch(actions.setProviderType('localhost')),
+        //     style: {
+        //       fontSize: '18px',
+        //     },
+        //   },
+        //   [
+        //     h('i.fa.fa-question-circle.fa-lg.menu-icon'),
+        //     'Localhost 8545',
+        //     activeNetwork === LOCALHOST_RPC_URL ? h('.check', '✓') : null,
+        //   ]
+        // ),
 
         this.renderCustomOption(provider),
         this.renderCommonRpc(rpcList, provider),

@@ -119,8 +119,6 @@ WalletView.prototype.render = function () {
   // console.log('walletview, selectedAccount:', selectedAccount)
 
   const checksummedAddress = checksumAddress(selectedAddress)
-  log.debug('CHECKSUMED', checksummedAddress)
-  log.debug(checksummedAddress)
 
   if (!selectedAddress) {
     throw new Error('selectedAddress should not be ' + String(selectedAddress))

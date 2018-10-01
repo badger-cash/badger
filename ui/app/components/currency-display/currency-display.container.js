@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
 import CurrencyDisplay from './currency-display.component'
-import { getValueFromWeiHex, formatCurrency } from '../../helpers/confirm-transaction/util'
+import { getValueFromSatoshis, formatCurrency } from '../../helpers/confirm-transaction/util'
 
 const mapStateToProps = (state, ownProps) => {
-  const { value, numberOfDecimals = 2, currency, denomination, hideLabel } = ownProps
+  const { value, numberOfDecimals = 8, currency, denomination, hideLabel } = ownProps
   const { metamask: { currentCurrency, conversionRate } } = state
 
   const toCurrency = currency || currentCurrency
-  const convertedValue = getValueFromWeiHex({
+  const convertedValue = getValueFromSatoshis({
     value, toCurrency, conversionRate, numberOfDecimals, toDenomination: denomination,
   })
   const formattedValue = formatCurrency(convertedValue, toCurrency)

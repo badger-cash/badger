@@ -68,7 +68,7 @@ BalanceComponent.prototype.renderBalance = function () {
   const { shorten, account } = props
   const balanceValue = account && account.balance
   const needsParse = 'needsParse' in props ? props.needsParse : true
-  const formattedBalance = balanceValue ? formatBalance(balanceValue, 6, needsParse) : '...'
+  const formattedBalance = balanceValue ? formatBalance(balanceValue, 8, needsParse) : '...'
   const showFiat = 'showFiat' in props ? props.showFiat : true
 
   if (formattedBalance === 'None' || formattedBalance === '...') {

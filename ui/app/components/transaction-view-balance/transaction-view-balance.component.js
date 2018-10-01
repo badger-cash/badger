@@ -36,7 +36,7 @@ export default class TransactionViewBalance extends PureComponent {
           className="transaction-view-balance__primary-balance"
           value={balance}
           currency={BCH}
-          numberOfDecimals={3}
+          numberOfDecimals={8}
         />
         <CurrencyDisplay
           className="transaction-view-balance__secondary-balance"

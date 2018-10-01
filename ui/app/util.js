@@ -70,33 +70,35 @@ function valuesFor (obj) {
 
 function addressSummary (address, firstSegLength = 10, lastSegLength = 4, includeHex = true) {
   if (!address) return ''
-  let checked = checksumAddress(address)
-  if (!includeHex) {
-    checked = ethUtil.stripHexPrefix(checked)
-  }
-  return checked ? checked.slice(0, firstSegLength) + '...' + checked.slice(checked.length - lastSegLength) : '...'
+
+  return address ? address.slice(12, 12 + firstSegLength) + '...' + address.slice(address.length - lastSegLength) : '...'
 }
 
 function miniAddressSummary (address) {
   if (!address) return ''
-  var checked = checksumAddress(address)
-  return checked ? checked.slice(0, 4) + '...' + checked.slice(-4) : '...'
+  return address ? address.slice(12, 16) + '...' + address.slice(-4) : '...'
 }
 
 function isValidAddress (address) {
-  var prefixed = ethUtil.addHexPrefix(address)
-  if (address === '0x0000000000000000000000000000000000000000') return false
-  return (isAllOneCase(prefixed) && ethUtil.isValidAddress(prefixed)) || ethUtil.isValidChecksumAddress(prefixed)
+  return true
+
+  // TODO: Validate address
+  // var prefixed = ethUtil.addHexPrefix(address)
+  // if (address === '0x0000000000000000000000000000000000000000') return false
+  // return (isAllOneCase(prefixed) && ethUtil.isValidAddress(prefixed)) || ethUtil.isValidChecksumAddress(prefixed)
+}
+
+function isInvalidChecksumAddress (address) {
+  return false
+
+  // TODO: Validate checksum address
+  // var prefixed = ethUtil.addHexPrefix(address)
+  // if (address === '0x0000000000000000000000000000000000000000') return false
+  // return !isAllOneCase(prefixed) && !ethUtil.isValidChecksumAddress(prefixed) && ethUtil.isValidAddress(prefixed)
 }
 
 function isValidENSAddress (address) {
   return address.match(/^.{7,}\.(eth|test)$/)
-}
-
-function isInvalidChecksumAddress (address) {
-  var prefixed = ethUtil.addHexPrefix(address)
-  if (address === '0x0000000000000000000000000000000000000000') return false
-  return !isAllOneCase(prefixed) && !ethUtil.isValidChecksumAddress(prefixed) && ethUtil.isValidAddress(prefixed)
 }
 
 function isAllOneCase (address) {
@@ -108,30 +110,28 @@ function isAllOneCase (address) {
 
 // Takes wei Hex, returns wei BN, even if input is null
 function numericBalance (balance) {
-  if (!balance) return new ethUtil.BN(0, 16)
-  var stripped = ethUtil.stripHexPrefix(balance)
-  return new ethUtil.BN(stripped, 16)
+  if (!balance) return new ethUtil.BN(0, 10)
+  return new ethUtil.BN(balance, 10)
 }
 
-// Takes  hex, returns [beforeDecimal, afterDecimal]
+// Takes  satoshis, returns [beforeDecimal, afterDecimal]
 function parseBalance (balance) {
-  var beforeDecimal, afterDecimal
-  const wei = numericBalance(balance)
-  var weiString = wei.toString()
+  const satoshis = numericBalance(balance)
+  var satoshisString = satoshis.toString()
   const trailingZeros = /0+$/
 
-  beforeDecimal = weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0'
-  afterDecimal = ('000000000000000000' + wei).slice(-18).replace(trailingZeros, '')
+  var beforeDecimal = satoshisString.length > 8 ? satoshisString.slice(0, satoshisString.length - 8) : '0'
+  var afterDecimal = ('00000000' + satoshis).slice(-8).replace(trailingZeros, '')
   if (afterDecimal === '') { afterDecimal = '0' }
   return [beforeDecimal, afterDecimal]
 }
 
-// Takes wei hex, returns an object with three properties.
+// Takes BCH amount, returns an object with three properties.
 // Its "formatted" property is what we generally use to render values.
-function formatBalance (balance, decimalsToKeep, needsParse = true) {
+function formatBalance (balance, decimalsToKeep = 8, needsParse = true) {
   var parsed = needsParse ? parseBalance(balance) : balance.split('.')
   var beforeDecimal = parsed[0]
-  var afterDecimal = parsed[1]
+  var afterDecimal = parsed.length == 2 ? parsed[1] : '0'
   var formatted = 'None'
   if (decimalsToKeep === undefined) {
     if (beforeDecimal === '0') {
@@ -151,7 +151,7 @@ function formatBalance (balance, decimalsToKeep, needsParse = true) {
 }
 
 
-function generateBalanceObject (formattedBalance, decimalsToKeep = 1) {
+function generateBalanceObject (formattedBalance, decimalsToKeep = 8) {
   var balance = formattedBalance.split(' ')[0]
   var label = formattedBalance.split(' ')[1]
   var beforeDecimal = balance.split('.')[0]
@@ -172,7 +172,7 @@ function generateBalanceObject (formattedBalance, decimalsToKeep = 1) {
   return { balance, label, shortBalance }
 }
 
-function shortenBalance (balance, decimalsToKeep = 1) {
+function shortenBalance (balance, decimalsToKeep = 8) {
   var truncatedValue
   var convertedBalance = parseFloat(balance)
   if (convertedBalance > 1000000) {
@@ -218,9 +218,6 @@ function normalizeEthStringToWei (str) {
     var decimal = parts[1]
     while (decimal.length < 18) {
       decimal += '0'
-    }
-    if (decimal.length > 18) {
-      decimal = decimal.slice(0, 18)
     }
     const decimalBN = new ethUtil.BN(decimal, 10)
     eth = eth.add(decimalBN)
@@ -302,13 +299,14 @@ function getTokenAddressFromTokenObject (token) {
  * @returns {String} - checksummed address
  */
 function checksumAddress (address) {
-  return address ? ethUtil.toChecksumAddress(address) : ''
+  return address || ''
+  // return address ? ethUtil.toChecksumAddress(address) : ''
 }
 
 function addressSlicer (address = '') {
-  if (address.length < 11) {
+  if (address.length < 18) {
     return address
   }
 
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
+  return `${address.slice(12, 18)}...${address.slice(-4)}`
 }

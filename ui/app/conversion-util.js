@@ -37,6 +37,9 @@ const BIG_NUMBER_WEI_MULTIPLIER = new BigNumber('1000000000000000000')
 const BIG_NUMBER_GWEI_MULTIPLIER = new BigNumber('1000000000')
 const BIG_NUMBER_ETH_MULTIPLIER = new BigNumber('1')
 
+const BIG_NUMBER_SAT_MULTIPLIER = new BigNumber('100000000')
+const BIG_NUMBER_BCH_MULTIPLIER = new BigNumber('1')
+
 // Individual Setters
 const convert = R.invoker(1, 'times')
 const round = R.invoker(2, 'round')(R.__, BigNumber.ROUND_HALF_DOWN)
@@ -54,11 +57,15 @@ const toNormalizedDenomination = {
   WEI: bigNumber => bigNumber.div(BIG_NUMBER_WEI_MULTIPLIER),
   GWEI: bigNumber => bigNumber.div(BIG_NUMBER_GWEI_MULTIPLIER),
   ETH: bigNumber => bigNumber.div(BIG_NUMBER_ETH_MULTIPLIER),
+  SAT: bigNumber => bigNumber.div(BIG_NUMBER_SAT_MULTIPLIER),
+  BCH: bigNumber => bigNumber.div(BIG_NUMBER_BCH_MULTIPLIER),
 }
 const toSpecifiedDenomination = {
   WEI: bigNumber => bigNumber.times(BIG_NUMBER_WEI_MULTIPLIER).round(),
   GWEI: bigNumber => bigNumber.times(BIG_NUMBER_GWEI_MULTIPLIER).round(9),
   ETH: bigNumber => bigNumber.times(BIG_NUMBER_ETH_MULTIPLIER).round(9),
+  SAT: bigNumber => bigNumber.times(BIG_NUMBER_SAT_MULTIPLIER),
+  BCH: bigNumber => bigNumber.times(BIG_NUMBER_BCH_MULTIPLIER).round(8),
 }
 const baseChange = {
   hex: n => n.toString(16),

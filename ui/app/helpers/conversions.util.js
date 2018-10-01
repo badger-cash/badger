@@ -1,5 +1,5 @@
 import { conversionUtil } from '../conversion-util'
-import { BCH, GWEI, WEI } from '../constants/common'
+import { BCH, GWEI, WEI, SAT } from '../constants/common'
 
 export function hexToDecimal (hexValue) {
   return conversionUtil(hexValue, {
@@ -49,6 +49,25 @@ export function getValueFromWeiHex ({
     toCurrency,
     numberOfDecimals,
     fromDenomination: WEI,
+    toDenomination,
+    conversionRate,
+  })
+}
+
+export function getValueFromSatoshis ({
+  value,
+  toCurrency,
+  conversionRate,
+  numberOfDecimals,
+  toDenomination,
+}) {
+  return conversionUtil(value, {
+    fromNumericBase: 'dec',
+    toNumericBase: 'dec',
+    fromCurrency: BCH,
+    toCurrency,
+    numberOfDecimals,
+    fromDenomination: SAT,
     toDenomination,
     conversionRate,
   })

@@ -163,7 +163,7 @@ AccountMenu.prototype.renderAccounts = function () {
     const isSelected = identity.address === selectedAddress
 
     const balanceValue = accounts[address] ? accounts[address].balance : ''
-    const formattedBalance = balanceValue ? formatBalance(balanceValue, 6) : '...'
+    const formattedBalance = balanceValue ? formatBalance(balanceValue, 8) : '...'
     const simpleAddress = identity.address.substring(2).toLowerCase()
 
     const keyring = keyrings.find((kr) => {

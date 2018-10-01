@@ -474,7 +474,7 @@
   },
   "holdEther": {
     "message":
-      "It allows you to hold ether & tokens, and serves as your bridge to decentralized applications."
+      "It allows you to hold bitcoin cash & tokens, and serves as your bridge to decentralized applications."
   },
   "import": {
     "message": "Import",
@@ -914,8 +914,7 @@
     "message": "Search Results"
   },
   "secretPhrase": {
-    "message":
-      "Enter your secret phrase here to restore your vault."
+    "message": "Enter your secret phrase here to restore your vault."
   },
   "showHexData": {
     "message": "Show Hex Data"
@@ -1260,7 +1259,7 @@
     "message": "Welcome Back!"
   },
   "welcomeBeta": {
-    "message": "Welcome to Badger Beta"
+    "message": "Welcome to Badger"
   },
   "whatsThis": {
     "message": "What's this?"

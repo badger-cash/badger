@@ -2,11 +2,10 @@ import EventEmitter from 'events'
 import h from 'react-hyperscript'
 import { Component } from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
-import {closeWelcomeScreen} from './actions'
-import Mascot from './components/mascot'
+import { closeWelcomeScreen } from './actions'
 import { INITIALIZE_CREATE_PASSWORD_ROUTE } from './routes'
 
 class WelcomeScreen extends Component {
@@ -41,27 +40,30 @@ class WelcomeScreen extends Component {
 
   render () {
     return h('div.welcome-screen', [
+      h('div.welcome-screen__info', [
+        h('img', {
+          src: '/images/bch_logo.svg',
+          width: '225',
+          height: '225',
+        }),
 
-        h('div.welcome-screen__info', [
+        h('div.welcome-screen__info__header', this.context.t('welcomeBeta')),
 
-          h(Mascot, {
-            animationEventEmitter: this.animationEventEmitter,
-            width: '225',
-            height: '225',
-          }),
+        h(
+          'div.welcome-screen__info__copy',
+          this.context.t('metamaskDescription')
+        ),
 
-          h('div.welcome-screen__info__header', this.context.t('welcomeBeta')),
+        h('div.welcome-screen__info__copy', this.context.t('holdEther')),
 
-          h('div.welcome-screen__info__copy', this.context.t('metamaskDescription')),
-
-          h('div.welcome-screen__info__copy', this.context.t('holdEther')),
-
-          h('button.welcome-screen__button', {
+        h(
+          'button.welcome-screen__button',
+          {
             onClick: this.initiateAccountCreation,
-          }, this.context.t('continue')),
-
-        ]),
-
+          },
+          this.context.t('continue')
+        ),
+      ]),
     ])
   }
 }

@@ -3,7 +3,6 @@ const { Component } = require('react')
 const PropTypes = require('prop-types')
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
-const Mascot = require('../components/mascot')
 const actions = require('../actions')
 const Tooltip = require('../components/tooltip')
 const getCaretCoordinates = require('textarea-caret')
@@ -35,34 +34,39 @@ class InitializeMenuScreen extends Component {
   render () {
     const { warning } = this.state
 
-    return (
-      h('.initialize-screen.flex-column.flex-center', [
-
-        h(Mascot, {
-          animationEventEmitter: this.animationEventEmitter,
-        }),
-
-        h('h1', {
+    return h('.initialize-screen.flex-column.flex-center', [
+      h(
+        'h1',
+        {
           style: {
             fontSize: '1.3em',
             textTransform: 'uppercase',
             color: '#7F8082',
             marginBottom: 10,
           },
-        }, this.context.t('appName')),
+        },
+        this.context.t('appName')
+      ),
 
-        h('div', [
-          h('h3', {
+      h('div', [
+        h(
+          'h3',
+          {
             style: {
               fontSize: '0.8em',
               color: '#7F8082',
               display: 'inline',
             },
-          }, this.context.t('encryptNewDen')),
+          },
+          this.context.t('encryptNewDen')
+        ),
 
-          h(Tooltip, {
+        h(
+          Tooltip,
+          {
             title: this.context.t('denExplainer'),
-          }, [
+          },
+          [
             h('i.fa.fa-question-circle.pointer', {
               style: {
                 fontSize: '18px',
@@ -72,57 +76,67 @@ class InitializeMenuScreen extends Component {
                 marginLeft: '4px',
               },
             }),
-          ]),
-        ]),
+          ]
+        ),
+      ]),
 
-        h('span.error.in-progress-notification', warning),
+      h('span.error.in-progress-notification', warning),
 
-        // password
-        h('input.large-input.letter-spacey', {
-          type: 'password',
-          id: 'password-box',
-          placeholder: this.context.t('newPassword'),
-          onInput: this.inputChanged.bind(this),
-          style: {
-            width: 260,
-            marginTop: 12,
-          },
-        }),
+      // password
+      h('input.large-input.letter-spacey', {
+        type: 'password',
+        id: 'password-box',
+        placeholder: this.context.t('newPassword'),
+        onInput: this.inputChanged.bind(this),
+        style: {
+          width: 260,
+          marginTop: 12,
+        },
+      }),
 
-        // confirm password
-        h('input.large-input.letter-spacey', {
-          type: 'password',
-          id: 'password-box-confirm',
-          placeholder: this.context.t('confirmPassword'),
-          onKeyPress: this.createVaultOnEnter.bind(this),
-          onInput: this.inputChanged.bind(this),
-          style: {
-            width: 260,
-            marginTop: 16,
-          },
-        }),
+      // confirm password
+      h('input.large-input.letter-spacey', {
+        type: 'password',
+        id: 'password-box-confirm',
+        placeholder: this.context.t('confirmPassword'),
+        onKeyPress: this.createVaultOnEnter.bind(this),
+        onInput: this.inputChanged.bind(this),
+        style: {
+          width: 260,
+          marginTop: 16,
+        },
+      }),
 
-
-        h('button.primary', {
+      h(
+        'button.primary',
+        {
           onClick: this.createNewVaultAndKeychain.bind(this),
           style: {
             margin: 12,
           },
-        }, this.context.t('createDen')),
+        },
+        this.context.t('createDen')
+      ),
 
-        h('.flex-row.flex-center.flex-grow', [
-          h('p.pointer', {
+      h('.flex-row.flex-center.flex-grow', [
+        h(
+          'p.pointer',
+          {
             onClick: () => this.showRestoreVault(),
             style: {
               fontSize: '0.8em',
               color: 'rgb(247, 134, 28)',
               textDecoration: 'underline',
             },
-          }, this.context.t('importDen')),
-        ]),
+          },
+          this.context.t('importDen')
+        ),
+      ]),
 
-        h('.flex-row.flex-center.flex-grow', [
-          h('p.pointer', {
+      h('.flex-row.flex-center.flex-grow', [
+        h(
+          'p.pointer',
+          {
             onClick: this.showOldUI.bind(this),
             style: {
               fontSize: '0.8em',
@@ -130,11 +144,11 @@ class InitializeMenuScreen extends Component {
               textDecoration: 'underline',
               marginTop: '32px',
             },
-          }, this.context.t('classicInterface')),
-        ]),
-
-      ])
-    )
+          },
+          this.context.t('classicInterface')
+        ),
+      ]),
+    ])
   }
 
   createVaultOnEnter (event) {
@@ -163,7 +177,8 @@ class InitializeMenuScreen extends Component {
       return
     }
 
-    this.props.createNewVaultAndKeychain(password)
+    this.props
+      .createNewVaultAndKeychain(password)
       .then(() => history.push(DEFAULT_ROUTE))
   }
 
@@ -188,7 +203,9 @@ class InitializeMenuScreen extends Component {
   }
 
   showOldUI () {
-    this.props.dispatch(actions.setFeatureFlag('betaUI', false, 'OLD_UI_NOTIFICATION_MODAL'))
+    this.props.dispatch(
+      actions.setFeatureFlag('betaUI', false, 'OLD_UI_NOTIFICATION_MODAL')
+    )
   }
 }
 
@@ -206,7 +223,9 @@ InitializeMenuScreen.contextTypes = {
 }
 
 const mapStateToProps = state => {
-  const { metamask: { isInitialized, isUnlocked } } = state
+  const {
+    metamask: { isInitialized, isUnlocked },
+  } = state
 
   return {
     isInitialized,
@@ -216,9 +235,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createNewVaultAndKeychain: password => dispatch(actions.createNewVaultAndKeychain(password)),
+    createNewVaultAndKeychain: password =>
+      dispatch(actions.createNewVaultAndKeychain(password)),
     markPasswordForgotten: () => dispatch(actions.markPasswordForgotten()),
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(InitializeMenuScreen)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InitializeMenuScreen)

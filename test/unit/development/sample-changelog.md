@@ -422,7 +422,7 @@ rollback to 3.10.0 due to bug
 ## 3.5.2 2017-3-28
 
 - Fix bug where gas estimate totals were sometimes wrong.
-- Add link to Kovan Test Faucet instructions on buy view.
+- Add link to Kovan Faucet instructions on buy view.
 - Inject web3 into loaded iFrames.
 
 ## 3.5.1 2017-3-27

@@ -41,7 +41,7 @@ describe('', function () {
     assert.equal(rinkebyUrl, 'http://free.bitcoin.com/')
   })
 
-  it('returns kovan github test faucet for network 42', function () {
+  it('returns kovan github Faucet for network 42', function () {
     const kovanUrl = getBuyEthUrl(kovan)
     assert.equal(kovanUrl, 'https://github.com/kovan-testnet/faucet')
   })

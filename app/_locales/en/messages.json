@@ -421,7 +421,7 @@
     "message": "Get Bitcoin Cash"
   },
   "getEtherFromFaucet": {
-    "message": "Get Bitcoin Cash from a faucet for the $1",
+    "message": "Get Bitcoin Cash from a faucet",
     "description": "Displays network name for Bitcoin Cash faucet"
   },
   "getHelp": {
@@ -1091,7 +1091,7 @@
     "message": "Terms of Use"
   },
   "testFaucet": {
-    "message": "Test Faucet"
+    "message": "Faucet"
   },
   "to": {
     "message": "To"

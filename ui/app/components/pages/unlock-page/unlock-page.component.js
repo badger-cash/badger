@@ -6,7 +6,6 @@ import { ENVIRONMENT_TYPE_POPUP } from '../../../../../app/scripts/lib/enums'
 import { getEnvironmentType } from '../../../../../app/scripts/lib/util'
 import getCaretCoordinates from 'textarea-caret'
 import { EventEmitter } from 'events'
-import Mascot from '../../mascot'
 import { DEFAULT_ROUTE, RESTORE_VAULT_ROUTE } from '../../../routes'
 
 export default class UnlockPage extends Component {
@@ -102,7 +101,7 @@ export default class UnlockPage extends Component {
         onClick={event => this.handleSubmit(event)}
         disableRipple
       >
-        { this.context.t('login') }
+        {this.context.t('login')}
       </Button>
     )
   }
@@ -116,16 +115,15 @@ export default class UnlockPage extends Component {
       <div className="unlock-page__container">
         <div className="unlock-page">
           <div className="unlock-page__mascot-container">
-            <Mascot
-              animationEventEmitter={this.animationEventEmitter}
-              width="120"
-              height="120"
+            <img
+              className="app-header__metafox-logo app-header__metafox-logo--icon"
+              src="/images/bch_logo.svg"
+              height={120}
+              width={125}
             />
           </div>
-          <h1 className="unlock-page__title">
-            { t('welcomeBack') }
-          </h1>
-          <div>{ t('unlockMessage') }</div>
+          <h1 className="unlock-page__title">{t('welcomeBack')}</h1>
+          <div>{t('unlockMessage')}</div>
           <form
             className="unlock-page__form"
             onSubmit={event => this.handleSubmit(event)}
@@ -143,7 +141,7 @@ export default class UnlockPage extends Component {
               fullWidth
             />
           </form>
-          { this.renderSubmitButton() }
+          {this.renderSubmitButton()}
           <div className="unlock-page__links">
             <div
               className="unlock-page__link"
@@ -151,12 +149,15 @@ export default class UnlockPage extends Component {
                 markPasswordForgotten()
                 history.push(RESTORE_VAULT_ROUTE)
 
-                if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
+                if (
+                  getEnvironmentType(window.location.href) ===
+                  ENVIRONMENT_TYPE_POPUP
+                ) {
                   global.platform.openExtensionInBrowser()
                 }
               }}
             >
-              { t('restoreFromSeed') }
+              {t('restoreFromSeed')}
             </div>
             <div
               className="unlock-page__link unlock-page__link--import"
@@ -164,12 +165,15 @@ export default class UnlockPage extends Component {
                 markPasswordForgotten()
                 history.push(RESTORE_VAULT_ROUTE)
 
-                if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
+                if (
+                  getEnvironmentType(window.location.href) ===
+                  ENVIRONMENT_TYPE_POPUP
+                ) {
                   global.platform.openExtensionInBrowser()
                 }
               }}
             >
-              { t('importUsingSeed') }
+              {t('importUsingSeed')}
             </div>
           </div>
         </div>

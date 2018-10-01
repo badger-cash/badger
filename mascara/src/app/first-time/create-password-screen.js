@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import { createNewVaultAndKeychain } from '../../../../ui/app/actions'
 import Breadcrumbs from './breadcrumbs'
 import EventEmitter from 'events'
-import Mascot from '../../../../ui/app/components/mascot'
 import classnames from 'classnames'
 import {
   INITIALIZE_UNIQUE_IMAGE_ROUTE,
@@ -63,7 +62,7 @@ class CreatePasswordScreen extends Component {
     return password === confirmPassword
   }
 
-  createAccount = (event) => {
+  createAccount = event => {
     event.preventDefault()
 
     if (!this.isValid()) {
@@ -74,8 +73,9 @@ class CreatePasswordScreen extends Component {
     const { createAccount, history } = this.props
 
     this.setState({ isLoading: true })
-    createAccount(password)
-      .then(() => history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE))
+    createAccount(password).then(() =>
+      history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE)
+    )
   }
 
   handlePasswordChange (password) {
@@ -112,27 +112,31 @@ class CreatePasswordScreen extends Component {
 
     return (
       <div className={classnames({ 'first-view-main-wrapper': !isMascara })}>
-        <div className={classnames({
-          'first-view-main': !isMascara,
-          'first-view-main__mascara': isMascara,
-        })}>
-          {isMascara && <div className="mascara-info first-view-phone-invisible">
-            <Mascot
-              animationEventEmitter={this.animationEventEmitter}
-              width="225"
-              height="225"
-            />
-            <div className="info">
-              Badger is a secure identity vault for Bitcoin Cash.
+        <div
+          className={classnames({
+            'first-view-main': !isMascara,
+            'first-view-main__mascara': isMascara,
+          })}
+        >
+          {isMascara && (
+            <div className="mascara-info first-view-phone-invisible">
+              <img
+                className="app-header__metafox-logo app-header__metafox-logo--icon"
+                src="/images/bch_logo.svg"
+                height={225}
+                width={225}
+              />
+              <div className="info">
+                Badger is a secure identity vault for Bitcoin Cash.
+              </div>
+              <div className="info">
+                It allows you to hold bitcoin cash & tokens, and interact with
+                decentralized applications.
+              </div>
             </div>
-            <div className="info">
-              It allows you to hold ether & tokens, and interact with decentralized applications.
-            </div>
-          </div>}
+          )}
           <form className="create-password">
-            <div className="create-password__title">
-              Create Password
-            </div>
+            <div className="create-password__title">Create Password</div>
             <TextField
               id="create-password"
               label={t('newPassword')}
@@ -153,7 +157,9 @@ class CreatePasswordScreen extends Component {
               type="password"
               className="first-time-flow__input"
               value={this.state.confirmPassword}
-              onChange={event => this.handleConfirmPasswordChange(event.target.value)}
+              onChange={event =>
+                this.handleConfirmPasswordChange(event.target.value)
+              }
               error={confirmPasswordError}
               autoComplete="confirm-password"
               margin="normal"
@@ -177,7 +183,7 @@ class CreatePasswordScreen extends Component {
             >
               Import with seed phrase
             </a>
-            { /* }
+            {/* }
             <a
               href=""
               className="first-time-flow__link create-password__import-link"
@@ -188,7 +194,7 @@ class CreatePasswordScreen extends Component {
             >
               Import an account
             </a>
-            { */ }
+            { */}
             <Breadcrumbs total={3} currentIndex={0} />
           </form>
         </div>

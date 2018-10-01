@@ -30,7 +30,7 @@
     "message": "Znesek + Gas"
   },
   "appDescription": {
-    "message": "Denarnica za Ethereum v brskalniku",
+    "message": "Denarnica za Bitcoin Cash v brskalniku",
     "description": "The description of the application"
   },
   "appName": {
@@ -314,7 +314,7 @@
   "gasPriceRequired": {
     "message": "Gas price je zahtevan"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Pridobite ether"
   },
   "getEtherFromFaucet": {
@@ -450,7 +450,7 @@
     "message": "Sporočilo"
   },
   "metamaskDescription": {
-    "message": "Badger je varen identitetni sklad za Ethereum."
+    "message": "Badger je varen identitetni sklad za Bitcoin Cash."
   },
   "min": {
     "message": "Najmanj"
@@ -668,7 +668,7 @@
     "message": "Pošlji žetone"
   },
   "sendTokensAnywhere": {
-    "message": "Pošljite žetone vsem, ki imajo Ethereum račun"
+    "message": "Pošljite žetone vsem, ki imajo Bitcoin Cash račun"
   },
   "settings": {
     "message": "Nastavitve"

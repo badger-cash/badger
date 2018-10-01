@@ -315,7 +315,7 @@
   "gasPriceRequired": {
     "message": "ต้องมีราคาแก๊ส"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "รับอีเธอร์"
   },
   "getEtherFromFaucet": {

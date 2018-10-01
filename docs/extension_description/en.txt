@@ -1,6 +1,6 @@
-Badger is an extension for accessing Ethereum enabled distributed applications, or "Dapps" in your normal browser!
+Badger is an extension for accessing Bitcoin Cash enabled distributed applications, or "Dapps" in your normal browser!
 
-The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.
+The extension injects the Bitcoin Cash web3 API into every website's javascript context, so that dapps can read from the blockchain.
 
 Badger also lets the user create and manage their own identities, so when a Dapp wants to perform a transaction and write to the blockchain, the user gets a secure interface to review the transaction, before approving or rejecting it.
 

@@ -30,7 +30,7 @@
     "message": "Cantidad + Gas"
   },
   "appDescription": {
-    "message": "Extensión del navegador para Ethereum",
+    "message": "Extensión del navegador para Bitcoin Cash",
     "description": "La descripción de la aplicación"
   },
   "appName": {
@@ -85,7 +85,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase es la plataforma global más popular para comprar y vender Bitcoin, Ethereum y Litecoin"
+      "Coinbase es la plataforma global más popular para comprar y vender Bitcoin, Bitcoin Cash y Litecoin"
   },
   "cancel": {
     "message": "Cancelar"
@@ -112,7 +112,7 @@
     "message": "Confirmar transacción"
   },
   "connectingToMainnet": {
-    "message": "Conectando a la red principal de Ethereum (Main Net)"
+    "message": "Conectando a la red principal de Bitcoin Cash (Main Net)"
   },
   "connectingToRopsten": {
     "message": "Conectando a la red de test Ropsten"
@@ -344,7 +344,7 @@
   "generatingSeed": {
     "message": "Generando semilla..."
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Conseguir Ether"
   },
   "getEtherFromFaucet": {
@@ -479,7 +479,7 @@
     "message": "las frases semilla sólo pueden tener minúsculas"
   },
   "mainnet": {
-    "message": "Red principal de Ethereum (Main Net)"
+    "message": "Red principal de Bitcoin Cash (Main Net)"
   },
   "max": {
     "message": "Max"
@@ -488,7 +488,7 @@
     "message": "Mensaje"
   },
   "metamaskDescription": {
-    "message": "Badger es una identidad segura en Ethereum"
+    "message": "Badger es una identidad segura en Bitcoin Cash"
   },
   "min": {
     "message": "Mínimo"
@@ -570,7 +570,7 @@
       "Regresaste a la antigua UI (Interfaz de Usuario). Puedes regresar a la nueva UI mediante la opcion en la barra desplegable del menu de arriba a la derecha."
   },
   "onlySendToEtherAddress": {
-    "message": "Sólo envía a una dirección de Ethereum"
+    "message": "Sólo envía a una dirección de Bitcoin Cash"
   },
   "or": {
     "message": "o",
@@ -725,7 +725,7 @@
     "message": "Enviar tokens"
   },
   "sendTokensAnywhere": {
-    "message": "Enviar tokens a cualquiera con una cuenta de Ethereum"
+    "message": "Enviar tokens a cualquiera con una cuenta de Bitcoin Cash"
   },
   "settings": {
     "message": "Configuración"

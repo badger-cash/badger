@@ -14,7 +14,7 @@ The most confusing part about porting Badger to a new platform is the way we pro
 
 ### The Badger Controller
 
-The core functionality of Badger all lives in what we call [The Badger Controller](https://github.com/MetaMask/metamask-extension/blob/master/app/scripts/metamask-controller.js). Our goal for this file is for it to eventually be its own javascript module that can be imported into any JS-compatible context, allowing it to fully manage an app's relationship to Ethereum.
+The core functionality of Badger all lives in what we call [The Badger Controller](https://github.com/MetaMask/metamask-extension/blob/master/app/scripts/metamask-controller.js). Our goal for this file is for it to eventually be its own javascript module that can be imported into any JS-compatible context, allowing it to fully manage an app's relationship to Bitcoin Cash.
 
 #### Constructor
 
@@ -79,7 +79,7 @@ Since `background.js` is essentially the Extension setup file, we can see it doi
 
 ## Ports, streams, and Web3!
 
-Everything so far has been enough to create a Badger wallet on virtually any platform that runs JS, but MetaMask's most unique feature isn't being a wallet, it's providing an Ethereum-enabled JavaScript context to websites.
+Everything so far has been enough to create a Badger wallet on virtually any platform that runs JS, but MetaMask's most unique feature isn't being a wallet, it's providing an Bitcoin Cash-enabled JavaScript context to websites.
 
 Badger has two kinds of [duplex stream APIs](https://github.com/substack/stream-handbook#duplex) that it exposes:
 - [metamask.setupTrustedCommunication(connectionStream, originDomain)](https://github.com/MetaMask/metamask-extension/blob/master/app/scripts/metamask-controller.js#L352) - This stream is used to connect the user interface over a remote port, and may not be necessary for contexts where the interface and the metamask-controller share a process.

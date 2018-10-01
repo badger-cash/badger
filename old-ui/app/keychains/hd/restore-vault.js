@@ -42,7 +42,7 @@ RestoreVaultScreen.prototype.render = function () {
       // wallet seed entry
       h('h3', 'Wallet Seed'),
       h('textarea.twelve-word-phrase.letter-spacey', {
-        placeholder: 'Enter your secret twelve word phrase here to restore your vault.',
+        placeholder: 'Enter your secret phrase here to restore your vault.',
       }),
 
       // password

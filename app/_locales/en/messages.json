@@ -261,7 +261,7 @@
     "message": "Deposit Eth"
   },
   "depositEther": {
-    "message": "Deposit Ether"
+    "message": "Deposit Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Deposit with Fiat"
@@ -417,12 +417,12 @@
   "generatingTransaction": {
     "message": "Generating transaction"
   },
-  "getEther": {
-    "message": "Get Ether"
+  "getBitcoinCash": {
+    "message": "Get Bitcoin Cash"
   },
   "getEtherFromFaucet": {
-    "message": "Get Bitcoin Cashfrom a faucet for the $1",
-    "description": "Displays network name for Bitcoin Cashfaucet"
+    "message": "Get Bitcoin Cash from a faucet for the $1",
+    "description": "Displays network name for Bitcoin Cash faucet"
   },
   "getHelp": {
     "message": "Get Help."
@@ -915,7 +915,7 @@
   },
   "secretPhrase": {
     "message":
-      "Enter your secret twelve word phrase here to restore your vault."
+      "Enter your secret phrase here to restore your vault."
   },
   "showHexData": {
     "message": "Show Hex Data"
@@ -992,7 +992,7 @@
       "If you don't see your existing Ledger accounts below, try switching paths to \"Legacy (MEW / MyCrypto)\""
   },
   "sendTokensAnywhere": {
-    "message": "Send Tokens to anyone with an Ethereum account"
+    "message": "Send Tokens to anyone with an Bitcoin Cash account"
   },
   "settings": {
     "message": "Settings"
@@ -1015,7 +1015,7 @@
   },
   "step3HardwareWalletMsg": {
     "message":
-      "Use your hardware account like you would with any Ethereum account. Log in to dApps, send Eth, buy and store ERC20 tokens and Non-Fungible tokens like CryptoKitties."
+      "Use your hardware account like you would with any Bitcoin Cash account. Log in to dApps, send Eth, buy and store ERC20 tokens and Non-Fungible tokens like CryptoKitties."
   },
   "info": {
     "message": "Info"

@@ -331,7 +331,7 @@
   "gasPriceRequired": {
     "message": "எரிவாயு விலை தேவைப்படுகிறது"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "ஈத்தர் கிடைக்கும்"
   },
   "getEtherFromFaucet": {

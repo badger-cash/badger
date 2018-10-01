@@ -123,7 +123,7 @@ class CreatePasswordScreen extends Component {
               height="225"
             />
             <div className="info">
-              Badger is a secure identity vault for Ethereum.
+              Badger is a secure identity vault for Bitcoin Cash.
             </div>
             <div className="info">
               It allows you to hold ether & tokens, and interact with decentralized applications.

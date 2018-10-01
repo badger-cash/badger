@@ -207,7 +207,7 @@
     "message": "存入 Eth"
   },
   "depositEther": {
-    "message": "存入 Ether"
+    "message": "存入 Bitcoin Cash"
   },
   "depositFiat": {
     "message": "從法定貨幣存入"
@@ -229,11 +229,11 @@
     "message": "直接存入"
   },
   "directDepositEther": {
-    "message": "直接存入 Ether"
+    "message": "直接存入 Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "如果你已經擁有了一些 Ether，使用直接存入功能是讓你的新錢包最快取得 Bitcoin Cash 的方式。"
+      "如果你已經擁有了一些 Bitcoin Cash，使用直接存入功能是讓你的新錢包最快取得 Bitcoin Cash 的方式。"
   },
   "done": {
     "message": "完成"
@@ -334,11 +334,11 @@
   "gasPriceRequired": {
     "message": "必需填寫 Gas 價格"
   },
-  "getEther": {
-    "message": "取得 Ether"
+  "getBitcoinCash": {
+    "message": "取得 Bitcoin Cash"
   },
   "getEtherFromFaucet": {
-    "message": "從水管取得$1 Ether",
+    "message": "從水管取得$1 Bitcoin Cash",
     "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
@@ -363,7 +363,7 @@
     "message": "隱藏代幣？"
   },
   "howToDeposit": {
-    "message": "你想怎麼存入 Ether？"
+    "message": "你想怎麼存入 Bitcoin Cash？"
   },
   "holdEther": {
     "message":
@@ -493,7 +493,7 @@
     "message": "必須選擇至少 1 代幣."
   },
   "needEtherInWallet": {
-    "message": "要使用 Badger 存取 DAPP 時，您的錢包中需要有 Ether。"
+    "message": "要使用 Badger 存取 DAPP 時，您的錢包中需要有 Bitcoin Cash。"
   },
   "needImportFile": {
     "message": "您必須選擇一個檔案來導入。",
@@ -663,7 +663,7 @@
     "message": "當前的 RPC"
   },
   "connectingToMainnet": {
-    "message": "連線到主 Ethereum 網路"
+    "message": "連線到主 Bitcoin Cash 網路"
   },
   "connectingToRopsten": {
     "message": "連線到 Ropsten 測試網路"

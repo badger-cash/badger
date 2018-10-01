@@ -82,7 +82,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase è il servizio più popolare al mondo per comprare e vendere Bitcoin, Ethereum e Litecoin."
+      "Coinbase è il servizio più popolare al mondo per comprare e vendere Bitcoin, Bitcoin Cash e Litecoin."
   },
   "cancel": {
     "message": "Cancella"
@@ -177,7 +177,7 @@
   },
   "defaultNetwork": {
     "message":
-      "La rete predefinita per transazioni in Bitcoin Cash è la Rete Ethereum Principale."
+      "La rete predefinita per transazioni in Bitcoin Cash è la Rete Bitcoin Cash Principale."
   },
   "denExplainer": {
     "message": "Il DEN è il tuo archivio crittato con password dentro Badger."
@@ -318,7 +318,7 @@
   "gasPriceRequired": {
     "message": "Prezzo Gas Richiesto"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Ottieni Ether"
   },
   "getEtherFromFaucet": {
@@ -448,13 +448,13 @@
     "message": "le frasi seed hanno solo lettere minuscole"
   },
   "mainnet": {
-    "message": "Rete Ethereum Principale"
+    "message": "Rete Bitcoin Cash Principale"
   },
   "message": {
     "message": "Messaggio"
   },
   "metamaskDescription": {
-    "message": "Badger è una cassaforte sicura per identità su Ethereum."
+    "message": "Badger è una cassaforte sicura per identità su Bitcoin Cash."
   },
   "min": {
     "message": "Minimo"
@@ -674,7 +674,7 @@
     "message": "Invia Tokens"
   },
   "sendTokensAnywhere": {
-    "message": "Invia Tokens a chiunque abbia un account Ethereum"
+    "message": "Invia Tokens a chiunque abbia un account Bitcoin Cash"
   },
   "settings": {
     "message": "Impostazioni"

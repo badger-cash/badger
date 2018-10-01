@@ -30,7 +30,7 @@
     "message": "Сумма + газ"
   },
   "appDescription": {
-    "message": "Расширение браузера для Ethereum",
+    "message": "Расширение браузера для Bitcoin Cash",
     "description": "The description of the application"
   },
   "appName": {
@@ -85,7 +85,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Биржа Coinbase – это наиболее популярный способ купить или продать Bitcoin, Ethereum и Litecoin."
+      "Биржа Coinbase – это наиболее популярный способ купить или продать Bitcoin, Bitcoin Cash и Litecoin."
   },
   "ok": {
     "message": "ОК"
@@ -190,7 +190,7 @@
   },
   "defaultNetwork": {
     "message":
-      "Основная сеть Ethereum – это сеть по умолчанию для Bitcoin Cash транзакций."
+      "Основная сеть Bitcoin Cash – это сеть по умолчанию для Bitcoin Cash транзакций."
   },
   "denExplainer": {
     "message": "DEN – это зашифрованное паролем хранилище внутри Badger."
@@ -333,7 +333,7 @@
   "gasPriceRequired": {
     "message": "Установите стоимость газа"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Получить Ether"
   },
   "getEtherFromFaucet": {
@@ -475,13 +475,13 @@
     "message": "ключевая фраза может содержать только символы нижнего регистра"
   },
   "mainnet": {
-    "message": "Основная сеть Ethereum"
+    "message": "Основная сеть Bitcoin Cash"
   },
   "message": {
     "message": "Сообщение"
   },
   "metamaskDescription": {
-    "message": "Badger – безопасный кошелек для Ethereum."
+    "message": "Badger – безопасный кошелек для Bitcoin Cash."
   },
   "min": {
     "message": "Минимум"
@@ -667,7 +667,7 @@
     "message": "Current RPC"
   },
   "connectingToMainnet": {
-    "message": "Соединение с основной сетью Ethereum"
+    "message": "Соединение с основной сетью Bitcoin Cash"
   },
   "connectingToRopsten": {
     "message": "Соединение с тестовой сетью Ropsten"
@@ -731,13 +731,13 @@
     "message": "Отправить токены"
   },
   "onlySendToEtherAddress": {
-    "message": "Отправляйте ETH только на Ethereum адреса."
+    "message": "Отправляйте ETH только на Bitcoin Cash адреса."
   },
   "searchTokens": {
     "message": "Поиск токенов"
   },
   "sendTokensAnywhere": {
-    "message": "Отправить токены любому, у кого есть счет Ethereum"
+    "message": "Отправить токены любому, у кого есть счет Bitcoin Cash"
   },
   "settings": {
     "message": "Настройки"

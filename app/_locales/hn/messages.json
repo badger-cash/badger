@@ -310,7 +310,7 @@
   "gasPriceRequired": {
     "message": "गैस की कीमत आवश्यक है"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "ईथर प्राप्त करें"
   },
   "getEtherFromFaucet": {

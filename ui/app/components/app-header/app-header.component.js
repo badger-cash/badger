@@ -7,7 +7,11 @@ const {
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
 } = require('../../../../app/scripts/lib/enums')
-const { DEFAULT_ROUTE, INITIALIZE_ROUTE, CONFIRM_TRANSACTION_ROUTE } = require('../../routes')
+const {
+  DEFAULT_ROUTE,
+  INITIALIZE_ROUTE,
+  CONFIRM_TRANSACTION_ROUTE,
+} = require('../../routes')
 const Identicon = require('../identicon')
 const NetworkIndicator = require('../network')
 
@@ -33,7 +37,11 @@ export default class AppHeader extends PureComponent {
     event.preventDefault()
     event.stopPropagation()
 
-    const { networkDropdownOpen, showNetworkDropdown, hideNetworkDropdown } = this.props
+    const {
+      networkDropdownOpen,
+      showNetworkDropdown,
+      hideNetworkDropdown,
+    } = this.props
 
     return networkDropdownOpen === false
       ? showNetworkDropdown()
@@ -43,35 +51,40 @@ export default class AppHeader extends PureComponent {
   isConfirming () {
     const { location } = this.props
 
-    return Boolean(matchPath(location.pathname, {
-      path: CONFIRM_TRANSACTION_ROUTE, exact: false,
-    }))
+    return Boolean(
+      matchPath(location.pathname, {
+        path: CONFIRM_TRANSACTION_ROUTE,
+        exact: false,
+      })
+    )
   }
 
   renderAccountMenu () {
     const { isUnlocked, toggleAccountMenu, selectedAddress } = this.props
 
-    return isUnlocked && (
-      <div
-        className={classnames('account-menu__icon', {
-          'account-menu__icon--disabled': this.isConfirming(),
-        })}
-        onClick={() => this.isConfirming() || toggleAccountMenu()}
-      >
-        <Identicon
-          address={selectedAddress}
-          diameter={32}
-        />
-      </div>
+    return (
+      isUnlocked && (
+        <div
+          className={classnames('account-menu__icon', {
+            'account-menu__icon--disabled': this.isConfirming(),
+          })}
+          onClick={() => this.isConfirming() || toggleAccountMenu()}
+        >
+          <Identicon address={selectedAddress} diameter={32} />
+        </div>
+      )
     )
   }
 
   hideAppHeader () {
     const { location } = this.props
 
-    const isInitializing = Boolean(matchPath(location.pathname, {
-      path: INITIALIZE_ROUTE, exact: false,
-    }))
+    const isInitializing = Boolean(
+      matchPath(location.pathname, {
+        path: INITIALIZE_ROUTE,
+        exact: false,
+      })
+    )
 
     if (isInitializing) {
       return true
@@ -81,18 +94,16 @@ export default class AppHeader extends PureComponent {
       return true
     }
 
-    if (window.METAMASK_UI_TYPE === ENVIRONMENT_TYPE_POPUP && this.isConfirming()) {
+    if (
+      window.METAMASK_UI_TYPE === ENVIRONMENT_TYPE_POPUP &&
+      this.isConfirming()
+    ) {
       return true
     }
   }
 
   render () {
-    const {
-      network,
-      provider,
-      history,
-      isUnlocked,
-    } = this.props
+    const { network, provider, history, isUnlocked } = this.props
 
     if (this.hideAppHeader()) {
       return null
@@ -100,7 +111,10 @@ export default class AppHeader extends PureComponent {
 
     return (
       <div
-        className={classnames('app-header', { 'app-header--back-drop': isUnlocked })}>
+        className={classnames('app-header', {
+          'app-header--back-drop': isUnlocked,
+        })}
+      >
         <div className="app-header__contents">
           <div
             className="app-header__logo-container"
@@ -113,7 +127,7 @@ export default class AppHeader extends PureComponent {
             />
             <img
               className="app-header__metafox-logo app-header__metafox-logo--icon"
-              src="/images/logo/metamask-fox.svg"
+              src="/images/bch_logo.svg"
               height={42}
               width={42}
             />
@@ -127,7 +141,7 @@ export default class AppHeader extends PureComponent {
                 disabled={this.isConfirming()}
               />
             </div>
-            { this.renderAccountMenu() }
+            {this.renderAccountMenu()}
           </div>
         </div>
       </div>

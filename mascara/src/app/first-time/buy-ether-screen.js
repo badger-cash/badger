@@ -88,7 +88,7 @@ class BuyEtherScreen extends Component {
       <div className="buy-ether__action-content-wrapper">
         <div>{this.renderCoinbaseLogo()}</div>
         <div className="buy-ether__body-text">Coinbase is the world’s most popular way to buy and sell bitcoin, ethereum, and litecoin.</div>
-        <a className="first-time-flow__link buy-ether__faq-link">What is Ethereum?</a>
+        <a className="first-time-flow__link buy-ether__faq-link">What is Bitcoin Cash?</a>
         <div className="buy-ether__buttons">
           <button
             className="first-time-flow__button"
@@ -126,7 +126,7 @@ class BuyEtherScreen extends Component {
         return (
           <div className="buy-ether__action-content-wrapper">
             <div dangerouslySetInnerHTML={{ __html: qrImage.createTableTag(4) }} />
-            <div className="buy-ether__body-text">Deposit Ether directly into your account.</div>
+            <div className="buy-ether__body-text">Deposit Bitcoin Cash directly into your account.</div>
             <div className="buy-ether__small-body-text">(This is the account address that Badger created for you to recieve funds.)</div>
             <div className="buy-ether__buttons">
               <button
@@ -151,7 +151,7 @@ class BuyEtherScreen extends Component {
     return (
       <div className="buy-ether">
         <Identicon address={this.props.address} diameter={70} />
-        <div className="buy-ether__title">Deposit Ether</div>
+        <div className="buy-ether__title">Deposit Bitcoin Cash</div>
         <div className="buy-ether__body-text">
           Badger works best if you have Ether in your account to pay for transaction gas fees and more. To get Ether, choose from one of these methods.
         </div>

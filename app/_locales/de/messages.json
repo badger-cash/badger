@@ -85,7 +85,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase ist die weltweit bekannteste Art und Weise um Bitcoin, Ethereum und Litecoin zu kaufen und verkaufen."
+      "Coinbase ist die weltweit bekannteste Art und Weise um Bitcoin, Bitcoin Cash und Litecoin zu kaufen und verkaufen."
   },
   "ok": {
     "message": "Ok"
@@ -338,7 +338,7 @@
   "gasPriceRequired": {
     "message": "Gaspreis benötigt"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Bitcoin Cash holen"
   },
   "getEtherFromFaucet": {
@@ -481,7 +481,7 @@
     "message": "Nachricht"
   },
   "metamaskDescription": {
-    "message": "Badger ist ein sicherer Identitätssafe für Ethereum."
+    "message": "Badger ist ein sicherer Identitätssafe für Bitcoin Cash."
   },
   "min": {
     "message": "Minimum"
@@ -665,7 +665,7 @@
     "message": "Aktueller RPC"
   },
   "connectingToMainnet": {
-    "message": "Verbinde zum Ethereum Main Net"
+    "message": "Verbinde zum Bitcoin Cash Main Net"
   },
   "connectingToRopsten": {
     "message": " Verbinde zum Ropsten Testnetzwerk"
@@ -729,11 +729,11 @@
     "message": "Token senden"
   },
   "onlySendToEtherAddress": {
-    "message": "ETH unbedingt nur zu einer Ethereum Adresse senden."
+    "message": "ETH unbedingt nur zu einer Bitcoin Cash Adresse senden."
   },
   "sendTokensAnywhere": {
     "message":
-      "Token zu einer beliebigen Person mit einem Ethereumaccount senden"
+      "Token zu einer beliebigen Person mit einem Bitcoin Cashaccount senden"
   },
   "settings": {
     "message": "Einstellungen"

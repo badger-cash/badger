@@ -30,7 +30,7 @@
     "message": "Valor + Gas"
   },
   "appDescription": {
-    "message": "Extensão para o browser de Ethereum",
+    "message": "Extensão para o browser de Bitcoin Cash",
     "description": "A descrição da aplicação"
   },
   "appName": {
@@ -82,7 +82,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase é a forma mais conhecida para comprar e vender Bitcoin, Ethereum, e Litecoin."
+      "Coinbase é a forma mais conhecida para comprar e vender Bitcoin, Bitcoin Cash, e Litecoin."
   },
   "cancel": {
     "message": "Cancelar"
@@ -319,7 +319,7 @@
   "gasPriceRequired": {
     "message": "Preço Gas Necessário"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Obter Ether"
   },
   "getEtherFromFaucet": {
@@ -449,14 +449,14 @@
     "message": "palavras da seed apenas têm caracteres minúsculos"
   },
   "mainnet": {
-    "message": "Rede Principal de Ethereum"
+    "message": "Rede Principal de Bitcoin Cash"
   },
   "message": {
     "message": "Mensagem"
   },
   "metamaskDescription": {
     "message":
-      "O Badger é um lugar seguro para guardar a sua identidade em em Ethereum."
+      "O Badger é um lugar seguro para guardar a sua identidade em em Bitcoin Cash."
   },
   "min": {
     "message": "Mínimo"
@@ -675,7 +675,7 @@
     "message": "Enviar Tokens"
   },
   "sendTokensAnywhere": {
-    "message": "Enviar Tokens para qualquer pessoa com uma conta Ethereum"
+    "message": "Enviar Tokens para qualquer pessoa com uma conta Bitcoin Cash"
   },
   "settings": {
     "message": "Definições"

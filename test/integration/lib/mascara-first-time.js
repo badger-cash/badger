@@ -65,9 +65,9 @@ async function runFirstTimeUsageTest (assert, done) {
   seedPhrase.forEach(sp => selectPhrase(sp))
   ;(await findAsync(app, '.first-time-flow__button')).click()
 
-  // Deposit Ether Screen
+  // Deposit Bitcoin Cash Screen
   const depositEthTitle = (await findAsync(app, '.page-container__title'))[0]
-  assert.equal(depositEthTitle.textContent, 'Deposit Ether', 'deposit ether screen')
+  assert.equal(depositEthTitle.textContent, 'Deposit Bitcoin Cash', 'deposit ether screen')
   ;(await findAsync(app, '.page-container__header-close')).click()
 
   const menu = (await findAsync(app, '.account-menu__icon'))[0]

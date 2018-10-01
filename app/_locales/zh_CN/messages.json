@@ -343,7 +343,7 @@
   "generatingTransaction": {
     "message": "生成 交易"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "获取 Ether"
   },
   "getEtherFromFaucet": {

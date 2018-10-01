@@ -25,7 +25,7 @@
   },
   "appDescription": {
     "description": "Mô tả phần mềm",
-    "message": "Tính năng Ethereum cho trình duyệt"
+    "message": "Tính năng Bitcoin Cash cho trình duyệt"
   },
   "appName": {
     "description": "Tên phần mềm",
@@ -64,7 +64,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase là dịch vụ ví điện tử thông dụng nhất thế giới để mua bán Bitcoin, Ethereum, và Litecoin"
+      "Coinbase là dịch vụ ví điện tử thông dụng nhất thế giới để mua bán Bitcoin, Bitcoin Cash, và Litecoin"
   },
   "cancel": {
     "message": "Hủy"
@@ -261,7 +261,7 @@
   "gasPriceRequired": {
     "message": "Giá ga được yêu cầu"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Lấy Ether"
   },
   "getEtherFromFaucet": {
@@ -352,7 +352,7 @@
     "message": "Nới lỏng"
   },
   "mainnet": {
-    "message": "Mạng Ethereum MainNet (tiền ETH thật)"
+    "message": "Mạng Bitcoin Cash MainNet (tiền ETH thật)"
   },
   "message": {
     "message": "Tin nhắn"
@@ -515,7 +515,7 @@
     "message": "Gửi mã token"
   },
   "sendTokensAnywhere": {
-    "message": "Gửi mã token đến bất kỳ ai có tài khoản Ethereum"
+    "message": "Gửi mã token đến bất kỳ ai có tài khoản Bitcoin Cash"
   },
   "settings": {
     "message": "Cài đặt"

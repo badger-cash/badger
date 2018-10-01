@@ -106,7 +106,7 @@ export default class QrScanner extends Component {
     // For ex. EIP-681 (https://eips.ethereum.org/EIPS/eip-681)
 
 
-    // Ethereum address links - fox ex. ethereum:0x.....1111
+    // Bitcoin Cash address links - fox ex. ethereum:0x.....1111
     if (content.split('ethereum:').length > 1) {
 
       type = 'address'

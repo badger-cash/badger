@@ -288,7 +288,7 @@
   "gasPriceRequired": {
     "message": "必要ガスプライス"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Etherを取得する"
   },
   "getEtherFromFaucet": {

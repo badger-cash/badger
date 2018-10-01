@@ -1,4 +1,4 @@
-{
+ Bitcoin Cash{
   "accept": {
     "message": "Přijmout"
   },
@@ -208,7 +208,7 @@
     "message": "Vložit Eth"
   },
   "depositEther": {
-    "message": "Vložit Ether"
+    "message": "Vložit Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Vklad s fiat měnou"
@@ -234,7 +234,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Pokud už vlastníte nějaký Ether, nejrychleji ho dostanete do peněženky přímým vkladem."
+      "Pokud už vlastníte nějaký Bitcoin Cash, nejrychleji ho dostanete do peněženky přímým vkladem."
   },
   "done": {
     "message": "Hotovo"
@@ -335,8 +335,8 @@
   "gasPriceRequired": {
     "message": "Cena paliva je povinná"
   },
-  "getEther": {
-    "message": "Získejte Ether"
+  "getBitcoinCash": {
+    "message": "Získejte Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Získejte Bitcoin Cash z faucetu za $1.",
@@ -364,7 +364,7 @@
     "message": "Skrýt token?"
   },
   "howToDeposit": {
-    "message": "Jakým způsobem chcete vložit Ether?"
+    "message": "Jakým způsobem chcete vložit Bitcoin Cash?"
   },
   "holdEther": {
     "message":
@@ -484,7 +484,7 @@
     "message": "Zpráva"
   },
   "metamaskDescription": {
-    "message": "Badger je bezpečný osobní trezor pro Ethereum."
+    "message": "Badger je bezpečný osobní trezor pro Bitcoin Cash."
   },
   "min": {
     "message": "Minimum"
@@ -739,13 +739,13 @@
     "message": "Odeslat tokeny"
   },
   "onlySendToEtherAddress": {
-    "message": "Posílejte jen ETH na Ethereum adresu."
+    "message": "Posílejte jen ETH na Bitcoin Cash adresu."
   },
   "searchTokens": {
     "message": "Hledat tokeny"
   },
   "sendTokensAnywhere": {
-    "message": "Posílejte tokeny komukoli s Ethereum účtem"
+    "message": "Posílejte tokeny komukoli s Bitcoin Cash účtem"
   },
   "settings": {
     "message": "Nastavení"

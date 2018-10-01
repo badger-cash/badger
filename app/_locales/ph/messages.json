@@ -65,7 +65,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Ang Coinbase ang pinakasikat na paraan upang bumili at magbenta ng Bitcoin, Ethereum, at Litecoin sa buong mundo."
+      "Ang Coinbase ang pinakasikat na paraan upang bumili at magbenta ng Bitcoin, Bitcoin Cash, at Litecoin sa buong mundo."
   },
   "cancel": {
     "message": "Kanselahin"
@@ -264,7 +264,7 @@
   "gasPriceRequired": {
     "message": "Kailangan ang Gas Price"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Kumuha ng Ether"
   },
   "getEtherFromFaucet": {
@@ -521,7 +521,7 @@
     "message": "Magpadala ng Tokens"
   },
   "sendTokensAnywhere": {
-    "message": "Magpadala ng Tokens sa sinumang may Ethereum account"
+    "message": "Magpadala ng Tokens sa sinumang may Bitcoin Cash account"
   },
   "settings": {
     "message": "Mga Setting"

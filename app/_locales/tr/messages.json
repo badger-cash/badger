@@ -86,7 +86,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase Bitcoin, Ethereum, and Litecoin alıp satmanın dünyadaki en popüler yolu"
+      "Coinbase Bitcoin, Bitcoin Cash, and Litecoin alıp satmanın dünyadaki en popüler yolu"
   },
   "ok": {
     "message": "Tamam"
@@ -339,7 +339,7 @@
   "gasPriceRequired": {
     "message": "Gas Fiyatı Gereklidir"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Bitcoin Cash Al"
   },
   "getEtherFromFaucet": {
@@ -480,13 +480,13 @@
     "message": "kaynak kelimeleri sadece küçük harflerden oluşabilir."
   },
   "mainnet": {
-    "message": "Main Ethereum Ağı"
+    "message": "Main Bitcoin Cash Ağı"
   },
   "message": {
     "message": "Mesaj"
   },
   "metamaskDescription": {
-    "message": "Badger Ethereum için güvenli bir kimlik kasasıdır."
+    "message": "Badger Bitcoin Cash için güvenli bir kimlik kasasıdır."
   },
   "min": {
     "message": "Minimum"
@@ -670,7 +670,7 @@
     "message": "Geçerli RPC"
   },
   "connectingToMainnet": {
-    "message": "Main Ethereum Ağına bağlanıyor"
+    "message": "Main Bitcoin Cash Ağına bağlanıyor"
   },
   "connectingToRopsten": {
     "message": "Ropsten Test Ağına bağlanıyor"

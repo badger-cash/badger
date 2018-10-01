@@ -25,8 +25,10 @@ describe('', function () {
 
     assert.equal(coinbase[0], 'https://buy.coinbase.com')
     assert.equal(amount[0], 'amount=5')
-    assert.equal(address[0], 'address=0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
-
+    assert.equal(
+      address[0],
+      'address=0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc'
+    )
   })
 
   it('returns metamask ropsten faucet for network 3', function () {
@@ -36,13 +38,11 @@ describe('', function () {
 
   it('returns rinkeby dapp for network 4', function () {
     const rinkebyUrl = getBuyEthUrl(rinkeby)
-    assert.equal(rinkebyUrl, 'https://www.rinkeby.io/')
+    assert.equal(rinkebyUrl, 'http://free.bitcoin.com/')
   })
 
   it('returns kovan github test faucet for network 42', function () {
     const kovanUrl = getBuyEthUrl(kovan)
     assert.equal(kovanUrl, 'https://github.com/kovan-testnet/faucet')
   })
-
 })
-

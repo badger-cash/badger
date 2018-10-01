@@ -24,7 +24,7 @@
     "message": "Montant + Gaz"
   },
   "appDescription": {
-    "message": "Extension Ethereum pour navigateur",
+    "message": "Extension Bitcoin Cash pour navigateur",
     "description": "La description de l'application"
   },
   "appName": {
@@ -262,7 +262,7 @@
   "gasPriceRequired": {
     "message": "Prix du gaz requis"
   },
-  "getEther": {
+  "getBitcoinCash": {
     "message": "Obtenir des Ether"
   },
   "getEtherFromFaucet": {
@@ -354,7 +354,7 @@
     "message": "Vacant"
   },
   "mainnet": {
-    "message": "Réseau principal Ethereum"
+    "message": "Réseau principal Bitcoin Cash"
   },
   "message": {
     "message": "Message"
@@ -519,7 +519,7 @@
   },
   "sendTokensAnywhere": {
     "message":
-      "Envoyer des jetons à toute personne possédant un compte Ethereum"
+      "Envoyer des jetons à toute personne possédant un compte Bitcoin Cash"
   },
   "settings": {
     "message": "Paramètres"

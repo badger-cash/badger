@@ -51,7 +51,7 @@ Additional features or functionality on the send screen should include an update
 ## Send token mode
 - [ ] **Header** _It should:_
   - [ ] have title "Send Tokens"
-  - [ ] have sub title "Only send [token symbol] to an Ethereum address."
+  - [ ] have sub title "Only send [token symbol] to an Bitcoin Cash address."
   - [ ] return user to main screen when top right X is clicked
 - [ ] **From row** _It should:_
   - [ ] Behave the same as 'Send ETH mode' (see above)

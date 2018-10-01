@@ -6,7 +6,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '../../../text-field'
 
 const contractList = Object.entries(contractMap)
-  .map(([ _, tokenData]) => tokenData)
+  .map(([_, tokenData]) => tokenData)
   .filter(tokenData => Boolean(tokenData.erc20))
 
 const fuse = new Fuse(contractList, {
@@ -16,10 +16,7 @@ const fuse = new Fuse(contractList, {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: [
-    { name: 'name', weight: 0.5 },
-    { name: 'symbol', weight: 0.5 },
-  ],
+  keys: [{ name: 'name', weight: 0.5 }, { name: 'symbol', weight: 0.5 }],
 })
 
 export default class TokenSearch extends Component {
@@ -56,10 +53,7 @@ export default class TokenSearch extends Component {
 
   renderAdornment () {
     return (
-      <InputAdornment
-        position="start"
-        style={{ marginRight: '12px' }}
-      >
+      <InputAdornment position="start" style={{ marginRight: '12px' }}>
         <img src="images/search.svg" />
       </InputAdornment>
     )
@@ -78,6 +72,7 @@ export default class TokenSearch extends Component {
         onChange={e => this.handleSearch(e.target.value)}
         error={error}
         fullWidth
+        disabled={true}
         startAdornment={this.renderAdornment()}
       />
     )

@@ -378,7 +378,7 @@ class Settings extends Component {
       this.renderCurrentConversion(),
       this.renderCurrentLocale(),
       // this.renderCurrentProvider(),
-      this.renderNewRpcUrl(),
+      // this.renderNewRpcUrl(),
       this.renderStateLogs(),
       this.renderSeedWords(),
       // !isMascara && this.renderOldUI(),

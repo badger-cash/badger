@@ -241,7 +241,7 @@
     "message": "Decimals of Precision"
   },
   "defaultNetwork": {
-    "message": "The default network for Bitcoin Cashtransactions is Main Net."
+    "message": "The default network for Bitcoin Cash transactions is Main Net."
   },
   "denExplainer": {
     "message": "Your DEN is your password-encrypted storage within Badger."

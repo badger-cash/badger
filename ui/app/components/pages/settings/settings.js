@@ -12,15 +12,24 @@ const SimpleDropdown = require('../../dropdowns/simple-dropdown')
 const ToggleButton = require('react-toggle-button')
 const { REVEAL_SEED_ROUTE } = require('../../../routes')
 const locales = require('../../../../../app/_locales/index.json')
+// const log = require('loglevel')
 
 import Button from '../../button'
 
 const getInfuraCurrencyOptions = () => {
-  const sortedCurrencies = infuraCurrencies.objects.sort((a, b) => {
-    return a.quote.name
-      .toLocaleLowerCase()
-      .localeCompare(b.quote.name.toLocaleLowerCase())
-  })
+  const sortedCurrencies = [
+    {
+      symbol: 'ethusd',
+      quote: {
+        code: 'usd',
+        name: 'United States Dollar',
+      },
+      base: {
+        code: 'eth',
+        name: 'Ethereum',
+      },
+    },
+  ]
 
   return sortedCurrencies.map(({ quote: { code, name } }) => {
     return {
@@ -369,7 +378,7 @@ class Settings extends Component {
       this.renderCurrentConversion(),
       this.renderCurrentLocale(),
       // this.renderCurrentProvider(),
-      this.renderNewRpcUrl(),
+      // this.renderNewRpcUrl(),
       this.renderStateLogs(),
       this.renderSeedWords(),
       // !isMascara && this.renderOldUI(),

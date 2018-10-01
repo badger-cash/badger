@@ -9,27 +9,24 @@ const log = require('loglevel')
 const createMetamaskMiddleware = require('./createMetamaskMiddleware')
 const createInfuraClient = require('./createInfuraClient')
 const createJsonRpcClient = require('./createJsonRpcClient')
-const { createSwappableProxy, createEventEmitterProxy } = require('swappable-obj-proxy')
-
 const {
-  ROPSTEN,
-  RINKEBY,
-  KOVAN,
-  MAINNET,
-  LOCALHOST,
-} = require('./enums')
+  createSwappableProxy,
+  createEventEmitterProxy,
+} = require('swappable-obj-proxy')
+
+const { ROPSTEN, RINKEBY, KOVAN, MAINNET, LOCALHOST } = require('./enums')
 const INFURA_PROVIDER_TYPES = [ROPSTEN, RINKEBY, KOVAN, MAINNET]
 
 const env = process.env.METAMASK_ENV
 const METAMASK_DEBUG = process.env.METAMASK_DEBUG
-const testMode = (METAMASK_DEBUG || env === 'test')
+const testMode = METAMASK_DEBUG || env === 'test'
 
 const defaultProviderConfig = {
-  type: testMode ? RINKEBY : MAINNET,
+  // type: testMode ? RINKEBY : MAINNET,
+  type: testMode ? MAINNET : MAINNET,
 }
 
 module.exports = class NetworkController extends EventEmitter {
-
   constructor (opts = {}) {
     super()
 
@@ -38,7 +35,10 @@ module.exports = class NetworkController extends EventEmitter {
     // create stores
     this.providerStore = new ObservableStore(providerConfig)
     this.networkStore = new ObservableStore('loading')
-    this.store = new ComposedStore({ provider: this.providerStore, network: this.networkStore })
+    this.store = new ComposedStore({
+      provider: this.providerStore,
+      network: this.networkStore,
+    })
     this.on('networkDidChange', this.lookupNetwork)
     // provider
     this._provider = null
@@ -79,7 +79,9 @@ module.exports = class NetworkController extends EventEmitter {
   lookupNetwork () {
     // Prevent firing when provider is not defined.
     if (!this._provider) {
-      return log.warn('NetworkController - lookupNetwork aborted due to missing provider')
+      return log.warn(
+        'NetworkController - lookupNetwork aborted due to missing provider'
+      )
     }
     const ethQuery = new EthQuery(this._provider)
     ethQuery.sendAsync({ method: 'net_version' }, (err, network) => {
@@ -98,8 +100,15 @@ module.exports = class NetworkController extends EventEmitter {
   }
 
   async setProviderType (type) {
-    assert.notEqual(type, 'rpc', `NetworkController - cannot call "setProviderType" with type 'rpc'. use "setRpcTarget"`)
-    assert(INFURA_PROVIDER_TYPES.includes(type) || type === LOCALHOST, `NetworkController - Unknown rpc type "${type}"`)
+    assert.notEqual(
+      type,
+      'rpc',
+      `NetworkController - cannot call "setProviderType" with type 'rpc'. use "setRpcTarget"`
+    )
+    assert(
+      INFURA_PROVIDER_TYPES.includes(type) || type === LOCALHOST,
+      `NetworkController - Unknown rpc type "${type}"`
+    )
     const providerConfig = { type }
     this.providerConfig = providerConfig
   }
@@ -133,11 +142,13 @@ module.exports = class NetworkController extends EventEmitter {
     const isInfura = INFURA_PROVIDER_TYPES.includes(type)
     if (isInfura) {
       this._configureInfuraProvider(opts)
-    // url-based rpc endpoints
+      // url-based rpc endpoints
     } else if (type === 'rpc') {
       this._configureStandardProvider({ rpcUrl: rpcTarget })
     } else {
-      throw new Error(`NetworkController - _configureProvider - unknown type "${type}"`)
+      throw new Error(
+        `NetworkController - _configureProvider - unknown type "${type}"`
+      )
     }
   }
 
@@ -154,7 +165,9 @@ module.exports = class NetworkController extends EventEmitter {
   }
 
   _setNetworkClient ({ networkMiddleware }) {
-    const metamaskMiddleware = createMetamaskMiddleware(this._baseProviderParams)
+    const metamaskMiddleware = createMetamaskMiddleware(
+      this._baseProviderParams
+    )
     const engine = new JsonRpcEngine()
     engine.push(metamaskMiddleware)
     engine.push(networkMiddleware)
@@ -174,7 +187,11 @@ module.exports = class NetworkController extends EventEmitter {
   }
 
   _logBlock (block) {
-    log.info(`BLOCK CHANGED: #${block.number.toString('hex')} 0x${block.hash.toString('hex')}`)
+    log.info(
+      `BLOCK CHANGED: #${block.number.toString('hex')} 0x${block.hash.toString(
+        'hex'
+      )}`
+    )
     this.verifyNetwork()
   }
 }

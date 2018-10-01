@@ -1,0 +1,69 @@
+<html>
+<body>
+  Free section of article, 
+  if you like what you've read please purchase the remainder
+
+  <br/><br/>
+  <button 
+    class="badger-button"
+    data-to="bitcoincash:qqeuq3yxsr9rys39am985gcv7xg6hzzqqgu9x00ua2"
+    data-value="0.00001000"
+    data-paywall-id="paywall"
+    data-success-callback="badgerCallback"
+  >
+    Purchase $1
+  </button>
+
+  <br/><br/>
+
+  <div id="paywall" style="display:none">
+    Thank you for purchasing!
+    <br/>
+    Premium content
+  </div>
+
+  <script>
+    function badgerCallback(txid) {
+      alert(txid)
+    }
+
+    var badgerButtons = document.body.getElementsByClassName("badger-button")
+
+    for (var i = 0; i < badgerButtons.length; i++) {
+      var badgerButton = badgerButtons[i]
+      badgerButton.addEventListener('click', function(event) {
+        if (typeof web4bch !== 'undefined') {
+          web4bch = new Web4Bch(web4bch.currentProvider)
+
+          var txParams = {
+            to: badgerButton.getAttribute("data-to"),
+            from: web4bch.bch.defaultAccount,
+            value: badgerButton.getAttribute("data-value")
+          }
+          web4bch.bch.sendTransaction(txParams, (err, res) => {
+            if (err) {
+              console.log('send err', err)
+            } else {
+              console.log('send success:', res)
+              var paywallId = badgerButton.getAttribute("data-paywall-id")
+              if (paywallId) {
+                var paywall = document.getElementById("paywall")
+                paywall.style.display = "block"
+              }
+
+              var successCallback = badgerButton.getAttribute("data-success-callback")
+              if (successCallback) {
+                window[successCallback](res)
+              }
+            }
+          })
+        } else {
+          window.open('https://badgerwallet.cash')
+        }
+      })
+    }
+
+  </script>
+</body>
+
+</html>

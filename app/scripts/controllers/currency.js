@@ -9,7 +9,6 @@ const BITBOX = new BITBOXCli()
 const POLLING_INTERVAL = 600000
 
 class CurrencyController {
-
   /**
    * Controller responsible for managing data associated with the currently selected currency.
    *
@@ -27,11 +26,14 @@ class CurrencyController {
    *
    */
   constructor (opts = {}) {
-    const initState = extend({
-      currentCurrency: 'usd',
-      conversionRate: 0,
-      conversionDate: 'N/A',
-    }, opts.initState)
+    const initState = extend(
+      {
+        currentCurrency: 'usd',
+        conversionRate: 0,
+        conversionDate: 'N/A',
+      },
+      opts.initState
+    )
     this.store = new ObservableStore(initState)
   }
 
@@ -114,7 +116,11 @@ class CurrencyController {
       this.setConversionRate(Number(rate))
       this.setConversionDate(Number(new Date()))
     } catch (err) {
-      log.warn(`Badger - Failed to query currency conversion:`, currentCurrency, err)
+      log.warn(
+        `Badger - Failed to query currency conversion:`,
+        currentCurrency,
+        err
+      )
       this.setConversionRate(0)
       this.setConversionDate('N/A')
     }

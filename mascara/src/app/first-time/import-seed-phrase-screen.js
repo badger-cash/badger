@@ -1,13 +1,16 @@
-import {validateMnemonic} from 'bip39'
+import { validateMnemonic } from 'bip39'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import {
   createNewVaultAndRestore,
   unMarkPasswordForgotten,
 } from '../../../../ui/app/actions'
 import { INITIALIZE_NOTICE_ROUTE } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
+const log = require('loglevel')
 
 class ImportSeedPhraseScreen extends Component {
   static contextTypes = {
@@ -20,7 +23,7 @@ class ImportSeedPhraseScreen extends Component {
     leaveImportSeedScreenState: PropTypes.func,
     history: PropTypes.object,
     isLoading: PropTypes.bool,
-  };
+  }
 
   state = {
     seedPhrase: '',
@@ -31,19 +34,23 @@ class ImportSeedPhraseScreen extends Component {
     confirmPasswordError: null,
   }
 
-  parseSeedPhrase = (seedPhrase) => {
-    return seedPhrase
-      .match(/\w+/g)
-      .join(' ')
+  parseSeedPhrase = seedPhrase => {
+    return seedPhrase.match(/\w+/g).join(' ')
+  }
+
+  validateSeedPhrase = (seedPhrase, lang = 'english') => {
+    const validated = BITBOX.Mnemonic.validate(
+      seedPhrase,
+      BITBOX.Mnemonic.wordLists()[lang]
+    )
+    return validated
   }
 
   handleSeedPhraseChange (seedPhrase) {
     let seedPhraseError = null
 
     if (seedPhrase) {
-      if (this.parseSeedPhrase(seedPhrase).split(' ').length !== 12) {
-        seedPhraseError = this.context.t('seedPhraseReq')
-      } else if (!validateMnemonic(seedPhrase)) {
+      if (!validateMnemonic(seedPhrase)) {
         seedPhraseError = this.context.t('invalidSeedPhrase')
       }
     }
@@ -87,8 +94,9 @@ class ImportSeedPhraseScreen extends Component {
     } = this.props
 
     leaveImportSeedScreenState()
-    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase))
-      .then(() => history.push(INITIALIZE_NOTICE_ROUTE))
+    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
+      () => history.push(INITIALIZE_NOTICE_ROUTE)
+    )
   }
 
   hasError () {
@@ -107,7 +115,19 @@ class ImportSeedPhraseScreen extends Component {
     } = this.state
     const { t } = this.context
     const { isLoading } = this.props
-    const disabled = !seedPhrase || !password || !confirmPassword || isLoading || this.hasError()
+    const disabled =
+      !seedPhrase ||
+      !password ||
+      !confirmPassword ||
+      isLoading ||
+      this.hasError()
+    console.log(
+      seedPhrase,
+      password,
+      confirmPassword,
+      isLoading,
+      this.hasError()
+    )
 
     return (
       <div className="first-view-main-wrapper">
@@ -138,9 +158,7 @@ class ImportSeedPhraseScreen extends Component {
                 placeholder="Separate each word with a single space"
               />
             </div>
-            <span className="error">
-              { seedPhraseError }
-            </span>
+            <span className="error">{seedPhraseError}</span>
             <TextField
               id="password"
               label={t('newPassword')}
@@ -159,7 +177,9 @@ class ImportSeedPhraseScreen extends Component {
               type="password"
               className="first-time-flow__input"
               value={this.state.confirmPassword}
-              onChange={event => this.handleConfirmPasswordChange(event.target.value)}
+              onChange={event =>
+                this.handleConfirmPasswordChange(event.target.value)
+              }
               error={confirmPasswordError}
               autoComplete="confirm-password"
               margin="normal"
@@ -185,6 +205,7 @@ export default connect(
     leaveImportSeedScreenState: () => {
       dispatch(unMarkPasswordForgotten())
     },
-    createNewVaultAndRestore: (pw, seed) => dispatch(createNewVaultAndRestore(pw, seed)),
+    createNewVaultAndRestore: (pw, seed) =>
+      dispatch(createNewVaultAndRestore(pw, seed)),
   })
 )(ImportSeedPhraseScreen)

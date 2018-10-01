@@ -241,7 +241,7 @@
     "message": "Decimals of Precision"
   },
   "defaultNetwork": {
-    "message": "The default network for Ether transactions is Main Net."
+    "message": "The default network for Bitcoin Cashtransactions is Main Net."
   },
   "denExplainer": {
     "message": "Your DEN is your password-encrypted storage within Badger."
@@ -274,7 +274,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "If you own other cryptocurrencies, you can trade and deposit Ether directly into your Badger wallet. No Account Needed."
+      "If you own other cryptocurrencies, you can trade and deposit Bitcoin Cash directly into your Badger wallet. No Account Needed."
   },
   "details": {
     "message": "Details"
@@ -421,8 +421,8 @@
     "message": "Get Ether"
   },
   "getEtherFromFaucet": {
-    "message": "Get Ether from a faucet for the $1",
-    "description": "Displays network name for Ether faucet"
+    "message": "Get Bitcoin Cashfrom a faucet for the $1",
+    "description": "Displays network name for Bitcoin Cashfaucet"
   },
   "getHelp": {
     "message": "Get Help."

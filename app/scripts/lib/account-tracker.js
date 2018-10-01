@@ -155,7 +155,7 @@ class AccountTracker {
   async getBchBalance (address) {
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then((result) => {
-          const balance = result.length > 0 ? result[0].satoshis : 0
+          const balance = result.length > 0 ? result.reduce((prev, cur) => prev + cur.satoshis, 0) : 0
           resolve(balance)
       }, (err) => {
           log.error('AccountTracker::getBchBalance', err)

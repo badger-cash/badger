@@ -10,7 +10,6 @@ import { INITIALIZE_NOTICE_ROUTE } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
 const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
 const BITBOX = new BITBOXCli()
-const log = require('loglevel')
 
 class ImportSeedPhraseScreen extends Component {
   static contextTypes = {
@@ -121,13 +120,6 @@ class ImportSeedPhraseScreen extends Component {
       !confirmPassword ||
       isLoading ||
       this.hasError()
-    console.log(
-      seedPhrase,
-      password,
-      confirmPassword,
-      isLoading,
-      this.hasError()
-    )
 
     return (
       <div className="first-view-main-wrapper">

@@ -16,12 +16,16 @@ const BalanceComponent = require('./balance-component')
 const TokenList = require('./token-list')
 const selectors = require('../selectors')
 const { ADD_TOKEN_ROUTE } = require('../routes')
+const log = require('loglevel')
 
 import Button from './button'
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(WalletView)
 
 WalletView.contextTypes = {
@@ -33,7 +37,6 @@ WalletView.defaultProps = {
 }
 
 function mapStateToProps (state) {
-
   return {
     network: state.metamask.network,
     sidebarOpen: state.appState.sidebar.isOpen,
@@ -83,7 +86,8 @@ WalletView.prototype.renderWalletBalance = function () {
   const className = `flex-column wallet-balance-wrapper ${selectedClass}`
 
   return h('div', { className }, [
-    h('div.wallet-balance',
+    h(
+      'div.wallet-balance',
       {
         onClick: () => {
           unsetSelectedToken()
@@ -115,12 +119,14 @@ WalletView.prototype.render = function () {
   // console.log('walletview, selectedAccount:', selectedAccount)
 
   const checksummedAddress = checksumAddress(selectedAddress)
+  log.debug('CHECKSUMED', checksummedAddress)
+  log.debug(checksummedAddress)
 
   if (!selectedAddress) {
     throw new Error('selectedAddress should not be ' + String(selectedAddress))
   }
 
-  const keyring = keyrings.find((kr) => {
+  const keyring = keyrings.find(kr => {
     return kr.accounts.includes(selectedAddress)
   })
 
@@ -137,79 +143,112 @@ WalletView.prototype.render = function () {
     }
   }
 
-  return h('div.wallet-view.flex-column', {
-    style: {},
-    className: responsiveDisplayClassname,
-  }, [
-
-    // TODO: Separate component: wallet account details
-    h('div.flex-column.wallet-view-account-details', {
+  return h(
+    'div.wallet-view.flex-column',
+    {
       style: {},
-    }, [
-      h('div.wallet-view__sidebar-close', {
-        onClick: hideSidebar,
-      }),
-
-      h('div.wallet-view__keyring-label.allcaps', label),
-
-      h('div.flex-column.flex-center.wallet-view__name-container', {
-        style: { margin: '0 auto' },
-        onClick: showAccountDetailModal,
-      }, [
-        h(Identicon, {
-          diameter: 54,
-          address: checksummedAddress,
-        }),
-
-        h('span.account-name', {
+      className: responsiveDisplayClassname,
+    },
+    [
+      // TODO: Separate component: wallet account details
+      h(
+        'div.flex-column.wallet-view-account-details',
+        {
           style: {},
-        }, [
-          identities[selectedAddress].name,
-        ]),
-
-        h('button.btn-clear.wallet-view__details-button.allcaps', this.context.t('details')),
-      ]),
-    ]),
-
-    h(Tooltip, {
-      position: 'bottom',
-      title: this.state.hasCopied ? this.context.t('copiedExclamation') : this.context.t('copyToClipboard'),
-      wrapperClassName: 'wallet-view__tooltip',
-    }, [
-      h('button.wallet-view__address', {
-        className: classnames({
-          'wallet-view__address__pressed': this.state.copyToClipboardPressed,
-        }),
-        onClick: () => {
-          copyToClipboard(checksummedAddress)
-          this.setState({ hasCopied: true })
-          setTimeout(() => this.setState({ hasCopied: false }), 3000)
         },
-        onMouseDown: () => {
-          this.setState({ copyToClipboardPressed: true })
+        [
+          h('div.wallet-view__sidebar-close', {
+            onClick: hideSidebar,
+          }),
+
+          h('div.wallet-view__keyring-label.allcaps', label),
+
+          h(
+            'div.flex-column.flex-center.wallet-view__name-container',
+            {
+              style: { margin: '0 auto' },
+              onClick: showAccountDetailModal,
+            },
+            [
+              h(Identicon, {
+                diameter: 54,
+                address: checksummedAddress,
+              }),
+
+              h(
+                'span.account-name',
+                {
+                  style: {},
+                },
+                [identities[selectedAddress].name]
+              ),
+
+              h(
+                'button.btn-clear.wallet-view__details-button.allcaps',
+                this.context.t('details')
+              ),
+            ]
+          ),
+        ]
+      ),
+
+      h(
+        Tooltip,
+        {
+          position: 'bottom',
+          title: this.state.hasCopied
+            ? this.context.t('copiedExclamation')
+            : this.context.t('copyToClipboard'),
+          wrapperClassName: 'wallet-view__tooltip',
         },
-        onMouseUp: () => {
-          this.setState({ copyToClipboardPressed: false })
+        [
+          h(
+            'button.wallet-view__address',
+            {
+              className: classnames({
+                'wallet-view__address__pressed': this.state
+                  .copyToClipboardPressed,
+              }),
+              onClick: () => {
+                copyToClipboard(checksummedAddress)
+                this.setState({ hasCopied: true })
+                setTimeout(() => this.setState({ hasCopied: false }), 3000)
+              },
+              onMouseDown: () => {
+                this.setState({ copyToClipboardPressed: true })
+              },
+              onMouseUp: () => {
+                this.setState({ copyToClipboardPressed: false })
+              },
+            },
+            [
+              `${checksummedAddress.slice(0, 6)}...${checksummedAddress.slice(
+                -4
+              )}`,
+              h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),
+            ]
+          ),
+        ]
+      ),
+
+      this.renderWalletBalance(),
+
+      h(TokenList),
+
+      h(
+        Button,
+        {
+          type: 'primary',
+          className: 'wallet-view__add-token-button',
+          onClick: () => {
+            history.push(ADD_TOKEN_ROUTE)
+            sidebarOpen && hideSidebar()
+          },
         },
-      }, [
-        `${checksummedAddress.slice(0, 6)}...${checksummedAddress.slice(-4)}`,
-        h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),
-      ]),
-    ]),
-
-    this.renderWalletBalance(),
-
-    h(TokenList),
-
-    h(Button, {
-      type: 'primary',
-      className: 'wallet-view__add-token-button',
-      onClick: () => {
-        history.push(ADD_TOKEN_ROUTE)
-        sidebarOpen && hideSidebar()
-      },
-    }, this.context.t('addToken')),
-  ])
+        this.context.t('addToken')
+      ),
+    ]
+  )
 }
 
 // TODO: Extra wallets, for dev testing. Remove when PRing to master.

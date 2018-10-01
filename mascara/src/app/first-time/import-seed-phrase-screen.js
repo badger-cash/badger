@@ -50,7 +50,7 @@ class ImportSeedPhraseScreen extends Component {
 
     if (seedPhrase) {
       if (!validateMnemonic(seedPhrase)) {
-        seedPhraseError = this.context.t('invalidSeedPhrase')
+        seedPhraseError = this.validateSeedPhrase(seedPhrase)
       }
     }
 

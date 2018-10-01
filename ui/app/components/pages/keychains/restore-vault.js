@@ -1,3 +1,4 @@
+import { validateMnemonic } from 'bip39'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -7,6 +8,8 @@ import {
 } from '../../../actions'
 import { DEFAULT_ROUTE } from '../../../routes'
 import TextField from '../../text-field'
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
 
 class RestoreVaultPage extends Component {
   static contextTypes = {
@@ -34,14 +37,21 @@ class RestoreVaultPage extends Component {
     return seedPhrase.match(/\w+/g).join(' ')
   }
 
+  validateSeedPhrase = (seedPhrase, lang = 'english') => {
+    const validated = BITBOX.Mnemonic.validate(
+      seedPhrase,
+      BITBOX.Mnemonic.wordLists()[lang]
+    )
+    return validated
+  }
+
   handleSeedPhraseChange (seedPhrase) {
     let seedPhraseError = null
 
-    if (
-      seedPhrase &&
-      this.parseSeedPhrase(seedPhrase).split(' ').length !== 12
-    ) {
-      seedPhraseError = this.context.t('seedPhraseReq')
+    if (seedPhrase) {
+      if (!validateMnemonic(seedPhrase)) {
+        seedPhraseError = this.validateSeedPhrase(seedPhrase)
+      }
     }
 
     this.setState({ seedPhrase, seedPhraseError })

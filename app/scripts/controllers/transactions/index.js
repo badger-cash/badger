@@ -131,6 +131,9 @@ class TransactionController extends EventEmitter {
     return new Promise((resolve, reject) => {
       this.txStateManager.once(`${initialTxMeta.id}:finished`, (finishedTxMeta) => {
         switch (finishedTxMeta.status) {
+          // TODO: Remove confirmed after txQueue is live, only submit to queue
+          case 'confirmed':
+            return resolve(finishedTxMeta.hash)
           case 'submitted':
             return resolve(finishedTxMeta.hash)
           case 'rejected':
@@ -265,6 +268,8 @@ class TransactionController extends EventEmitter {
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction')
       // sign transaction
       await this.signAndPublishTransaction(txId)
+
+      this.confirmTransaction(txId)
 
       // TODO: split signAndPublish method
       // const rawTx = await this.signTransaction(txId)

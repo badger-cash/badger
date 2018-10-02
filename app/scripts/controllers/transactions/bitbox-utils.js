@@ -62,41 +62,50 @@ class BitboxUtils {
     })
   }
 
-  static async signAndPublishTransaction (txParams, keyPair) {
-    const from = txParams.from
-    const to = txParams.to
-    const satoshis = BITBOX.BitcoinCash.toSatoshi(txParams.value)
+  static signAndPublishTransaction (txParams, keyPair) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const from = txParams.from
+        const to = txParams.to
+        const satoshisToSend = BITBOX.BitcoinCash.toSatoshi(txParams.value)
 
-    const utxo = await this.getUtxo(from)
-    const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
-    transactionBuilder.addInput(utxo.txid, utxo.vout)
+        const utxos = await this.getAllUtxo(from)
+        if (!utxos || utxos.length === 0) {
+            throw new Error('Insufficient funds')
+        }
 
-    // Calculate fee @ 1 sat/byte
-    const byteCount = BITBOX.BitcoinCash.getByteCount(
-      { P2PKH: 1 },
-      { P2PKH: 2 }
-    )
+        const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
 
-    // Destination output
-    transactionBuilder.addOutput(to, satoshis)
+        let totalUtxoAmount = 0
+        utxos.forEach((utxo) => {
+            transactionBuilder.addInput(utxo.txid, utxo.vout)
+            totalUtxoAmount += utxo.satoshis
+        })
 
-    // Remaining balance output
-    const satoshisRemaining = utxo.satoshis - satoshis - byteCount
-    transactionBuilder.addOutput(from, satoshisRemaining)
+        const byteCount = BITBOX.BitcoinCash.getByteCount({ P2PKH: utxos.length }, { P2PKH: 2 })
+        
+        const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
 
-    let redeemScript
-    transactionBuilder.sign(
-      0,
-      keyPair,
-      redeemScript,
-      transactionBuilder.hashTypes.SIGHASH_ALL,
-      utxo.satoshis
-    )
+        // Destination output
+        transactionBuilder.addOutput(to, satoshisToSend)
 
-    const hex = transactionBuilder.build().toHex()
+        // Return remaining balance output
+        transactionBuilder.addOutput(from, satoshisRemaining)
 
-    // TODO: Handle failures: transaction already in blockchain, mempool length, networking
-    return await this.publishTx(hex)
+        let redeemScript
+        utxos.forEach((utxo, index) => {
+            transactionBuilder.sign(index, keyPair, redeemScript, transactionBuilder.hashTypes.SIGHASH_ALL, utxo.satoshis)
+        })
+
+        const hex = transactionBuilder.build().toHex()
+
+        // TODO: Handle failures: transaction already in blockchain, mempool length, networking
+        const txid = await this.publishTx(hex)
+        resolve(txid)
+      } catch (err) {
+        reject(err)
+      }
+    })
   }
 }
 

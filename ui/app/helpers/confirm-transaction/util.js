@@ -13,26 +13,30 @@ import {
 import { unconfirmedTransactionsCountSelector } from '../../selectors/confirm-transaction'
 
 export function increaseLastGasPrice (lastGasPrice) {
-  return ethUtil.addHexPrefix(multiplyCurrencies(lastGasPrice, 1.1, {
-    multiplicandBase: 16,
-    multiplierBase: 10,
-    toNumericBase: 'hex',
-  }))
+  return ethUtil.addHexPrefix(
+    multiplyCurrencies(lastGasPrice, 1.1, {
+      multiplicandBase: 16,
+      multiplierBase: 10,
+      toNumericBase: 'hex',
+    })
+  )
 }
 
 export function hexGreaterThan (a, b) {
   return conversionGreaterThan(
     { value: a, fromNumericBase: 'hex' },
-    { value: b, fromNumericBase: 'hex' },
+    { value: b, fromNumericBase: 'hex' }
   )
 }
 
 export function getHexGasTotal ({ gasLimit, gasPrice }) {
-  return ethUtil.addHexPrefix(multiplyCurrencies(gasLimit, gasPrice, {
-    toNumericBase: 'hex',
-    multiplicandBase: 16,
-    multiplierBase: 16,
-  }))
+  return ethUtil.addHexPrefix(
+    multiplyCurrencies(gasLimit, gasPrice, {
+      toNumericBase: 'hex',
+      multiplicandBase: 16,
+      multiplierBase: 16,
+    })
+  )
 }
 
 export function addEth (...args) {
@@ -61,12 +65,12 @@ export function getValueFromWeiHex ({
   toDenomination,
 }) {
   return conversionUtil(value, {
-    fromNumericBase: 'hex',
+    fromNumericBase: 'dec',
     toNumericBase: 'dec',
-    fromCurrency: 'ETH',
+    fromCurrency: 'BCH',
     toCurrency,
     numberOfDecimals,
-    fromDenomination: 'WEI',
+    fromDenomination: 'SAT',
     toDenomination,
     conversionRate,
   })
@@ -98,10 +102,10 @@ export function getTransactionFee ({
   numberOfDecimals,
 }) {
   return conversionUtil(value, {
-    fromNumericBase: 'BN',
+    fromNumericBase: 'dec',
     toNumericBase: 'dec',
-    fromDenomination: 'WEI',
-    fromCurrency: 'ETH',
+    fromDenomination: 'SAT',
+    fromCurrency: 'BCH',
     toCurrency,
     numberOfDecimals,
     conversionRate,
@@ -142,5 +146,7 @@ export function roundExponential (value) {
   const bigNumberValue = new BigNumber(String(value))
 
   // In JS, numbers with exponentials greater than 20 get displayed as an exponential.
-  return bigNumberValue.e > 20 ? Number(bigNumberValue.toPrecision(PRECISION)) : value
+  return bigNumberValue.e > 20
+    ? Number(bigNumberValue.toPrecision(PRECISION))
+    : value
 }

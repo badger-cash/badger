@@ -5,18 +5,18 @@ const Component = require('react').Component
 const connect = require('react-redux').connect
 const classnames = require('classnames')
 const { qrcode } = require('qrcode-npm')
-const { shapeShiftSubview, pairUpdate, buyWithShapeShift } = require('../actions')
+const {
+  shapeShiftSubview,
+  pairUpdate,
+  buyWithShapeShift,
+} = require('../actions')
 const { isValidAddress } = require('../util')
 const SimpleDropdown = require('./dropdowns/simple-dropdown')
 
 import Button from './button'
 
 function mapStateToProps (state) {
-  const {
-    coinOptions,
-    tokenExchangeRates,
-    selectedAddress,
-  } = state.metamask
+  const { coinOptions, tokenExchangeRates, selectedAddress } = state.metamask
   const { warning } = state.appState
 
   return {
@@ -39,8 +39,10 @@ ShapeshiftForm.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(ShapeshiftForm)
-
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShapeshiftForm)
 
 inherits(ShapeshiftForm, Component)
 function ShapeshiftForm () {
@@ -79,67 +81,57 @@ ShapeshiftForm.prototype.onBuyWithShapeShift = function () {
     showQrCode: true,
   })
 
-  const {
-    buyWithShapeShift,
-    selectedAddress: withdrawal,
-  } = this.props
-  const {
-    refundAddress: returnAddress,
-    depositCoin,
-  } = this.state
+  const { buyWithShapeShift, selectedAddress: withdrawal } = this.props
+  const { refundAddress: returnAddress, depositCoin } = this.state
   const pair = `${depositCoin}_eth`
   const data = {
     withdrawal,
     pair,
     returnAddress,
     //  Public api key
-    'apiKey': '803d1f5df2ed1b1476e4b9e6bcd089e34d8874595dda6a23b67d93c56ea9cc2445e98a6748b219b2b6ad654d9f075f1f1db139abfa93158c04e825db122c14b6',
+    apiKey:
+      '803d1f5df2ed1b1476e4b9e6bcd089e34d8874595dda6a23b67d93c56ea9cc2445e98a6748b219b2b6ad654d9f075f1f1db139abfa93158c04e825db122c14b6',
   }
 
   if (isValidAddress(withdrawal)) {
     buyWithShapeShift(data)
-      .then(d => this.setState({
-        showQrCode: true,
-        depositAddress: d.deposit,
-        isLoading: false,
-      }))
-      .catch(() => this.setState({
-        showQrCode: false,
-        errorMessage: this.context.t('invalidRequest'),
-        isLoading: false,
-      }))
+      .then(d =>
+        this.setState({
+          showQrCode: true,
+          depositAddress: d.deposit,
+          isLoading: false,
+        })
+      )
+      .catch(() =>
+        this.setState({
+          showQrCode: false,
+          errorMessage: this.context.t('invalidRequest'),
+          isLoading: false,
+        })
+      )
   }
 }
 
 ShapeshiftForm.prototype.renderMetadata = function (label, value) {
-  return h('div', {className: 'shapeshift-form__metadata-wrapper'}, [
+  return h('div', { className: 'shapeshift-form__metadata-wrapper' }, [
+    h('div.shapeshift-form__metadata-label', {}, [h('span', `${label}:`)]),
 
-    h('div.shapeshift-form__metadata-label', {}, [
-      h('span', `${label}:`),
-    ]),
-
-    h('div.shapeshift-form__metadata-value', {}, [
-      h('span', value),
-    ]),
-
+    h('div.shapeshift-form__metadata-value', {}, [h('span', value)]),
   ])
 }
 
 ShapeshiftForm.prototype.renderMarketInfo = function () {
   const { tokenExchangeRates } = this.props
-  const {
-    limit,
-    rate,
-    minimum,
-  } = tokenExchangeRates[this.getCoinPair()] || {}
+  const { limit, rate, minimum } = tokenExchangeRates[this.getCoinPair()] || {}
 
   return h('div.shapeshift-form__metadata', {}, [
-
-    this.renderMetadata(this.context.t('status'), limit ? this.context.t('available') : this.context.t('unavailable')),
+    this.renderMetadata(
+      this.context.t('status'),
+      limit ? this.context.t('available') : this.context.t('unavailable')
+    ),
     this.renderMetadata(this.context.t('limit'), limit),
     this.renderMetadata(this.context.t('exchangeRate'), rate),
     this.renderMetadata(this.context.t('min'), minimum),
-
   ])
 }
 
@@ -150,7 +142,6 @@ ShapeshiftForm.prototype.renderQrCode = function () {
   qrImage.make()
 
   return h('div.shapeshift-form', {}, [
-
     h('div.shapeshift-form__deposit-instruction', [
       this.context.t('depositCoin', [depositCoin.toUpperCase()]),
     ]),
@@ -160,19 +151,17 @@ ShapeshiftForm.prototype.renderQrCode = function () {
     h('div.shapeshift-form__qr-code', [
       isLoading
         ? h('img', {
-          src: 'images/loading.svg',
-          style: { width: '60px'},
-        })
+            src: 'images/loading.svg',
+            style: { width: '60px' },
+          })
         : h('div', {
-          dangerouslySetInnerHTML: { __html: qrImage.createTableTag(4) },
-        }),
+            dangerouslySetInnerHTML: { __html: qrImage.createTableTag(4) },
+          }),
     ]),
 
     this.renderMarketInfo(),
-
   ])
 }
-
 
 ShapeshiftForm.prototype.render = function () {
   const { coinOptions, btnClass, warning } = this.props
@@ -185,72 +174,82 @@ ShapeshiftForm.prototype.render = function () {
       ? this.renderQrCode()
       : h('div.modal-shapeshift-form', [
           h('div.shapeshift-form__selectors', [
-
             h('div.shapeshift-form__selector', [
-
-              h('div.shapeshift-form__selector-label', this.context.t('deposit')),
+              h(
+                'div.shapeshift-form__selector-label',
+                this.context.t('deposit')
+              ),
 
               h(SimpleDropdown, {
                 selectedOption: this.state.depositCoin,
-                onSelect: (coin) => this.onCoinChange(coin),
+                onSelect: coin => this.onCoinChange(coin),
                 options: Object.entries(coinOptions).map(([coin]) => ({
                   value: coin.toLowerCase(),
                   displayValue: coin,
                 })),
               }),
-
             ]),
 
             h('div.icon.shapeshift-form__caret', {
-              style: { backgroundImage: 'url(images/caret-right.svg)'},
+              style: { backgroundImage: 'url(images/caret-right.svg)' },
             }),
 
             h('div.shapeshift-form__selector', [
-
               h('div.shapeshift-form__selector-label', [
                 this.context.t('receive'),
               ]),
 
-              h('div.shapeshift-form__selector-input', ['ETH']),
-
+              h('div.shapeshift-form__selector-input', ['BCH']),
             ]),
-
           ]),
 
           warning && h('div.shapeshift-form__address-input-label', warning),
 
-          !warning && h('div', {
-            className: classnames('shapeshift-form__address-input-wrapper', {
-              'shapeshift-form__address-input-wrapper--error': errorMessage,
-            }),
-          }, [
+          !warning &&
+            h(
+              'div',
+              {
+                className: classnames(
+                  'shapeshift-form__address-input-wrapper',
+                  {
+                    'shapeshift-form__address-input-wrapper--error': errorMessage,
+                  }
+                ),
+              },
+              [
+                h('div.shapeshift-form__address-input-label', [
+                  this.context.t('refundAddress'),
+                ]),
 
-            h('div.shapeshift-form__address-input-label', [
-              this.context.t('refundAddress'),
-            ]),
+                h('input.shapeshift-form__address-input', {
+                  type: 'text',
+                  onChange: e =>
+                    this.setState({
+                      refundAddress: e.target.value,
+                      errorMessage: '',
+                    }),
+                }),
 
-            h('input.shapeshift-form__address-input', {
-              type: 'text',
-              onChange: e => this.setState({
-                refundAddress: e.target.value,
-                errorMessage: '',
-              }),
-            }),
-
-            h('divshapeshift-form__address-input-error-message', [errorMessage]),
-          ]),
+                h('divshapeshift-form__address-input-error-message', [
+                  errorMessage,
+                ]),
+              ]
+            ),
 
           !warning && this.renderMarketInfo(),
+        ]),
 
-      ]),
-
-      !depositAddress && h(Button, {
-        type: 'primary',
-        large: true,
-        className: `${btnClass} shapeshift-form__shapeshift-buy-btn`,
-        disabled: !token,
-        onClick: () => this.onBuyWithShapeShift(),
-      }, [this.context.t('buy')]),
-
-    ])
+    !depositAddress &&
+      h(
+        Button,
+        {
+          type: 'primary',
+          large: true,
+          className: `${btnClass} shapeshift-form__shapeshift-buy-btn`,
+          disabled: !token,
+          onClick: () => this.onBuyWithShapeShift(),
+        },
+        [this.context.t('buy')]
+      ),
+  ])
 }

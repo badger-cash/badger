@@ -14,7 +14,11 @@ import {
   hexGreaterThan,
 } from '../helpers/confirm-transaction/util'
 
-import { getTokenData, getMethodData, isSmartContractAddress } from '../helpers/transactions.util'
+import {
+  getTokenData,
+  getMethodData,
+  isSmartContractAddress,
+} from '../helpers/transactions.util'
 import { getSymbolAndDecimals } from '../token-util'
 import { conversionUtil } from '../conversion-util'
 
@@ -28,7 +32,9 @@ const CLEAR_TOKEN_DATA = createActionType('CLEAR_TOKEN_DATA')
 const UPDATE_METHOD_DATA = createActionType('UPDATE_METHOD_DATA')
 const CLEAR_METHOD_DATA = createActionType('CLEAR_METHOD_DATA')
 const CLEAR_CONFIRM_TRANSACTION = createActionType('CLEAR_CONFIRM_TRANSACTION')
-const UPDATE_TRANSACTION_AMOUNTS = createActionType('UPDATE_TRANSACTION_AMOUNTS')
+const UPDATE_TRANSACTION_AMOUNTS = createActionType(
+  'UPDATE_TRANSACTION_AMOUNTS'
+)
 const UPDATE_TRANSACTION_FEES = createActionType('UPDATE_TRANSACTION_FEES')
 const UPDATE_TRANSACTION_TOTALS = createActionType('UPDATE_TRANSACTION_TOTALS')
 const UPDATE_HEX_GAS_TOTAL = createActionType('UPDATE_HEX_GAS_TOTAL')
@@ -60,7 +66,10 @@ const initState = {
 }
 
 // Reducer
-export default function reducer ({ confirmTransaction: confirmState = initState }, action = {}) {
+export default function reducer (
+  { confirmTransaction: confirmState = initState },
+  action = {}
+) {
   switch (action.type) {
     case UPDATE_TX_DATA:
       return {
@@ -102,22 +111,27 @@ export default function reducer ({ confirmTransaction: confirmState = initState 
       const { fiatTransactionAmount, ethTransactionAmount } = action.payload
       return {
         ...confirmState,
-        fiatTransactionAmount: fiatTransactionAmount || confirmState.fiatTransactionAmount,
-        ethTransactionAmount: ethTransactionAmount || confirmState.ethTransactionAmount,
+        fiatTransactionAmount:
+          fiatTransactionAmount || confirmState.fiatTransactionAmount,
+        ethTransactionAmount:
+          ethTransactionAmount || confirmState.ethTransactionAmount,
       }
     case UPDATE_TRANSACTION_FEES:
       const { fiatTransactionFee, ethTransactionFee } = action.payload
       return {
         ...confirmState,
-        fiatTransactionFee: fiatTransactionFee || confirmState.fiatTransactionFee,
+        fiatTransactionFee:
+          fiatTransactionFee || confirmState.fiatTransactionFee,
         ethTransactionFee: ethTransactionFee || confirmState.ethTransactionFee,
       }
     case UPDATE_TRANSACTION_TOTALS:
       const { fiatTransactionTotal, ethTransactionTotal } = action.payload
       return {
         ...confirmState,
-        fiatTransactionTotal: fiatTransactionTotal || confirmState.fiatTransactionTotal,
-        ethTransactionTotal: ethTransactionTotal || confirmState.ethTransactionTotal,
+        fiatTransactionTotal:
+          fiatTransactionTotal || confirmState.fiatTransactionTotal,
+        ethTransactionTotal:
+          ethTransactionTotal || confirmState.ethTransactionTotal,
       }
     case UPDATE_HEX_GAS_TOTAL:
       return {
@@ -258,7 +272,9 @@ export function setFetchingData (isFetching) {
 
 export function updateGasAndCalculate ({ gasLimit, gasPrice }) {
   return (dispatch, getState) => {
-    const { confirmTransaction: { txData } } = getState()
+    const {
+      confirmTransaction: { txData },
+    } = getState()
     const newTxData = {
       ...txData,
       txParams: {
@@ -278,7 +294,10 @@ function increaseFromLastGasPrice (txData) {
   // Set the minimum to a 10% increase from the lastGasPrice.
   const minimumGasPrice = increaseLastGasPrice(lastGasPrice)
   const gasPriceBelowMinimum = hexGreaterThan(minimumGasPrice, previousGasPrice)
-  const gasPrice = (!previousGasPrice || gasPriceBelowMinimum) ? minimumGasPrice : previousGasPrice
+  const gasPrice =
+    !previousGasPrice || gasPriceBelowMinimum
+      ? minimumGasPrice
+      : previousGasPrice
 
   return {
     ...txData,
@@ -297,16 +316,26 @@ export function updateTxDataAndCalculate (txData) {
 
     dispatch(updateTxData(txData))
 
-    const { txParams: { value, gas: gasLimit = '0x0', gasPrice = '0x0' } = {} } = txData
+    const {
+      txParams: { value, gas: gasLimit = '0x0', gasPrice = '0x0' } = {},
+    } = txData
 
     const fiatTransactionAmount = getValueFromWeiHex({
-      value, toCurrency: currentCurrency, conversionRate, numberOfDecimals: 2,
+      value,
+      toCurrency: currentCurrency,
+      conversionRate,
+      numberOfDecimals: 2,
     })
     const ethTransactionAmount = getValueFromWeiHex({
-      value, toCurrency: 'ETH', conversionRate, numberOfDecimals: 6,
+      value,
+      toCurrency: 'BCH',
+      conversionRate,
+      numberOfDecimals: 6,
     })
 
-    dispatch(updateTransactionAmounts({ fiatTransactionAmount, ethTransactionAmount }))
+    dispatch(
+      updateTransactionAmounts({ fiatTransactionAmount, ethTransactionAmount })
+    )
 
     const hexGasTotal = getHexGasTotal({ gasLimit, gasPrice })
 
@@ -320,24 +349,31 @@ export function updateTxDataAndCalculate (txData) {
     })
     const ethTransactionFee = getTransactionFee({
       value: hexGasTotal,
-      toCurrency: 'ETH',
+      toCurrency: 'BCH',
       numberOfDecimals: 6,
       conversionRate,
     })
 
     dispatch(updateTransactionFees({ fiatTransactionFee, ethTransactionFee }))
 
-    const fiatTransactionTotal = addFiat(fiatTransactionFee, fiatTransactionAmount)
+    const fiatTransactionTotal = addFiat(
+      fiatTransactionFee,
+      fiatTransactionAmount
+    )
     const ethTransactionTotal = addEth(ethTransactionFee, ethTransactionAmount)
 
-    dispatch(updateTransactionTotals({ fiatTransactionTotal, ethTransactionTotal }))
+    dispatch(
+      updateTransactionTotals({ fiatTransactionTotal, ethTransactionTotal })
+    )
   }
 }
 
 export function setTransactionToConfirm (transactionId) {
   return async (dispatch, getState) => {
     const state = getState()
-    const unconfirmedTransactionsHash = unconfirmedTransactionsHashSelector(state)
+    const unconfirmedTransactionsHash = unconfirmedTransactionsHashSelector(
+      state
+    )
     const transaction = unconfirmedTransactionsHash[transactionId]
 
     if (!transaction) {
@@ -347,7 +383,9 @@ export function setTransactionToConfirm (transactionId) {
 
     if (transaction.txParams) {
       const { lastGasPrice } = transaction
-      const txData = lastGasPrice ? increaseFromLastGasPrice(transaction) : transaction
+      const txData = lastGasPrice
+        ? increaseFromLastGasPrice(transaction)
+        : transaction
       dispatch(updateTxDataAndCalculate(txData))
 
       const { txParams } = transaction
@@ -373,8 +411,12 @@ export function setTransactionToConfirm (transactionId) {
         dispatch(updateTokenData(tokenData))
 
         try {
-          const tokenSymbolData = await getSymbolAndDecimals(tokenAddress, existingTokens) || {}
-          const { symbol: tokenSymbol = '', decimals: tokenDecimals = '' } = tokenSymbolData
+          const tokenSymbolData =
+            (await getSymbolAndDecimals(tokenAddress, existingTokens)) || {}
+          const {
+            symbol: tokenSymbol = '',
+            decimals: tokenDecimals = '',
+          } = tokenSymbolData
           dispatch(updateTokenProps({ tokenSymbol, tokenDecimals }))
         } catch (error) {
           dispatch(updateTokenProps({ tokenSymbol: '', tokenDecimals: '' }))

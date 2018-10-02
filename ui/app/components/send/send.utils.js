@@ -46,29 +46,33 @@ function calcGasTotal (gasLimit = '0', gasPrice = '0') {
 }
 
 function isBalanceSufficient ({
-  amount = '0x0',
+  amount = '0',
   amountConversionRate = 1,
-  balance = '0x0',
+  balance = '0',
   conversionRate = 1,
-  gasTotal = '0x0',
+  gasTotal = '0',
   primaryCurrency,
 }) {
-  const totalAmount = addCurrencies(amount, gasTotal, {
-    aBase: 16,
-    bBase: 16,
-    toNumericBase: 'hex',
-  })
+
+  const totalAmount = amount
+
+  // TODO: calculate fee
+  // const totalAmount = addCurrencies(amount, gasTotal, {
+  //   aBase: 10,
+  //   bBase: 10,
+  //   toNumericBase: 'dec',
+  // })
 
   const balanceIsSufficient = conversionGTE(
     {
       value: balance,
-      fromNumericBase: 'hex',
+      fromNumericBase: 'dec',
       fromCurrency: primaryCurrency,
       conversionRate,
     },
     {
       value: totalAmount,
-      fromNumericBase: 'hex',
+      fromNumericBase: 'dec',
       conversionRate: Number(amountConversionRate) || conversionRate,
       fromCurrency: primaryCurrency,
     },
@@ -134,7 +138,7 @@ function getAmountErrorObject ({
 
   const amountLessThanZero = conversionGreaterThan(
     { value: 0, fromNumericBase: 'dec' },
-    { value: amount, fromNumericBase: 'hex' },
+    { value: amount, fromNumericBase: 'dec' },
   )
 
   let amountError = null
@@ -162,7 +166,7 @@ function getGasFeeErrorObject ({
 
   if (gasTotal && conversionRate) {
     const insufficientFunds = !isBalanceSufficient({
-      amount: '0x0',
+      amount: '0',
       amountConversionRate,
       balance,
       conversionRate,

@@ -56,23 +56,23 @@ CurrencyDisplay.prototype.getAmount = function (value) {
 }
 
 CurrencyDisplay.prototype.getValueToRender = function ({ selectedToken, conversionRate, value, readOnly }) {
-  if (value === '0x0') return readOnly ? '0' : ''
+  if (value === '0') return readOnly ? '0' : ''
   const { decimals, symbol } = selectedToken || {}
-  const multiplier = Math.pow(10, Number(decimals || 0))
+  const multiplier = Math.pow(10, Number(decimals || 8))
 
   return selectedToken
-    ? conversionUtil(ethUtil.addHexPrefix(value), {
+    ? conversionUtil(value, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
       toCurrency: symbol,
       conversionRate: multiplier,
       invertConversionRate: true,
     })
-    : conversionUtil(ethUtil.addHexPrefix(value), {
-      fromNumericBase: 'hex',
+    : conversionUtil(value, {
+      fromNumericBase: 'dec',
       toNumericBase: 'dec',
-      fromDenomination: 'WEI',
-      numberOfDecimals: 9,
+      fromDenomination: 'SAT',
+      numberOfDecimals: 8,
       conversionRate,
     })
 }

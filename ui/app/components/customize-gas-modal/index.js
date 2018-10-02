@@ -162,8 +162,8 @@ CustomizeGasModal.prototype.save = function (gasPrice, gasLimit, gasTotal) {
 
   if (maxModeOn && !selectedToken) {
     const maxAmount = subtractCurrencies(
-      ethUtil.addHexPrefix(balance),
-      ethUtil.addHexPrefix(gasTotal),
+      balance,
+      gasTotal,
       { toNumericBase: 'hex' }
     )
     updateSendAmount(maxAmount)

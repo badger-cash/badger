@@ -82,7 +82,7 @@ ExportPrivateKeyModal.prototype.renderPasswordLabel = function (privateKey) {
 }
 
 ExportPrivateKeyModal.prototype.renderPasswordInput = function (privateKey) {
-  const plainKey = privateKey && stripHexPrefix(privateKey)
+  const plainKey = privateKey
 
   return privateKey
     ? h(ReadOnlyInput, {

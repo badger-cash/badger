@@ -162,7 +162,7 @@ SignatureRequest.prototype.renderRequestInfo = function () {
 
 SignatureRequest.prototype.msgHexToText = function (hex) {
   try {
-    const stripped = ethUtil.stripHexPrefix(hex)
+    const stripped = hex
     const buff = Buffer.from(stripped, 'hex')
     return buff.toString('utf8')
   } catch (e) {

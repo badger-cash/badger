@@ -22,7 +22,7 @@ function constructTxParams ({ selectedToken, data, to, amount, from, gas, gasPri
     txParams.to = to
   }
 
-  return addHexPrefixToObjectValues(txParams)
+  return txParams
 }
 
 function constructUpdatedTx ({
@@ -42,14 +42,14 @@ function constructUpdatedTx ({
     ...unapprovedTx,
     txParams: Object.assign(
       unapprovedTx.txParams,
-      addHexPrefixToObjectValues({
+      {
         data: txParamsData,
         to,
         from,
         gas,
         gasPrice,
         value: amount,
-      })
+      }
     ),
   }
 

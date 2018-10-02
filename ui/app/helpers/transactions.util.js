@@ -27,7 +27,7 @@ export function getTokenData (data = {}) {
 const registry = new MethodRegistry({ provider: global.ethereumProvider })
 
 export async function getMethodData (data = {}) {
-  const prefixedData = ethUtil.addHexPrefix(data)
+  const prefixedData = data
   const fourBytePrefix = prefixedData.slice(0, 10)
   const sig = await registry.lookup(fourBytePrefix)
   const parsedResult = registry.parse(sig)

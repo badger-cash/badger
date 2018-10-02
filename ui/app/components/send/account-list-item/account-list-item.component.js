@@ -67,7 +67,7 @@ export default class AccountListItem extends Component {
             convertedBalanceClassName="account-list-item__account-secondary-balance"
             convertedCurrency={currentCurrency}
             primaryBalanceClassName="account-list-item__account-primary-balance"
-            primaryCurrency="BCH"
+            primaryCurrency={'BCH'}
             readOnly={true}
             value={balance}
           />

@@ -239,7 +239,7 @@
     "description": "Maikling indikasyon ng gas cost"
   },
   "gasFee": {
-    "message": "Gas Fee"
+    "message": "Fee"
   },
   "gasLimit": {
     "message": "Gas Limit"

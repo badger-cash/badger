@@ -288,7 +288,7 @@
     "description": "Short indication of gas cost"
   },
   "gasFee": {
-    "message": "Gas fee"
+    "message": "fee"
   },
   "gasLimit": {
     "message": "Gas limit"

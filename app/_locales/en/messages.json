@@ -470,7 +470,7 @@
     "message": "History"
   },
   "howToDeposit": {
-    "message": "How would you like to deposit Ether?"
+    "message": "How would you like to deposit Bitcoin Cash?"
   },
   "holdEther": {
     "message":
@@ -949,8 +949,8 @@
   "sendTokens": {
     "message": "Send Tokens"
   },
-  "sentEther": {
-    "message": "sent ether"
+  "sentBitcoinCash": {
+    "message": "sent bitcoin cash"
   },
   "sentTokens": {
     "message": "sent tokens"

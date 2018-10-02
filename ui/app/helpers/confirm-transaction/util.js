@@ -82,6 +82,7 @@ export function getValueFromSatoshis ({
   conversionRate,
   numberOfDecimals,
   toDenomination,
+  fromDenomination = 'SAT',
 }) {
   return conversionUtil(value, {
     fromNumericBase: 'dec',
@@ -89,7 +90,7 @@ export function getValueFromSatoshis ({
     fromCurrency: 'BCH',
     toCurrency,
     numberOfDecimals,
-    fromDenomination: 'SAT',
+    fromDenomination: fromDenomination,
     toDenomination,
     conversionRate,
   })

@@ -46,13 +46,16 @@ CurrencyDisplay.prototype.componentWillReceiveProps = function (nextProps) {
 CurrencyDisplay.prototype.getAmount = function (value) {
   const { selectedToken } = this.props
   const { decimals } = selectedToken || {}
-  const multiplier = Math.pow(10, Number(decimals || 0))
+  const multiplier = Math.pow(10, Number(decimals || 8))
 
-  const sendAmount = multiplyCurrencies(value || '0', multiplier, {toNumericBase: 'hex'})
+  const sendAmount = multiplyCurrencies(value || '0', multiplier)
 
-  return selectedToken
-    ? sendAmount
-    : toHexWei(value)
+  return sendAmount.toString()
+
+  // return selectedToken
+  //   ? sendAmount
+  //   : value
+    // : toHexWei(value)
 }
 
 CurrencyDisplay.prototype.getValueToRender = function ({ selectedToken, conversionRate, value, readOnly }) {

@@ -12,13 +12,13 @@ const ConfirmPageContainerSummary = props => {
         <div className="confirm-page-container-summary__action">
           { action }
         </div>
-        {
+        {/* {
           nonce && (
             <div className="confirm-page-container-summary__nonce">
               { `#${nonce}` }
             </div>
           )
-        }
+        } */}
       </div>
       <div className="confirm-page-container-summary__title">
         {

@@ -62,44 +62,50 @@ class BitboxUtils {
     })
   }
 
-  static async signAndPublishTransaction (txParams, keyPair) {
-    const from = txParams.from
-    const to = txParams.to
-    const satoshisToSend = BITBOX.BitcoinCash.toSatoshi(txParams.value)
+  static signAndPublishTransaction (txParams, keyPair) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const from = txParams.from
+        const to = txParams.to
+        const satoshisToSend = BITBOX.BitcoinCash.toSatoshi(txParams.value)
 
-    const utxos = await this.getAllUtxo(from)
+        const utxos = await this.getAllUtxo(from)
+        if (!utxos || utxos.length === 0) {
+            throw new Error('Insufficient funds')
+        }
 
-    if (!utxos || utxos.length === 0) {
-        throw new Error('Insufficient funds')
-    }
+        const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
 
-    const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
+        let totalUtxoAmount = 0
+        utxos.forEach((utxo) => {
+            transactionBuilder.addInput(utxo.txid, utxo.vout)
+            totalUtxoAmount += utxo.satoshis
+        })
 
-    let totalUtxoAmount = 0
-    utxos.forEach((utxo) => {
-        transactionBuilder.addInput(utxo.txid, utxo.vout)
-        totalUtxoAmount += utxo.satoshis
+        const byteCount = BITBOX.BitcoinCash.getByteCount({ P2PKH: utxos.length }, { P2PKH: 2 })
+        
+        const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
+
+        // Destination output
+        transactionBuilder.addOutput(to, satoshisToSend)
+
+        // Return remaining balance output
+        transactionBuilder.addOutput(from, satoshisRemaining)
+
+        let redeemScript
+        utxos.forEach((utxo, index) => {
+            transactionBuilder.sign(index, keyPair, redeemScript, transactionBuilder.hashTypes.SIGHASH_ALL, utxo.satoshis)
+        })
+
+        const hex = transactionBuilder.build().toHex()
+
+        // TODO: Handle failures: transaction already in blockchain, mempool length, networking
+        const txid = await this.publishTx(hex)
+        resolve(txid)
+      } catch (err) {
+        reject(err)
+      }
     })
-
-    const byteCount = BITBOX.BitcoinCash.getByteCount({ P2PKH: utxos.length }, { P2PKH: 2 })
-    
-    const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
-
-    // Destination output
-    transactionBuilder.addOutput(to, satoshisToSend)
-
-    // Return remaining balance output
-    transactionBuilder.addOutput(from, satoshisRemaining)
-
-    let redeemScript
-    utxos.forEach((utxo, index) => {
-        transactionBuilder.sign(index, keyPair, redeemScript, transactionBuilder.hashTypes.SIGHASH_ALL, utxo.satoshis)
-    })
-
-    const hex = transactionBuilder.build().toHex()
-
-    // TODO: Handle failures: transaction already in blockchain, mempool length, networking
-    return await this.publishTx(hex)
   }
 }
 

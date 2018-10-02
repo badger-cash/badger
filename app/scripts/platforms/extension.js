@@ -62,18 +62,15 @@ class ExtensionPlatform {
     this._subscribeToNotificationClicked()
 
     const url = explorerLink(txMeta.hash, parseInt(txMeta.metamaskNetworkId))
-    const nonce = parseInt(txMeta.txParams.nonce, 16)
 
     const title = 'Confirmed transaction'
-    const message = `Transaction ${nonce} confirmed! View on EtherScan`
+    const message = `Transaction confirmed! View on Explorer`
     this._showNotification(title, message, url)
   }
 
   _showFailedTransaction (txMeta) {
-
-    const nonce = parseInt(txMeta.txParams.nonce, 16)
     const title = 'Failed transaction'
-    const message = `Transaction ${nonce} failed! ${txMeta.err.message}`
+    const message = `Transaction failed! ${txMeta.err.message}`
     this._showNotification(title, message)
   }
 

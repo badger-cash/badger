@@ -220,7 +220,7 @@ WalletView.prototype.render = function () {
               },
             },
             [
-              `${checksummedAddress.slice(0, 6)}...${checksummedAddress.slice(
+              `${checksummedAddress.slice(12, 18)}...${checksummedAddress.slice(
                 -4
               )}`,
               h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),

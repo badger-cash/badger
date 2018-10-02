@@ -54,18 +54,18 @@ export default class SendAmountRow extends Component {
       tokenBalance,
     })
 
-    if (selectedToken) {
-      updateGasFeeError({
-        amount,
-        amountConversionRate,
-        balance,
-        conversionRate,
-        gasTotal,
-        primaryCurrency,
-        selectedToken,
-        tokenBalance,
-      })
-    }
+    // if (selectedToken) {
+    //   updateGasFeeError({
+    //     amount,
+    //     amountConversionRate,
+    //     balance,
+    //     conversionRate,
+    //     gasTotal,
+    //     primaryCurrency,
+    //     selectedToken,
+    //     tokenBalance,
+    //   })
+    // }
   }
 
   updateAmount (amount) {
@@ -100,12 +100,12 @@ export default class SendAmountRow extends Component {
         showError={inError}
         errorType={'amount'}
       >
-        {!inError && gasTotal && <AmountMaxButton />}
+        {/* {!inError && gasTotal && <AmountMaxButton />} */}
         <CurrencyDisplay
           conversionRate={amountConversionRate}
           convertedCurrency={convertedCurrency}
           onBlur={newAmount => {
-            this.updateGas(newAmount)
+            // this.updateGas(newAmount)
             this.updateAmount(newAmount)
           }}
           onChange={newAmount => this.validateAmount(newAmount)}

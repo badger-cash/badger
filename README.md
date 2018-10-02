@@ -20,7 +20,7 @@ Badger Button is a library of open source UI components which content creators a
 
 ## Credits
 
-[SpendBCH](https://twitter.com/SpendBCH_io)
-[Gabriel Cardona](https://twitter.com/cgcardona)
-[SLP](https://twitter.com/simpleledger)
-[bitcoin.com](https://developer.bitcoin.com)
+- [SpendBCH](https://twitter.com/SpendBCH_io)
+- [Gabriel Cardona](https://twitter.com/cgcardona)
+- [SLP](https://twitter.com/simpleledger)
+- [bitcoin.com](https://developer.bitcoin.com)

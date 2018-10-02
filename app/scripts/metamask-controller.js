@@ -37,7 +37,7 @@ const TokenRatesController = require('./controllers/token-rates')
 const DetectTokensController = require('./controllers/detect-tokens')
 const nodeify = require('./lib/nodeify')
 const accountImporter = require('./account-import-strategies')
-const getBuyEthUrl = require('./lib/buy-eth-url')
+const getBuyBchUrl = require('./lib/buy-bch-url')
 const Mutex = require('await-semaphore').Mutex
 const version = require('../manifest.json').version
 const BN = require('ethereumjs-util').BN
@@ -1452,7 +1452,7 @@ module.exports = class MetamaskController extends EventEmitter {
   buyEth (address, amount) {
     if (!amount) amount = '5'
     const network = this.networkController.getNetworkState()
-    const url = getBuyEthUrl({ network, address, amount })
+    const url = getBuyBchUrl({ network, address, amount })
     if (url) this.platform.openWindow({ url })
   }
 

@@ -2,7 +2,6 @@ const extension = require('extensionizer')
 const explorerLink = require('etherscan-link').createExplorerLink
 
 class ExtensionPlatform {
-
   //
   // Public
   //
@@ -15,7 +14,7 @@ class ExtensionPlatform {
   }
 
   closeCurrentWindow () {
-    return extension.windows.getCurrent((windowDetails) => {
+    return extension.windows.getCurrent(windowDetails => {
       return extension.windows.remove(windowDetails.id)
     })
   }
@@ -39,7 +38,7 @@ class ExtensionPlatform {
 
   getPlatformInfo (cb) {
     try {
-      extension.runtime.getPlatformInfo((platform) => {
+      extension.runtime.getPlatformInfo(platform => {
         cb(null, platform)
       })
     } catch (e) {
@@ -48,7 +47,6 @@ class ExtensionPlatform {
   }
 
   showTransactionNotification (txMeta) {
-
     const status = txMeta.status
     if (status === 'confirmed') {
       this._showConfirmedTransaction(txMeta)
@@ -58,19 +56,17 @@ class ExtensionPlatform {
   }
 
   _showConfirmedTransaction (txMeta) {
-
     this._subscribeToNotificationClicked()
 
     const url = explorerLink(txMeta.hash, parseInt(txMeta.metamaskNetworkId))
     const nonce = parseInt(txMeta.txParams.nonce, 16)
 
     const title = 'Confirmed transaction'
-    const message = `Transaction ${nonce} confirmed! View on EtherScan`
+    const message = `Transaction ${nonce} confirmed! View on Explorer.bitcoin.com`
     this._showNotification(title, message, url)
   }
 
   _showFailedTransaction (txMeta) {
-
     const nonce = parseInt(txMeta.txParams.nonce, 16)
     const title = 'Failed transaction'
     const message = `Transaction ${nonce} failed! ${txMeta.err.message}`
@@ -78,23 +74,25 @@ class ExtensionPlatform {
   }
 
   _showNotification (title, message, url) {
-    extension.notifications.create(
-      url,
-      {
-      'type': 'basic',
-      'title': title,
-      'iconUrl': extension.extension.getURL('../../images/icon-64.png'),
-      'message': message,
-      })
+    extension.notifications.create(url, {
+      type: 'basic',
+      title: title,
+      iconUrl: extension.extension.getURL('../../images/icon-64.png'),
+      message: message,
+    })
   }
 
   _subscribeToNotificationClicked () {
-    if (!extension.notifications.onClicked.hasListener(this._viewOnEtherScan)) {
-      extension.notifications.onClicked.addListener(this._viewOnEtherScan)
+    if (
+      !extension.notifications.onClicked.hasListener(
+        this._viewOnExplorerBitcoin
+      )
+    ) {
+      extension.notifications.onClicked.addListener(this._viewOnExplorerBitcoin)
     }
   }
 
-  _viewOnEtherScan (txId) {
+  _viewOnExplorerBitcoin (txId) {
     if (txId.startsWith('http://')) {
       global.metamaskController.platform.openWindow({ url: txId })
     }

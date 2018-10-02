@@ -1,5 +1,4 @@
 const extension = require('extensionizer')
-const explorerLink = require('etherscan-link').createExplorerLink
 
 class ExtensionPlatform {
 
@@ -61,7 +60,9 @@ class ExtensionPlatform {
 
     this._subscribeToNotificationClicked()
 
-    const url = explorerLink(txMeta.hash, parseInt(txMeta.metamaskNetworkId))
+    // TODO: set tx url by network
+    // const url = explorerLink(txMeta.hash, parseInt(txMeta.metamaskNetworkId))
+    const url = `https://explorer.bitcoin.com/bch/tx/${txMeta.hash}`
 
     const title = 'Confirmed transaction'
     const message = `Transaction confirmed! View on Explorer`
@@ -92,7 +93,7 @@ class ExtensionPlatform {
   }
 
   _viewOnEtherScan (txId) {
-    if (txId.startsWith('http://')) {
+    if (txId.startsWith('https://')) {
       global.metamaskController.platform.openWindow({ url: txId })
     }
   }

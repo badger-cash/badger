@@ -15,7 +15,6 @@ const log = require('loglevel')
 start().catch(log.error)
 
 async function start () {
-
   // create platform global
   global.platform = new ExtensionPlatform()
 
@@ -67,7 +66,6 @@ async function start () {
     })
   })
 
-
   function closePopupIfOpen (windowType) {
     if (windowType !== ENVIRONMENT_TYPE_NOTIFICATION) {
       // should close only chrome popup
@@ -76,10 +74,10 @@ async function start () {
   }
 
   function displayCriticalError (err) {
-    container.innerHTML = '<div class="critical-error">The Badger app failed to load: please open and close Badger again to restart.</div>'
+    container.innerHTML =
+      '<div class="critical-error">The Badger app failed to load: please open and close Badger again to restart.</div>'
     container.style.height = '80px'
     log.error(err.stack)
     throw err
   }
-
 }

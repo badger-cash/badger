@@ -1,7 +1,6 @@
 const extension = require('extensionizer')
 
 class ExtensionPlatform {
-
   //
   // Public
   //
@@ -14,7 +13,7 @@ class ExtensionPlatform {
   }
 
   closeCurrentWindow () {
-    return extension.windows.getCurrent((windowDetails) => {
+    return extension.windows.getCurrent(windowDetails => {
       return extension.windows.remove(windowDetails.id)
     })
   }
@@ -38,7 +37,7 @@ class ExtensionPlatform {
 
   getPlatformInfo (cb) {
     try {
-      extension.runtime.getPlatformInfo((platform) => {
+      extension.runtime.getPlatformInfo(platform => {
         cb(null, platform)
       })
     } catch (e) {
@@ -47,7 +46,6 @@ class ExtensionPlatform {
   }
 
   showTransactionNotification (txMeta) {
-
     const status = txMeta.status
     if (status === 'confirmed') {
       this._showConfirmedTransaction(txMeta)
@@ -57,7 +55,6 @@ class ExtensionPlatform {
   }
 
   _showConfirmedTransaction (txMeta) {
-
     this._subscribeToNotificationClicked()
 
     // TODO: set tx url by network
@@ -76,19 +73,21 @@ class ExtensionPlatform {
   }
 
   _showNotification (title, message, url) {
-    extension.notifications.create(
-      url,
-      {
-      'type': 'basic',
-      'title': title,
-      'iconUrl': extension.extension.getURL('../../images/icon-64.png'),
-      'message': message,
-      })
+    extension.notifications.create(url, {
+      type: 'basic',
+      title: title,
+      iconUrl: extension.extension.getURL('../../images/icon-64.png'),
+      message: message,
+    })
   }
 
   _subscribeToNotificationClicked () {
-    if (!extension.notifications.onClicked.hasListener(this._viewOnEtherScan)) {
-      extension.notifications.onClicked.addListener(this._viewOnEtherScan)
+    if (
+      !extension.notifications.onClicked.hasListener(
+        this._viewOnExplorerBitcoin
+      )
+    ) {
+      extension.notifications.onClicked.addListener(this._viewOnExplorerBitcoin)
     }
   }
 

@@ -10,7 +10,6 @@ const Dropdown = require('./components/dropdown').Dropdown
 const DropdownMenuItem = require('./components/dropdown').DropdownMenuItem
 const NetworkDropdownIcon = require('./components/network-dropdown-icon')
 const R = require('ramda')
-const { SETTINGS_ROUTE } = require('../../routes')
 
 // classes from nodes of the toggle element.
 const notToggleElementClassnames = [
@@ -154,14 +153,6 @@ NetworkDropdown.prototype.getNetworkName = function () {
 
   if (providerName === 'mainnet') {
     name = this.context.t('mainnet')
-  } else if (providerName === 'ropsten') {
-    name = this.context.t('ropsten')
-  } else if (providerName === 'kovan') {
-    name = this.context.t('kovan')
-  } else if (providerName === 'rinkeby') {
-    name = this.context.t('rinkeby')
-  } else {
-    name = this.context.t('unknownNetwork')
   }
 
   return name

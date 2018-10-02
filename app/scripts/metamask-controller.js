@@ -606,7 +606,7 @@ module.exports = class MetamaskController extends EventEmitter {
   /**
    * @type Identity
    * @property {string} name - The account nickname.
-   * @property {string} address - The account's ethereum address, in lower case.
+   * @property {string} address - The account's bitcoin cash address, in lower case.
    * @property {boolean} mayBeFauceting - Whether this account is currently
    * receiving funds from our automatic Ropsten faucet.
    */
@@ -1300,7 +1300,7 @@ module.exports = class MetamaskController extends EventEmitter {
   }
 
   /**
-   * A method for serving our ethereum provider over a given stream.
+   * A method for serving our bitcoin cash provider over a given stream.
    * @param {*} outStream - The stream to provide over.
    * @param {string} origin - The URI of the requesting resource.
    */
@@ -1468,7 +1468,7 @@ module.exports = class MetamaskController extends EventEmitter {
   // network
 
   /**
-   * A method for selecting a custom URL for an ethereum RPC provider.
+   * A method for selecting a custom URL for an bitcoin cash RPC provider.
    * @param {string} rpcTarget - A URL for a valid Bitcoin Cash RPC API.
    * @returns {Promise<String>} - The RPC Target URL confirmed.
    */

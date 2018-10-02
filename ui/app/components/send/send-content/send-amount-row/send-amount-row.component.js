@@ -5,7 +5,6 @@ import AmountMaxButton from './amount-max-button/'
 import CurrencyDisplay from '../../currency-display'
 
 export default class SendAmountRow extends Component {
-
   static propTypes = {
     amount: PropTypes.string,
     amountConversionRate: PropTypes.oneOfType([
@@ -25,11 +24,11 @@ export default class SendAmountRow extends Component {
     updateSendAmount: PropTypes.func,
     updateSendAmountError: PropTypes.func,
     updateGas: PropTypes.func,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   validateAmount (amount) {
     const {
@@ -111,7 +110,7 @@ export default class SendAmountRow extends Component {
           }}
           onChange={newAmount => this.validateAmount(newAmount)}
           inError={inError}
-          primaryCurrency={primaryCurrency || 'ETH'}
+          primaryCurrency={primaryCurrency || 'BCH'}
           selectedToken={selectedToken}
           value={amount}
           step="any"
@@ -119,5 +118,4 @@ export default class SendAmountRow extends Component {
       </SendRowWrapper>
     )
   }
-
 }

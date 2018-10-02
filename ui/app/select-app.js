@@ -22,14 +22,19 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     setFeatureFlagWithModal: () => {
-      return dispatch(setFeatureFlag('betaUI', true, 'BETA_UI_NOTIFICATION_MODAL'))
+      return dispatch(
+        setFeatureFlag('betaUI', true, 'BETA_UI_NOTIFICATION_MODAL')
+      )
     },
     setFeatureFlagWithoutModal: () => {
       return dispatch(setFeatureFlag('betaUI', true))
     },
   }
 }
-module.exports = connect(mapStateToProps, mapDispatchToProps)(SelectedApp)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectedApp)
 
 inherits(SelectedApp, Component)
 function SelectedApp () {
@@ -63,10 +68,12 @@ SelectedApp.prototype.render = function () {
   const { betaUI, isMascara } = this.props
 
   return betaUI || isMascara
-  ? h(HashRouter, {
-      hashType: 'noslash',
-    }, [
-      h(I18nProvider, [ h(App) ]),
-    ])
-  : h(OldApp)
+    ? h(
+        HashRouter,
+        {
+          hashType: 'noslash',
+        },
+        [h(I18nProvider, [h(App)])]
+      )
+    : h(OldApp)
 }

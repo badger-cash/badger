@@ -142,34 +142,6 @@ NetworkDropdown.prototype.render = function () {
           ),
         ]
       ),
-
-      h(
-        DropdownMenuItem,
-        {
-          key: 'ropsten',
-          closeMenu: () => this.props.hideNetworkDropdown(),
-          onClick: () => props.setProviderType('ropsten'),
-          style: dropdownMenuItemStyle,
-        },
-        [
-          providerType === 'ropsten'
-            ? h('i.fa.fa-check')
-            : h('.network-check__transparent', '✓'),
-          h(NetworkDropdownIcon, {
-            backgroundColor: '#ff4a8d', // $wild-strawberry
-            isSelected: providerType === 'ropsten',
-          }),
-          h(
-            'span.network-name-item',
-            {
-              style: {
-                color: providerType === 'ropsten' ? '#ffffff' : '#9b9b9b',
-              },
-            },
-            this.context.t('ropsten')
-          ),
-        ]
-      ),
     ]
   )
 }

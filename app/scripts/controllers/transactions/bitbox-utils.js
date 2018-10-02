@@ -65,33 +65,36 @@ class BitboxUtils {
   static async signAndPublishTransaction (txParams, keyPair) {
     const from = txParams.from
     const to = txParams.to
-    const satoshis = BITBOX.BitcoinCash.toSatoshi(txParams.value)
+    const satoshisToSend = BITBOX.BitcoinCash.toSatoshi(txParams.value)
 
-    const utxo = await this.getUtxo(from)
+    const utxos = await this.getAllUtxo(from)
+
+    if (!utxos || utxos.length === 0) {
+        throw new Error('Insufficient funds')
+    }
+
     const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
-    transactionBuilder.addInput(utxo.txid, utxo.vout)
 
-    // Calculate fee @ 1 sat/byte
-    const byteCount = BITBOX.BitcoinCash.getByteCount(
-      { P2PKH: 1 },
-      { P2PKH: 2 }
-    )
+    let totalUtxoAmount = 0
+    utxos.forEach((utxo) => {
+        transactionBuilder.addInput(utxo.txid, utxo.vout)
+        totalUtxoAmount += utxo.satoshis
+    })
+
+    const byteCount = BITBOX.BitcoinCash.getByteCount({ P2PKH: utxos.length }, { P2PKH: 2 })
+    
+    const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
 
     // Destination output
-    transactionBuilder.addOutput(to, satoshis)
+    transactionBuilder.addOutput(to, satoshisToSend)
 
-    // Remaining balance output
-    const satoshisRemaining = utxo.satoshis - satoshis - byteCount
+    // Return remaining balance output
     transactionBuilder.addOutput(from, satoshisRemaining)
 
     let redeemScript
-    transactionBuilder.sign(
-      0,
-      keyPair,
-      redeemScript,
-      transactionBuilder.hashTypes.SIGHASH_ALL,
-      utxo.satoshis
-    )
+    utxos.forEach((utxo, index) => {
+        transactionBuilder.sign(index, keyPair, redeemScript, transactionBuilder.hashTypes.SIGHASH_ALL, utxo.satoshis)
+    })
 
     const hex = transactionBuilder.build().toHex()
 

@@ -1,5 +1,5 @@
 const assert = require('assert')
-const getBuyEthUrl = require('../../../app/scripts/lib/buy-eth-url')
+const getBuyBchUrl = require('../../../app/scripts/lib/buy-bch-url')
 
 describe('', function () {
   const mainnet = {
@@ -18,7 +18,7 @@ describe('', function () {
   }
 
   it('returns coinbase url with amount and address for network 1', function () {
-    const coinbaseUrl = getBuyEthUrl(mainnet)
+    const coinbaseUrl = getBuyBchUrl(mainnet)
     const coinbase = coinbaseUrl.match(/(https:\/\/buy.coinbase.com)/)
     const amount = coinbaseUrl.match(/(amount)\D\d/)
     const address = coinbaseUrl.match(/(address)(.*)(?=&)/)
@@ -32,17 +32,17 @@ describe('', function () {
   })
 
   it('returns metamask ropsten faucet for network 3', function () {
-    const ropstenUrl = getBuyEthUrl(ropsten)
+    const ropstenUrl = getBuyBchUrl(ropsten)
     assert.equal(ropstenUrl, 'https://faucet.metamask.io/')
   })
 
   it('returns rinkeby dapp for network 4', function () {
-    const rinkebyUrl = getBuyEthUrl(rinkeby)
+    const rinkebyUrl = getBuyBchUrl(rinkeby)
     assert.equal(rinkebyUrl, 'http://free.bitcoin.com/')
   })
 
-  it('returns kovan github test faucet for network 42', function () {
-    const kovanUrl = getBuyEthUrl(kovan)
+  it('returns kovan github Faucet for network 42', function () {
+    const kovanUrl = getBuyBchUrl(kovan)
     assert.equal(kovanUrl, 'https://github.com/kovan-testnet/faucet')
   })
 })

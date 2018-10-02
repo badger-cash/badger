@@ -143,7 +143,7 @@ BuyButtonSubview.prototype.primarySubview = function () {
     case '4':
     case '42':
       const networkName = getNetworkDisplayName(network)
-      const label = `${networkName} Test Faucet`
+      const label = `${networkName} Faucet`
       return (
         h('div.flex-column', {
           style: {

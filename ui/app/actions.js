@@ -1,6 +1,6 @@
 const abi = require('human-standard-token-abi')
 const pify = require('pify')
-const getBuyEthUrl = require('../../app/scripts/lib/buy-eth-url')
+const getBuyBchUrl = require('../../app/scripts/lib/buy-bch-url')
 const { getTokenAddressFromTokenObject } = require('./util')
 const {
   calcGasTotal,
@@ -2063,7 +2063,7 @@ function showSendTokenPage () {
 
 function buyEth (opts) {
   return (dispatch) => {
-    const url = getBuyEthUrl(opts)
+    const url = getBuyBchUrl(opts)
     global.platform.openWindow({ url })
     dispatch({
       type: actions.BUY_ETH,

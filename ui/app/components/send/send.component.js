@@ -150,17 +150,17 @@ export default class SendTransactionScreen extends PersistentForm {
       updateSendErrors(Object.assign(amountErrorObject, gasFeeErrorObject))
     }
 
-    if (!uninitialized) {
+    // if (!uninitialized) {
 
-      if (network !== prevNetwork && network !== 'loading') {
-        updateSendTokenBalance({
-          selectedToken,
-          tokenContract,
-          address,
-        })
-        this.updateGas()
-      }
-    }
+    //   if (network !== prevNetwork && network !== 'loading') {
+    //     updateSendTokenBalance({
+    //       selectedToken,
+    //       tokenContract,
+    //       address,
+    //     })
+    //     this.updateGas()
+    //   }
+    // }
   }
 
   componentWillMount () {

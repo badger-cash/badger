@@ -27,13 +27,14 @@ export default class ConfirmPageContainerContent extends Component {
   }
 
   renderContent () {
-    const { detailsComponent, dataComponent } = this.props
+    // TODO: render details, fee and total
+    // const { detailsComponent, dataComponent } = this.props
 
-    if (detailsComponent && dataComponent) {
-      return this.renderTabs()
-    } else {
-      return detailsComponent || dataComponent
-    }
+    // if (detailsComponent && dataComponent) {
+    //   return this.renderTabs()
+    // } else {
+    //   return detailsComponent || dataComponent
+    // }
   }
 
   renderTabs () {

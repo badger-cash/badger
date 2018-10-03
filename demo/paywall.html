@@ -7,7 +7,7 @@
   <button
     class="badger-button"
     data-to="bitcoincash:qqeuq3yxsr9rys39am985gcv7xg6hzzqqgu9x00ua2"
-    data-value="0.00001000"
+    data-satoshis="1000"
     data-paywall-id="paywall"
     data-success-callback="badgerCallback"
   >
@@ -38,7 +38,7 @@
           var txParams = {
             to: badgerButton.getAttribute("data-to"),
             from: web4bch.bch.defaultAccount,
-            value: badgerButton.getAttribute("data-value")
+            value: badgerButton.getAttribute("data-satoshis")
           }
           web4bch.bch.sendTransaction(txParams, (err, res) => {
             if (err) {

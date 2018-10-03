@@ -115,18 +115,18 @@ AccountMenu.prototype.render = function () {
       icon: h('img.account-menu__item-icon', { src: 'images/import-account.svg' }),
       text: this.context.t('importAccount'),
     }),
-    h(Item, {
-      onClick: () => {
-        toggleAccountMenu()
-        if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
-          global.platform.openExtensionInBrowser(CONNECT_HARDWARE_ROUTE)
-        } else {
-          history.push(CONNECT_HARDWARE_ROUTE)
-        }
-      },
-      icon: h('img.account-menu__item-icon', { src: 'images/connect-icon.svg' }),
-      text: this.context.t('connectHardwareWallet'),
-    }),
+    // h(Item, {
+    //   onClick: () => {
+    //     toggleAccountMenu()
+    //     if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
+    //       global.platform.openExtensionInBrowser(CONNECT_HARDWARE_ROUTE)
+    //     } else {
+    //       history.push(CONNECT_HARDWARE_ROUTE)
+    //     }
+    //   },
+    //   icon: h('img.account-menu__item-icon', { src: 'images/connect-icon.svg' }),
+    //   text: this.context.t('connectHardwareWallet'),
+    // }),
     h(Divider),
     h(Item, {
       onClick: () => {

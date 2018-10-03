@@ -67,7 +67,7 @@ class BitboxUtils {
       try {
         const from = txParams.from
         const to = txParams.to
-        const satoshisToSend = BITBOX.BitcoinCash.toSatoshi(txParams.value)
+        const satoshisToSend = parseInt(txParams.value)
 
         const utxos = await this.getAllUtxo(from)
         if (!utxos || utxos.length === 0) {

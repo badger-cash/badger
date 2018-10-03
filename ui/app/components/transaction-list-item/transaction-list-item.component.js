@@ -88,7 +88,7 @@ export default class TransactionListItem extends PureComponent {
         prefix="-"
         numberOfDecimals={8}
         currency={BCH}
-        fromDenomination={BCH}
+        fromDenomination='SAT'
       />
     )
   }
@@ -101,7 +101,7 @@ export default class TransactionListItem extends PureComponent {
         className="transaction-list-item__amount transaction-list-item__amount--secondary"
         prefix="-"
         value={value}
-        fromDenomination={BCH}
+        fromDenomination='SAT'
       />
     )
   }

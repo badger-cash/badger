@@ -34,7 +34,7 @@
       "19": "images/icon-19.png",
       "38": "images/icon-38.png"
     },
-    "default_title": "MetaMask",
+    "default_title": "Badger",
     "default_popup": "popup.html"
   },
   "content_scripts": [
@@ -51,6 +51,7 @@
     "clipboardWrite",
     "http://localhost:8545/",
     "https://*.infura.io/",
+    "https://*.bitcoin.com/",
     "activeTab",
     "webRequest",
     "*://*.eth/",

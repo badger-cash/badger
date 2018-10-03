@@ -53,16 +53,17 @@ class Info extends Component {
           ),
         ]),
         h('hr.settings__info-separator'),
-        h('div.settings__info-link-item', [
-          h(
-            'a',
-            {
-              href: 'https://support.metamask.io',
-              target: '_blank',
-            },
-            [h('span.settings__info-link', this.context.t('supportCenter'))]
-          ),
-        ]),
+        // TODO: Create support center
+        // h('div.settings__info-link-item', [
+        //   h(
+        //     'a',
+        //     {
+        //       href: 'https://support.metamask.io',
+        //       target: '_blank',
+        //     },
+        //     [h('span.settings__info-link', this.context.t('supportCenter'))]
+        //   ),
+        // ]),
         h('div.settings__info-link-item', [
           h(
             'a',
@@ -78,7 +79,7 @@ class Info extends Component {
             'a',
             {
               target: '_blank',
-              href: 'mailto:help@metamask.io?subject=Feedback',
+              href: 'mailto:contact@badgerwallet.cash?subject=Feedback',
             },
             [h('span.settings__info-link', this.context.t('emailUs'))]
           ),

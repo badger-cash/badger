@@ -383,8 +383,8 @@ class Settings extends Component {
       this.renderSeedWords(),
       // !isMascara && this.renderOldUI(),
       this.renderResetAccount(),
-      this.renderBlockieOptIn(),
-      this.renderHexDataOptIn(),
+      // this.renderBlockieOptIn(),
+      // this.renderHexDataOptIn(),
     ])
   }
 }

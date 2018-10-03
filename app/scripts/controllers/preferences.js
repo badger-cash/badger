@@ -34,7 +34,7 @@ class PreferencesController {
       assetImages: {},
       tokens: [],
       suggestedTokens: {},
-      useBlockie: false,
+      useBlockie: true,
       featureFlags: {},
       currentLocale: opts.initLangCode,
       identities: {},

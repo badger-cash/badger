@@ -98,7 +98,7 @@ class AccountList extends Component {
                     },
                     [
                       h('span.hw-account-list__item__index', a.index + 1),
-                      `${a.address.slice(0, 4)}...${a.address.slice(-4)}`,
+                      `${a.address.slice(12, 16)}...${a.address.slice(-4)}`,
                       h('span.hw-account-list__item__balance', `${a.balance}`),
                     ]),
                 ]),

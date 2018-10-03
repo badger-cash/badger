@@ -91,7 +91,7 @@ class ExtensionPlatform {
     }
   }
 
-  _viewOnEtherScan (txId) {
+  _viewOnExplorerBitcoin (txId) {
     if (txId.startsWith('https://')) {
       global.metamaskController.platform.openWindow({ url: txId })
     }

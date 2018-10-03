@@ -25,11 +25,11 @@ module.exports = [
     firstVersion: '<=3.12.0',
     body: fs.readFileSync(path.join(__dirname, '/archive', 'notice_3.md'), 'utf8'),
   },
-  {
-    id: 4,
-    read: false,
-    date: 'Wed Jun 13 2018',
-    title: 'Phishing Warning',
-    body: fs.readFileSync(path.join(__dirname, '/archive', 'notice_4.md'), 'utf8'),
-  },
+  // {
+  //   id: 4,
+  //   read: false,
+  //   date: 'Wed Jun 13 2018',
+  //   title: 'Phishing Warning',
+  //   body: fs.readFileSync(path.join(__dirname, '/archive', 'notice_4.md'), 'utf8'),
+  // },
 ]

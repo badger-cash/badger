@@ -1,9 +1,10 @@
 const ObservableStore = require('obs-store')
 const PendingBalanceCalculator = require('../lib/pending-balance-calculator')
 const BN = require('ethereumjs-util').BN
+const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
+const BITBOX = new BITBOXCli()
 
 class BalanceController {
-
   /**
    * Controller responsible for storing and updating an account's balance.
    *
@@ -123,11 +124,11 @@ class BalanceController {
   _validateParams (opts) {
     const { address, accountTracker, txController } = opts
     if (!address || !accountTracker || !txController) {
-      const error = 'Cannot construct a balance checker without address, accountTracker, and txController.'
+      const error =
+        'Cannot construct a balance checker without address, accountTracker, and txController.'
       throw new Error(error)
     }
   }
-
 }
 
 module.exports = BalanceController

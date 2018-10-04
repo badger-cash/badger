@@ -13,10 +13,7 @@ export default class TransactionView extends PureComponent {
   render () {
     return (
       <div className="transaction-view">
-        <Media
-          query="(max-width: 575px)"
-          render={() => <MenuBar />}
-        />
+        <Media query="(max-width: 575px)" render={() => <MenuBar />} />
         <div className="transaction-view__balance-wrapper">
           <TransactionViewBalance />
         </div>

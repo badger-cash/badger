@@ -5,7 +5,11 @@ const inherits = require('util').inherits
 const TokenBalance = require('./token-balance')
 const Identicon = require('./identicon')
 import CurrencyDisplay from './currency-display'
-const { getAssetImages, conversionRateSelector, getCurrentCurrency} = require('../selectors')
+const {
+  getAssetImages,
+  conversionRateSelector,
+  getCurrentCurrency,
+} = require('../selectors')
 
 const { formatBalance, generateBalanceObject } = require('../util')
 
@@ -14,7 +18,8 @@ module.exports = connect(mapStateToProps)(BalanceComponent)
 function mapStateToProps (state) {
   const accounts = state.metamask.accounts
   const network = state.metamask.network
-  const selectedAddress = state.metamask.selectedAddress || Object.keys(accounts)[0]
+  const selectedAddress =
+    state.metamask.selectedAddress || Object.keys(accounts)[0]
   const account = accounts[selectedAddress]
 
   return {
@@ -38,7 +43,6 @@ BalanceComponent.prototype.render = function () {
   const image = assetImages && address ? assetImages[token.address] : undefined
 
   return h('div.balance-container', {}, [
-
     // TODO: balance icon needs to be passed in
     // h('img.balance-icon', {
     //   src: '../images/bch_logo.svg',
@@ -59,7 +63,7 @@ BalanceComponent.prototype.renderTokenBalance = function () {
   const { token } = this.props
 
   return h('div.flex-column.balance-display', [
-    h('div.token-amount', [ h(TokenBalance, { token }) ]),
+    h('div.token-amount', [h(TokenBalance, { token })]),
   ])
 }
 
@@ -68,29 +72,43 @@ BalanceComponent.prototype.renderBalance = function () {
   const { shorten, account } = props
   const balanceValue = account && account.balance
   const needsParse = 'needsParse' in props ? props.needsParse : true
-  const formattedBalance = balanceValue ? formatBalance(balanceValue, 8, needsParse) : '...'
+  const formattedBalance = balanceValue
+    ? formatBalance(balanceValue, 8, needsParse)
+    : '...'
   const showFiat = 'showFiat' in props ? props.showFiat : true
 
   if (formattedBalance === 'None' || formattedBalance === '...') {
     return h('div.flex-column.balance-display', {}, [
-      h('div.token-amount', {
-        style: {},
-      }, formattedBalance),
+      h(
+        'div.token-amount',
+        {
+          style: {},
+        },
+        formattedBalance
+      ),
     ])
   }
 
   return h('div.flex-column.balance-display', {}, [
-    h('div.token-amount', {
-      style: {},
-    }, this.getTokenBalance(formattedBalance, shorten)),
+    h(
+      'div.token-amount',
+      {
+        style: {},
+      },
+      this.getTokenBalance(formattedBalance, shorten)
+    ),
 
-    showFiat && h(CurrencyDisplay, {
-      value: balanceValue,
-    }),
+    showFiat &&
+      h(CurrencyDisplay, {
+        value: balanceValue.toString(),
+      }),
   ])
 }
 
-BalanceComponent.prototype.getTokenBalance = function (formattedBalance, shorten) {
+BalanceComponent.prototype.getTokenBalance = function (
+  formattedBalance,
+  shorten
+) {
   const balanceObj = generateBalanceObject(formattedBalance, shorten ? 1 : 3)
 
   const balanceValue = shorten ? balanceObj.shortBalance : balanceObj.balance
@@ -99,13 +117,16 @@ BalanceComponent.prototype.getTokenBalance = function (formattedBalance, shorten
   return `${balanceValue} ${label}`
 }
 
-BalanceComponent.prototype.getFiatDisplayNumber = function (formattedBalance, conversionRate) {
+BalanceComponent.prototype.getFiatDisplayNumber = function (
+  formattedBalance,
+  conversionRate
+) {
   if (formattedBalance === 'None') return formattedBalance
   if (conversionRate === 0) return 'N/A'
 
   const splitBalance = formattedBalance.split(' ')
 
-  const convertedNumber = (Number(splitBalance[0]) * conversionRate)
+  const convertedNumber = Number(splitBalance[0]) * conversionRate
   const wholePart = Math.floor(convertedNumber)
   const decimalPart = convertedNumber - wholePart
 

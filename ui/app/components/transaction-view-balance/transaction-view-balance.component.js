@@ -34,13 +34,13 @@ export default class TransactionViewBalance extends PureComponent {
       <div className="transaction-view-balance__balance">
         <CurrencyDisplay
           className="transaction-view-balance__primary-balance"
-          value={balance}
+          value={balance.toString()}
           currency={BCH}
           numberOfDecimals={8}
         />
         <CurrencyDisplay
           className="transaction-view-balance__secondary-balance"
-          value={balance}
+          value={balance.toString()}
         />
       </div>
     )

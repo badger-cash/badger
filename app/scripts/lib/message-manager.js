@@ -102,7 +102,6 @@ module.exports = class MessageManager extends EventEmitter {
   addUnapprovedMessage (msgParams, req) {
     // add origin from request
     if (req) msgParams.origin = req.origin
-    msgParams.data = normalizeMsgData(msgParams.data)
     // create txData obj with parameters and meta data
     var time = (new Date()).getTime()
     var msgId = createId()
@@ -257,21 +256,4 @@ module.exports = class MessageManager extends EventEmitter {
     this.emit('updateBadge')
   }
 
-}
-
-/**
- * A helper function that converts raw buffer data to a hex, or just returns the data if it is already formatted as a hex.
- *
- * @param {any} data The buffer data to convert to a hex
- * @returns {string} A hex string conversion of the buffer data
- *
- */
-function normalizeMsgData (data) {
-  if (data.slice(0, 2) === '0x') {
-    // data is already hex
-    return data
-  } else {
-    // data is unicode, convert to hex
-    return ethUtil.bufferToHex(new Buffer(data, 'utf8'))
-  }
 }

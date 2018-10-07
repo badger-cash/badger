@@ -50,6 +50,7 @@ const LedgerBridgeKeyring = require('eth-ledger-bridge-keyring')
 const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
+const axios = require('axios')
 
 // TODO: setup BCH & tokens middleware
 // const createBCHMiddleware = require('./lib/createBCHMiddleware')
@@ -151,11 +152,11 @@ module.exports = class MetamaskController extends EventEmitter {
     )
 
     // detect tokens controller
-    this.detectTokensController = new DetectTokensController({
-      preferences: this.preferencesController,
-      network: this.networkController,
-      keyringMemStore: this.keyringController.memStore,
-    })
+    // this.detectTokensController = new DetectTokensController({
+    //   preferences: this.preferencesController,
+    //   network: this.networkController,
+    //   keyringMemStore: this.keyringController.memStore,
+    // })
 
     // address book controller
     this.addressBookController = new AddressBookController({
@@ -931,24 +932,27 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param  {Object} msgParams The params passed to eth_call.
    * @returns {Promise<Object>} Full state update.
    */
-  signMessage (msgParams) {
-    log.info('MetaMaskController - signMessage')
+  async signMessage (msgParams) {
+    log.info('BadgerController - signMessage')
     const msgId = msgParams.metamaskId
 
     // sets the status op the message to 'approved'
     // and removes the metamaskId for signing
-    return this.messageManager
-      .approveMessage(msgParams)
-      .then(cleanMsgParams => {
-        // signs the message
-        return this.keyringController.signMessage(cleanMsgParams)
-      })
-      .then(rawSig => {
-        // tells the listener that the message has been signed
-        // and can be returned to the dapp
-        this.messageManager.setMsgStatusSigned(msgId, rawSig)
-        return this.getState()
-      })
+    const cleanMsgParams = await this.messageManager.approveMessage(msgParams)
+    const rawSig = await this.keyringController.signMessage(cleanMsgParams)
+
+    const requestProtocolSwapper = new RegExp('cashid:[\/]{0,2}')
+    const requestUri = msgParams.data.substring(0, msgParams.data.indexOf('?')).replace(requestProtocolSwapper, 'https://')
+    const requestData = JSON.stringify({ request: msgParams.data, address: msgParams.from, signature: rawSig })
+
+    const requestRes = await axios.post(requestUri, requestData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    this.messageManager.setMsgStatusSigned(msgId, requestRes)
+    return this.getState()
   }
 
   /**
@@ -1309,16 +1313,16 @@ module.exports = class MetamaskController extends EventEmitter {
     const engine = new RpcEngine()
 
     // create filter polyfill middleware
-    const filterMiddleware = createFilterMiddleware({
-      provider: this.provider,
-    })
+    // const filterMiddleware = createFilterMiddleware({
+    //   provider: this.provider,
+    // })
 
-    engine.push(createOriginMiddleware({ origin }))
-    engine.push(createLoggerMiddleware({ origin }))
+    // engine.push(createOriginMiddleware({ origin }))
+    // engine.push(createLoggerMiddleware({ origin }))
 
-    // TODO: BCH and tokens middleware
+    // // TODO: BCH and tokens middleware
 
-    engine.push(filterMiddleware)
+    // engine.push(filterMiddleware)
     engine.push(
       this.preferencesController.requestWatchAsset.bind(
         this.preferencesController
@@ -1327,22 +1331,23 @@ module.exports = class MetamaskController extends EventEmitter {
     engine.push(
       this.createBchGetBalanceMiddleware('bch_getBalance', 'V1').bind(this)
     )
-    engine.push(
-      this.createTypedDataMiddleware('eth_signTypedData', 'V1').bind(this)
-    )
-    engine.push(
-      this.createTypedDataMiddleware('eth_signTypedData_v1', 'V1').bind(this)
-    )
-    engine.push(
-      this.createTypedDataMiddleware('eth_signTypedData_v3', 'V3').bind(this)
-    )
+    // TODO: typed middleware
+    // engine.push(
+    //   this.createTypedDataMiddleware('eth_signTypedData', 'V1').bind(this)
+    // )
+    // engine.push(
+    //   this.createTypedDataMiddleware('eth_signTypedData_v1', 'V1').bind(this)
+    // )
+    // engine.push(
+    //   this.createTypedDataMiddleware('eth_signTypedData_v3', 'V3').bind(this)
+    // )
     engine.push(createProviderMiddleware({ provider: this.provider }))
 
     // setup connection
     const providerStream = createEngineStream({ engine })
     pump(outStream, providerStream, outStream, err => {
       // cleanup filter polyfill middleware
-      filterMiddleware.destroy()
+      // filterMiddleware.destroy()
       if (err) log.error(err)
     })
   }
@@ -1529,7 +1534,7 @@ module.exports = class MetamaskController extends EventEmitter {
   set isClientOpen (open) {
     this._isClientOpen = open
     this.isClientOpenAndUnlocked = this.getState().isUnlocked && open
-    this.detectTokensController.isOpen = open
+    // this.detectTokensController.isOpen = open
   }
 
   /**

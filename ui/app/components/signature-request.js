@@ -14,6 +14,7 @@ const AccountDropdownMini = require('./dropdowns/account-dropdown-mini')
 
 const actions = require('../actions')
 const { conversionUtil } = require('../conversion-util')
+const parseCashIdUri = require('../../../app/scripts/lib/parse-cashid-uri')
 
 const {
   getSelectedAccount,
@@ -110,11 +111,11 @@ SignatureRequest.prototype.renderAccountDropdown = function () {
 SignatureRequest.prototype.renderBalance = function () {
   const { balance, conversionRate } = this.props
 
-  const balanceInEther = conversionUtil(balance, {
-    fromNumericBase: 'hex',
+  const balanceInBch = conversionUtil(balance, {
+    fromNumericBase: 'dec',
     toNumericBase: 'dec',
-    fromDenomination: 'WEI',
-    numberOfDecimals: 6,
+    fromDenomination: 'SAT',
+    numberOfDecimals: 8,
     conversionRate,
   })
 
@@ -122,7 +123,7 @@ SignatureRequest.prototype.renderBalance = function () {
 
     h('div.request-signature__balance-text', `${this.context.t('balance')}:`),
 
-    h('div.request-signature__balance-value', `${balanceInEther} ETH`),
+    h('div.request-signature__balance-value', `${balanceInBch} BCH`),
 
   ])
 }
@@ -199,15 +200,23 @@ SignatureRequest.prototype.renderBody = function () {
   } else if (type === 'eth_signTypedData') {
     rows = data
   } else if (type === 'eth_sign') {
-    rows = [{ name: this.context.t('message'), value: data }]
-    notice = [this.context.t('signNotice'),
-      h('span.request-signature__help-link', {
-        onClick: () => {
-          global.platform.openWindow({
-            url: 'https://consensys.zendesk.com/hc/en-us/articles/360004427792',
-          })
-        },
-    }, this.context.t('learnMore'))]
+    const cashId = parseCashIdUri(data)
+
+    rows = [
+      { name: 'Domain', value: cashId.domain },
+    ]
+
+    let action = cashId.parameters.action
+    if (!action) {
+      action = 'default'
+    }
+    rows.push({ name: 'Action', value: action })
+
+    if (cashId.parameters.data) {
+      rows.push({ name: 'Data', value: cashId.parameters.data })
+    }
+
+    notice = [this.context.t('signNotice')]
   }
 
   return h('div.request-signature__body', {}, [

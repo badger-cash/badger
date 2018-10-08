@@ -126,6 +126,7 @@ module.exports = class MetamaskController extends EventEmitter {
     // account tracker watches balances, nonces, and any code at their address.
     this.accountTracker = new AccountTracker({
       provider: this.provider,
+      preferences: this.preferencesController,
     })
     // start and stop polling for balances based on activeControllerConnections
     this.on('controllerConnectionChanged', activeControllerConnections => {

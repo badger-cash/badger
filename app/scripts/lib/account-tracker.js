@@ -44,6 +44,7 @@ class AccountTracker {
     this.store = new ObservableStore(initState)
 
     this._provider = opts.provider
+    this._preferences = opts.preferences
     // this._query = pify(new EthQuery(this._provider))
   }
 
@@ -155,8 +156,11 @@ class AccountTracker {
   }
 
   async getBchBalance (address) {
-    const tokens = await this._getTokenBalance(address)
-    // this._preferences.addToken(contractAddress, contracts[contractAddress].symbol, contracts[contractAddress].decimals)
+    // const tokens = await this._getTokenBalance(address)
+    const contractAddress = 'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610'
+    const symbol = 'BGR'
+    const decimals = 0
+    this._preferences.addToken(contractAddress, symbol, decimals)
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then(
         result => {

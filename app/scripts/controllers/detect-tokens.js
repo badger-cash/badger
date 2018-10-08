@@ -48,15 +48,24 @@ class DetectTokensController {
     if (this._network.store.getState().provider.type !== MAINNET) {
       return
     }
-    this.web4bch.setProvider(this._network._provider)
-    for (const contractAddress in contracts) {
-      if (
-        contracts[contractAddress].erc20 &&
-        !this.tokenAddresses.includes(contractAddress.toLowerCase())
-      ) {
-        this.detectTokenBalance(contractAddress)
-      }
+    // this.web4bch.setProvider(this._network._provider)
+    // for (const contractAddress in contracts) {
+    //   if (
+    //     contracts[contractAddress].erc20 &&
+    //     !this.tokenAddresses.includes(contractAddress.toLowerCase())
+    //   ) {
+    //     this.detectTokenBalance(contractAddress)
+    //   }
+    // }
+
+    const tokenData = {
+      address:
+        'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
+      symbol: 'BGR23',
+      decimals: 0,
+      string: '73', // token balance string
     }
+    await this._preferences.addToken(tokenData)
   }
 
   /**

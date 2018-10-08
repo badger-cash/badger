@@ -147,36 +147,36 @@ class AccountTracker {
    */
   async _updateAccount (address) {
     // get token balances
-    try {
-      const tokens = await this._getTokenBalance(address)
-      log.debug(tokens)
-      tokens.forEach((token, index) => {
-        whcTokens.forEach((whcToken, indx) => {
-          if (token.propertyid === whcToken.propertyid) {
-            console.log('token: ', whcToken)
-            token.address = `bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a983020461${index}`
-            token.symbol = whcToken.name
-            token.string = '0'
-            token.decimals = whcToken.precision
-            this._preferences.addToken(token)
-            // } else {
-            //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
-            //   console.log(property)
-          }
-        })
-      })
-    } catch (error) {
-      log.error(error)
-    }
+    // try {
+    //   const tokens = await this._getTokenBalance(address)
+    //   log.debug(tokens)
+    //   tokens.forEach((token, index) => {
+    //     whcTokens.forEach((whcToken, indx) => {
+    //       if (token.propertyid === whcToken.propertyid) {
+    //         console.log('token: ', whcToken)
+    //         token.address = `bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a983020461${index}`
+    //         token.symbol = whcToken.name
+    //         token.string = '0'
+    //         token.decimals = whcToken.precision
+    //         this._preferences.addToken(token)
+    //         // } else {
+    //         //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
+    //         //   console.log(property)
+    //       }
+    //     })
+    //   })
+    // } catch (error) {
+    //   log.error(error)
+    // }
 
-    const tokenData = {
-      address:
-        'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
-      symbol: 'BGR2',
-      decimals: 0,
-      string: '7', // token balance string
-    }
-    await this._preferences.addToken(tokenData)
+    // const tokenData = {
+    //   address:
+    //     'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
+    //   symbol: 'BGR2',
+    //   decimals: 0,
+    //   string: '7', // token balance string
+    // }
+    // await this._preferences.addToken(tokenData)
 
     // query balance
     const balance = await this.getBchBalance(address)

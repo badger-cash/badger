@@ -1,6 +1,6 @@
 /*global Web4Bch*/
 cleanContextForImports()
-require('web4bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js') 
+require('web4bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js')
 const log = require('loglevel')
 const LocalMessageDuplexStream = require('post-message-stream')
 const setupDappAutoReload = require('./lib/auto-reload.js')
@@ -28,13 +28,16 @@ inpageProvider.enable = function (options = {}) {
     if (options.mockRejection) {
       reject('User rejected account access')
     } else {
-      inpageProvider.sendAsync({ method: 'eth_accounts', params: [] }, (error, response) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(response.result)
+      inpageProvider.sendAsync(
+        { method: 'eth_accounts', params: [] },
+        (error, response) => {
+          if (error) {
+            reject(error)
+          } else {
+            resolve(response.result)
+          }
         }
-      })
+      )
     }
   })
 }

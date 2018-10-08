@@ -1,10 +1,6 @@
 const ObservableStore = require('obs-store')
 const PendingBalanceCalculator = require('../lib/pending-balance-calculator')
 const BN = require('ethereumjs-util').BN
-const WH = require('wormholecash/lib/Wormhole').default
-var Wormhole = new WH({
-  restURL: `http://wormholecash-production.herokuapp.com/v1/`,
-})
 
 class BalanceController {
   /**
@@ -92,27 +88,10 @@ class BalanceController {
    *
    */
   async _getBalance () {
-    console.log(
-      '---------------------------getBalance--------------------------: '
-    )
     const { accounts } = this.accountTracker.store.getState()
     const entry = accounts[this.address]
     const balance = entry.balance
-    this._getTokenBalance(this.address)
     return balance ? new BN(balance, 16) : undefined
-  }
-
-  async _getTokenBalance (address) {
-    try {
-      const balances = await Wormhole.DataRetrieval.balancesForAddress(address)
-      console.log(
-        '---------------------------token balances--------------------------: ',
-        balances
-      )
-    } catch (error) {
-      console.error(error)
-    }
-    return 'all the tokenz'
   }
 
   /**

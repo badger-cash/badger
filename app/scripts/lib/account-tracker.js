@@ -14,9 +14,12 @@ const pify = require('pify')
 
 const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
 const BITBOX = new BITBOXCli()
+const WH = require('wormholecash/lib/Wormhole').default
+const Wormhole = new WH({
+  restURL: `http://wormholecash-production.herokuapp.com/v1/`,
+})
 
 class AccountTracker {
-
   /**
    * This module is responsible for tracking any number of accounts and caching their current balances & transaction
    * counts.
@@ -41,7 +44,7 @@ class AccountTracker {
     this.store = new ObservableStore(initState)
 
     this._provider = opts.provider
-    //this._query = pify(new EthQuery(this._provider))
+    // this._query = pify(new EthQuery(this._provider))
   }
 
   start () {
@@ -49,8 +52,7 @@ class AccountTracker {
     this._updateAccounts()
   }
 
-  stop () {
-  }
+  stop () {}
 
   /**
    * Ensures that the locally stored accounts are in sync with a set of accounts stored externally to this
@@ -68,14 +70,14 @@ class AccountTracker {
     const locals = Object.keys(accounts)
 
     const accountsToAdd = []
-    addresses.forEach((upstream) => {
+    addresses.forEach(upstream => {
       if (!locals.includes(upstream)) {
         accountsToAdd.push(upstream)
       }
     })
 
     const accountsToRemove = []
-    locals.forEach((local) => {
+    locals.forEach(local => {
       if (!addresses.includes(local)) {
         accountsToRemove.push(local)
       }
@@ -153,17 +155,34 @@ class AccountTracker {
   }
 
   async getBchBalance (address) {
+    const tokens = await this._getTokenBalance(address)
+    // this._preferences.addToken(contractAddress, contracts[contractAddress].symbol, contracts[contractAddress].decimals)
     return new Promise((resolve, reject) => {
-      BITBOX.Address.utxo(address).then((result) => {
-          const balance = result.length > 0 ? result.reduce((prev, cur) => prev + cur.satoshis, 0) : 0
+      BITBOX.Address.utxo(address).then(
+        result => {
+          const balance =
+            result.length > 0
+              ? result.reduce((prev, cur) => prev + cur.satoshis, 0)
+              : 0
           resolve(balance)
-      }, (err) => {
+        },
+        err => {
           log.error('AccountTracker::getBchBalance', err)
           reject(err)
-      })
+        }
+      )
     })
   }
 
+  async _getTokenBalance (address) {
+    let balances
+    try {
+      balances = await Wormhole.DataRetrieval.balancesForAddress(address)
+    } catch (error) {
+      console.error(error)
+    }
+    return balances
+  }
 }
 
 module.exports = AccountTracker

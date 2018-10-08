@@ -18,6 +18,8 @@ const WH = require('wormholecash/lib/Wormhole').default
 const Wormhole = new WH({
   restURL: `http://wormholecash-production.herokuapp.com/v1/`,
 })
+const whcTokens = require('../../whc-tokens.json')
+console.log(whcTokens)
 
 class AccountTracker {
   /**
@@ -145,14 +147,30 @@ class AccountTracker {
    */
   async _updateAccount (address) {
     // get token balances
-    // const tokens = await this._getTokenBalance(address)
-    const tokenData = {
-      address: 'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
-      symbol: 'BGR',
-      decimals: 0,
-      string: '5', // token balance string
+    try {
+      const tokens = await this._getTokenBalance(address)
+      console.log(tokens)
+      tokens.forEach((token, index) => {
+        whcTokens.forEach((whcToken, indx) => {
+          if (token.propertyid === whcToken.propertyid) {
+            console.log('token: ', whcToken)
+            const tokenData = {
+              address:
+                'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
+              symbol: 'BGR',
+              decimals: 0,
+              string: '5', // token balance string
+            }
+            this._preferences.addToken(tokenData)
+            // } else {
+            //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
+            //   console.log(property)
+          }
+        })
+      })
+    } catch (error) {
+      console.error(error)
     }
-    this._preferences.addToken(tokenData)
 
     // query balance
     const balance = await this.getBchBalance(address)

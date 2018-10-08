@@ -250,7 +250,7 @@
     "message": "Inserisci la tua password per confermare"
   },
   "etherscanView": {
-    "message": "Vedi account su Etherscan"
+    "message": "Vedi account su explorer"
   },
   "exchangeRate": {
     "message": "Tasso di cambio"

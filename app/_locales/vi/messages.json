@@ -203,7 +203,7 @@
     "message": "Nhập mật khẩu"
   },
   "etherscanView": {
-    "message": "Xem tài khoản trên Etherscan"
+    "message": "Xem tài khoản trên explorer"
   },
   "exchangeRate": {
     "message": "Tỷ giá"

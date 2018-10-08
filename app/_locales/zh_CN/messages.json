@@ -275,7 +275,7 @@
     "message": "密码不匹配"
   },
   "etherscanView": {
-    "message": "在 Etherscan 上查看账户"
+    "message": "在 explorer 上查看账户"
   },
   "exchangeRate": {
     "message": "兑换比率"

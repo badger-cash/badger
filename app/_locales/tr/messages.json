@@ -271,7 +271,7 @@
     "message": "Parolalar eşleşmiyor"
   },
   "etherscanView": {
-    "message": "Hesabı Etherscan üzerinde izle"
+    "message": "Hesabı explorer üzerinde izle"
   },
   "exchangeRate": {
     "message": "Döviz kuru"

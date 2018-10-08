@@ -269,7 +269,7 @@
     "message": "您所輸入的密碼不一致"
   },
   "etherscanView": {
-    "message": "在 Etherscan 上查看帳戶"
+    "message": "在 explorer 上查看帳戶"
   },
   "exchangeRate": {
     "message": "匯率"

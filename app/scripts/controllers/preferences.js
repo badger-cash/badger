@@ -3,18 +3,18 @@ const { isValidAddress } = require('ethereumjs-util')
 const extend = require('xtend')
 
 // TODO: normalize bch and token addresses
-function normalizeAddress (address) { return address }
+function normalizeAddress (address) {
+  return address
+}
 // const normalizeAddress = require('eth-sig-util').normalize
 
-
 class PreferencesController {
-
   /**
    *
    * @typedef {Object} PreferencesController
    * @param {object} opts Overrides the defaults for the initial state of this.store
    * @property {object} store The stored object containing a users preferences, stored in local storage
-	 * @property {array} store.frequentRpcList A list of custom rpcs to provide the user
+   * @property {array} store.frequentRpcList A list of custom rpcs to provide the user
    * @property {string} store.currentAccountTab Indicates the selected tab in the ui
    * @property {array} store.tokens The tokens the user wants display in their token lists
    * @property {object} store.accountTokens The tokens stored per account and then per network type
@@ -27,21 +27,24 @@ class PreferencesController {
    *
    */
   constructor (opts = {}) {
-    const initState = extend({
-      frequentRpcList: [],
-      currentAccountTab: 'history',
-      accountTokens: {},
-      assetImages: {},
-      tokens: [],
-      suggestedTokens: {},
-      useBlockie: true,
-      featureFlags: {},
-      currentLocale: opts.initLangCode,
-      identities: {},
-      lostIdentities: {},
-      seedWords: null,
-      forgottenPassword: false,
-    }, opts.initState)
+    const initState = extend(
+      {
+        frequentRpcList: [],
+        currentAccountTab: 'history',
+        accountTokens: {},
+        assetImages: {},
+        tokens: [],
+        suggestedTokens: {},
+        useBlockie: true,
+        featureFlags: {},
+        currentLocale: opts.initLangCode,
+        identities: {},
+        lostIdentities: {},
+        seedWords: null,
+        forgottenPassword: false,
+      },
+      opts.initState
+    )
 
     this.diagnostics = opts.diagnostics
     this.network = opts.network
@@ -49,7 +52,7 @@ class PreferencesController {
     this.showWatchAssetUi = opts.showWatchAssetUi
     this._subscribeProviderType()
   }
-// PUBLIC METHODS
+  // PUBLIC METHODS
 
   /**
    * Sets the {@code forgottenPassword} state property
@@ -157,7 +160,7 @@ class PreferencesController {
 
     const identities = addresses.reduce((ids, address, index) => {
       const oldId = oldIdentities[address] || {}
-      ids[address] = {name: `Account ${index + 1}`, address, ...oldId}
+      ids[address] = { name: `Account ${index + 1}`, address, ...oldId }
       return ids
     }, {})
     const accountTokens = addresses.reduce((tokens, address) => {
@@ -193,7 +196,6 @@ class PreferencesController {
     return address
   }
 
-
   /**
    * Adds addresses to the identities object without removing identities
    *
@@ -203,7 +205,7 @@ class PreferencesController {
   addAddresses (addresses) {
     const identities = this.store.getState().identities
     const accountTokens = this.store.getState().accountTokens
-    addresses.forEach((address) => {
+    addresses.forEach(address => {
       // skip if already exists
       if (identities[address]) return
       // add missing identity
@@ -226,7 +228,7 @@ class PreferencesController {
     const { identities, lostIdentities } = this.store.getState()
 
     const newlyLost = {}
-    Object.keys(identities).forEach((identity) => {
+    Object.keys(identities).forEach(identity => {
       if (!addresses.includes(identity)) {
         newlyLost[identity] = identities[identity]
         delete identities[identity]
@@ -235,7 +237,6 @@ class PreferencesController {
 
     // Identities are no longer present.
     if (Object.keys(newlyLost).length > 0) {
-
       // Notify our servers:
       if (this.diagnostics) this.diagnostics.reportOrphans(newlyLost)
 
@@ -363,9 +364,13 @@ class PreferencesController {
    * @return {Promise<string>}
    */
   setAccountLabel (account, label) {
-    if (!account) throw new Error('setAccountLabel requires a valid address, got ' + String(account))
+    if (!account) {
+      throw new Error(
+        'setAccountLabel requires a valid address, got ' + String(account)
+      )
+    }
     const address = normalizeAddress(account)
-    const {identities} = this.store.getState()
+    const { identities } = this.store.getState()
     identities[address] = identities[address] || {}
     identities[address].name = label
     this.store.updateState({ identities })
@@ -380,11 +385,10 @@ class PreferencesController {
    *
    */
   updateFrequentRpcList (_url) {
-    return this.addToFrequentRpcList(_url)
-      .then((rpcList) => {
-        this.store.updateState({ frequentRpcList: rpcList })
-        return Promise.resolve()
-      })
+    return this.addToFrequentRpcList(_url).then(rpcList => {
+      this.store.updateState({ frequentRpcList: rpcList })
+      return Promise.resolve()
+    })
   }
 
   /**
@@ -412,7 +416,9 @@ class PreferencesController {
    */
   addToFrequentRpcList (_url) {
     const rpcList = this.getFrequentRpcList()
-    const index = rpcList.findIndex((element) => { return element === _url })
+    const index = rpcList.findIndex(element => {
+      return element === _url
+    })
     if (index !== -1) {
       rpcList.splice(index, 1)
     }
@@ -488,7 +494,12 @@ class PreferencesController {
    *
    */
   _updateAccountTokens (tokens, assetImages) {
-    const { accountTokens, providerType, selectedAddress } = this._getTokenRelatedStates()
+    console.log('_updateAccountTokens called', tokens)
+    const {
+      accountTokens,
+      providerType,
+      selectedAddress,
+    } = this._getTokenRelatedStates()
     accountTokens[selectedAddress][providerType] = tokens
     this.store.updateState({ accountTokens, tokens, assetImages })
   }
@@ -513,10 +524,14 @@ class PreferencesController {
    */
   _getTokenRelatedStates (selectedAddress) {
     const accountTokens = this.store.getState().accountTokens
-    if (!selectedAddress) selectedAddress = this.store.getState().selectedAddress
+    if (!selectedAddress) {
+      selectedAddress = this.store.getState().selectedAddress
+    }
     const providerType = this.network.providerStore.getState().type
     if (!(selectedAddress in accountTokens)) accountTokens[selectedAddress] = {}
-    if (!(providerType in accountTokens[selectedAddress])) accountTokens[selectedAddress][providerType] = []
+    if (!(providerType in accountTokens[selectedAddress])) {
+      accountTokens[selectedAddress][providerType] = []
+    }
     const tokens = accountTokens[selectedAddress][providerType]
     return { tokens, accountTokens, providerType, selectedAddress }
   }
@@ -538,7 +553,9 @@ class PreferencesController {
     const tokenOpts = { rawAddress, decimals, symbol, image }
     this.addSuggestedERC20Asset(tokenOpts)
     return this.showWatchAssetUi().then(() => {
-      const tokenAddresses = this.getTokens().filter(token => token.address === normalizeAddress(rawAddress))
+      const tokenAddresses = this.getTokens().filter(
+        token => token.address === normalizeAddress(rawAddress)
+      )
       return tokenAddresses.length > 0
     })
   }
@@ -553,13 +570,23 @@ class PreferencesController {
    */
   _validateERC20AssetParams (opts) {
     const { rawAddress, symbol, decimals } = opts
-    if (!rawAddress || !symbol || !decimals) throw new Error(`Cannot suggest token without address, symbol, and decimals`)
-    if (!(symbol.length < 6)) throw new Error(`Invalid symbol ${symbol} more than five characters`)
+    if (!rawAddress || !symbol || !decimals) {
+      throw new Error(
+        `Cannot suggest token without address, symbol, and decimals`
+      )
+    }
+    if (!(symbol.length < 6)) {
+      throw new Error(`Invalid symbol ${symbol} more than five characters`)
+    }
     const numDecimals = parseInt(decimals, 10)
     if (isNaN(numDecimals) || numDecimals > 36 || numDecimals < 0) {
-      throw new Error(`Invalid decimals ${decimals} must be at least 0, and not over 36`)
+      throw new Error(
+        `Invalid decimals ${decimals} must be at least 0, and not over 36`
+      )
     }
-    if (!isValidAddress(rawAddress)) throw new Error(`Invalid address ${rawAddress}`)
+    if (!isValidAddress(rawAddress)) {
+      throw new Error(`Invalid address ${rawAddress}`)
+    }
   }
 }
 

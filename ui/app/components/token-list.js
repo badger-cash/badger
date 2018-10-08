@@ -33,7 +33,6 @@ TokenList.contextTypes = {
 
 module.exports = connect(mapStateToProps)(TokenList)
 
-
 inherits(TokenList, Component)
 function TokenList () {
   this.state = {
@@ -48,6 +47,7 @@ TokenList.prototype.render = function () {
   const { userAddress, assetImages } = this.props
   const state = this.state
   const { isLoading, error } = state
+  console.log('------------props------------', this.props)
   const tokens = this.props.tokens
   // if (isLoading) {
   //   return this.message(this.context.t('loadingTokens'))
@@ -75,23 +75,29 @@ TokenList.prototype.render = function () {
   //   ])
   // }
 
-  return h('div', tokens.map((tokenData) => {
-    tokenData.image = assetImages[tokenData.address]
-    return h(TokenCell, tokenData)
-  }))
-
+  return h(
+    'div',
+    tokens.map(tokenData => {
+      tokenData.image = assetImages[tokenData.address]
+      return h(TokenCell, tokenData)
+    })
+  )
 }
 
 TokenList.prototype.message = function (body) {
-  return h('div', {
-    style: {
-      display: 'flex',
-      height: '250px',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '30px',
+  return h(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        height: '250px',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '30px',
+      },
     },
-  }, body)
+    body
+  )
 }
 
 TokenList.prototype.componentDidMount = function () {
@@ -116,31 +122,27 @@ TokenList.prototype.createFreshTokenTracker = function () {
     pollingInterval: 8000,
   })
 
-
   // Set up listener instances for cleaning up
   this.balanceUpdater = this.updateBalances.bind(this)
-  this.showError = (error) => {
+  this.showError = error => {
     this.setState({ error, isLoading: false })
   }
   this.tracker.on('update', this.balanceUpdater)
   this.tracker.on('error', this.showError)
 
-  this.tracker.updateBalances()
-  .then(() => {
-    this.updateBalances(this.tracker.serialize())
-  })
-  .catch((reason) => {
-    log.error(`Problem updating balances`, reason)
-    this.setState({ isLoading: false })
-  })
+  this.tracker
+    .updateBalances()
+    .then(() => {
+      this.updateBalances(this.tracker.serialize())
+    })
+    .catch(reason => {
+      log.error(`Problem updating balances`, reason)
+      this.setState({ isLoading: false })
+    })
 }
 
 TokenList.prototype.componentDidUpdate = function (nextProps) {
-  const {
-    network: oldNet,
-    userAddress: oldAddress,
-    tokens,
-  } = this.props
+  const { network: oldNet, userAddress: oldAddress, tokens } = this.props
   const {
     network: newNet,
     userAddress: newAddress,

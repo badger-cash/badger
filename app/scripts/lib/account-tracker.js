@@ -154,14 +154,11 @@ class AccountTracker {
         whcTokens.forEach((whcToken, indx) => {
           if (token.propertyid === whcToken.propertyid) {
             console.log('token: ', whcToken)
-            const tokenData = {
-              address:
-                'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
-              symbol: 'BGR',
-              decimals: 0,
-              string: '5', // token balance string
-            }
-            this._preferences.addToken(tokenData)
+            token.address = `bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a983020461${index}`
+            token.symbol = whcToken.name
+            token.string = '0'
+            token.decimals = whcToken.precision
+            this._preferences.addToken(token)
             // } else {
             //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
             //   console.log(property)

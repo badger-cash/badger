@@ -270,7 +270,7 @@
     "message": "Hesla nejsou stejná"
   },
   "etherscanView": {
-    "message": "Prohlédněte si účet na Etherscan"
+    "message": "Prohlédněte si účet na explorer"
   },
   "exchangeRate": {
     "message": "Směnný kurz"

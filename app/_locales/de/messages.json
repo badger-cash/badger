@@ -270,7 +270,7 @@
     "message": "Passwörter stimmen nicht überein"
   },
   "etherscanView": {
-    "message": "Account auf Etherscan anschauen"
+    "message": "Account auf explorer anschauen"
   },
   "exchangeRate": {
     "message": "Wechselrate"

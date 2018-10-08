@@ -486,10 +486,9 @@ gulp.task('dist', gulp.series('build', 'zip'))
 
 function zipTask (target) {
   return () => {
-    return gulp
-      .src(`dist/${target}/**`)
-      .pipe(zip(`metamask-${target}-${manifest.version}.zip`))
-      .pipe(gulp.dest('builds'))
+    return gulp.src(`dist/${target}/**`)
+    .pipe(zip(`badgerwallet-${target}-${manifest.version}.zip`))
+    .pipe(gulp.dest('builds'))
   }
 }
 

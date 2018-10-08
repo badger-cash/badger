@@ -203,7 +203,7 @@
     "message": "Entrer le mot de passe"
   },
   "etherscanView": {
-    "message": "Afficher le compte sur Etherscan"
+    "message": "Afficher le compte sur explorer"
   },
   "exchangeRate": {
     "message": "Taux de change"

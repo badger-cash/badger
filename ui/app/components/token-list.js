@@ -18,14 +18,14 @@ function mapStateToProps (state) {
 }
 
 const defaultTokens = []
-const contracts = require('eth-contract-metadata')
-for (const address in contracts) {
-  const contract = contracts[address]
-  if (contract.erc20) {
-    contract.address = address
-    defaultTokens.push(contract)
-  }
-}
+// const contracts = require('eth-contract-metadata')
+// for (const address in contracts) {
+//   const contract = contracts[address]
+//   if (contract.erc20) {
+//     contract.address = address
+//     defaultTokens.push(contract)
+//   }
+// }
 
 TokenList.contextTypes = {
   t: PropTypes.func,
@@ -38,7 +38,7 @@ inherits(TokenList, Component)
 function TokenList () {
   this.state = {
     tokens: [],
-    isLoading: true,
+    isLoading: false,
     network: null,
   }
   Component.call(this)
@@ -47,32 +47,33 @@ function TokenList () {
 TokenList.prototype.render = function () {
   const { userAddress, assetImages } = this.props
   const state = this.state
-  const { tokens, isLoading, error } = state
-  if (isLoading) {
-    return this.message(this.context.t('loadingTokens'))
-  }
+  const { isLoading, error } = state
+  const tokens = this.props.tokens
+  // if (isLoading) {
+  //   return this.message(this.context.t('loadingTokens'))
+  // }
 
-  if (error) {
-    log.error(error)
-    return h('.hotFix', {
-      style: {
-        padding: '80px',
-      },
-    }, [
-      this.context.t('troubleTokenBalances'),
-      h('span.hotFix', {
-        style: {
-          color: 'rgba(247, 134, 28, 1)',
-          cursor: 'pointer',
-        },
-        onClick: () => {
-          global.platform.openWindow({
-          url: `https://ethplorer.io/address/${userAddress}`,
-        })
-        },
-      }, this.context.t('here')),
-    ])
-  }
+  // if (error) {
+  //   log.error(error)
+  //   return h('.hotFix', {
+  //     style: {
+  //       padding: '80px',
+  //     },
+  //   }, [
+  //     this.context.t('troubleTokenBalances'),
+  //     h('span.hotFix', {
+  //       style: {
+  //         color: 'rgba(247, 134, 28, 1)',
+  //         cursor: 'pointer',
+  //       },
+  //       onClick: () => {
+  //         global.platform.openWindow({
+  //         url: `https://ethplorer.io/address/${userAddress}`,
+  //       })
+  //       },
+  //     }, this.context.t('here')),
+  //   ])
+  // }
 
   return h('div', tokens.map((tokenData) => {
     tokenData.image = assetImages[tokenData.address]
@@ -94,7 +95,7 @@ TokenList.prototype.message = function (body) {
 }
 
 TokenList.prototype.componentDidMount = function () {
-  this.createFreshTokenTracker()
+  // this.createFreshTokenTracker()
 }
 
 TokenList.prototype.createFreshTokenTracker = function () {
@@ -156,22 +157,22 @@ TokenList.prototype.componentDidUpdate = function (nextProps) {
 
   if (tokensLengthUnchanged && shouldUpdateTokens) return
 
-  this.setState({ isLoading: true })
-  this.createFreshTokenTracker()
+  // this.setState({ isLoading: true })
+  // this.createFreshTokenTracker()
 }
 
 TokenList.prototype.updateBalances = function (tokens) {
-  if (!this.tracker.running) {
-    return
-  }
+  // if (!this.tracker.running) {
+  //   return
+  // }
   this.setState({ tokens, isLoading: false })
 }
 
 TokenList.prototype.componentWillUnmount = function () {
-  if (!this.tracker) return
-  this.tracker.stop()
-  this.tracker.removeListener('update', this.balanceUpdater)
-  this.tracker.removeListener('error', this.showError)
+  // if (!this.tracker) return
+  // this.tracker.stop()
+  // this.tracker.removeListener('update', this.balanceUpdater)
+  // this.tracker.removeListener('error', this.showError)
 }
 
 // function uniqueMergeTokens (tokensA, tokensB = []) {

@@ -312,21 +312,20 @@ class PreferencesController {
    * @returns {Promise<array>} Promises the new array of AddedToken objects.
    *
    */
-  async addToken (address, symbol, decimals, image) {
-    const newEntry = { address, symbol, decimals }
+  async addToken (tokenData, image) {
     const tokens = this.store.getState().tokens
     const assetImages = this.getAssetImages()
     const previousEntry = tokens.find((token, index) => {
-      return token.address === address
+      return token.address === tokenData.address
     })
     const previousIndex = tokens.indexOf(previousEntry)
 
     if (previousEntry) {
-      tokens[previousIndex] = newEntry
+      tokens[previousIndex] = tokenData
     } else {
-      tokens.push(newEntry)
+      tokens.push(tokenData)
     }
-    assetImages[address] = image
+    assetImages[tokenData.address] = image
     this._updateAccountTokens(tokens, assetImages)
     return Promise.resolve(tokens)
   }

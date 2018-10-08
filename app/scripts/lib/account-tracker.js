@@ -144,6 +144,16 @@ class AccountTracker {
    *
    */
   async _updateAccount (address) {
+    // get token balances
+    // const tokens = await this._getTokenBalance(address)
+    const tokenData = {
+      address: 'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
+      symbol: 'BGR',
+      decimals: 0,
+      string: '5', // token balance string
+    }
+    this._preferences.addToken(tokenData)
+
     // query balance
     const balance = await this.getBchBalance(address)
     const result = { address, balance }
@@ -156,11 +166,6 @@ class AccountTracker {
   }
 
   async getBchBalance (address) {
-    // const tokens = await this._getTokenBalance(address)
-    const contractAddress = 'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610'
-    const symbol = 'BGR'
-    const decimals = 0
-    this._preferences.addToken(contractAddress, symbol, decimals)
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then(
         result => {

@@ -65,7 +65,7 @@ CurrencyDisplay.prototype.getValueToRender = function ({ selectedToken, conversi
 
   return selectedToken
     ? conversionUtil(value, {
-      fromNumericBase: 'hex',
+      fromNumericBase: 'dec',
       toNumericBase: 'dec',
       toCurrency: symbol,
       conversionRate: multiplier,
@@ -184,6 +184,5 @@ CurrencyDisplay.prototype.render = function () {
     ]), this.onlyRenderConversions(convertedValueToRender),
 
   ])
-
 }
 

@@ -18,32 +18,35 @@ export default function withTokenTracker (WrappedComponent) {
         error: null,
       }
 
-      this.tracker = null
-      this.updateBalance = this.updateBalance.bind(this)
-      this.setError = this.setError.bind(this)
+      // this.tracker = null
+      // this.updateBalance = this.updateBalance.bind(this)
+      // this.setError = this.setError.bind(this)
     }
 
     componentDidMount () {
-      this.createFreshTokenTracker()
+      // this.createFreshTokenTracker()
+      const { token } = this.props
+      const { string, symbol } = token
+      this.setState({ string, symbol, error: null })
     }
 
     componentDidUpdate (prevProps) {
-      const { userAddress: newAddress, token: { address: newTokenAddress } } = this.props
-      const { userAddress: oldAddress, token: { address: oldTokenAddress } } = prevProps
+      // const { userAddress: newAddress, token: { address: newTokenAddress } } = this.props
+      // const { userAddress: oldAddress, token: { address: oldTokenAddress } } = prevProps
 
-      if ((oldAddress === newAddress) && (oldTokenAddress === newTokenAddress)) {
-        return
-      }
+      // if ((oldAddress === newAddress) && (oldTokenAddress === newTokenAddress)) {
+      //   return
+      // }
 
-      if ((!oldAddress || !newAddress) && (!oldTokenAddress || !newTokenAddress)) {
-        return
-      }
+      // if ((!oldAddress || !newAddress) && (!oldTokenAddress || !newTokenAddress)) {
+      //   return
+      // }
 
-      this.createFreshTokenTracker()
+      // this.createFreshTokenTracker()
     }
 
     componentWillUnmount () {
-      this.removeListeners()
+      // this.removeListeners()
     }
 
     createFreshTokenTracker () {

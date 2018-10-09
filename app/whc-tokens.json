@@ -1774,5 +1774,23 @@
     "data": "全球彩友共同发起的，用于各大博彩平台的稳定币。",
     "url": "www.zok.cc",
     "precision": 8
+  },
+  {
+    "propertyid": 199,
+    "name": "PTT-Qjbghax4US3",
+    "category": "Tribute",
+    "subcategory": "polca",
+    "data": "トークンばらまき企画のお礼品です。支援ありがとうございました。🤝",
+    "url": "https://polca.jp/projects/Qjbghax4US3",
+    "precision": 8
+  },
+  {
+    "propertyid": 200,
+    "name": "BCHDevConSF",
+    "category": "Permissionless Ventures",
+    "subcategory": "Hackathon",
+    "data": "Permissionless Ventures BCHDevCon San Francisco 2018",
+    "url": "bchdevcon.com",
+    "precision": 8
   }
 ]

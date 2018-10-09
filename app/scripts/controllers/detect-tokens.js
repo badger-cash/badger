@@ -2,6 +2,8 @@ const Web4Bch = require('web4bch')
 const contracts = require('eth-contract-metadata')
 const { warn } = require('loglevel')
 const { MAINNET } = require('./network/enums')
+const log = require('loglevel')
+const whcTokens = require('../../whc-tokens.json')
 // By default, poll every 3 minutes
 const DEFAULT_INTERVAL = 180 * 1000
 const ERC20_ABI = [
@@ -14,6 +16,10 @@ const ERC20_ABI = [
     type: 'function',
   },
 ]
+const WH = require('wormhole-sdk/lib/Wormhole').default
+const Wormhole = new WH({
+  restURL: `https://rest.bitcoin.com/v1/`,
+})
 
 /**
  * A controller that polls for token exchange
@@ -57,15 +63,32 @@ class DetectTokensController {
     //     this.detectTokenBalance(contractAddress)
     //   }
     // }
+    try {
+      console.log(this._network.store.getState())
+      const tokens = await this._getTokenBalance(
+        'bitcoincash:qqeuq3yxsr9rys39am985gcv7xg6hzzqqgu9x00ua2'
+      )
 
-    const tokenData = {
-      address:
-        'bc7dd90b6dc7cb333387af83a76c8927d7a0f28829c84c76636b1a9830204610',
-      symbol: 'BGR23',
-      decimals: 0,
-      string: '73', // token balance string
+      log.debug(tokens)
+      tokens.forEach(async (token, index) => {
+        whcTokens.forEach(async (whcToken, indx) => {
+          if (token.propertyid === whcToken.propertyid) {
+            const tokenData = {
+              address: `bc7234234dc7c4333387af83a76c8927d7a0f28829c84c76636b1a983020461${index}`,
+              symbol: whcToken.name,
+              decimals: 0,
+              string: token.balance.toString(), // token balance string
+            }
+            await this._preferences.addToken(tokenData)
+            // } else {
+            //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
+            //   console.log(property)
+          }
+        })
+      })
+    } catch (error) {
+      log.error(error)
     }
-    await this._preferences.addToken(tokenData)
   }
 
   /**
@@ -179,6 +202,16 @@ class DetectTokensController {
    */
   get isActive () {
     return this.isOpen && this.isUnlocked
+  }
+
+  async _getTokenBalance (address) {
+    let balances
+    try {
+      balances = await Wormhole.DataRetrieval.balancesForAddress(address)
+    } catch (error) {
+      console.error(error)
+    }
+    return balances
   }
 }
 

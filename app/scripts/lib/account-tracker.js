@@ -14,9 +14,9 @@ const pify = require('pify')
 
 const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
 const BITBOX = new BITBOXCli()
-const WH = require('wormholecash/lib/Wormhole').default
+const WH = require('wormhole-sdk/lib/Wormhole').default
 const Wormhole = new WH({
-  restURL: `http://wormholecash-production.herokuapp.com/v1/`,
+  restURL: `https://rest.bitcoin.com/v1/`,
 })
 const whcTokens = require('../../whc-tokens.json')
 console.log(whcTokens)

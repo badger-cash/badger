@@ -64,10 +64,7 @@ class DetectTokensController {
     //   }
     // }
     try {
-      console.log(this._network.store.getState())
-      const tokens = await this._getTokenBalance(
-        'bitcoincash:qqeuq3yxsr9rys39am985gcv7xg6hzzqqgu9x00ua2'
-      )
+      const tokens = await this._getTokenBalance(this.selectedAddress)
 
       log.debug(tokens)
       tokens.forEach(async (token, index) => {

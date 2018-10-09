@@ -98,7 +98,7 @@ export default class UnlockPage extends Component {
         fullWidth
         variant="raised"
         size="large"
-        onClick={event => this.handleSubmit(event)}
+        onClick={async event => await this.handleSubmit(event)}
         disableRipple
       >
         {this.context.t('login')}
@@ -126,7 +126,7 @@ export default class UnlockPage extends Component {
           <div>{t('unlockMessage')}</div>
           <form
             className="unlock-page__form"
-            onSubmit={event => this.handleSubmit(event)}
+            onSubmit={async event => await this.handleSubmit(event)}
           >
             <TextField
               id="password"

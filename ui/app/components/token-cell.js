@@ -86,10 +86,12 @@ TokenCell.prototype.render = function () {
       className: `token-list-item ${selectedTokenAddress === address ? 'token-list-item--active' : ''}`,
       // style: { cursor: network === '1' ? 'pointer' : 'default' },
       // onClick: this.view.bind(this, address, userAddress, network),
-      onClick: () => {
-        setSelectedToken(address)
-        selectedTokenAddress !== address && sidebarOpen && hideSidebar()
-      },
+
+      // TODO: Tokens: Enable click event
+      // onClick: () => {
+      //   setSelectedToken(address)
+      //   selectedTokenAddress !== address && sidebarOpen && hideSidebar()
+      // },
     }, [
 
       h(Identicon, {
@@ -109,12 +111,13 @@ TokenCell.prototype.render = function () {
           }, formattedFiat),
         ]),
 
-        h('i.fa.fa-ellipsis-h.fa-lg.token-list-item__ellipsis.cursor-pointer', {
-          onClick: (e) => {
-            e.stopPropagation()
-            this.setState({ tokenMenuOpen: true })
-          },
-        }),
+        // TODO: Tokens: Enable ellipsis
+        // h('i.fa.fa-ellipsis-h.fa-lg.token-list-item__ellipsis.cursor-pointer', {
+        //   onClick: (e) => {
+        //     e.stopPropagation()
+        //     this.setState({ tokenMenuOpen: true })
+        //   },
+        // }),
 
       ]),
 

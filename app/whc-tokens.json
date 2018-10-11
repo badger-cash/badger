@@ -1792,5 +1792,14 @@
     "data": "Permissionless Ventures BCHDevCon San Francisco 2018",
     "url": "bchdevcon.com",
     "precision": 8
+  },
+  {
+    "propertyid": 201,
+    "name": "TEST",
+    "category": "",
+    "subcategory": "",
+    "data": "IFWallet test coin",
+    "url": "https://www.ifwallet.com",
+    "precision": 8
   }
 ]

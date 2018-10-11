@@ -2920,5 +2920,158 @@
     "data": "Permissionless Ventures BCHDevCon San Francisco 2018",
     "url": "bchdevcon.com",
     "precision": 8
+  },
+  {
+    "propertyid": 326,
+    "name": "啊",
+    "category": "",
+    "subcategory": "",
+    "data": "了",
+    "url": "g",
+    "precision": 2
+  },
+  {
+    "propertyid": 327,
+    "name": "阿",
+    "category": "",
+    "subcategory": "",
+    "data": "阿",
+    "url": "y",
+    "precision": 1
+  },
+  {
+    "propertyid": 328,
+    "name": "1",
+    "category": "",
+    "subcategory": "",
+    "data": "1",
+    "url": "1",
+    "precision": 1
+  },
+  {
+    "propertyid": 329,
+    "name": "rick1010",
+    "category": "Accommodation and food",
+    "subcategory": "Accommodation",
+    "data": "test 1010",
+    "url": "http://www.bai.com",
+    "precision": 5
+  },
+  {
+    "propertyid": 330,
+    "name": "ricky0001",
+    "category": "Accommodation and food",
+    "subcategory": "Accommodation",
+    "data": "ww",
+    "url": "http://www.baidu.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 331,
+    "name": "WELL1",
+    "category": "WELLCOIN1",
+    "subcategory": "Bitbox QA",
+    "data": "Managed Token - Made with BITBOX",
+    "url": "developer.bitcoin.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 332,
+    "name": "WELL2",
+    "category": "WELLCOIN2",
+    "subcategory": "Bitcoin Cash Mining",
+    "data": "Made with BITBOX",
+    "url": "www.qmc.cash",
+    "precision": 8
+  },
+  {
+    "propertyid": 333,
+    "name": "WELL3",
+    "category": "Companies",
+    "subcategory": "Wellcoin3",
+    "data": "Crowdsale - Made with BITBOX",
+    "url": "developer.bitbox.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 334,
+    "name": "啊",
+    "category": "",
+    "subcategory": "",
+    "data": "了",
+    "url": "r",
+    "precision": 2
+  },
+  {
+    "propertyid": 335,
+    "name": "0确认",
+    "category": "",
+    "subcategory": "",
+    "data": "看",
+    "url": "r",
+    "precision": 2
+  },
+  {
+    "propertyid": 336,
+    "name": "whcwallet-test",
+    "category": "Information and communication",
+    "subcategory": "Telecommunications",
+    "data": "wormhole and bitcoin cash will become better",
+    "url": "https://github.com/bcext",
+    "precision": 8
+  },
+  {
+    "propertyid": 337,
+    "name": "whcwallet-managed",
+    "category": "Information and communication",
+    "subcategory": "Telecommunications",
+    "data": "hello wormhole website wallet",
+    "url": "https://github.com/bcext",
+    "precision": 7
+  },
+  {
+    "propertyid": 338,
+    "name": "0确认",
+    "category": "",
+    "subcategory": "",
+    "data": "a",
+    "url": "t",
+    "precision": 2
+  },
+  {
+    "propertyid": 339,
+    "name": "0确认测试",
+    "category": "",
+    "subcategory": "",
+    "data": "啊",
+    "url": "e",
+    "precision": 1
+  },
+  {
+    "propertyid": 340,
+    "name": "测试",
+    "category": "",
+    "subcategory": "",
+    "data": "交",
+    "url": "y",
+    "precision": 2
+  },
+  {
+    "propertyid": 341,
+    "name": "CNY",
+    "category": "BitApp",
+    "subcategory": "互联网，区块链，代币",
+    "data": "业务代币",
+    "url": "boke.cash",
+    "precision": 8
+  },
+  {
+    "propertyid": 342,
+    "name": "MCX",
+    "category": "Company",
+    "subcategory": "Security",
+    "data": "MicoXi",
+    "url": "www.google.com",
+    "precision": 8
   }
 ]

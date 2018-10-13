@@ -1801,5 +1801,32 @@
     "data": "IFWallet test coin",
     "url": "https://www.ifwallet.com",
     "precision": 8
+  },
+  {
+    "propertyid": 202,
+    "name": "MICO",
+    "category": "Company",
+    "subcategory": "Security",
+    "data": "MicoXi",
+    "url": "www.micoxi.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 203,
+    "name": "RTSC",
+    "category": "Real Estate",
+    "subcategory": "Security",
+    "data": "Experimental property in Ohio",
+    "url": "www.realtyreturns.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 204,
+    "name": "bchdev",
+    "category": "company",
+    "subcategory": "Security",
+    "data": "newsecurity",
+    "url": "www.micoxi.com",
+    "precision": 8
   }
 ]

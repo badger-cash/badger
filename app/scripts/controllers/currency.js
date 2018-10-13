@@ -2,8 +2,8 @@ const ObservableStore = require('obs-store')
 const extend = require('xtend')
 const log = require('loglevel')
 
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 // every ten minutes
 const POLLING_INTERVAL = 600000

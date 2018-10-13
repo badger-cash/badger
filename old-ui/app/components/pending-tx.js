@@ -15,8 +15,8 @@ const EthBalance = require('./eth-balance')
 const addressSummary = util.addressSummary
 const nameForAddress = require('../../lib/contract-namer')
 
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 module.exports = PendingTx
 inherits(PendingTx, Component)

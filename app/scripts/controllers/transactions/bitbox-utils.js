@@ -1,6 +1,6 @@
 const log = require('loglevel')
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 class BitboxUtils {
   static async getUtxo (address) {

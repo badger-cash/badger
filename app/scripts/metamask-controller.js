@@ -56,8 +56,8 @@ const axios = require('axios')
 // const createBCHMiddleware = require('./lib/createBCHMiddleware')
 // const createTokensMiddleware = require('./lib/createTokensMiddleware')
 
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 module.exports = class MetamaskController extends EventEmitter {
   /**

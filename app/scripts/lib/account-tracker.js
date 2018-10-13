@@ -7,13 +7,14 @@
  * on each new block.
  */
 
-const EthQuery = require('eth-query')
+// const EthQuery = require('eth-query')
 const ObservableStore = require('obs-store')
 const log = require('loglevel')
-const pify = require('pify')
+// const pify = require('pify')
 
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
+
 const WH = require('wormhole-sdk/lib/Wormhole').default
 const Wormhole = new WH({
   restURL: `https://rest.bitcoin.com/v1/`,

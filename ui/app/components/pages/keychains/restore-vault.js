@@ -8,8 +8,8 @@ import {
 } from '../../../actions'
 import { DEFAULT_ROUTE } from '../../../routes'
 import TextField from '../../text-field'
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 class RestoreVaultPage extends Component {
   static contextTypes = {

@@ -8,8 +8,9 @@ import {
 } from '../../../../ui/app/actions'
 import { INITIALIZE_NOTICE_ROUTE } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
-const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
-const BITBOX = new BITBOXCli()
+
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 class ImportSeedPhraseScreen extends Component {
   static contextTypes = {

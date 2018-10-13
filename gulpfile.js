@@ -589,7 +589,18 @@ function bundleTask (opts) {
       buildStream = buildStream.pipe(
         uglify({
           mangle: {
-            reserved: ['MetamaskInpageProvider'],
+            reserved: [
+              'MetamaskInpageProvider',
+              'Buffer',
+              'BigInteger',
+              'Point',
+              'ECPubKey',
+              'ECKey',
+              'sha512_asm',
+              'asm',
+              'ECPair',
+              'HDNode',
+            ],
           },
         })
       )

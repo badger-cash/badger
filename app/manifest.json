@@ -21,7 +21,7 @@
   },
   "applications": {
     "gecko": {
-      "id": "webextension@metamask.io"
+      "id": "webextension@badgerwallet.cash"
     }
   },
   "default_locale": "en",

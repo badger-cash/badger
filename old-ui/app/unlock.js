@@ -6,8 +6,6 @@ const actions = require('../../ui/app/actions')
 const getCaretCoordinates = require('textarea-caret')
 const EventEmitter = require('events').EventEmitter
 
-const Mascot = require('./components/mascot')
-
 module.exports = connect(mapStateToProps)(UnlockScreen)
 
 inherits(UnlockScreen, Component)
@@ -32,10 +30,6 @@ UnlockScreen.prototype.render = function () {
       },
     }, [
       h('.unlock-screen.flex-column.flex-center.flex-grow', [
-
-        h(Mascot, {
-          animationEventEmitter: this.animationEventEmitter,
-        }),
 
         h('h1', {
           style: {

@@ -3,7 +3,6 @@ const EventEmitter = require('events').EventEmitter
 const Component = require('react').Component
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
-const Mascot = require('../components/mascot')
 const actions = require('../../../ui/app/actions')
 const Tooltip = require('../components/tooltip')
 const getCaretCoordinates = require('textarea-caret')
@@ -43,10 +42,6 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
   return (
 
     h('.initialize-screen.flex-column.flex-center.flex-grow', [
-
-      h(Mascot, {
-        animationEventEmitter: this.animationEventEmitter,
-      }),
 
       h('h1', {
         style: {

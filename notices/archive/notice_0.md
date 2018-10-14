@@ -2,7 +2,7 @@
 
 **THIS AGREEMENT IS SUBJECT TO BINDING ARBITRATION AND A WAIVER OF CLASS ACTION RIGHTS AS DETAILED IN SECTION 13. PLEASE READ THE AGREEMENT CAREFULLY.**
 
-_Our Terms of Use have been updated as of September 5, 2016_
+_Our Terms of Use have been updated as of October 13, 2018_
 
 ## 1. Acceptance of Terms
 

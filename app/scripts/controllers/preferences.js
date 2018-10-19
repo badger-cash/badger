@@ -196,6 +196,14 @@ class PreferencesController {
     return address
   }
 
+  removeTokensByAccount (address) {
+    const accountTokens = this.store.getState().accountTokens
+    delete accountTokens[address]
+    this.store.updateState({ accountTokens })
+
+    return address
+  }
+
   /**
    * Adds addresses to the identities object without removing identities
    *
@@ -328,6 +336,28 @@ class PreferencesController {
     }
     assetImages[tokenData.address] = image
     this._updateAccountTokens(tokens, assetImages)
+    return Promise.resolve(tokens)
+  }
+
+  async addTokenByAccount (address, providerType, tokenData, image) {
+    const {
+      accountTokens,
+    } = this._getTokenRelatedStates(address)
+    const tokens = accountTokens[address][providerType]
+    
+    const assetImages = this.getAssetImages()
+    const previousEntry = tokens.find((token, index) => {
+      return token.address === tokenData.address
+    })
+    const previousIndex = tokens.indexOf(previousEntry)
+
+    if (previousEntry) {
+      tokens[previousIndex] = tokenData
+    } else {
+      tokens.push(tokenData)
+    }
+    assetImages[tokenData.address] = image
+    this._updateAccountTokensByAccount(address, providerType, tokens, assetImages)
     return Promise.resolve(tokens)
   }
 
@@ -494,7 +524,6 @@ class PreferencesController {
    *
    */
   _updateAccountTokens (tokens, assetImages) {
-    console.log('_updateAccountTokens called', tokens)
     const {
       accountTokens,
       providerType,
@@ -502,6 +531,14 @@ class PreferencesController {
     } = this._getTokenRelatedStates()
     accountTokens[selectedAddress][providerType] = tokens
     this.store.updateState({ accountTokens, tokens, assetImages })
+  }
+
+  _updateAccountTokensByAccount (address, providerType, tokens, assetImages) {
+    const {
+      accountTokens,
+    } = this._getTokenRelatedStates(address)
+    accountTokens[address][providerType] = tokens
+    this.store.updateState({ accountTokens, assetImages })
   }
 
   /**

@@ -63,29 +63,30 @@ class DetectTokensController {
     //     this.detectTokenBalance(contractAddress)
     //   }
     // }
-    try {
-      const tokens = await this._getTokenBalance(this.selectedAddress)
 
-      log.debug(tokens)
-      tokens.forEach(async (token, index) => {
-        whcTokens.forEach(async (whcToken, indx) => {
-          if (token.propertyid === whcToken.propertyid) {
-            const tokenData = {
-              address: `bc7234234dc7c4333387af83a76c8927d7a0f28829c84c76636b1a983020461${index}`,
-              symbol: whcToken.name,
-              decimals: 0,
-              string: token.balance.toString(), // token balance string
-            }
-            await this._preferences.addToken(tokenData)
-            // } else {
-            //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
-            //   console.log(property)
-          }
-        })
-      })
-    } catch (error) {
-      log.error(error)
-    }
+    // try {
+    //   const tokens = await this._getTokenBalance(this.selectedAddress)
+
+    //   log.debug(tokens)
+    //   tokens.forEach(async (token, index) => {
+    //     whcTokens.forEach(async (whcToken, indx) => {
+    //       if (token.propertyid === whcToken.propertyid) {
+    //         const tokenData = {
+    //           address: `bc7234234dc7c4333387af83a76c8927d7a0f28829c84c76636b1a983020461${index}`,
+    //           symbol: whcToken.name,
+    //           decimals: 0,
+    //           string: token.balance.toString(), // token balance string
+    //         }
+    //         await this._preferences.addToken(tokenData)
+    //         // } else {
+    //         //   let property = await Wormhole.DataRetrieval.property(token.propertyid);
+    //         //   console.log(property)
+    //       }
+    //     })
+    //   })
+    // } catch (error) {
+    //   log.error(error)
+    // }
   }
 
   /**

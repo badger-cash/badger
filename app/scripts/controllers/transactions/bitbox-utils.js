@@ -8,6 +8,7 @@ class BitboxUtils {
       BITBOX.Address.utxo(address).then(
         result => {
           try {
+            result = result[0]
             const utxo = result.sort((a, b) => {
               return a.satoshis - b.satoshis
             })[result.length - 1]
@@ -28,6 +29,7 @@ class BitboxUtils {
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then(
         result => {
+          result = result[0]
           resolve(result)
         },
         err => {

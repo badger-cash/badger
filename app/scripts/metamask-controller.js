@@ -34,7 +34,7 @@ const TypedMessageManager = require('./lib/typed-message-manager')
 const TransactionController = require('./controllers/transactions')
 const BalancesController = require('./controllers/computed-balances')
 // const TokenRatesController = require('./controllers/token-rates')
-const DetectTokensController = require('./controllers/detect-tokens')
+// const DetectTokensController = require('./controllers/detect-tokens')
 const nodeify = require('./lib/nodeify')
 const accountImporter = require('./account-import-strategies')
 const getBuyBchUrl = require('./lib/buy-bch-url')
@@ -150,11 +150,11 @@ module.exports = class MetamaskController extends EventEmitter {
     )
 
     // detect tokens controller
-    this.detectTokensController = new DetectTokensController({
-      preferences: this.preferencesController,
-      network: this.networkController,
-      keyringMemStore: this.keyringController.memStore,
-    })
+    // this.detectTokensController = new DetectTokensController({
+    //   preferences: this.preferencesController,
+    //   network: this.networkController,
+    //   keyringMemStore: this.keyringController.memStore,
+    // })
 
     // address book controller
     this.addressBookController = new AddressBookController({
@@ -1543,7 +1543,7 @@ module.exports = class MetamaskController extends EventEmitter {
   set isClientOpen (open) {
     this._isClientOpen = open
     this.isClientOpenAndUnlocked = this.getState().isUnlocked && open
-    this.detectTokensController.isOpen = open
+    // this.detectTokensController.isOpen = open
   }
 
   /**

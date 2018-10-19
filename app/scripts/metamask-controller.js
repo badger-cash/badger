@@ -33,7 +33,7 @@ const PersonalMessageManager = require('./lib/personal-message-manager')
 const TypedMessageManager = require('./lib/typed-message-manager')
 const TransactionController = require('./controllers/transactions')
 const BalancesController = require('./controllers/computed-balances')
-const TokenRatesController = require('./controllers/token-rates')
+// const TokenRatesController = require('./controllers/token-rates')
 const DetectTokensController = require('./controllers/detect-tokens')
 const nodeify = require('./lib/nodeify')
 const accountImporter = require('./account-import-strategies')
@@ -51,10 +51,6 @@ const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
 const axios = require('axios')
-
-// TODO: setup BCH & tokens middleware
-// const createBCHMiddleware = require('./lib/createBCHMiddleware')
-// const createTokensMiddleware = require('./lib/createTokensMiddleware')
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
 const BITBOX = new BITBOXSDK()
@@ -119,9 +115,10 @@ module.exports = class MetamaskController extends EventEmitter {
     this.provider = this.networkController.getProviderAndBlockTracker().provider
 
     // token exchange rate tracker
-    this.tokenRatesController = new TokenRatesController({
-      preferences: this.preferencesController.store,
-    })
+    // TODO: Token rates
+    // this.tokenRatesController = new TokenRatesController({
+    //   preferences: this.preferencesController.store,
+    // })
 
     // account tracker watches balances, nonces, and any code at their address.
     this.accountTracker = new AccountTracker({
@@ -237,7 +234,8 @@ module.exports = class MetamaskController extends EventEmitter {
       AccountTracker: this.accountTracker.store,
       TxController: this.txController.memStore,
       BalancesController: this.balancesController.store,
-      TokenRatesController: this.tokenRatesController.store,
+      // TODO: Token rates
+      // TokenRatesController: this.tokenRatesController.store,
       MessageManager: this.messageManager.memStore,
       PersonalMessageManager: this.personalMessageManager.memStore,
       TypesMessageManager: this.typedMessageManager.memStore,
@@ -529,9 +527,14 @@ module.exports = class MetamaskController extends EventEmitter {
         seed
       )
 
-      const ethQuery = new EthQuery(this.provider)
       accounts = await keyringController.getAccounts()
-      lastBalance = await this.getBalance(accounts[accounts.length - 1])
+
+      try {
+        lastBalance = await this.getBalance(accounts[accounts.length - 1])
+      } catch (err) {
+        log.error('ImportAccount::Error', err)
+        lastBalance = 0
+      }
 
       const primaryKeyring = keyringController.getKeyringsByType(
         'HD Key Tree'
@@ -542,9 +545,14 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // seek out the first zero balance
       while (parseFloat(lastBalance) !== 0) {
-        await keyringController.addNewAccount(primaryKeyring)
-        accounts = await keyringController.getAccounts()
-        lastBalance = await this.getBalance(accounts[accounts.length - 1])
+        try {
+          await keyringController.addNewAccount(primaryKeyring)
+          accounts = await keyringController.getAccounts()
+          lastBalance = await this.getBalance(accounts[accounts.length - 1])
+        } catch (err) {
+          log.error('ImportAccount::Error', err)
+          lastBalance = 0
+        }
       }
 
       // set new identities
@@ -1545,7 +1553,8 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param {boolean} active - True if price data should be getting fetched.
    */
   set isClientOpenAndUnlocked (active) {
-    this.tokenRatesController.isActive = active
+    // TODO: Token rates
+    // this.tokenRatesController.isActive = active
   }
 
   /**
@@ -1586,6 +1595,7 @@ module.exports = class MetamaskController extends EventEmitter {
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then(
         result => {
+          result = result[0]
           console.log('badger bal utxo result: ', result)
           const balance = result.length > 0 ? result[0].satoshis : 0
           resolve(balance)

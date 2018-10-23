@@ -1,7 +1,7 @@
 # Badger
 
 ## Installation of Developer Preview
-- Download the most recent release from the Get Started button on https://badgerwallet.cash
+- Download the most recent release from the Chrome (Download) button on https://badgerwallet.cash
 - Go to chrome://extensions/ and enable developer mode in Chrome
 - Drag the zip file onto the extensions page
 

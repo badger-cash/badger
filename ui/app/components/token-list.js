@@ -12,8 +12,10 @@ function mapStateToProps (state) {
   return {
     network: state.metamask.network,
     tokens: state.metamask.tokens,
+    accountTokens: state.metamask.accountTokens,
     userAddress: selectors.getSelectedAddress(state),
     assetImages: state.metamask.assetImages,
+    provider: state.metamask.provider,
   }
 }
 
@@ -48,7 +50,13 @@ TokenList.prototype.render = function () {
   const state = this.state
   const { isLoading, error } = state
   console.log('------------props------------', this.props)
-  const tokens = this.props.tokens
+  let tokens
+  try { 
+    tokens = this.props.accountTokens[this.props.userAddress][this.props.provider.type]
+  } catch (err) {
+    tokens = []
+  }
+  if (!tokens) tokens = []
   // if (isLoading) {
   //   return this.message(this.context.t('loadingTokens'))
   // }

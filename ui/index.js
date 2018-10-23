@@ -52,10 +52,10 @@ async function startApp (metamaskState, accountManager, opts) {
 
   // if unconfirmed txs, start on txConf page
   const unapprovedTxsAll = txHelper(metamaskState.unapprovedTxs, metamaskState.unapprovedMsgs, metamaskState.unapprovedPersonalMsgs, metamaskState.unapprovedTypedMessages, metamaskState.network)
-  const numberOfUnapprivedTx = unapprovedTxsAll.length
-  if (numberOfUnapprivedTx > 0) {
+  const numberOfUnapprovedTx = unapprovedTxsAll.length
+  if (numberOfUnapprovedTx > 0) {
     store.dispatch(actions.showConfTxPage({
-      id: unapprovedTxsAll[numberOfUnapprivedTx - 1].id,
+      id: unapprovedTxsAll[numberOfUnapprovedTx - 1].id,
     }))
   }
 

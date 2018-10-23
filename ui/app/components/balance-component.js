@@ -74,10 +74,10 @@ BalanceComponent.prototype.renderBalance = function () {
   const needsParse = 'needsParse' in props ? props.needsParse : true
   const formattedBalance = balanceValue
     ? formatBalance(balanceValue, 8, needsParse)
-    : '...'
+    : '0'
   const showFiat = 'showFiat' in props ? props.showFiat : true
 
-  if (formattedBalance === 'None' || formattedBalance === '...') {
+  if (formattedBalance === 'None' || formattedBalance === '0') {
     return h('div.flex-column.balance-display', {}, [
       h(
         'div.token-amount',

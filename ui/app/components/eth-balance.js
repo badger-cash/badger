@@ -19,7 +19,7 @@ EthBalanceComponent.prototype.render = function () {
   const props = this.props
   const { value, style, width, needsParse = true } = props
 
-  const formattedValue = value ? formatBalance(value, 6, needsParse) : '...'
+  const formattedValue = value ? formatBalance(value, 6, needsParse) : '0'
 
   return (
 
@@ -38,7 +38,7 @@ EthBalanceComponent.prototype.render = function () {
 }
 EthBalanceComponent.prototype.renderBalance = function (value) {
   if (value === 'None') return value
-  if (value === '...') return value
+  if (value === '...' || value === '0') return value
 
   const {
     conversionRate,

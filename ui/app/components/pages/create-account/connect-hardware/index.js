@@ -28,7 +28,7 @@ class ConnectHardwareForm extends Component {
     const newAccounts = this.state.accounts.map(a => {
       const normalizedAddress = a.address.toLowerCase()
       const balanceValue = accounts[normalizedAddress] && accounts[normalizedAddress].balance || null
-      a.balance = balanceValue ? formatBalance(balanceValue, 6) : '...'
+      a.balance = balanceValue ? formatBalance(balanceValue, 6) : '0'
       return a
     })
     this.setState({accounts: newAccounts})

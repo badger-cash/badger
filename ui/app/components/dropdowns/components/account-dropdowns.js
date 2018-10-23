@@ -33,7 +33,7 @@ class AccountDropdowns extends Component {
       const isSelected = identity.address === selected
 
       const balanceValue = accounts[key].balance
-      const formattedBalance = balanceValue ? formatBalance(balanceValue, 8) : '...'
+      const formattedBalance = balanceValue ? formatBalance(balanceValue, 8) : '0'
       const simpleAddress = identity.address.substring(2).toLowerCase()
 
       const keyring = keyrings.find((kr) => {

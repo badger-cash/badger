@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import TokenTracker from 'eth-token-tracker'
+// import TokenTracker from 'eth-token-tracker'
 
 export default function withTokenTracker (WrappedComponent) {
   return class TokenTrackerWrappedComponent extends Component {
@@ -49,29 +49,29 @@ export default function withTokenTracker (WrappedComponent) {
       // this.removeListeners()
     }
 
-    createFreshTokenTracker () {
-      this.removeListeners()
+    // createFreshTokenTracker () {
+    //   this.removeListeners()
 
-      if (!global.ethereumProvider) {
-        return
-      }
+    //   if (!global.ethereumProvider) {
+    //     return
+    //   }
 
-      const { userAddress, token } = this.props
+    //   const { userAddress, token } = this.props
 
-      this.tracker = new TokenTracker({
-        userAddress,
-        provider: global.ethereumProvider,
-        tokens: [token],
-        pollingInterval: 8000,
-      })
+    //   this.tracker = new TokenTracker({
+    //     userAddress,
+    //     provider: global.ethereumProvider,
+    //     tokens: [token],
+    //     pollingInterval: 8000,
+    //   })
 
-      this.tracker.on('update', this.updateBalance)
-      this.tracker.on('error', this.setError)
+    //   this.tracker.on('update', this.updateBalance)
+    //   this.tracker.on('error', this.setError)
 
-      this.tracker.updateBalances()
-        .then(() => this.updateBalance(this.tracker.serialize()))
-        .catch(error => this.setState({ error: error.message }))
-    }
+    //   this.tracker.updateBalances()
+    //     .then(() => this.updateBalance(this.tracker.serialize()))
+    //     .catch(error => this.setState({ error: error.message }))
+    // }
 
     setError (error) {
       this.setState({ error })

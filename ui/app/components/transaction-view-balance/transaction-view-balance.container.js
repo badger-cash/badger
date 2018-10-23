@@ -9,7 +9,13 @@ const mapStateToProps = state => {
   const selectedAddress = getSelectedAddress(state)
   const { metamask: { network, accounts } } = state
   const account = accounts[selectedAddress]
-  const { balance } = account
+  let { balance } = account
+  if (balance) {
+    balance = balance.toString()
+  }
+  else {
+    balance = '0'
+  }
 
   return {
     selectedToken: getSelectedToken(state),

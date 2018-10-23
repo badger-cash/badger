@@ -6,7 +6,7 @@ const { withRouter } = require('react-router-dom')
 const { compose } = require('recompose')
 const inherits = require('util').inherits
 const classnames = require('classnames')
-const { checksumAddress } = require('../util')
+// const { checksumAddress } = require('../util')
 const Identicon = require('./identicon')
 // const AccountDropdowns = require('./dropdowns/index.js').AccountDropdowns
 const Tooltip = require('./tooltip-v2.js').default
@@ -17,6 +17,7 @@ const TokenList = require('./token-list')
 const selectors = require('../selectors')
 const { ADD_TOKEN_ROUTE } = require('../routes')
 const log = require('loglevel')
+const slpjs = require('slpjs')
 
 import Button from './button'
 
@@ -67,7 +68,9 @@ function WalletView () {
   Component.call(this)
   this.state = {
     hasCopied: false,
+    hasCopiedSlp: false,
     copyToClipboardPressed: false,
+    copySlpToClipboardPressed: false,
   }
 }
 
@@ -118,7 +121,9 @@ WalletView.prototype.render = function () {
   // temporary logs + fake extra wallets
   // console.log('walletview, selectedAccount:', selectedAccount)
 
-  const checksummedAddress = checksumAddress(selectedAddress)
+  // const checksummedAddress = checksumAddress(selectedAddress)
+  const checksummedAddress = selectedAddress
+  const slpAddress = slpjs.utils.toSlpAddress(selectedAddress)
 
   if (!selectedAddress) {
     throw new Error('selectedAddress should not be ' + String(selectedAddress))
@@ -220,7 +225,45 @@ WalletView.prototype.render = function () {
               },
             },
             [
-              `${checksummedAddress.slice(12, 18)}...${checksummedAddress.slice(
+              `${checksummedAddress.slice(0, 18)}...${checksummedAddress.slice(
+                -4
+              )}`,
+              h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),
+            ]
+          ),
+        ]
+      ),
+      h(
+        Tooltip,
+        {
+          position: 'bottom',
+          title: this.state.hasCopiedSlp
+            ? this.context.t('copiedExclamation')
+            : this.context.t('copyToClipboard'),
+          wrapperClassName: 'wallet-view__tooltip',
+        },
+        [
+          h(
+            'button.wallet-view__address',
+            {
+              className: classnames({
+                'wallet-view__address__pressed': this.state
+                  .copySlpToClipboardPressed,
+              }),
+              onClick: () => {
+                copyToClipboard(slpAddress)
+                this.setState({ hasCopiedSlp: true })
+                setTimeout(() => this.setState({ hasCopiedSlp: false }), 3000)
+              },
+              onMouseDown: () => {
+                this.setState({ copySlpToClipboardPressed: true })
+              },
+              onMouseUp: () => {
+                this.setState({ copySlpToClipboardPressed: false })
+              },
+            },
+            [
+              `${slpAddress.slice(0, 18)}...${slpAddress.slice(
                 -4
               )}`,
               h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),

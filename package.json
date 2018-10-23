@@ -6,7 +6,8 @@
   "scripts": {
     "start": "gulp dev:extension",
     "mascara": "gulp dev:mascara & node ./mascara/example/server",
-    "dist": "gulp dist",
+    "build": "gulp dist",
+    "dist": "NODE_ENV=production gulp dist",
     "doc": "jsdoc -c development/tools/.jsdoc.json",
     "publish-docs": "gh-pages -d docs/jsdocs",
     "test": "npm run test:unit && npm run test:integration && npm run lint",

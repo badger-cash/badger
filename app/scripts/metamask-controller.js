@@ -168,6 +168,7 @@ module.exports = class MetamaskController extends EventEmitter {
         initState.TransactionController || initState.TransactionManager,
       networkStore: this.networkController.networkStore,
       preferencesStore: this.preferencesController.store,
+      accountTrackerStore: this.accountTracker.store,
       txHistoryLimit: 40,
       getNetwork: this.networkController.getNetworkState.bind(this),
       signTransaction: this.keyringController.signTransaction.bind(
@@ -576,6 +577,7 @@ module.exports = class MetamaskController extends EventEmitter {
       const cached = this.accountTracker.store.getState().accounts[address]
 
       if (cached && cached.balance) {
+        log.debug('getBalance result cached')
         resolve(cached.balance)
       } else {
         try {
@@ -1337,9 +1339,12 @@ module.exports = class MetamaskController extends EventEmitter {
         this.preferencesController
       )
     )
-    engine.push(
-      this.createBchGetBalanceMiddleware('bch_getBalance', 'V1').bind(this)
-    )
+
+    // TODO: bch balance middleware -- if required feature
+    // engine.push(
+    //   this.createBchGetBalanceMiddleware('bch_getBalance', 'V1').bind(this)
+    // )
+
     // TODO: typed middleware
     // engine.push(
     //   this.createTypedDataMiddleware('eth_signTypedData', 'V1').bind(this)
@@ -1591,38 +1596,35 @@ module.exports = class MetamaskController extends EventEmitter {
     }
   }
 
-  getBchBalance (address) {
-    return new Promise((resolve, reject) => {
-      BITBOX.Address.utxo(address).then(
-        result => {
-          result = result[0]
-          console.log('badger bal utxo result: ', result)
-          const balance = result.length > 0 ? result[0].satoshis : 0
-          resolve(balance)
-        },
-        err => {
-          console.log('badger bal err', err)
-          reject(err)
-        }
-      )
-    })
-  }
+  // getBchBalance (address) {
+  //   return new Promise((resolve, reject) => {
+  //     BITBOX.Address.utxo(address).then(
+  //       result => {
+  //         const balance = result.length > 0 ? result[0].satoshis : 0
+  //         resolve(balance)
+  //       },
+  //       err => {
+  //         reject(err)
+  //       }
+  //     )
+  //   })
+  // }
 
-  createBchGetBalanceMiddleware (methodName, version) {
-    return async (req, res, next, end) => {
-      const { method, params } = req
-      if (method === methodName) {
-        console.log('bch bal req:', req)
-        const promise = this.getBchBalance(params[0], req, version)
-        try {
-          res.result = await promise
-          end()
-        } catch (error) {
-          end(error)
-        }
-      } else {
-        next()
-      }
-    }
-  }
+  // createBchGetBalanceMiddleware (methodName, version) {
+  //   return async (req, res, next, end) => {
+  //     const { method, params } = req
+  //     if (method === methodName) {
+  //       console.log('bch bal req:', req)
+  //       const promise = this.getBchBalance(params[0], req, version)
+  //       try {
+  //         res.result = await promise
+  //         end()
+  //       } catch (error) {
+  //         end(error)
+  //       }
+  //     } else {
+  //       next()
+  //     }
+  //   }
+  // }
 }

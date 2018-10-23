@@ -3,12 +3,11 @@ const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
 const BITBOX = new BITBOXSDK()
 
 class BitboxUtils {
-  static async getUtxo (address) {
+  static async getLargestUtxo (address) {
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then(
         result => {
           try {
-            result = result[0]
             const utxo = result.sort((a, b) => {
               return a.satoshis - b.satoshis
             })[result.length - 1]
@@ -18,7 +17,6 @@ class BitboxUtils {
           }
         },
         err => {
-          console.log(err)
           reject(err)
         }
       )
@@ -29,11 +27,26 @@ class BitboxUtils {
     return new Promise((resolve, reject) => {
       BITBOX.Address.utxo(address).then(
         result => {
-          result = result[0]
           resolve(result)
         },
         err => {
-          console.log(err)
+          reject(err)
+        }
+      )
+    })
+  }
+
+  static async getTransactionDetails (txid) {
+    return new Promise((resolve, reject) => {
+      BITBOX.Transaction.details(txid).then(
+        result => {
+          if (result) {
+            resolve(result)
+          } else {
+            reject('Undefined transaction details for', txid)
+          }
+        },
+        err => {
           reject(err)
         }
       )
@@ -57,21 +70,19 @@ class BitboxUtils {
           }
         },
         err => {
-          console.log(err)
           reject(err)
         }
       )
     })
   }
 
-  static signAndPublishTransaction (txParams, keyPair) {
+  static signAndPublishTransaction (txParams, keyPair, utxos) {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
         const to = txParams.to
         const satoshisToSend = parseInt(txParams.value)
 
-        const utxos = await this.getAllUtxo(from)
         if (!utxos || utxos.length === 0) {
             throw new Error('Insufficient funds')
         }
@@ -80,6 +91,9 @@ class BitboxUtils {
 
         let totalUtxoAmount = 0
         utxos.forEach((utxo) => {
+            if (utxo.spendable !== true) {
+              throw new Error('Cannot spend unspendable utxo')
+            }
             transactionBuilder.addInput(utxo.txid, utxo.vout)
             totalUtxoAmount += utxo.satoshis
         })

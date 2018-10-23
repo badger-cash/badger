@@ -40,6 +40,7 @@ const bitboxUtils = require('./bitbox-utils')
   @param {object}  opts.initState - initial transaction list default is an empty array
   @param {Object}  opts.networkStore - an observable store for network number
   @param {Object}  opts.provider - A network provider.
+  @param {Object}  opts.accountTrackerStore - UTXO data for account
   @param {Function}  opts.signTransaction - function the signs an ethereumjs-tx
   @param {Function}  [opts.getGasPrice] - optional gas price calculator
   @param {Function}  opts.signTransaction - ethTx signer that returns a rawTx
@@ -52,6 +53,7 @@ class TransactionController extends EventEmitter {
     super()
     this.networkStore = opts.networkStore || new ObservableStore({})
     this.preferencesStore = opts.preferencesStore || new ObservableStore({})
+    this.accountTrackerStore = opts.accountTrackerStore || new ObservableStore({})
     this.provider = opts.provider
     this.signEthTx = opts.signTransaction
     this.exportKeyPair = opts.exportKeyPair
@@ -84,6 +86,7 @@ class TransactionController extends EventEmitter {
     this.txStateManager.store.subscribe(() => this._updateMemstore())
     this.networkStore.subscribe(() => this._updateMemstore())
     this.preferencesStore.subscribe(() => this._updateMemstore())
+    this.accountTrackerStore.subscribe(() => this._updateMemstore())
   }
 
   /** @returns {number} the chainId*/
@@ -297,7 +300,14 @@ class TransactionController extends EventEmitter {
 
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction')
     const keyPair = await this.exportKeyPair(txParams.from)
-    const txHash = await bitboxUtils.signAndPublishTransaction(txParams, keyPair)
+
+    const utxoCache = this.getAccountUtxoCache[txParams.from]
+    let spendableUtxos = []
+    if (utxoCache && utxoCache.length) {
+      spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)
+    }
+
+    const txHash = await bitboxUtils.signAndPublishTransaction(txParams, keyPair, spendableUtxos)
     this.setTxHash(txId, txHash)
     this.txStateManager.setTxStatusSubmitted(txId)
   }
@@ -373,6 +383,8 @@ class TransactionController extends EventEmitter {
     this.getNetwork = () => this.networkStore.getState()
     /** @returns the user selected address */
     this.getSelectedAddress = () => this.preferencesStore.getState().selectedAddress
+    /** @returns the utxo cache for accounts */
+    this.getAccountUtxoCache = () => this.accountTrackerStore.getState().accountUtxoCache
     /** Returns an array of transactions whos status is unapproved */
     this.getUnapprovedTxCount = () => Object.keys(this.txStateManager.getUnapprovedTxList()).length
     /**

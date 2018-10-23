@@ -577,7 +577,6 @@ module.exports = class MetamaskController extends EventEmitter {
       const cached = this.accountTracker.store.getState().accounts[address]
 
       if (cached && cached.balance) {
-        log.debug('getBalance result cached')
         resolve(cached.balance)
       } else {
         try {

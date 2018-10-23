@@ -301,7 +301,8 @@ class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction')
     const keyPair = await this.exportKeyPair(txParams.from)
 
-    const utxoCache = this.getAccountUtxoCache[txParams.from]
+    const accountUtxoCache = this.getAccountUtxoCache()
+    const utxoCache = accountUtxoCache[txParams.from]
     let spendableUtxos = []
     if (utxoCache && utxoCache.length) {
       spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)

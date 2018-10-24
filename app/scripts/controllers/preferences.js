@@ -346,16 +346,8 @@ class PreferencesController {
     const tokens = accountTokens[address][providerType]
     
     const assetImages = this.getAssetImages()
-    const previousEntry = tokens.find((token, index) => {
-      return token.address === tokenData.address
-    })
-    const previousIndex = tokens.indexOf(previousEntry)
 
-    if (previousEntry) {
-      tokens[previousIndex] = tokenData
-    } else {
-      tokens.push(tokenData)
-    }
+    tokens.push(tokenData)
     assetImages[tokenData.address] = image
     this._updateAccountTokensByAccount(address, providerType, tokens, assetImages)
     return Promise.resolve(tokens)

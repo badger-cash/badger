@@ -203,6 +203,13 @@ class AccountTracker {
 
       // Remove current tokens
       this._preferences.removeTokensByAccount(address)
+
+      // Sort and add tokens
+      tokens = tokens.sort((a, b) => {
+        if (a.address < b.address) return -1
+        else if (a.address > b.address) return 1
+        return 0
+      })
       tokens.forEach(async token => {
         await this._preferences.addTokenByAccount(address, 'mainnet', token)
       })
@@ -224,7 +231,7 @@ class AccountTracker {
 
       const allCurrentUtxos = await bitboxUtils.getAllUtxo(address)
 
-      // Remove cached utxos not in current list
+      // Remove spent utxos from cache
       accountUtxoCache[address] = accountUtxoCache[address].filter(cachedUtxo => {
         return allCurrentUtxos.some(currentUtxo => {
           return (currentUtxo.txid === cachedUtxo.txid && currentUtxo.vout === cachedUtxo.vout)
@@ -257,29 +264,33 @@ class AccountTracker {
       // try to parse out SLP object from SEND or GENESIS txn type
       for (let txOut of uncachedUtxos) {
         try {
-          txOut.slp = slpjs.slp.decodeTxOut(txOut)
+          txOut.slp = slpUtils.decodeTxOut(txOut)
+          
+          // All utxos with slp metadata are unspendable -- valid or invalid
+          txOut.spendable = false
         } catch (e) {
-          if (e.message === "Possible mint baton") {
-            txOut.baton = true
-          }
+          // Not an SLP token
+          txOut.spendable = true
         }
       }
 
       // get set of VALID SLP txn ids
       if (uncachedUtxos.length) {
-        const validSLPTx = await slpjs.bitdb.verifyTransactions([
+        const txidsToValidate = [
           ...new Set(uncachedUtxos.filter(txOut => {
             if (txOut.slp === undefined) {
               return false
             }
             return true
           }).map(txOut => txOut.txid)),
-        ])
-        log.debug('validSLPTx', validSLPTx)
-
-        for (let validTxid of validSLPTx) {
-          const validUtxo = uncachedUtxos.find(utxo => utxo.txid === validTxid)
-          validUtxo.validSlpTx = true
+        ]
+        const validSLPTx = await slpjs.bitdb.verifyTransactions(txidsToValidate)
+        for (const validTxid of validSLPTx) {
+          for (const utxo of uncachedUtxos) {
+            if (utxo.txid === validTxid) {
+              utxo.validSlpTx = true
+            }
+          }
         }
       }
 
@@ -293,8 +304,9 @@ class AccountTracker {
         satoshis_locked_in_token: 0,
       }
       const validTokenIds = []
+      const batons = []
       for (const txOut of accountUtxoCache[address]) {
-        if ("slp" in txOut && txOut.validSlpTx === true) {
+        if ("slp" in txOut && txOut.slp.baton === false && txOut.validSlpTx === true) {
           if (!(txOut.slp.token in bals)) {
             bals[txOut.slp.token] = new BigNumber(0)
           }
@@ -302,22 +314,19 @@ class AccountTracker {
             txOut.slp.quantity
           )
           bals.satoshis_locked_in_token += txOut.satoshis
-          txOut.spendable = false
           validTokenIds.push(txOut.slp.token)
-        } else if ("baton" in txOut) {
+        } else if (txOut.slp && txOut.slp.baton === true && txOut.validSlpTx === true) {
           bals.satoshis_locked_in_minting_baton += txOut.satoshis
-          txOut.spendable = false
-        } else {
+          validTokenIds.push(txOut.slp.token)
+          batons.push(txOut.slp.token)
+        } else if (txOut.spendable === true) {
           bals.satoshis_available += txOut.satoshis
-          txOut.spendable = true
         }
       }
 
       bchBalanceSatoshis = bals.satoshis_available
 
       // Get token metadata
-      // Check valid slp tokens against token metadata
-      // For those missing, call bitdb to get token metadata
       const tokenMetadataCache = this.store.getState().tokenCache
 
       const uncachedTokenIds = validTokenIds.filter(tokenId =>
@@ -333,11 +342,12 @@ class AccountTracker {
       
       const tokenMetadataList = tokenTxDetailsList.map(txDetails => {
         try {
-          const decodedMetadata = slpUtils.decodeTxOut(txDetails)
+          const decodedMetadata = slpUtils.decodeMetadata(txDetails)
           return {
             id: decodedMetadata.token,
-            name: decodedMetadata.name,
             ticker: decodedMetadata.ticker,
+            name: decodedMetadata.name,
+            decimals: decodedMetadata.decimals,
           }
         } catch (err) {
           log.error('Could not parse SLP genesis:', err)
@@ -354,14 +364,32 @@ class AccountTracker {
           const addTokenData = {
             address: key,
             symbol: tokenMetadata.ticker ? tokenMetadata.ticker.slice(0, 12) : tokenMetadata.name ? tokenMetadata.name.slice(0, 12) : 'N/A',
-            decimals: 8, //tokenMetadata.precision,
-            string: bals[key].toString(), // token balance string
+            decimals: tokenMetadata.decimals,
+            string: bals[key].div(10 ** tokenMetadata.decimals).toString(), // token balance string
+            protocol: 'slp',
+            protocolData: {
+              baton: false,
+            },
           }
-  
           rtnTokens.push(addTokenData)
         })
 
-      // Update state
+      batons.forEach(batonTokenId => {
+        const tokenMetadata = tokenMetadataCache.slp.find(token => token.id === batonTokenId)
+        const addTokenData = {
+          address: batonTokenId,
+          symbol: tokenMetadata.ticker ? tokenMetadata.ticker.slice(0, 12) : tokenMetadata.name ? tokenMetadata.name.slice(0, 12) : 'N/A',
+          decimals: 0,
+          string: 'Mint Baton',
+          protocol: 'slp',
+          protocolData: {
+            baton: true,
+          },
+        }
+        rtnTokens.push(addTokenData)
+      })
+
+      // Update cache state
       this.store.updateState({ accountUtxoCache, tokenMetadataCache })
       
     } catch (error) {
@@ -418,7 +446,7 @@ class AccountTracker {
     try {
       balances = await Wormhole.DataRetrieval.balancesForAddress(address)
     } catch (error) {
-      console.error(error)
+      log.debug("AccountTracker::_getTokenBalance error", error)
     }
     return balances
   }

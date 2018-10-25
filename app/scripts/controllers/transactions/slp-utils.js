@@ -36,7 +36,7 @@ class SlpUtils {
             out.token = txDetails.txid;
             out.ticker = Buffer.from(script[4], 'hex').toString('ascii')
             out.name = Buffer.from(script[5], 'hex').toString('ascii')
-            out.decimals = script[8].startsWith('OP_') ? parseInt(script[8].slice(3), 16) : parseInt(script[8], 16)
+            out.decimals = script[8].startsWith('OP_') ? parseInt(script[8].slice(3)) : parseInt(script[8], 16)
             out.quantity = new BigNumber(script[10], 16)
         } else {
             throw new Error('Invalid tx type');
@@ -76,7 +76,7 @@ class SlpUtils {
 
       if (type === 'genesis') {
         if (typeof script[9] === 'string' && script[9].startsWith('OP_')) {
-          script[9] = script[9].slice(3)
+          script[9] = parseInt(script[9].slice(3)).toString(16)
         }
         if (script[9] === 'OP_2' && vout === 2 || parseInt(script[9], 16) === vout) {
           out.token = txOut.txid
@@ -90,7 +90,7 @@ class SlpUtils {
         out.quantity = new BigNumber(script[10], 16)
       } else if (type === 'mint') {
         if (typeof script[5] === 'string' && script[5].startsWith('OP_')) {
-          script[5] = script[5].slice(3)
+          script[5] = parseInt(script[5].slice(3)).toString(16)
         }
         if (script[5] === 'OP_2' && vout === 2 || parseInt(script[5], 16) === vout) {
           out.token = script[4]
@@ -104,7 +104,7 @@ class SlpUtils {
         out.token = script[4]
 
         if (typeof script[6] === 'string' && script[6].startsWith('OP_')) {
-          script[6] = script[6].slice(3)
+          script[6] = parseInt(script[6].slice(3)).toString(16)
         }
         out.quantity = new BigNumber(script[6], 16)
       } else if (type === 'send') {
@@ -115,7 +115,7 @@ class SlpUtils {
         out.token = script[4]
 
         if (typeof script[vout + 4] === 'string' && script[vout + 4].startsWith('OP_')) {
-          script[vout + 4] = script[vout + 4].slice(3)
+          script[vout + 4] = parseInt(script[vout + 4].slice(3)).toString(16)
         }
         out.quantity = new BigNumber(script[vout + 4], 16)
       } else {

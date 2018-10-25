@@ -75,6 +75,9 @@ class SlpUtils {
       const type = Buffer.from(script[3], 'hex').toString('ascii').toLowerCase()
 
       if (type === 'genesis') {
+        if (typeof script[9] === 'string' && script[9].startsWith('OP_')) {
+          script[9] = script[9].slice(3)
+        }
         if (script[9] === 'OP_2' && vout === 2 || parseInt(script[9], 16) === vout) {
           out.token = txOut.txid
           out.baton = true
@@ -86,6 +89,9 @@ class SlpUtils {
         out.token = txOut.txid
         out.quantity = new BigNumber(script[10], 16)
       } else if (type === 'mint') {
+        if (typeof script[5] === 'string' && script[5].startsWith('OP_')) {
+          script[5] = script[5].slice(3)
+        }
         if (script[5] === 'OP_2' && vout === 2 || parseInt(script[5], 16) === vout) {
           out.token = script[4]
           out.baton = true
@@ -96,6 +102,10 @@ class SlpUtils {
           throw new Error('Not a SLP txout')
         }
         out.token = script[4]
+
+        if (typeof script[6] === 'string' && script[6].startsWith('OP_')) {
+          script[6] = script[6].slice(3)
+        }
         out.quantity = new BigNumber(script[6], 16)
       } else if (type === 'send') {
         if (script.length <= vout + 4) {
@@ -103,6 +113,10 @@ class SlpUtils {
         }
 
         out.token = script[4]
+
+        if (typeof script[vout + 4] === 'string' && script[vout + 4].startsWith('OP_')) {
+          script[vout + 4] = script[vout + 4].slice(3)
+        }
         out.quantity = new BigNumber(script[vout + 4], 16)
       } else {
         throw new Error('Invalid tx type')

@@ -30,11 +30,11 @@
     "message": "Bedrag + gas"
   },
   "appDescription": {
-    "message": "Ethereum Browser-extensie",
+    "message": "Bitcoin Cash Browser-extensie",
     "description": "De beschrijving van de applicatie"
   },
   "appName": {
-    "message": "Badger",
+    "message": "Badger Wallet",
     "description": "De naam van de applicatie"
   },
   "attemptingConnect": {

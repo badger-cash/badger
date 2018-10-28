@@ -29,7 +29,7 @@
   },
   "appName": {
     "description": "Tên phần mềm",
-    "message": "Badger"
+    "message": "Badger Wallet"
   },
   "attemptingConnect": {
     "message": "Đang kết nối đến blockchain."

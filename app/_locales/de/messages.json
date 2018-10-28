@@ -30,11 +30,11 @@
     "message": "Betrag + Gas"
   },
   "appDescription": {
-    "message": "Ethereum Browsererweiterung",
+    "message": "Bitcoin Cash Browsererweiterung",
     "description": "Die Beschreibung der Erweiterung"
   },
   "appName": {
-    "message": "Badger",
+    "message": "Badger Wallet",
     "description": "Der Name der Erweiterung"
   },
   "approved": {

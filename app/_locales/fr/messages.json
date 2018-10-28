@@ -28,7 +28,7 @@
     "description": "La description de l'application"
   },
   "appName": {
-    "message": "Badger",
+    "message": "Badger Wallet",
     "description": "Le nom de l'application"
   },
   "attemptingConnect": {

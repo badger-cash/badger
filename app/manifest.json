@@ -49,12 +49,10 @@
     "storage",
     "unlimitedStorage",
     "clipboardWrite",
-    "http://localhost:8545/",
-    "https://*.infura.io/",
+    "https://*.tokengraph.network/",
     "https://*.bitcoin.com/",
     "activeTab",
     "webRequest",
-    "*://*.eth/",
     "notifications"
   ],
   "web_accessible_resources": ["inpage.js", "phishing.html"],

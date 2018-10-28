@@ -226,9 +226,8 @@ class AccountTracker {
     let bchBalanceSatoshis = 0
 
     try {
-      const accountUtxoCache = this.store.getState().accountUtxoCache
+      const accountUtxoCache = Object.assign({}, this.store.getState().accountUtxoCache)
       if (!accountUtxoCache[address]) accountUtxoCache[address] = []
-
       const allCurrentUtxos = await bitboxUtils.getAllUtxo(address)
 
       // Remove spent utxos from cache

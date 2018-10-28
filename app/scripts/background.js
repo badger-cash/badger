@@ -472,8 +472,8 @@ function showWatchAssetUi () {
 }
 
 // On first install, open a window to Badger website to how-it-works.
-extension.runtime.onInstalled.addListener(function (details) {
-  if (details.reason === 'install' && !METAMASK_DEBUG) {
-    extension.tabs.create({ url: 'https://badgerwallet.cash' })
-  }
-})
+// extension.runtime.onInstalled.addListener(function (details) {
+//   if (details.reason === 'install' && !METAMASK_DEBUG) {
+//     extension.tabs.create({ url: 'https://badgerwallet.cash' })
+//   }
+// })

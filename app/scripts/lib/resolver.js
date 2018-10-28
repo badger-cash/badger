@@ -1,4 +1,4 @@
-const namehash = require('eth-ens-namehash')
+// const namehash = require('eth-ens-namehash')
 const multihash = require('multihashes')
 const HttpProvider = require('ethjs-provider-http')
 const Eth = require('ethjs-query')
@@ -8,7 +8,11 @@ const resolverAbi = require('./contracts/resolver')
 
 function ens (name, provider) {
   const eth = new Eth(new HttpProvider(getProvider(provider.type)))
-  const hash = namehash.hash(name)
+  
+  // TODO: namehash
+  const hash = ''
+  // const hash = namehash.hash(name)
+  
   const contract = new EthContract(eth)
   const Registrar = contract(registrarAbi).at(getRegistrar(provider.type))
   return new Promise((resolve, reject) => {

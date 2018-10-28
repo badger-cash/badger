@@ -2,7 +2,7 @@ const Component = require('react').Component
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
-const TokenTracker = require('eth-token-tracker')
+// const TokenTracker = require('eth-token-tracker')
 const TokenCell = require('./token-cell.js')
 const connect = require('react-redux').connect
 const selectors = require('../selectors')
@@ -112,42 +112,42 @@ TokenList.prototype.componentDidMount = function () {
   // this.createFreshTokenTracker()
 }
 
-TokenList.prototype.createFreshTokenTracker = function () {
-  if (this.tracker) {
-    // Clean up old trackers when refreshing:
-    this.tracker.stop()
-    this.tracker.removeListener('update', this.balanceUpdater)
-    this.tracker.removeListener('error', this.showError)
-  }
+// TokenList.prototype.createFreshTokenTracker = function () {
+//   if (this.tracker) {
+//     // Clean up old trackers when refreshing:
+//     this.tracker.stop()
+//     this.tracker.removeListener('update', this.balanceUpdater)
+//     this.tracker.removeListener('error', this.showError)
+//   }
 
-  if (!global.ethereumProvider) return
-  const { userAddress } = this.props
+//   if (!global.ethereumProvider) return
+//   const { userAddress } = this.props
 
-  this.tracker = new TokenTracker({
-    userAddress,
-    provider: global.ethereumProvider,
-    tokens: this.props.tokens,
-    pollingInterval: 8000,
-  })
+//   this.tracker = new TokenTracker({
+//     userAddress,
+//     provider: global.ethereumProvider,
+//     tokens: this.props.tokens,
+//     pollingInterval: 8000,
+//   })
 
-  // Set up listener instances for cleaning up
-  this.balanceUpdater = this.updateBalances.bind(this)
-  this.showError = error => {
-    this.setState({ error, isLoading: false })
-  }
-  this.tracker.on('update', this.balanceUpdater)
-  this.tracker.on('error', this.showError)
+//   // Set up listener instances for cleaning up
+//   this.balanceUpdater = this.updateBalances.bind(this)
+//   this.showError = error => {
+//     this.setState({ error, isLoading: false })
+//   }
+//   this.tracker.on('update', this.balanceUpdater)
+//   this.tracker.on('error', this.showError)
 
-  this.tracker
-    .updateBalances()
-    .then(() => {
-      this.updateBalances(this.tracker.serialize())
-    })
-    .catch(reason => {
-      log.error(`Problem updating balances`, reason)
-      this.setState({ isLoading: false })
-    })
-}
+//   this.tracker
+//     .updateBalances()
+//     .then(() => {
+//       this.updateBalances(this.tracker.serialize())
+//     })
+//     .catch(reason => {
+//       log.error(`Problem updating balances`, reason)
+//       this.setState({ isLoading: false })
+//     })
+// }
 
 TokenList.prototype.componentDidUpdate = function (nextProps) {
   const { network: oldNet, userAddress: oldAddress, tokens } = this.props

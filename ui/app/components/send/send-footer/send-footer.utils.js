@@ -1,4 +1,4 @@
-const ethAbi = require('ethereumjs-abi')
+// const ethAbi = require('ethereumjs-abi')
 const ethUtil = require('ethereumjs-util')
 const { TOKEN_TRANSFER_FUNCTION_SIGNATURE } = require('../send.constants')
 
@@ -53,18 +53,19 @@ function constructUpdatedTx ({
     ),
   }
 
-  if (selectedToken) {
-    const data = TOKEN_TRANSFER_FUNCTION_SIGNATURE + Array.prototype.map.call(
-      ethAbi.rawEncode(['address', 'uint256'], [to, ethUtil.addHexPrefix(amount)]),
-      x => ('00' + x.toString(16)).slice(-2)
-    ).join('')
+  // TODO Removed for abi
+  // if (selectedToken) {
+  //   const data = TOKEN_TRANSFER_FUNCTION_SIGNATURE + Array.prototype.map.call(
+  //     ethAbi.rawEncode(['address', 'uint256'], [to, ethUtil.addHexPrefix(amount)]),
+  //     x => ('00' + x.toString(16)).slice(-2)
+  //   ).join('')
 
-    Object.assign(editingTx.txParams, addHexPrefixToObjectValues({
-      value: '0',
-      to: selectedToken.address,
-      data,
-    }))
-  }
+  //   Object.assign(editingTx.txParams, addHexPrefixToObjectValues({
+  //     value: '0',
+  //     to: selectedToken.address,
+  //     data,
+  //   }))
+  // }
 
   if (typeof editingTx.txParams.data === 'undefined') {
     delete editingTx.txParams.data

@@ -18,7 +18,7 @@ const {
   SIMPLE_GAS_COST,
   TOKEN_TRANSFER_FUNCTION_SIGNATURE,
 } = require('./send.constants')
-const abi = require('ethereumjs-abi')
+// const abi = require('ethereumjs-abi')
 const ethUtil = require('ethereumjs-util')
 
 module.exports = {
@@ -282,10 +282,12 @@ function addGasBuffer (initialGasLimitHex, blockGasLimitHex, bufferMultiplier = 
 
 function generateTokenTransferData ({ toAddress = '0x0', amount = '0x0', selectedToken }) {
   if (!selectedToken) return
-  return TOKEN_TRANSFER_FUNCTION_SIGNATURE + Array.prototype.map.call(
-    abi.rawEncode(['address', 'uint256'], [toAddress, ethUtil.addHexPrefix(amount)]),
-    x => ('00' + x.toString(16)).slice(-2)
-  ).join('')
+
+  // TODO removed for abi
+  // return TOKEN_TRANSFER_FUNCTION_SIGNATURE + Array.prototype.map.call(
+  //   abi.rawEncode(['address', 'uint256'], [toAddress, ethUtil.addHexPrefix(amount)]),
+  //   x => ('00' + x.toString(16)).slice(-2)
+  // ).join('')
 }
 
 function estimateGasPriceFromRecentBlocks (recentBlocks) {

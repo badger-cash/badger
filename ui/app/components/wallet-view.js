@@ -17,7 +17,7 @@ const TokenList = require('./token-list')
 const selectors = require('../selectors')
 const { ADD_TOKEN_ROUTE } = require('../routes')
 const log = require('loglevel')
-const slpjs = require('slpjs')
+const bchaddr = require('bchaddrjs-slp')
 
 import Button from './button'
 
@@ -123,7 +123,7 @@ WalletView.prototype.render = function () {
 
   // const checksummedAddress = checksumAddress(selectedAddress)
   const checksummedAddress = selectedAddress
-  const slpAddress = slpjs.utils.toSlpAddress(selectedAddress)
+  const slpAddress = bchaddr.toSlpAddress(selectedAddress)
 
   if (!selectedAddress) {
     throw new Error('selectedAddress should not be ' + String(selectedAddress))

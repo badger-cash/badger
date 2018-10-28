@@ -1,5 +1,4 @@
 const BN = require('ethereumjs-util').BN
-const normalize = require('eth-sig-util').normalize
 
 class PendingBalanceCalculator {
 
@@ -76,7 +75,7 @@ class PendingBalanceCalculator {
    *
    */
   hexToBn (hex) {
-    return new BN(normalize(hex).substring(2), 16)
+    return new BN(hex.substring(2), 16)
   }
 
 }

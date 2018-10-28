@@ -2,7 +2,7 @@ const EventEmitter = require('events')
 const ObservableStore = require('obs-store')
 const createId = require('./random-id')
 const assert = require('assert')
-const sigUtil = require('eth-sig-util')
+// const sigUtil = require('eth-sig-util')
 const log = require('loglevel')
 const jsonschema = require('jsonschema')
 
@@ -136,9 +136,9 @@ module.exports = class TypedMessageManager extends EventEmitter {
         assert.ok('from' in params, 'Params must include a from field.')
         assert.ok(Array.isArray(params.data), 'Data should be an array.')
         assert.equal(typeof params.from, 'string', 'From field must be a string.')
-        assert.doesNotThrow(() => {
-          sigUtil.typedSignatureHash(params.data)
-        }, 'Expected EIP712 typed data')
+        // assert.doesNotThrow(() => {
+        //   sigUtil.typedSignatureHash(params.data)
+        // }, 'Expected EIP712 typed data')
         break
       case 'V3':
         let data
@@ -148,9 +148,11 @@ module.exports = class TypedMessageManager extends EventEmitter {
         assert.equal(typeof params.from, 'string', 'From field must be a string.')
         assert.equal(typeof params.data, 'string', 'Data must be passed as a valid JSON string.')
         assert.doesNotThrow(() => { data = JSON.parse(params.data) }, 'Data must be passed as a valid JSON string.')
-        const validation = jsonschema.validate(data, sigUtil.TYPED_MESSAGE_SCHEMA)
-        assert.ok(data.primaryType in data.types, `Primary type of "${data.primaryType}" has no type definition.`)
-        assert.equal(validation.errors.length, 0, 'Data must conform to EIP-712 schema. See https://git.io/fNtcx.')
+
+        // TODO: sign typed message. sigUtil removed
+        // const validation = jsonschema.validate(data, sigUtil.TYPED_MESSAGE_SCHEMA)
+        // assert.ok(data.primaryType in data.types, `Primary type of "${data.primaryType}" has no type definition.`)
+        // assert.equal(validation.errors.length, 0, 'Data must conform to EIP-712 schema. See https://git.io/fNtcx.')
         const chainId = data.domain.chainId
         const activeChainId = parseInt(this.networkController.getNetworkState())
         chainId && assert.equal(chainId, activeChainId, `Provided chainId (${chainId}) must match the active chainId (${activeChainId})`)

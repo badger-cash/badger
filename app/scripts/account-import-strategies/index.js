@@ -1,5 +1,5 @@
-const Wallet = require('ethereumjs-wallet')
-const importers = require('ethereumjs-wallet/thirdparty')
+// const Wallet = require('ethereumjs-wallet')
+// const importers = require('ethereumjs-wallet/thirdparty')
 const ethUtil = require('ethereumjs-util')
 
 const accountImporter = {
@@ -29,15 +29,15 @@ const accountImporter = {
     },
     'JSON File': (input, password) => {
       let wallet
-      try {
-        wallet = importers.fromEtherWallet(input, password)
-      } catch (e) {
-        console.log('Attempt to import as EtherWallet format failed, trying V3...')
-      }
+      // try {
+      //   wallet = importers.fromEtherWallet(input, password)
+      // } catch (e) {
+      //   console.log('Attempt to import as EtherWallet format failed, trying V3...')
+      // }
 
-      if (!wallet) {
-        wallet = Wallet.fromV3(input, password, true)
-      }
+      // if (!wallet) {
+      //   wallet = Wallet.fromV3(input, password, true)
+      // }
 
       return walletToPrivateKey(wallet)
     },

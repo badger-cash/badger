@@ -15,10 +15,10 @@ function createJsonRpcClient ({ rpcUrl }) {
   const blockTracker = new BlockTracker({ provider: blockProvider })
 
   const networkMiddleware = mergeMiddleware([
-    createBlockRefMiddleware({ blockTracker }),
-    createBlockCacheMiddleware({ blockTracker }),
+    // createBlockRefMiddleware({ blockTracker }),
+    // createBlockCacheMiddleware({ blockTracker }),
     createInflightMiddleware(),
-    createBlockTrackerInspectorMiddleware({ blockTracker }),
+    // createBlockTrackerInspectorMiddleware({ blockTracker }),
     fetchMiddleware,
   ])
   return { networkMiddleware, blockTracker }

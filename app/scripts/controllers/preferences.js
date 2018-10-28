@@ -6,7 +6,6 @@ const extend = require('xtend')
 function normalizeAddress (address) {
   return address
 }
-// const normalizeAddress = require('eth-sig-util').normalize
 
 class PreferencesController {
   /**

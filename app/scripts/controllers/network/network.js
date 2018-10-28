@@ -39,7 +39,7 @@ module.exports = class NetworkController extends EventEmitter {
       provider: this.providerStore,
       network: this.networkStore,
     })
-    this.on('networkDidChange', this.lookupNetwork)
+    // this.on('networkDidChange', this.lookupNetwork)
     // provider
     this._provider = null
     // provider and block tracker proxies - because the network changes
@@ -83,12 +83,13 @@ module.exports = class NetworkController extends EventEmitter {
         'NetworkController - lookupNetwork aborted due to missing provider'
       )
     }
-    const ethQuery = new EthQuery(this._provider)
-    ethQuery.sendAsync({ method: 'net_version' }, (err, network) => {
-      if (err) return this.setNetworkState('loading')
-      log.info('web3.getNetwork returned ' + network)
-      this.setNetworkState(network)
-    })
+    // const ethQuery = new EthQuery(this._provider)
+    // ethQuery.sendAsync({ method: 'net_version' }, (err, network) => {
+    //   if (err) return this.setNetworkState('loading')
+    //   log.info('web3.getNetwork returned ' + network)
+    //   this.setNetworkState(network)
+    // })
+    this.setNetworkState('mainnet')
   }
 
   setRpcTarget (rpcTarget) {

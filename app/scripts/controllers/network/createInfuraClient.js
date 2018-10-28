@@ -9,15 +9,15 @@ const BlockTracker = require('eth-block-tracker')
 module.exports = createInfuraClient
 
 function createInfuraClient ({ network }) {
-  const infuraMiddleware = createInfuraMiddleware({ network })
-  const blockProvider = providerFromMiddleware(infuraMiddleware)
-  const blockTracker = new BlockTracker({ provider: blockProvider })
+  // const infuraMiddleware = createInfuraMiddleware({ network })
+  // const blockProvider = providerFromMiddleware(infuraMiddleware)
+  // const blockTracker = new BlockTracker({ provider: blockProvider })
 
   const networkMiddleware = mergeMiddleware([
-    createBlockCacheMiddleware({ blockTracker }),
+    // createBlockCacheMiddleware({ blockTracker }),
     createInflightMiddleware(),
-    createBlockTrackerInspectorMiddleware({ blockTracker }),
-    infuraMiddleware,
+    // createBlockTrackerInspectorMiddleware({ blockTracker }),
+    // infuraMiddleware,
   ])
-  return { networkMiddleware, blockTracker }
+  return { networkMiddleware }
 }

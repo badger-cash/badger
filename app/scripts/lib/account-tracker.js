@@ -65,7 +65,8 @@ class AccountTracker {
     // fetch account balances
     this._updateAccounts()
 
-    this.timeoutId = setTimeout(this.start.bind(this), 60 * 1000)
+    this.stop()
+    this.timeoutId = setTimeout(this.start.bind(this), 30 * 1000)
   }
 
   stop () {
@@ -168,7 +169,9 @@ class AccountTracker {
     if (!accounts[address]) return
 
     // query balance
-    const balance = await this._updateAccountTokens(address)
+    let balance = await this._updateAccountTokens(address)
+    if (!balance) balance = accounts[address].balance ? accounts[address].balance : balance
+
     const result = { address, balance }
 
     accounts[address] = result
@@ -185,11 +188,7 @@ class AccountTracker {
         if (wormholeTokens) {
           tokens = tokens.concat(wormholeTokens)
         }
-      } catch (err) {
-        log.error('AccountTracker::_updateAccountTokens - Wormhole tokens could not update')
-      }
 
-      try {
         const { slpTokens, bchBalanceSatoshis } = await this._getSlpTokens(address)
 
         if (slpTokens) {
@@ -198,7 +197,7 @@ class AccountTracker {
 
         balance = bchBalanceSatoshis
       } catch (err) {
-        log.error('AccountTracker::_updateAccountTokens - SLP tokens could not update')
+        log.error('AccountTracker::_updateAccountTokens - Token update failed', err)
       }
 
       // Remove current tokens
@@ -429,7 +428,7 @@ class AccountTracker {
         rtnTokens.push(addTokenData)
       })
     } catch (error) {
-      log.error('AccountTracker::_updateAccountTokens', error)
+      log.error('AccountTracker::_getWormholeTokens', error)
     }
 
     return rtnTokens
@@ -445,7 +444,7 @@ class AccountTracker {
     try {
       balances = await Wormhole.DataRetrieval.balancesForAddress(address)
     } catch (error) {
-      log.debug("AccountTracker::_getTokenBalance error", error)
+      log.debug("AccountTracker::_getTokenBalance no wh tokens", error)
     }
     return balances
   }

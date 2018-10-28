@@ -40,7 +40,7 @@ const bitboxUtils = require('./bitbox-utils')
   @param {object}  opts.initState - initial transaction list default is an empty array
   @param {Object}  opts.networkStore - an observable store for network number
   @param {Object}  opts.provider - A network provider.
-  @param {Object}  opts.accountTrackerStore - UTXO data for account
+  @param {Object}  opts.accountTracker - UTXO data for account
   @param {Function}  opts.signTransaction - function the signs an ethereumjs-tx
   @param {Function}  [opts.getGasPrice] - optional gas price calculator
   @param {Function}  opts.signTransaction - ethTx signer that returns a rawTx
@@ -53,7 +53,8 @@ class TransactionController extends EventEmitter {
     super()
     this.networkStore = opts.networkStore || new ObservableStore({})
     this.preferencesStore = opts.preferencesStore || new ObservableStore({})
-    this.accountTrackerStore = opts.accountTrackerStore || new ObservableStore({})
+    this.accountTracker = opts.accountTracker
+    this.accountTrackerStore = this.accountTracker.store || new ObservableStore({})
     this.provider = opts.provider
     this.signEthTx = opts.signTransaction
     this.exportKeyPair = opts.exportKeyPair
@@ -274,6 +275,9 @@ class TransactionController extends EventEmitter {
 
       this.confirmTransaction(txId)
 
+      // Update balance
+      setTimeout(() => this.accountTracker._updateAccount(fromAddress), 1000)
+
       // TODO: split signAndPublish method
       // const rawTx = await this.signTransaction(txId)
       // await this.publishTransaction(txId, rawTx)
@@ -301,7 +305,7 @@ class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction')
     const keyPair = await this.exportKeyPair(txParams.from)
 
-    const accountUtxoCache = this.getAccountUtxoCache()
+    const accountUtxoCache = Object.assign({}, this.getAccountUtxoCache())
     const utxoCache = accountUtxoCache[txParams.from]
     let spendableUtxos = []
     if (utxoCache && utxoCache.length) {

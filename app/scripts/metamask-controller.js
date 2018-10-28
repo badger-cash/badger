@@ -49,7 +49,7 @@ const TrezorKeyring = require('eth-trezor-keyring')
 const LedgerBridgeKeyring = require('eth-ledger-bridge-keyring')
 const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
-const sigUtil = require('eth-sig-util')
+// const sigUtil = require('eth-sig-util')
 const axios = require('axios')
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
@@ -168,7 +168,7 @@ module.exports = class MetamaskController extends EventEmitter {
         initState.TransactionController || initState.TransactionManager,
       networkStore: this.networkController.networkStore,
       preferencesStore: this.preferencesController.store,
-      accountTrackerStore: this.accountTracker.store,
+      accountTracker: this.accountTracker,
       txHistoryLimit: 40,
       getNetwork: this.networkController.getNetworkState.bind(this),
       signTransaction: this.keyringController.signTransaction.bind(
@@ -1073,23 +1073,25 @@ module.exports = class MetamaskController extends EventEmitter {
       const cleanMsgParams = await this.typedMessageManager.approveMessage(
         msgParams
       )
-      const address = sigUtil.normalize(cleanMsgParams.from)
+      const address = cleanMsgParams.from
       const keyring = await this.keyringController.getKeyringForAccount(address)
       const wallet = keyring._getWalletForAccount(address)
       const privKey = ethUtil.toBuffer(wallet.getPrivateKey())
       let signature
-      switch (version) {
-        case 'V1':
-          signature = sigUtil.signTypedDataLegacy(privKey, {
-            data: cleanMsgParams.data,
-          })
-          break
-        case 'V3':
-          signature = sigUtil.signTypedData(privKey, {
-            data: JSON.parse(cleanMsgParams.data),
-          })
-          break
-      }
+
+      // TODO: sign typed message Commented for sig util
+      // switch (version) {
+      //   case 'V1':
+      //     signature = sigUtil.signTypedDataLegacy(privKey, {
+      //       data: cleanMsgParams.data,
+      //     })
+      //     break
+      //   case 'V3':
+      //     signature = sigUtil.signTypedData(privKey, {
+      //       data: JSON.parse(cleanMsgParams.data),
+      //     })
+      //     break
+      // }
       this.typedMessageManager.setMsgStatusSigned(msgId, signature)
       return this.getState()
     } catch (error) {
@@ -1142,33 +1144,6 @@ module.exports = class MetamaskController extends EventEmitter {
   markAccountsFound (cb) {
     // TODO Remove me
     cb(null, this.getState())
-  }
-
-  /**
-   * An account object
-   * @typedef Account
-   * @property string privateKey - The private key of the account.
-   */
-
-  /**
-   * Probably no longer needed, related to the Version 3 migration.
-   * Imports a hash of accounts to private keys into the vault.
-   *
-   * Described in:
-   * https://medium.com/metamask/metamask-3-migration-guide-914b79533cdd
-   *
-   * Uses the array's private keys to create a new Simple Key Pair keychain
-   * and add it to the keyring controller.
-   * @deprecated
-   * @param  {Account[]} lostAccounts -
-   * @returns {Keyring[]} An array of the restored keyrings.
-   */
-  importLostAccounts ({ lostAccounts }) {
-    const privKeys = lostAccounts.map(acct => acct.privateKey)
-    return this.keyringController.restoreKeyring({
-      type: 'Simple Key Pair',
-      data: privKeys,
-    })
   }
 
   //=============================================================================

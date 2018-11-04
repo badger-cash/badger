@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import {
     accountsWithSendEtherInfoSelector,
     getConversionRate,
+    getSelectedToken,
     getSelectedTokenContract,
     getSendFromObject,
 } from '../../send.selectors.js'
@@ -27,6 +28,7 @@ function mapStateToProps (state) {
     from: getSendFromObject(state),
     fromAccounts: accountsWithSendEtherInfoSelector(state),
     fromDropdownOpen: getFromDropdownOpen(state),
+    selectedToken: getSelectedToken(state),
     tokenContract: getSelectedTokenContract(state),
   }
 }
@@ -39,7 +41,8 @@ function mapDispatchToProps (dispatch) {
     setSendTokenBalance: (usersToken, selectedToken) => {
         if (!usersToken) return
 
-        const tokenBalance = calcTokenBalance({ usersToken, selectedToken })
+        // const tokenBalance = calcTokenBalance({ usersToken, selectedToken })
+        const tokenBalance = usersToken.string
         dispatch(setSendTokenBalance(tokenBalance))
     },
   }

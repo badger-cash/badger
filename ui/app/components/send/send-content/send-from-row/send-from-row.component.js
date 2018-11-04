@@ -55,6 +55,7 @@ export default class SendFromRow extends Component {
           onSelect={newFrom => this.handleFromChange(newFrom)}
           openDropdown={() => openFromDropdown()}
           selectedAccount={from}
+          selectedToken={this.props.selectedToken}
         />
       </SendRowWrapper>
     )

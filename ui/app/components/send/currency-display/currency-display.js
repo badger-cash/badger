@@ -45,6 +45,8 @@ CurrencyDisplay.prototype.componentWillReceiveProps = function (nextProps) {
 
 CurrencyDisplay.prototype.getAmount = function (value) {
   const { selectedToken } = this.props
+  if (selectedToken) return value
+
   const { decimals } = selectedToken || {}
   const multiplier = Math.pow(10, Number(decimals || 8))
 
@@ -64,13 +66,15 @@ CurrencyDisplay.prototype.getValueToRender = function ({ selectedToken, conversi
   const multiplier = Math.pow(10, Number(decimals || 8))
 
   return selectedToken
-    ? conversionUtil(value, {
-      fromNumericBase: 'dec',
-      toNumericBase: 'dec',
-      toCurrency: symbol,
-      conversionRate: multiplier,
-      invertConversionRate: true,
-    })
+    ? value
+    // TODO: Convert token balances when required
+    // ? conversionUtil(value, {
+    //   fromNumericBase: 'dec',
+    //   toNumericBase: 'dec',
+    //   toCurrency: symbol,
+    //   conversionRate: multiplier,
+    //   invertConversionRate: true,
+    // })
     : conversionUtil(value, {
       fromNumericBase: 'dec',
       toNumericBase: 'dec',
@@ -132,7 +136,7 @@ CurrencyDisplay.prototype.onlyRenderConversions = function (convertedValueToRend
   }
 
 CurrencyDisplay.prototype.render = function () {
-  const {
+  let {
     className = 'currency-display',
     primaryBalanceClassName = 'currency-display__input',
     primaryCurrency,
@@ -143,7 +147,13 @@ CurrencyDisplay.prototype.render = function () {
   } = this.props
   const { valueToRender } = this.state
 
-  const convertedValueToRender = this.getConvertedValueToRender(valueToRender)
+  let convertedValueToRender = this.getConvertedValueToRender(valueToRender)
+
+  const { selectedToken } = this.props
+  if (selectedToken) {
+    primaryCurrency = selectedToken.symbol
+    convertedValueToRender = '0.00'
+  }
 
   return h('div', {
     className,

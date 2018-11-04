@@ -69,7 +69,8 @@ export default class AccountListItem extends Component {
             primaryBalanceClassName="account-list-item__account-primary-balance"
             primaryCurrency={'BCH'}
             readOnly={true}
-            value={balance}
+            value={ this.props.selectedToken ? this.props.selectedToken.string : balance}
+            selectedToken={ this.props.selectedToken }
           />
         )}
       </div>

@@ -4,15 +4,14 @@ import classnames from 'classnames'
 
 export default class TokenBalance extends PureComponent {
   static propTypes = {
-    string: PropTypes.string,
-    symbol: PropTypes.string,
-    error: PropTypes.string,
+    token: PropTypes.object,
     className: PropTypes.string,
     withSymbol: PropTypes.bool,
   }
 
   render () {
-    const { className, string, withSymbol, symbol } = this.props
+    const { className, withSymbol, token } = this.props
+    const { symbol, string } = token
 
     return (
       <div className={classnames('hide-text-overflow', className)}>

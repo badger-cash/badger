@@ -30,15 +30,16 @@ export default class TokenCurrencyDisplay extends PureComponent {
   setDisplayValue () {
     const { transactionData: data, token } = this.props
     const { decimals = '', symbol = '' } = token
-    const tokenData = getTokenData(data)
+    // const tokenData = getTokenData(data)
+    const { amount } = this.props
 
-    let displayValue
+    let displayValue = `${amount} ${symbol}`
 
-    if (tokenData.params && tokenData.params.length === 2) {
-      const tokenValue = tokenData.params[1].value
-      const tokenAmount = calcTokenAmount(tokenValue, decimals)
-      displayValue = `${tokenAmount} ${symbol}`
-    }
+    // if (tokenData.params && tokenData.params.length === 2) {
+    //   const tokenValue = tokenData.params[1].value
+    //   const tokenAmount = calcTokenAmount(tokenValue, decimals)
+    //   displayValue = `${tokenAmount} ${symbol}`
+    // }
 
     this.setState({ displayValue })
   }

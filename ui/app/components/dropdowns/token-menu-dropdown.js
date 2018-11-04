@@ -4,7 +4,6 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
 const actions = require('../../actions')
-const genAccountLink = require('etherscan-link').createAccountLink
 const copyToClipboard = require('copy-to-clipboard')
 const { Menu, Item, CloseArea } = require('./components/menu')
 
@@ -43,23 +42,37 @@ TokenMenuDropdown.prototype.onClose = function (e) {
 
 TokenMenuDropdown.prototype.render = function () {
   const { showHideTokenConfirmationModal } = this.props
+  const { address, protocol, protocolData } = this.props.token
+  
+  // Set protocol specific token data
+  let explorerUrl, tokenId
+  if (protocol === 'slp') {
+    explorerUrl = `https://tokengraph.network/token/${address}`
+    tokenId = address
+  } else if (protocol === 'wormhole') {
+    explorerUrl = `https://whc.btc.com/tokens/${protocolData.propertyid}`
+    tokenId = protocolData.propertyid
+  }
+
+
 
   return h(Menu, { className: 'token-menu-dropdown', isShowing: true }, [
     h(CloseArea, {
       onClick: this.onClose,
     }),
+    // TODO: hide token
+    // h(Item, {
+    //   onClick: (e) => {
+    //     e.stopPropagation()
+    //     showHideTokenConfirmationModal(this.props.token)
+    //     this.props.onClose()
+    //   },
+    //   text: this.context.t('hideToken'),
+    // }),
     h(Item, {
       onClick: (e) => {
         e.stopPropagation()
-        showHideTokenConfirmationModal(this.props.token)
-        this.props.onClose()
-      },
-      text: this.context.t('hideToken'),
-    }),
-    h(Item, {
-      onClick: (e) => {
-        e.stopPropagation()
-        copyToClipboard(this.props.token.address)
+        copyToClipboard(tokenId)
         this.props.onClose()
       },
       text: this.context.t('copyContractAddress'),
@@ -67,8 +80,7 @@ TokenMenuDropdown.prototype.render = function () {
     h(Item, {
       onClick: (e) => {
         e.stopPropagation()
-        const url = genAccountLink(this.props.token.address, this.props.network)
-        global.platform.openWindow({ url })
+        global.platform.openWindow({ url: explorerUrl })
         this.props.onClose()
       },
       text: this.context.t('viewOnEtherscan'),

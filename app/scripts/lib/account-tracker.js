@@ -225,7 +225,8 @@ class AccountTracker {
     let bchBalanceSatoshis = 0
 
     try {
-      const accountUtxoCache = Object.assign({}, this.store.getState().accountUtxoCache)
+      const mutableAccountUtxoCache = this.store.getState().accountUtxoCache
+      const accountUtxoCache = Object.assign({}, mutableAccountUtxoCache)
       if (!accountUtxoCache[address]) accountUtxoCache[address] = []
       const allCurrentUtxos = await bitboxUtils.getAllUtxo(address)
 
@@ -363,33 +364,36 @@ class AccountTracker {
             address: key,
             symbol: tokenMetadata.ticker ? tokenMetadata.ticker.slice(0, 12) : tokenMetadata.name ? tokenMetadata.name.slice(0, 12) : 'N/A',
             decimals: tokenMetadata.decimals,
-            string: bals[key].div(10 ** tokenMetadata.decimals).toString(), // token balance string
+            string: tokenMetadata.decimals ? bals[key].div(10 ** tokenMetadata.decimals).toString() : bals[key].toString(),
             protocol: 'slp',
             protocolData: {
               baton: false,
             },
           }
-          rtnTokens.push(addTokenData)
+          if ((new BigNumber(addTokenData.string)).gt(0)) {
+            rtnTokens.push(addTokenData)
+          }
         })
 
-      batons.forEach(batonTokenId => {
-        const tokenMetadata = tokenMetadataCache.slp.find(token => token.id === batonTokenId)
-        const addTokenData = {
-          address: batonTokenId,
-          symbol: tokenMetadata.ticker ? tokenMetadata.ticker.slice(0, 12) : tokenMetadata.name ? tokenMetadata.name.slice(0, 12) : 'N/A',
-          decimals: 0,
-          string: 'Mint Baton',
-          protocol: 'slp',
-          protocolData: {
-            baton: true,
-          },
-        }
-        rtnTokens.push(addTokenData)
-      })
+      // TODO: Display mint batons when send support added
+      // batons.forEach(batonTokenId => {
+      //   const tokenMetadata = tokenMetadataCache.slp.find(token => token.id === batonTokenId)
+      //   const addTokenData = {
+      //     address: batonTokenId,
+      //     symbol: tokenMetadata.ticker ? tokenMetadata.ticker.slice(0, 12) : tokenMetadata.name ? tokenMetadata.name.slice(0, 12) : 'N/A',
+      //     decimals: 0,
+      //     string: 'Mint Baton',
+      //     protocol: 'slp',
+      //     protocolData: {
+      //       baton: true,
+      //     },
+      //   }
+      //   rtnTokens.push(addTokenData)
+      // })
 
       // Update cache state
+      mutableAccountUtxoCache[address] = accountUtxoCache[address]
       this.store.updateState({ accountUtxoCache, tokenMetadataCache })
-      
     } catch (error) {
       log.error('AccountTracker::_updateAccountTokens', error)
     }
@@ -423,8 +427,11 @@ class AccountTracker {
           symbol: tokenData.name,
           decimals: tokenData.precision,
           string: token.balance.toString(), // token balance string
+          protocol: 'wormhole',
+          protocolData: {
+            ...tokenData,
+          },
         }
-
         rtnTokens.push(addTokenData)
       })
     } catch (error) {

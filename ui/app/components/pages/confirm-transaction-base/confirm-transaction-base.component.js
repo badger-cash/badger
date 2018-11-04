@@ -289,7 +289,7 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   render () {
-    const {
+    let {
       isTxReprice,
       fromName,
       fromAddress,
@@ -313,12 +313,22 @@ export default class ConfirmTransactionBase extends Component {
       nonce,
       assetImage,
       warning,
+      txParams,
+      accountTokens,
     } = this.props
     const { submitting, submitError } = this.state
 
     const { name } = methodData
     const fiatConvertedAmount = formatCurrency(fiatTransactionAmount, currentCurrency)
     const { valid, errorKey } = this.getErrorKey()
+
+    // Send Token Settings
+    if (txParams.sendTokenData) {
+      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(token => token.address === txParams.sendTokenData.tokenId)
+      title = `${txParams.value} ${tokenToSend.symbol}`
+      subtitle = txParams.sendTokenData.tokenProtocol === 'slp' ? 'Simple Ledger Protocol' : 'Wormhole'
+      hideSubtitle = false
+    }
 
     return (
       <ConfirmPageContainer

@@ -17,10 +17,8 @@ function constructTxParams ({ selectedToken, data, to, amount, from, gas, gasPri
     gasPrice,
   }
 
-  if (!selectedToken) {
-    txParams.value = amount
-    txParams.to = to
-  }
+  txParams.value = amount
+  txParams.to = to
 
   return txParams
 }

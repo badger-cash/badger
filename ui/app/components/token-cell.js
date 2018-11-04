@@ -55,6 +55,8 @@ TokenCell.prototype.render = function () {
     hideSidebar,
     sidebarOpen,
     currentCurrency,
+    protocol,
+    protocolData,
     // userAddress,
     image,
   } = props
@@ -84,14 +86,13 @@ TokenCell.prototype.render = function () {
   return (
     h('div.token-list-item', {
       className: `token-list-item ${selectedTokenAddress === address ? 'token-list-item--active' : ''}`,
-      // style: { cursor: network === '1' ? 'pointer' : 'default' },
+      style: { cursor: network == '1' || network === 'mainnet' ? 'pointer' : 'default' },
       // onClick: this.view.bind(this, address, userAddress, network),
 
-      // TODO: Tokens: Enable click event
-      // onClick: () => {
-      //   setSelectedToken(address)
-      //   selectedTokenAddress !== address && sidebarOpen && hideSidebar()
-      // },
+      onClick: () => {
+        setSelectedToken(address)
+        selectedTokenAddress !== address && sidebarOpen && hideSidebar()
+      },
     }, [
 
       h(Identicon, {
@@ -111,40 +112,37 @@ TokenCell.prototype.render = function () {
           }, formattedFiat),
         ]),
 
-        // TODO: Tokens: Enable ellipsis
-        // h('i.fa.fa-ellipsis-h.fa-lg.token-list-item__ellipsis.cursor-pointer', {
-        //   onClick: (e) => {
-        //     e.stopPropagation()
-        //     this.setState({ tokenMenuOpen: true })
-        //   },
-        // }),
+        h('i.fa.fa-ellipsis-h.fa-lg.token-list-item__ellipsis.cursor-pointer', {
+          onClick: (e) => {
+            e.stopPropagation()
+            this.setState({ tokenMenuOpen: true })
+          },
+        }),
 
       ]),
 
 
       tokenMenuOpen && h(TokenMenuDropdown, {
         onClose: () => this.setState({ tokenMenuOpen: false }),
-        token: { symbol, address },
+        token: { symbol, address, protocol, protocolData },
       }),
 
-      /*
-      h('button', {
-        onClick: this.send.bind(this, address),
-      }, 'SEND'),
-      */
+      // h('button', {
+      //   onClick: this.send.bind(this, address),
+      // }, 'SEND'),
 
     ])
   )
 }
 
-TokenCell.prototype.send = function (address, event) {
-  event.preventDefault()
-  event.stopPropagation()
-  const url = tokenFactoryFor(address)
-  if (url) {
-    navigateTo(url)
-  }
-}
+// TokenCell.prototype.send = function (address, event) {
+//   event.preventDefault()
+//   event.stopPropagation()
+//   const url = tokenFactoryFor(address)
+//   if (url) {
+//     navigateTo(url)
+//   }
+// }
 
 TokenCell.prototype.view = function (address, userAddress, network, event) {
   const url = etherscanLinkFor(address, userAddress, network)

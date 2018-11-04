@@ -205,40 +205,41 @@ class AccountDropdowns extends Component {
             }, this.context.t('createAccount')),
           ],
         ),
-        h(
-          DropdownMenuItem,
-          {
-            closeMenu: () => {
-              if (sidebarOpen) {
-                actions.hideSidebar()
-              }
-            },
-            onClick: () => actions.showNewAccountPageImportForm(),
-            style: Object.assign(
-              {},
-              menuItemStyles,
-            ),
-          },
-          [
-            h(
-              'i.fa.fa-download.fa-lg',
-              {
-                style: {
-                  marginLeft: '8px',
-                },
-              }
-            ),
-            h('span', {
-              style: {
-                marginLeft: '20px',
-                marginBottom: '5px',
-                fontFamily: 'DIN OT',
-                fontSize: '16px',
-                lineHeight: '23px',
-              },
-            }, this.context.t('importAccount')),
-          ]
-        ),
+        // TODO: Import account
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     closeMenu: () => {
+        //       if (sidebarOpen) {
+        //         actions.hideSidebar()
+        //       }
+        //     },
+        //     onClick: () => actions.showNewAccountPageImportForm(),
+        //     style: Object.assign(
+        //       {},
+        //       menuItemStyles,
+        //     ),
+        //   },
+        //   [
+        //     h(
+        //       'i.fa.fa-download.fa-lg',
+        //       {
+        //         style: {
+        //           marginLeft: '8px',
+        //         },
+        //       }
+        //     ),
+        //     h('span', {
+        //       style: {
+        //         marginLeft: '20px',
+        //         marginBottom: '5px',
+        //         fontFamily: 'DIN OT',
+        //         fontSize: '16px',
+        //         lineHeight: '23px',
+        //       },
+        //     }, this.context.t('importAccount')),
+        //   ]
+        // ),
       ]
     )
   }

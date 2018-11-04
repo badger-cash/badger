@@ -107,14 +107,15 @@ AccountMenu.prototype.render = function () {
       icon: h('img.account-menu__item-icon', { src: 'images/plus-btn-white.svg' }),
       text: this.context.t('createAccount'),
     }),
-    h(Item, {
-      onClick: () => {
-        toggleAccountMenu()
-        history.push(IMPORT_ACCOUNT_ROUTE)
-      },
-      icon: h('img.account-menu__item-icon', { src: 'images/import-account.svg' }),
-      text: this.context.t('importAccount'),
-    }),
+    // TODO: Import account
+    // h(Item, {
+    //   onClick: () => {
+    //     toggleAccountMenu()
+    //     history.push(IMPORT_ACCOUNT_ROUTE)
+    //   },
+    //   icon: h('img.account-menu__item-icon', { src: 'images/import-account.svg' }),
+    //   text: this.context.t('importAccount'),
+    // }),
     // h(Item, {
     //   onClick: () => {
     //     toggleAccountMenu()

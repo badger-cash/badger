@@ -112,7 +112,7 @@ export default class SendTransactionScreen extends PersistentForm {
       network: prevNetwork,
     } = prevProps
 
-    const uninitialized = [prevBalance, prevGasTotal].every(n => n === null)
+    const uninitialized = [prevBalance].every(n => n === null)
 
     const amountErrorRequiresUpdate = doesAmountErrorRequireUpdate({
       balance,
@@ -135,32 +135,34 @@ export default class SendTransactionScreen extends PersistentForm {
         selectedToken,
         tokenBalance,
       })
-      const gasFeeErrorObject = selectedToken
-        ? getGasFeeErrorObject({
-          amount,
-          amountConversionRate,
-          balance,
-          conversionRate,
-          gasTotal,
-          primaryCurrency,
-          selectedToken,
-          tokenBalance,
-        })
-        : { gasFee: null }
+      
+      const gasFeeErrorObject = { gasFee: null }
+      // const gasFeeErrorObject = selectedToken
+        // ? getGasFeeErrorObject({
+        //   amount,
+        //   amountConversionRate,
+        //   balance,
+        //   conversionRate,
+        //   gasTotal,
+        //   primaryCurrency,
+        //   selectedToken,
+        //   tokenBalance,
+        // })
+        // : { gasFee: null }
       updateSendErrors(Object.assign(amountErrorObject, gasFeeErrorObject))
     }
 
-    // if (!uninitialized) {
+    if (!uninitialized) {
 
-    //   if (network !== prevNetwork && network !== 'loading') {
-    //     updateSendTokenBalance({
-    //       selectedToken,
-    //       tokenContract,
-    //       address,
-    //     })
-    //     this.updateGas()
-    //   }
-    // }
+      if (network !== prevNetwork && network !== 'loading') {
+        updateSendTokenBalance({
+          selectedToken,
+          tokenContract,
+          address,
+        })
+        this.updateGas()
+      }
+    }
   }
 
   componentWillMount () {

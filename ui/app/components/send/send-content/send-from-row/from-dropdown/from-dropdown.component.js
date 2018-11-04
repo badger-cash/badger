@@ -25,6 +25,7 @@ export default class FromDropdown extends Component {
       dropdownOpen,
       openDropdown,
       selectedAccount,
+      selectedToken,
       onSelect,
     } = this.props
 
@@ -32,9 +33,9 @@ export default class FromDropdown extends Component {
       <AccountListItem
         account={selectedAccount}
         handleClick={openDropdown}
-        icon={<i className={`fa fa-caret-down fa-lg`} style={ { color: '#dedede' } }/>}
+        icon={!selectedToken ? <i className={`fa fa-caret-down fa-lg`} style={ { color: '#dedede' } }/> : '' }
       />
-      {dropdownOpen && <SendDropdownList
+      {dropdownOpen && !selectedToken && <SendDropdownList
         accounts={accounts}
         closeDropdown={closeDropdown}
         onSelect={onSelect}

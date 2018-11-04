@@ -82,13 +82,13 @@ function isBalanceSufficient ({
 }
 
 function isTokenBalanceSufficient ({
-  amount = '0x0',
+  amount = '0',
   tokenBalance,
   decimals,
 }) {
-  const amountInDec = conversionUtil(amount, {
-    fromNumericBase: 'hex',
-  })
+  // const amountInDec = conversionUtil(amount, {
+  //   fromNumericBase: 'hex',
+  // })
 
   const tokenBalanceIsSufficient = conversionGTE(
     {
@@ -96,7 +96,8 @@ function isTokenBalanceSufficient ({
       fromNumericBase: 'dec',
     },
     {
-      value: calcTokenAmount(amountInDec, decimals),
+      value: amount,
+      // value: calcTokenAmount(amount, decimals),
       fromNumericBase: 'dec',
     },
   )
@@ -109,28 +110,26 @@ function getAmountErrorObject ({
   amountConversionRate,
   balance,
   conversionRate,
-  gasTotal,
   primaryCurrency,
   selectedToken,
   tokenBalance,
 }) {
   let insufficientFunds = false
-  if (gasTotal && conversionRate && !selectedToken) {
+  if (conversionRate && !selectedToken) {
     insufficientFunds = !isBalanceSufficient({
       amount,
       amountConversionRate,
       balance,
       conversionRate,
-      gasTotal,
       primaryCurrency,
     })
   }
 
   let inSufficientTokens = false
-  if (selectedToken && tokenBalance !== null) {
+  if (selectedToken && selectedToken.string !== null) {
     const { decimals } = selectedToken
     inSufficientTokens = !isTokenBalanceSufficient({
-      tokenBalance,
+      tokenBalance: selectedToken.string,
       amount,
       decimals,
     })

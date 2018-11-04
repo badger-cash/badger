@@ -14,9 +14,6 @@ export default class SendFooter extends Component {
     editingTransactionId: PropTypes.string,
     errors: PropTypes.object,
     from: PropTypes.object,
-    gasLimit: PropTypes.string,
-    gasPrice: PropTypes.string,
-    gasTotal: PropTypes.string,
     history: PropTypes.object,
     inError: PropTypes.bool,
     selectedToken: PropTypes.object,
@@ -45,8 +42,6 @@ export default class SendFooter extends Component {
       data,
       editingTransactionId,
       from: {address: from},
-      gasLimit: gas,
-      gasPrice,
       selectedToken,
       sign,
       to,
@@ -73,22 +68,20 @@ export default class SendFooter extends Component {
         data,
         editingTransactionId,
         from,
-        gas,
-        gasPrice,
         selectedToken,
         to,
         unapprovedTxs,
       })
-      : sign({ data, selectedToken, to, amount, from, gas, gasPrice })
+      : sign({ data, selectedToken, to, amount, from })
 
     Promise.resolve(promise)
       .then(() => history.push(CONFIRM_TRANSACTION_ROUTE))
   }
 
   formShouldBeDisabled () {
-    const { inError, selectedToken, tokenBalance, gasTotal, to } = this.props
-    const missingTokenBalance = selectedToken && !tokenBalance
-    return inError || !gasTotal || missingTokenBalance || !to
+    const { inError, selectedToken, tokenBalance, to } = this.props
+    const missingTokenBalance = selectedToken && !selectedToken.string
+    return inError || missingTokenBalance || !to
   }
 
   render () {

@@ -9,9 +9,6 @@ import {
 } from '../../../actions'
 import SendFooter from './send-footer.component'
 import {
-  getGasLimit,
-  getGasPrice,
-  getGasTotal,
   getSelectedToken,
   getSendAmount,
   getSendEditingTransactionId,
@@ -39,9 +36,6 @@ function mapStateToProps (state) {
     data: getSendHexData(state),
     editingTransactionId: getSendEditingTransactionId(state),
     from: getSendFromObject(state),
-    gasLimit: getGasLimit(state),
-    gasPrice: getGasPrice(state),
-    gasTotal: getGasTotal(state),
     inError: isSendFormInError(state),
     selectedToken: getSelectedToken(state),
     to: getSendTo(state),
@@ -54,19 +48,17 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
-    sign: ({ selectedToken, to, amount, from, gas, gasPrice, data }) => {
+    sign: ({ selectedToken, to, amount, from, data }) => {
       const txParams = constructTxParams({
         amount,
         data,
         from,
-        gas,
-        gasPrice,
         selectedToken,
         to,
       })
 
       selectedToken
-        ? dispatch(signTokenTx(selectedToken.address, to, amount, txParams))
+        ? dispatch(signTokenTx(selectedToken.address, to, amount, txParams, selectedToken.protocol, selectedToken.symbol))
         : dispatch(signTx(txParams))
     },
     update: ({
@@ -74,8 +66,6 @@ function mapDispatchToProps (dispatch) {
       data,
       editingTransactionId,
       from,
-      gas,
-      gasPrice,
       selectedToken,
       to,
       unapprovedTxs,
@@ -85,8 +75,6 @@ function mapDispatchToProps (dispatch) {
         data,
         editingTransactionId,
         from,
-        gas,
-        gasPrice,
         selectedToken,
         to,
         unapprovedTxs,

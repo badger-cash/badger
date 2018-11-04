@@ -14,7 +14,6 @@ export default class SendToRow extends Component {
     to: PropTypes.string,
     toAccounts: PropTypes.array,
     toDropdownOpen: PropTypes.bool,
-    updateGas: PropTypes.func,
     updateSendTo: PropTypes.func,
     updateSendToError: PropTypes.func,
     scanQrCode: PropTypes.func,
@@ -25,12 +24,12 @@ export default class SendToRow extends Component {
   };
 
   handleToChange (to, nickname = '', toError) {
-    const { updateSendTo, updateSendToError, updateGas } = this.props
+    const { updateSendTo, updateSendToError } = this.props
     const toErrorObject = getToErrorObject(to, toError)
     updateSendTo(to, nickname)
     updateSendToError(toErrorObject)
     if (toErrorObject.to === null) {
-      updateGas({ to })
+      // updateGas({ to })
     }
   }
 

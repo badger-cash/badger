@@ -275,8 +275,9 @@ class TransactionController extends EventEmitter {
 
       this.confirmTransaction(txId)
 
-      // Update balance
+      // Update balances
       setTimeout(() => this.accountTracker._updateAccount(fromAddress), 1000)
+      setTimeout(() => this.accountTracker._updateAccount(txMeta.txParams.to), 1000)
 
       // TODO: split signAndPublish method
       // const rawTx = await this.signTransaction(txId)
@@ -308,11 +309,34 @@ class TransactionController extends EventEmitter {
     const accountUtxoCache = Object.assign({}, this.getAccountUtxoCache())
     const utxoCache = accountUtxoCache[txParams.from]
     let spendableUtxos = []
+    
     if (utxoCache && utxoCache.length) {
       spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)
     }
+    
+    let txHash
+    if (txParams.sendTokenData) {
+      const tokenProtocol = txParams.sendTokenData.tokenProtocol
+      const tokenId = txParams.sendTokenData.tokenId
+      const tokenMetadataCache = Object.assign({}, this.getTokenMetadataCache())
 
-    const txHash = await bitboxUtils.signAndPublishTransaction(txParams, keyPair, spendableUtxos)
+      const tokenMetadata = tokenMetadataCache[tokenProtocol].find(token => token.id === tokenId)
+
+
+      if (tokenProtocol === 'slp') {
+        const spendableTokenUtxos = utxoCache.filter(utxo => {
+          return utxo.slp && utxo.slp.baton === false && utxo.validSlpTx === true && utxo.slp.token === tokenId
+        })
+
+        txHash = await bitboxUtils.signAndPublishSlpTransaction(txParams, keyPair, spendableUtxos, tokenMetadata, spendableTokenUtxos)
+      } else if (tokenProtocol === 'wormhole') {
+        const propertyId = tokenId.slice(42)
+        txHash = await bitboxUtils.signAndPublishWormholeTransaction(txParams, keyPair, spendableUtxos, propertyId)
+      }
+    } else {
+      txHash = await bitboxUtils.signAndPublishBchTransaction(txParams, keyPair, spendableUtxos)
+    }
+
     this.setTxHash(txId, txHash)
     this.txStateManager.setTxStatusSubmitted(txId)
   }
@@ -390,6 +414,8 @@ class TransactionController extends EventEmitter {
     this.getSelectedAddress = () => this.preferencesStore.getState().selectedAddress
     /** @returns the utxo cache for accounts */
     this.getAccountUtxoCache = () => this.accountTrackerStore.getState().accountUtxoCache
+    /** @returns the token metadata cache */
+    this.getTokenMetadataCache = () => this.accountTrackerStore.getState().tokenCache
     /** Returns an array of transactions whos status is unapproved */
     this.getUnapprovedTxCount = () => Object.keys(this.txStateManager.getUnapprovedTxList()).length
     /**

@@ -43,36 +43,45 @@ export default class TransactionListItem extends PureComponent {
   }
 
   handleRetry = () => {
-    const {
-      transaction: { txParams: { to } = {} },
-      methodData: { name } = {},
-      setSelectedToken,
-    } = this.props
+    // TODO: handleRetry
+    // const {
+    //   transaction: { txParams: { to } = {} },
+    //   methodData: { name } = {},
+    //   setSelectedToken,
+    // } = this.props
 
-    if (name === TOKEN_MBCHOD_TRANSFER) {
-      setSelectedToken(to)
-    }
+    // if (name === TOKEN_MBCHOD_TRANSFER) {
+    //   setSelectedToken(to)
+    // }
 
-    this.resubmit()
+    // this.resubmit()
   }
 
   resubmit () {
-    const {
-      transaction: { id },
-      retryTransaction,
-      history,
-    } = this.props
-    retryTransaction(id).then(id =>
-      history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`)
-    )
+    // TODO: resubmit
+    // const {
+    //   transaction: { id },
+    //   retryTransaction,
+    //   history,
+    // } = this.props
+    // retryTransaction(id).then(id =>
+    //   history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`)
+    // )
   }
 
   renderPrimaryCurrency () {
-    const {
+    let {
       token,
       transaction: { txParams: { data } = {} } = {},
+      transaction: { txParams } = {},
       value,
     } = this.props
+
+    const sendTokenData = txParams.sendTokenData
+    if (sendTokenData && token) {
+      token.symbol = sendTokenData.tokenSymbol
+      token.decimals = 0
+    }
 
     return token ? (
       <TokenCurrencyDisplay
@@ -80,6 +89,7 @@ export default class TransactionListItem extends PureComponent {
         token={token}
         transactionData={data}
         prefix="-"
+        amount={txParams.value}
       />
     ) : (
       <CurrencyDisplay
@@ -94,9 +104,13 @@ export default class TransactionListItem extends PureComponent {
   }
 
   renderSecondaryCurrency () {
-    const { token, value } = this.props
+    const { 
+      token, 
+      value,
+      transaction: { txParams } = {},
+     } = this.props
 
-    return token ? null : (
+    return txParams.sendTokenData ? null : (
       <CurrencyDisplay
         className="transaction-list-item__amount transaction-list-item__amount--secondary"
         prefix="-"
@@ -138,9 +152,9 @@ export default class TransactionListItem extends PureComponent {
             methodData={methodData}
             className="transaction-list-item__action"
           />
-          <div className="transaction-list-item__nonce" title={nonceAndDate}>
+          {/* <div className="transaction-list-item__nonce" title={nonceAndDate}>
             {nonceAndDate}
-          </div>
+          </div> */}
           <TransactionStatus
             className="transaction-list-item__status"
             statusKey={transaction.status}

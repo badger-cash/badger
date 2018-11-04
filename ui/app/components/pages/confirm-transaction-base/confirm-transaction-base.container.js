@@ -53,6 +53,7 @@ const mapStateToProps = (state, props) => {
     selectedAddress,
     selectedAddressTxList,
     assetImages,
+    accountTokens,
   } = metamask
   const assetImage = assetImages[txParamsToAddress]
   const { balance } = accounts[selectedAddress]
@@ -81,6 +82,7 @@ const mapStateToProps = (state, props) => {
     fiatTransactionTotal,
     hexGasTotal,
     txData,
+    txParams,
     tokenData,
     methodData,
     tokenProps,
@@ -90,6 +92,7 @@ const mapStateToProps = (state, props) => {
     transactionStatus,
     nonce,
     assetImage,
+    accountTokens,
   }
 }
 

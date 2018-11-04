@@ -31,16 +31,18 @@ class CreateAccountPage extends Component {
         this.context.t('create'),
       ]),
 
-      h('div.new-account__tabs__tab', {
-        className: classnames('new-account__tabs__tab', {
-          'new-account__tabs__selected': matchPath(location.pathname, {
-            path: IMPORT_ACCOUNT_ROUTE, exact: true,
-          }),
-        }),
-        onClick: () => history.push(IMPORT_ACCOUNT_ROUTE),
-      }, [
-        this.context.t('import'),
-      ]),
+      // TODO: Import account
+      // h('div.new-account__tabs__tab', {
+      //   className: classnames('new-account__tabs__tab', {
+      //     'new-account__tabs__selected': matchPath(location.pathname, {
+      //       path: IMPORT_ACCOUNT_ROUTE, exact: true,
+      //     }),
+      //   }),
+      //   onClick: () => history.push(IMPORT_ACCOUNT_ROUTE),
+      // }, [
+      //   this.context.t('import'),
+      // ]),
+
       // TODO: trezor & hardware wallet support
       // h(
       //   'div.new-account__tabs__tab',

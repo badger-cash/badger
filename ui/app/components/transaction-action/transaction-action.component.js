@@ -35,7 +35,12 @@ export default class TransactionAction extends PureComponent {
     }
 
     const actionKey = await getTransactionActionKey(transaction, data)
-    const action = actionKey && this.context.tOrDefault(actionKey)
+    let action = actionKey && this.context.tOrDefault(actionKey)
+
+    if (transaction && transaction.txParams && transaction.txParams.sendTokenData) {
+      action = `Sent ${transaction.txParams.sendTokenData.tokenSymbol}`
+    }
+
     this.setState({ transactionAction: action })
   }
 

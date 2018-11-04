@@ -189,7 +189,7 @@
     "message": "Copy"
   },
   "copyContractAddress": {
-    "message": "Copy Contract Address"
+    "message": "Copy Token ID"
   },
   "copyAddress": {
     "message": "Copy address to clipboard"
@@ -467,7 +467,7 @@
     "message": "Hide Token?"
   },
   "history": {
-    "message": "History"
+    "message": "Send History"
   },
   "howToDeposit": {
     "message": "How would you like to deposit Bitcoin Cash?"
@@ -485,7 +485,7 @@
   },
   "importAccountMsg": {
     "message":
-      " Imported accounts will not be associated with your originally created Badger account seedphrase. Learn more about imported accounts "
+      " Import account feature coming soon. Imported accounts will not be associated with your originally created Badger account seedphrase. Learn more about imported accounts "
   },
   "importAnAccount": {
     "message": "Import an account"
@@ -676,10 +676,10 @@
     "message": "No Conversion Rate Available"
   },
   "noTransactionHistory": {
-    "message": "No transaction history."
+    "message": "No sent transaction history."
   },
   "noTransactions": {
-    "message": "You have no transactions"
+    "message": "You have no sent transactions"
   },
   "notFound": {
     "message": "Not Found"

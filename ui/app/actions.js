@@ -975,9 +975,10 @@ function updateSendTokenBalance ({
   address,
 }) {
   return (dispatch) => {
-    const tokenBalancePromise = tokenContract
-      ? tokenContract.balanceOf(address)
-      : Promise.resolve()
+    // const tokenBalancePromise = tokenContract
+    //   ? tokenContract.balanceOf(address)
+    //   : Promise.resolve()
+    const tokenBalancePromise = Promise.resolve()
     return tokenBalancePromise
       .then(usersToken => {
         if (usersToken) {
@@ -1081,15 +1082,25 @@ function sendTx (txData) {
   }
 }
 
-function signTokenTx (tokenAddress, toAddress, amount, txData) {
+function signTokenTx (tokenId, toAddress, amount, txData, tokenProtocol, tokenSymbol) {
   return dispatch => {
-    dispatch(actions.showLoadingIndication())
-    const token = global.eth.contract(abi).at(tokenAddress)
-    token.transfer(toAddress, amount, txData)
-      .catch(err => {
-        dispatch(actions.hideLoadingIndication())
-        dispatch(actions.displayWarning(err.message))
-      })
+    txData.sendTokenData = {
+      tokenId,
+      tokenProtocol,
+      tokenSymbol,
+    }
+    global.ethQuery.sendTransaction(txData, (err, data) => {
+      if (err) {
+        return dispatch(actions.displayWarning(err.message))
+      }
+    })
+    // dispatch(actions.showLoadingIndication())
+    // const token = global.eth.contract(abi).at(tokenAddress)
+    // token.transfer(toAddress, amount, txData)
+    //   .catch(err => {
+    //     dispatch(actions.hideLoadingIndication())
+    //     dispatch(actions.displayWarning(err.message))
+    //   })
     dispatch(actions.showConfTxPage({}))
   }
 }

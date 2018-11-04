@@ -10,6 +10,7 @@ import { formatDate } from '../../util'
 
 const mapStateToProps = (state, ownProps) => {
   const { transaction: { txParams: { value, nonce, data } = {}, time } = {} } = ownProps
+  const sendTokenData = ownProps.transaction.txParams.sendTokenData
 
   const tokenData = data && getTokenData(data)
   const nonceAndDate = nonce ? `#${hexToDecimal(nonce)} - ${formatDate(time)}` : formatDate(time)
@@ -18,6 +19,7 @@ const mapStateToProps = (state, ownProps) => {
     value,
     nonceAndDate,
     tokenData,
+    sendTokenData,
   }
 }
 

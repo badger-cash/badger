@@ -28,16 +28,20 @@ export default class TransactionListItemDetails extends PureComponent {
   }
 
   handleRetry = event => {
-    const { onRetry } = this.props
+    // TODO: handleRetry
+    // const { onRetry } = this.props
 
-    event.stopPropagation()
-    onRetry()
+    // event.stopPropagation()
+    // onRetry()
   }
 
   render () {
     const { t } = this.context
-    const { transaction, showRetry } = this.props
-    const { txParams: { to, from } = {} } = transaction
+    let { transaction, showRetry } = this.props
+    // TODO: showRetry
+    showRetry = false
+
+    const { txParams: { to, from, sendTokenData } = {} } = transaction
 
     return (
       <div className="transaction-list-item-details">
@@ -72,16 +76,18 @@ export default class TransactionListItemDetails extends PureComponent {
             senderAddress={from}
           />
         </div>
-        <div className="transaction-list-item-details__cards-container">
-          <TransactionBreakdown
-            transaction={transaction}
-            className="transaction-list-item-details__transaction-breakdown"
-          />
-          <TransactionActivityLog
-            transaction={transaction}
-            className="transaction-list-item-details__transaction-activity-log"
-          />
-        </div>
+        { !sendTokenData && 
+          <div className="transaction-list-item-details__cards-container">
+            <TransactionBreakdown
+              transaction={transaction}
+              className="transaction-list-item-details__transaction-breakdown"
+            />
+            <TransactionActivityLog
+              transaction={transaction}
+              className="transaction-list-item-details__transaction-activity-log"
+            />
+          </div>
+        }
       </div>
     )
   }

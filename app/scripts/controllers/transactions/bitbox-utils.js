@@ -201,7 +201,7 @@ class BitboxUtils {
         const txid = await this.publishTx(hex)
         resolve(txid)
       } catch (err) {
-        reject('Could not send tokens, ensure your BCH balance is sufficient')
+        reject(err)
       }
     })
   }

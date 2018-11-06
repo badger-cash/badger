@@ -237,6 +237,11 @@ class AccountTracker {
         })
       })
 
+      // Remove not yet validated slp txs from cache
+      accountUtxoCache[address] = accountUtxoCache[address].filter(cachedUtxo => {
+        return !(cachedUtxo.slp && cachedUtxo.validSlpTx !== true)
+      })
+
       // Find current utxos that aren't cached
       const uncachedUtxos = allCurrentUtxos.filter(currentUtxo => {
         return !accountUtxoCache[address].some(cachedUtxo => {

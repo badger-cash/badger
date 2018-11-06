@@ -1828,5 +1828,179 @@
     "data": "newsecurity",
     "url": "www.micoxi.com",
     "precision": 8
+  },
+  {
+    "propertyid": 205,
+    "name": "BCE",
+    "category": "区块链token",
+    "subcategory": "区块链token",
+    "data": "区块链token",
+    "url": "Uushanxi.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 206,
+    "name": "FREEZE",
+    "category": "Companies",
+    "subcategory": "Bitbox QA",
+    "data": "Stable Coin - Made with BITBOX",
+    "url": "developer.bitcoin.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 207,
+    "name": "haryu703-1",
+    "category": "Utility",
+    "subcategory": "BCv1",
+    "data":
+      "{\"desc\":\"オンチェーン名刺初版です。\",\"txid\":\"ad564c66f7c77a1358ac47d410968b90699a93ba6fdc1401b7473ef258f808ed\",\"type\":\"image%2Fgif\"}",
+    "url": "https://twitter.com/haryu703",
+    "precision": 0
+  },
+  {
+    "propertyid": 208,
+    "name": "_test",
+    "category": "Utility",
+    "subcategory": "BCv1",
+    "data":
+      "{\"desc\":\"for test\",\"txid\":\"4972526085a2f7d2af91b998247da827d6d57a6ff475cd17a880f6689466d94f\",\"type\":\"image%2Fgif\"}",
+    "url": "sample",
+    "precision": 0
+  },
+  {
+    "propertyid": 209,
+    "name": "Tier 1 Token",
+    "category": "Finance",
+    "subcategory": "Finance",
+    "data": "Created by whctokens.cash!",
+    "url": "whctokens.cash",
+    "precision": 1
+  },
+  {
+    "propertyid": 210,
+    "name": "DevCoin",
+    "category": "Novelty",
+    "subcategory": "Novelty",
+    "data": "Created by whctokens.cash!",
+    "url": "whctokens.cash",
+    "precision": 1
+  },
+  {
+    "propertyid": 211,
+    "name": "TEST",
+    "category": "Internet",
+    "subcategory": "Blockchain",
+    "data": "交易测试币的代币",
+    "url": "https://test.ifwalllet.com",
+    "precision": 8
+  },
+  {
+    "propertyid": 212,
+    "name": "WHC Test",
+    "category": "Test",
+    "subcategory": "Test",
+    "data": "Created by whctokens.cash!",
+    "url": "whctokens.cash",
+    "precision": 1
+  },
+  {
+    "propertyid": 213,
+    "name": "ChrisToken",
+    "category": "Testing",
+    "subcategory": "Testing",
+    "data": "Created by whctokens.cash!",
+    "url": "whctokens.cash",
+    "precision": 1
+  },
+  {
+    "propertyid": 214,
+    "name": "CMP",
+    "category": "Accommodation and food",
+    "subcategory": "Accommodation",
+    "data": "For Managed Property",
+    "url": "http://test.cn",
+    "precision": 8
+  },
+  {
+    "propertyid": 215,
+    "name": "CKT",
+    "category": "Accommodation and food",
+    "subcategory": "Accommodation",
+    "data": "For Test Smart Property",
+    "url": "http://mytest.cn",
+    "precision": 8
+  },
+  {
+    "propertyid": 216,
+    "name": "CRD",
+    "category": "Accommodation and food",
+    "subcategory": "Accommodation",
+    "data": "For Crowdsale Test",
+    "url": "http://test.cn",
+    "precision": 8
+  },
+  {
+    "propertyid": 217,
+    "name": "RMB",
+    "category": "currency",
+    "subcategory": "",
+    "data": "1:1锚定人民币",
+    "url": "http://bankworld.top/",
+    "precision": 5
+  },
+  {
+    "propertyid": 218,
+    "name": "BCHDevConAMS",
+    "category": "Permissionless Ventures",
+    "subcategory": "Hackathon",
+    "data": "Permissionless Ventures BCHDevCon Amsterdam 2018",
+    "url": "hackathon.cash",
+    "precision": 8
+  },
+  {
+    "propertyid": 219,
+    "name": "BCH",
+    "category": "",
+    "subcategory": "",
+    "data": "BCH",
+    "url": "http://wormhole.cash/whcwhitepaper.pdf ",
+    "precision": 8
+  },
+  {
+    "propertyid": 220,
+    "name": "xSalud",
+    "category": "Utility",
+    "subcategory": "BCv1",
+    "data":
+      "{\"desc\":\"$XRP $BCH $CET\",\"txid\":\"dc7c3268abfbb55be0ab6b0942199c3451dd94dfa0d71a42018ba5b59242d110\",\"type\":\"image%2Fgif\"}",
+    "url": "https://twitter.com/xSaludSaru",
+    "precision": 0
+  },
+  {
+    "propertyid": 221,
+    "name": "WHC",
+    "category": "",
+    "subcategory": "",
+    "data": "WHC",
+    "url": "https://eosflare.io",
+    "precision": 8
+  },
+  {
+    "propertyid": 222,
+    "name": "BCC",
+    "category": "",
+    "subcategory": "",
+    "data": "Bitcoin Cash",
+    "url": "https://bitcoin.cash",
+    "precision": 8
+  },
+  {
+    "propertyid": 223,
+    "name": "BCH",
+    "category": "",
+    "subcategory": "",
+    "data": "BCH",
+    "url": "http://wormhole.cash",
+    "precision": 8
   }
 ]

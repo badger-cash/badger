@@ -67,7 +67,7 @@ function getSelectedToken (state) {
     // TODO: filter for mint baton by properties
     if (string === 'Mint Baton') return false
     return address === selectedTokenAddress
-  })[0] : []
+  })[0] : null
   const sendToken = state.metamask.send.token
 
   return selectedToken || sendToken || null

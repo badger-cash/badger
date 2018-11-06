@@ -276,8 +276,8 @@ class TransactionController extends EventEmitter {
       this.confirmTransaction(txId)
 
       // Update balances
-      setTimeout(() => this.accountTracker._updateAccount(fromAddress), 1000)
-      setTimeout(() => this.accountTracker._updateAccount(txMeta.txParams.to), 1000)
+      setTimeout(() => this.accountTracker._updateAccount(fromAddress), 3000)
+      setTimeout(() => this.accountTracker._updateAccount(txMeta.txParams.to), 6000)
 
       // TODO: split signAndPublish method
       // const rawTx = await this.signTransaction(txId)

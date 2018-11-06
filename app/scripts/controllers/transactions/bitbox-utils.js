@@ -82,7 +82,7 @@ class BitboxUtils {
     })
   }
 
-  static signAndPublishTransaction (txParams, keyPair, spendableUtxos) {
+  static signAndPublishBchTransaction (txParams, keyPair, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
@@ -143,7 +143,7 @@ class BitboxUtils {
 
         let tokenBalance = new BigNumber(0)
         for (const tokenUtxo of spendableTokenUtxos) {
-          const utxoBalance = tokenUtxo.slp.quantity.times(10 ** tokenDecimals)
+          const utxoBalance = tokenUtxo.slp.quantity
           tokenBalance = tokenBalance.plus(utxoBalance)
         }
 

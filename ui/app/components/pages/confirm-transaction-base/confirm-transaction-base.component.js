@@ -108,9 +108,10 @@ export default class ConfirmTransactionBase extends Component {
           value: amount,
         } = {},
       } = {},
+      txParams,
     } = this.props
 
-    const insufficientBalance = balance && !isBalanceSufficient({
+    const insufficientBalance = txParams.sendTokenData ? false : balance && !isBalanceSufficient({
       amount,
       gasTotal: hexGasTotal || '0x0',
       balance,

@@ -163,6 +163,7 @@ export default class TransactionListItem extends PureComponent {
                 ? transaction.err.rpc.message
                 : transaction.err && transaction.err.message
             }
+            transaction={transaction}
           />
           {this.renderPrimaryCurrency()}
           {this.renderSecondaryCurrency()}

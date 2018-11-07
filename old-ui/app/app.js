@@ -6,33 +6,20 @@ const actions = require('../../ui/app/actions')
 const log = require('loglevel')
 // mascara
 const MascaraFirstTime = require('../../mascara/src/app/first-time').default
-const MascaraBuyEtherScreen = require('../../mascara/src/app/first-time/buy-ether-screen').default
 // init
 const InitializeMenuScreen = require('./first-time/init-menu')
-const NewKeyChainScreen = require('./new-keychain')
 // unlock
 const UnlockScreen = require('./unlock')
-// accounts
-const AccountDetailScreen = require('./account-detail')
-const AccountQrScreen = require('./account-qr')
-const SendTransactionScreen = require('./send')
-const ConfirmTxScreen = require('./conf-tx')
 // notice
 const NoticeScreen = require('./components/notice')
 const generateLostAccountsNotice = require('../lib/lost-accounts-notice')
 // other views
 const ConfigScreen = require('./config')
-const AddTokenScreen = require('./add-token')
-const AddSuggestedTokenScreen = require('./add-suggested-token')
-const Import = require('./accounts/import')
-const InfoScreen = require('./info')
 const NewUiAnnouncement = require('./new-ui-annoucement')
 const AppBar = require('./components/app-bar')
 const Loading = require('./components/loading')
-const BuyView = require('./components/buy-button-subview')
 const HDCreateVaultComplete = require('./keychains/hd/create-vault-complete')
 const HDRestoreVaultScreen = require('./keychains/hd/restore-vault')
-const RevealSeedConfirmation = require('./keychains/hd/recover-seed/confirmation')
 
 module.exports = connect(mapStateToProps)(App)
 
@@ -213,69 +200,6 @@ App.prototype.renderPrimary = function () {
   if (props.seedWords) {
     log.debug('rendering seed words')
     return h(HDCreateVaultComplete, {key: 'HDCreateVaultComplete'})
-  }
-
-  // show current view
-  switch (props.currentView.name) {
-
-    case 'accountDetail':
-      log.debug('rendering account detail screen')
-      return h(AccountDetailScreen, {key: 'account-detail'})
-
-    case 'sendTransaction':
-      log.debug('rendering send tx screen')
-      return h(SendTransactionScreen, {key: 'send-transaction'})
-
-    case 'newKeychain':
-      log.debug('rendering new keychain screen')
-      return h(NewKeyChainScreen, {key: 'new-keychain'})
-
-    case 'confTx':
-      log.debug('rendering confirm tx screen')
-      return h(ConfirmTxScreen, {key: 'confirm-tx'})
-
-    case 'add-token':
-      log.debug('rendering add-token screen from unlock screen.')
-      return h(AddTokenScreen, {key: 'add-token'})
-
-    case 'add-suggested-token':
-      log.debug('rendering add-suggested-token screen from unlock screen.')
-      return h(AddSuggestedTokenScreen, {key: 'add-suggested-token'})
-
-    case 'config':
-      log.debug('rendering config screen')
-      return h(ConfigScreen, {key: 'config'})
-
-    case 'import-menu':
-      log.debug('rendering import screen')
-      return h(Import, {key: 'import-menu'})
-
-    case 'reveal-seed-conf':
-      log.debug('rendering reveal seed confirmation screen')
-      return h(RevealSeedConfirmation, {key: 'reveal-seed-conf'})
-
-    case 'info':
-      log.debug('rendering info screen')
-      return h(InfoScreen, {key: 'info'})
-
-    case 'buyEth':
-      log.debug('rendering buy ether screen')
-      return h(BuyView, {key: 'buyEthView'})
-
-    case 'onboardingBuyEth':
-      log.debug('rendering onboarding buy ether screen')
-      return h(MascaraBuyEtherScreen, {key: 'buyEthView'})
-
-    case 'qr':
-      log.debug('rendering show qr screen')
-      return h(AccountQrScreen, {
-        key: 'account-qr',
-        selectedAddress: props.selectedAddress,
-      })
-
-    default:
-      log.debug('rendering default, account detail screen')
-      return h(AccountDetailScreen, {key: 'account-detail'})
   }
 }
 

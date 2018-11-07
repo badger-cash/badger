@@ -232,7 +232,7 @@ class BitboxUtils {
         }
         let inputUtxo
         for (const utxo of inputUtxos) {
-          if (utxo.satoshis > 500) {
+          if (utxo.satoshis > 1000) {
             inputUtxo = utxo
             break
           }
@@ -249,7 +249,7 @@ class BitboxUtils {
           ref,
           [inputUtxo],
           from,
-          0.000005
+          0.00001
         )
         const tx = Wormhole.Transaction.fromHex(changeHex)
         const tb = Wormhole.Transaction.fromTransaction(tx)

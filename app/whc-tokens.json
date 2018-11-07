@@ -1896,6 +1896,15 @@
   },
   {
     "propertyid": 212,
+    "name": "WAN",
+    "category": "",
+    "subcategory": "",
+    "data": "去中心化旅游预定平台！",
+    "url": "lq18999@sina.com",
+    "precision": 6
+  },
+  {
+    "propertyid": 213,
     "name": "WHC Test",
     "category": "Test",
     "subcategory": "Test",
@@ -1904,7 +1913,7 @@
     "precision": 1
   },
   {
-    "propertyid": 213,
+    "propertyid": 214,
     "name": "ChrisToken",
     "category": "Testing",
     "subcategory": "Testing",
@@ -1913,7 +1922,7 @@
     "precision": 1
   },
   {
-    "propertyid": 214,
+    "propertyid": 215,
     "name": "CMP",
     "category": "Accommodation and food",
     "subcategory": "Accommodation",
@@ -1922,7 +1931,7 @@
     "precision": 8
   },
   {
-    "propertyid": 215,
+    "propertyid": 216,
     "name": "CKT",
     "category": "Accommodation and food",
     "subcategory": "Accommodation",
@@ -1931,7 +1940,7 @@
     "precision": 8
   },
   {
-    "propertyid": 216,
+    "propertyid": 217,
     "name": "CRD",
     "category": "Accommodation and food",
     "subcategory": "Accommodation",
@@ -1940,7 +1949,7 @@
     "precision": 8
   },
   {
-    "propertyid": 217,
+    "propertyid": 218,
     "name": "RMB",
     "category": "currency",
     "subcategory": "",
@@ -1949,7 +1958,16 @@
     "precision": 5
   },
   {
-    "propertyid": 218,
+    "propertyid": 219,
+    "name": "zhon-gchou2",
+    "category": "1",
+    "subcategory": "2",
+    "data": "132",
+    "url": "123",
+    "precision": 1
+  },
+  {
+    "propertyid": 220,
     "name": "BCHDevConAMS",
     "category": "Permissionless Ventures",
     "subcategory": "Hackathon",
@@ -1958,7 +1976,7 @@
     "precision": 8
   },
   {
-    "propertyid": 219,
+    "propertyid": 221,
     "name": "BCH",
     "category": "",
     "subcategory": "",
@@ -1967,7 +1985,7 @@
     "precision": 8
   },
   {
-    "propertyid": 220,
+    "propertyid": 222,
     "name": "xSalud",
     "category": "Utility",
     "subcategory": "BCv1",
@@ -1977,7 +1995,7 @@
     "precision": 0
   },
   {
-    "propertyid": 221,
+    "propertyid": 223,
     "name": "WHC",
     "category": "",
     "subcategory": "",
@@ -1986,7 +2004,7 @@
     "precision": 8
   },
   {
-    "propertyid": 222,
+    "propertyid": 224,
     "name": "BCC",
     "category": "",
     "subcategory": "",
@@ -1995,12 +2013,21 @@
     "precision": 8
   },
   {
-    "propertyid": 223,
+    "propertyid": 225,
     "name": "BCH",
     "category": "",
     "subcategory": "",
     "data": "BCH",
     "url": "http://wormhole.cash",
     "precision": 8
+  },
+  {
+    "propertyid": 226,
+    "name": "XOS",
+    "category": "",
+    "subcategory": "",
+    "data": "XOS是世界上第一个基於分叉共识的多链区块链项目",
+    "url": "www.xospro.com",
+    "precision": 0
   }
 ]

@@ -2029,5 +2029,14 @@
     "data": "XOS是世界上第一个基於分叉共识的多链区块链项目",
     "url": "www.xospro.com",
     "precision": 0
+  },
+  {
+    "propertyid": 227,
+    "name": "NAKAMOTO",
+    "category": "P2P",
+    "subcategory": "Satoshi",
+    "data": "Powered by BITBOX, BITDB and TokenGraph",
+    "url": "badgerwallet.cash",
+    "precision": 8
   }
 ]

@@ -263,9 +263,7 @@ WalletView.prototype.render = function () {
               },
             },
             [
-              `${slpAddress.slice(0, 18)}...${slpAddress.slice(
-                -4
-              )}`,
+              `${slpAddress.slice(0, 18)}...${slpAddress.slice(-4)}`,
               h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),
             ]
           ),
@@ -276,18 +274,18 @@ WalletView.prototype.render = function () {
 
       h(TokenList),
 
-      h(
-        Button,
-        {
-          type: 'primary',
-          className: 'wallet-view__add-token-button',
-          onClick: () => {
-            history.push(ADD_TOKEN_ROUTE)
-            sidebarOpen && hideSidebar()
-          },
-        },
-        this.context.t('addToken')
-      ),
+      // h(
+      //   Button,
+      //   {
+      //     type: 'primary',
+      //     className: 'wallet-view__add-token-button',
+      //     onClick: () => {
+      //       history.push(ADD_TOKEN_ROUTE)
+      //       sidebarOpen && hideSidebar()
+      //     },
+      //   },
+      //   this.context.t('addToken')
+      // ),
     ]
   )
 }

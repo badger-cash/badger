@@ -23,12 +23,14 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     // Is this supposed to be used somewhere?
-    showQrView: (selected, identity) => dispatch(actions.showQrView(selected, identity)),
+    showQrView: (selected, identity) =>
+      dispatch(actions.showQrView(selected, identity)),
     showExportPrivateKeyModal: () => {
       dispatch(actions.showModal({ name: 'EXPORT_PRIVATE_KEY' }))
     },
     hideModal: () => dispatch(actions.hideModal()),
-    setAccountLabel: (address, label) => dispatch(actions.setAccountLabel(address, label)),
+    setAccountLabel: (address, label) =>
+      dispatch(actions.setAccountLabel(address, label)),
   }
 }
 
@@ -41,11 +43,13 @@ AccountDetailsModal.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(AccountDetailsModal)
-
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountDetailsModal)
 
 // Not yet pixel perfect todos:
-  // fonts of qr-header
+// fonts of qr-header
 
 AccountDetailsModal.prototype.render = function () {
   const {
@@ -57,7 +61,7 @@ AccountDetailsModal.prototype.render = function () {
   } = this.props
   const { name, address } = selectedIdentity
 
-  const keyring = keyrings.find((kr) => {
+  const keyring = keyrings.find(kr => {
     return kr.accounts.includes(address)
   })
 
@@ -68,33 +72,44 @@ AccountDetailsModal.prototype.render = function () {
   }
 
   return h(AccountModalContainer, {}, [
-      h(EditableLabel, {
-        className: 'account-modal__name',
-        defaultValue: name,
-        onSubmit: label => setAccountLabel(address, label),
-      }),
+    h(EditableLabel, {
+      className: 'account-modal__name',
+      defaultValue: name,
+      onSubmit: label => setAccountLabel(address, label),
+    }),
 
-      h(QrView, {
-        Qr: {
-          data: address,
-        },
-      }),
+    h(QrView, {
+      Qr: {
+        data: address,
+      },
+    }),
 
-      h('div.account-modal-divider'),
+    h('div.account-modal-divider'),
 
-      h(Button, {
+    h(
+      Button,
+      {
         type: 'primary',
         className: 'account-modal__button',
-        onClick: () => global.platform.openWindow({ url: genAccountLink(address, network) }),
-      }, this.context.t('etherscanView')),
+        // onClick: () => global.platform.openWindow({ url: genAccountLink(address, network) }),
+        onClick: () =>
+          global.platform.openWindow({ url: genAccountLink(address, 1) }),
+      },
+      this.context.t('etherscanView')
+    ),
 
-      // Holding on redesign for Export Private Key functionality
+    // Holding on redesign for Export Private Key functionality
 
-      exportPrivateKeyFeatureEnabled ? h(Button, {
-        type: 'primary',
-        className: 'account-modal__button',
-        onClick: () => showExportPrivateKeyModal(),
-      }, this.context.t('exportPrivateKey')) : null,
-
+    exportPrivateKeyFeatureEnabled
+      ? h(
+          Button,
+          {
+            type: 'primary',
+            className: 'account-modal__button',
+            onClick: () => showExportPrivateKeyModal(),
+          },
+          this.context.t('exportPrivateKey')
+        )
+      : null,
   ])
 }

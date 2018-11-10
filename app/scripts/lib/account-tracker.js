@@ -415,7 +415,7 @@ class AccountTracker {
 
       if (!tokens) return rtnTokens
 
-      tokens.forEach(async (token, index) => {
+      for (const token of tokens) {
         let tokenData
         whcTokens.forEach(async (whcToken, indx) => {
           if (token.propertyid === whcToken.propertyid) {
@@ -437,8 +437,9 @@ class AccountTracker {
             ...tokenData,
           },
         }
+
         rtnTokens.push(addTokenData)
-      })
+      }
     } catch (error) {
       log.error('AccountTracker::_getWormholeTokens', error)
     }

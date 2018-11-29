@@ -449,7 +449,7 @@ function triggerUi () {
     const currentlyActiveMetamaskTab = Boolean(
       tabs.find(tab => openMetamaskTabsIDs[tab.id])
     )
-    if (!popupIsOpen && !currentlyActiveMetamaskTab && !notificationIsOpen) {
+    if (!popupIsOpen && !currentlyActiveMetamaskTab) { // && !notificationIsOpen) {
       notificationManager.showPopup()
     }
   })

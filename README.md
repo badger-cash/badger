@@ -20,13 +20,12 @@ Powered by BITBOX, Badger is 100% non-custodial. You're private keys never leave
 
 Badger Button is a library of open source UI components which content creators and entreprenuers can drop in to their site to enable micro payments, premium content, tipping, e-commerce and much more.
 
-Usage: https://old.reddit.com/r/btc/comments/9l9j1t/how_to_create_your_own_custom_badger_button/
-Example buttons visible on articles at https://coinspice.io/
+- Usage: https://old.reddit.com/r/btc/comments/9l9j1t/how_to_create_your_own_custom_badger_button/
+- Example buttons visible on articles at https://coinspice.io/
 
 ## CashID
-Allows dapps to authenticate an account and provide previously purchased content
-CashID react component and example usage by paOol: https://github.com/paOol/react-cashid
-
+- Allows dapps to authenticate an account and provide previously purchased content
+- CashID react component and example usage by paOol: https://github.com/paOol/react-cashid
 
 ## Credits
 

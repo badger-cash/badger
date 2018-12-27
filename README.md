@@ -1,7 +1,8 @@
 # Badger
 
 ## Installation of Developer Preview
-- Download the most recent release from the Chrome (Download) button on https://badgerwallet.cash
+- Firefox: Install from app store: https://addons.mozilla.org/en-US/firefox/addon/badger-wallet/
+- Chrome: Download the most recent release from the Chrome (Download) button on https://badgerwallet.cash
 - Go to chrome://extensions/ and enable developer mode in Chrome
 - Drag the zip file onto the extensions page
 
@@ -15,13 +16,17 @@ Badger is your identiy on this new web. You can pay for premium content, run sma
 
 Powered by BITBOX, Badger is 100% non-custodial. You're private keys never leave your computer.
 
-## $BGR
-
-$BGR is the utility token of the Badger platform. Dapps which accept $BGR will get discounted time on BITBOX Cloud. Users can fund Badger w/ $BGR and as they navigate the web they can use dapps seemlesly.
-
 ## Badger Button
 
 Badger Button is a library of open source UI components which content creators and entreprenuers can drop in to their site to enable micro payments, premium content, tipping, e-commerce and much more.
+
+Usage: https://old.reddit.com/r/btc/comments/9l9j1t/how_to_create_your_own_custom_badger_button/
+Example buttons visible on articles at https://coinspice.io/
+
+## CashID
+Allows dapps to authenticate an account and provide previously purchased content
+CashID react component and example usage by paOol: https://github.com/paOol/react-cashid
+
 
 ## Credits
 

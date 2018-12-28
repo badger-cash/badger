@@ -15,8 +15,8 @@ log.setDefaultLevel(process.env.METAMASK_DEBUG ? 'debug' : 'warn')
 
 // setup background connection
 var metamaskStream = new LocalMessageDuplexStream({
-  name: 'inpage',
-  target: 'contentscript',
+  name: 'badgerwallet_inpage',
+  target: 'badgerwallet_contentscript',
 })
 
 // compose the inpage provider
@@ -42,7 +42,7 @@ inpageProvider.enable = function (options = {}) {
   })
 }
 
-window.ethereum = inpageProvider
+// window.badgerWallet = inpageProvider
 
 //
 // setup web3

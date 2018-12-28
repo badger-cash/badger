@@ -1,7 +1,7 @@
 {
   "name": "__MSG_appName__",
   "short_name": "__MSG_appName__",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "manifest_version": 2,
   "author": "https://badgerwallet.cash",
   "description": "__MSG_appDescription__",
@@ -21,7 +21,7 @@
   },
   "applications": {
     "gecko": {
-      "id": "webextension@badgerwallet.cash"
+      "id": "info@badgerwallet.cash"
     }
   },
   "default_locale": "en",

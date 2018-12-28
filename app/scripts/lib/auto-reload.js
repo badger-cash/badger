@@ -1,21 +1,21 @@
 module.exports = setupDappAutoReload
 
-function setupDappAutoReload (web3, observable) {
-  // export web3 as a global, checking for usage
+function setupDappAutoReload (web4bch, observable) {
+  // export web4bch as a global, checking for usage
   let reloadInProgress = false
   let lastTimeUsed
   let lastSeenNetwork
 
-  global.web4bch = new Proxy(web3, {
-    get: (_web3, key) => {
+  global.web4bch = new Proxy(web4bch, {
+    get: (_web4bch, key) => {
       // get the time of use
       lastTimeUsed = Date.now()
       // return value normally
-      return _web3[key]
+      return _web4bch[key]
     },
-    set: (_web3, key, value) => {
+    set: (_web4bch, key, value) => {
       // set value normally
-      _web3[key] = value
+      _web4bch[key] = value
     },
   })
 
@@ -31,7 +31,7 @@ function setupDappAutoReload (web3, observable) {
       return
     }
 
-    // skip reload logic if web3 not used
+    // skip reload logic if web4bch not used
     if (!lastTimeUsed) return
 
     // if network did not change, exit
@@ -40,7 +40,7 @@ function setupDappAutoReload (web3, observable) {
     // initiate page reload
     reloadInProgress = true
     const timeSinceUse = Date.now() - lastTimeUsed
-    // if web3 was recently used then delay the reloading of the page
+    // if web4bch was recently used then delay the reloading of the page
     if (timeSinceUse > 500) {
       triggerReset()
     } else {

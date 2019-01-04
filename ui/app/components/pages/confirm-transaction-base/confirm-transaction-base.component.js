@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ConfirmPageContainer, { ConfirmDetailRow } from '../../confirm-page-container'
 import { formatCurrency } from '../../../helpers/confirm-transaction/util'
-import { isBalanceSufficient } from '../../send/send.utils'
+import { isBalanceSufficient, isTokenBalanceSufficient } from '../../send/send.utils'
 import { DEFAULT_ROUTE } from '../../../routes'
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   TRANSACTION_ERROR_KEY,
+  INSUFFICIENT_TOKENS_ERROR_KEY,
 } from '../../../constants/error-keys'
 
 export default class ConfirmTransactionBase extends Component {
@@ -109,6 +110,7 @@ export default class ConfirmTransactionBase extends Component {
         } = {},
       } = {},
       txParams,
+      accountTokens,
     } = this.props
 
     const insufficientBalance = txParams.sendTokenData ? false : balance && !isBalanceSufficient({
@@ -122,6 +124,23 @@ export default class ConfirmTransactionBase extends Component {
       return {
         valid: false,
         errorKey: INSUFFICIENT_FUNDS_ERROR_KEY,
+      }
+    }
+
+    let insufficientTokens = !!txParams.sendTokenData
+    if (txParams.sendTokenData) {
+      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(token => token.address === txParams.sendTokenData.tokenId)
+      insufficientTokens = tokenToSend ? !isTokenBalanceSufficient({
+        tokenBalance: tokenToSend.string,
+        amount,
+        decimals: tokenToSend.decimals,
+      }) : true
+    }
+
+    if (insufficientTokens) {
+      return {
+        valid: false,
+        errorKey: INSUFFICIENT_TOKENS_ERROR_KEY,
       }
     }
 
@@ -326,9 +345,9 @@ export default class ConfirmTransactionBase extends Component {
     // Send Token Settings
     if (txParams.sendTokenData) {
       const tokenToSend = accountTokens[txParams.from]['mainnet'].find(token => token.address === txParams.sendTokenData.tokenId)
-      title = `${txParams.value} ${tokenToSend.symbol}`
-      subtitle = txParams.sendTokenData.tokenProtocol === 'slp' ? 'Simple Ledger Protocol' : 'Wormhole'
-      hideSubtitle = false
+      title = tokenToSend ? `${txParams.value} ${tokenToSend.symbol}` : 'UNKNOWN TOKEN'
+      subtitle = tokenToSend ? txParams.sendTokenData.tokenProtocol === 'slp' ? 'Simple Ledger Protocol' : 'Wormhole' : ''
+      hideSubtitle = !tokenToSend
     }
 
     return (

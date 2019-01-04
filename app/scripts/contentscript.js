@@ -50,7 +50,7 @@ function setupStreams () {
     name: 'badgerwallet_contentscript',
     target: 'badgerwallet_inpage',
   })
-  const pluginPort = extension.runtime.connect('pekjchblfacjnamhkmenchdhdjpedbgg', { name: 'badgerwallet_contentscript' })
+  const pluginPort = extension.runtime.connect({ name: 'badgerwallet_contentscript' })
   const pluginStream = new PortStream(pluginPort)
 
   // forward communication plugin->inpage

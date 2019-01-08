@@ -961,7 +961,7 @@ module.exports = class MetamaskController extends EventEmitter {
       },
     })
 
-    this.messageManager.setMsgStatusSigned(msgId, requestRes)
+    this.messageManager.setMsgStatusSigned(msgId, {success: true})
     return this.getState()
   }
 

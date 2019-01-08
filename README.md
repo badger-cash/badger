@@ -1,11 +1,8 @@
 # Badger
 
-## Installation of Developer Preview
-- Firefox: Install from app store: https://addons.mozilla.org/en-US/firefox/addon/badger-wallet/
-- Chrome: Download the most recent release from the Chrome (Download) button on https://badgerwallet.cash
-  - Go to chrome://extensions/ and enable developer mode (from the top right)
-  - Drag the zip file onto the extensions page
-- Brave: Same as Chrome installation
+## Installation
+- Firefox and Chrome: Download the most recent release from https://badger.bitcoin.com
+- Brave: Install from chrome store
 
 ## Intro
 

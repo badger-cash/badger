@@ -26,32 +26,32 @@ class Info extends Component {
           h(
             'a',
             {
-              href: 'https://badgerwallet.cash/privacy.html',
+              href: 'https://www.bitcoin.com/privacy-policy',
               target: '_blank',
             },
             [h('span.settings__info-link', this.context.t('privacyMsg'))]
           ),
         ]),
-        h('div.settings__info-link-item', [
-          h(
-            'a',
-            {
-              href: 'https://badgerwallet.cash/terms.html',
-              target: '_blank',
-            },
-            [h('span.settings__info-link', this.context.t('terms'))]
-          ),
-        ]),
-        h('div.settings__info-link-item', [
-          h(
-            'a',
-            {
-              href: 'https://badgerwallet.cash/attributions.html',
-              target: '_blank',
-            },
-            [h('span.settings__info-link', this.context.t('attributions'))]
-          ),
-        ]),
+        // h('div.settings__info-link-item', [
+        //   h(
+        //     'a',
+        //     {
+        //       href: 'https://badgerwallet.cash/terms.html',
+        //       target: '_blank',
+        //     },
+        //     [h('span.settings__info-link', this.context.t('terms'))]
+        //   ),
+        // ]),
+        // h('div.settings__info-link-item', [
+        //   h(
+        //     'a',
+        //     {
+        //       href: 'https://badgerwallet.cash/attributions.html',
+        //       target: '_blank',
+        //     },
+        //     [h('span.settings__info-link', this.context.t('attributions'))]
+        //   ),
+        // ]),
         h('hr.settings__info-separator'),
         // TODO: Create support center
         // h('div.settings__info-link-item', [
@@ -68,7 +68,7 @@ class Info extends Component {
           h(
             'a',
             {
-              href: 'https://badgerwallet.cash/',
+              href: 'https://badger.bitcoin.com/',
               target: '_blank',
             },
             [h('span.settings__info-link', this.context.t('visitWebSite'))]
@@ -79,7 +79,7 @@ class Info extends Component {
             'a',
             {
               target: '_blank',
-              href: 'mailto:contact@badgerwallet.cash?subject=Feedback',
+              href: 'mailto:badger@bitcoin.com?subject=Feedback',
             },
             [h('span.settings__info-link', this.context.t('emailUs'))]
           ),

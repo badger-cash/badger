@@ -2,11 +2,11 @@
 
 **THIS AGREEMENT IS SUBJECT TO BINDING ARBITRATION AND A WAIVER OF CLASS ACTION RIGHTS AS DETAILED IN SECTION 13. PLEASE READ THE AGREEMENT CAREFULLY.**
 
-_Our Terms of Use have been updated as of October 13, 2018_
+_Our Terms of Use have been updated as of January 8, 2019_
 
 ## 1. Acceptance of Terms
 
-Badger provides a platform for managing Bitcoin Cash (or "BCH") accounts, and allowing ordinary websites to interact with the Bitcoin Cash blockchain, while keeping the user in control over what transactions they approve, through our website located at[https://badgerwallet.cash/](https://badgerwallet.cash/) and browser plugin (the "Site") — which includes text, images, audio, code and other materials (collectively, the “Content”) and all of the features, and services provided. The Site, and any other features, tools, materials, or other services offered from time to time by Badger are referred to here as the “Service.” Please read these Terms of Use (the “Terms” or “Terms of Use”) carefully before using the Service. By using or otherwise accessing the Services, or clicking to accept or agree to these Terms where that option is made available, you (1) accept and agree to these Terms (2) consent to the collection, use, disclosure and other handling of information as described in our Privacy Policy and (3) any additional terms, rules and conditions of participation issued by Badger from time to time. If you do not agree to the Terms, then you may not access or use the Content or Services.
+Badger provides a platform for managing Bitcoin Cash (or "BCH") accounts, and allowing ordinary websites to interact with the Bitcoin Cash blockchain, while keeping the user in control over what transactions they approve, through our website located at[https://badger.bitcoin.com/](https://badger.bitcoin.com/) and browser plugin (the "Site") — which includes text, images, audio, code and other materials (collectively, the “Content”) and all of the features, and services provided. The Site, and any other features, tools, materials, or other services offered from time to time by Badger are referred to here as the “Service.” Please read these Terms of Use (the “Terms” or “Terms of Use”) carefully before using the Service. By using or otherwise accessing the Services, or clicking to accept or agree to these Terms where that option is made available, you (1) accept and agree to these Terms (2) consent to the collection, use, disclosure and other handling of information as described in our Privacy Policy and (3) any additional terms, rules and conditions of participation issued by Badger from time to time. If you do not agree to the Terms, then you may not access or use the Content or Services.
 
 ## 2. Modification of Terms of Use
 
@@ -30,7 +30,7 @@ You expressly understand and agree that your use of the Service is at your sole 
 
 ### 5.2 Sophistication and Risk of Cryptographic Systems
 
-By utilizing the Service or interacting with the Content or platform in any way, you represent that you understand the inherent risks associated with cryptographic systems; and warrant that you have an understanding of the usage and intricacies of native cryptographic tokens, like Ether (BCH) and Bitcoin (BTC), smart contract based tokens such as those that follow the Bitcoin Cash Token Standard (https://github.com/ethereum/EIPs/issues/20), and blockchain-based software systems.
+By utilizing the Service or interacting with the Content or platform in any way, you represent that you understand the inherent risks associated with cryptographic systems; and warrant that you have an understanding of the usage and intricacies of native cryptographic tokens, like Bitcoin Cash (BCH) and Bitcoin (BTC), smart contract based tokens such as those that follow Bitcoin Cash Token Standards, and blockchain-based software systems.
 
 ### 5.3 Risk of Regulatory Actions in One or More Jurisdictions
 
@@ -60,7 +60,7 @@ SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMIT
 
 ## 8. Our Proprietary Rights
 
-All title, ownership and intellectual property rights in and to the Service are owned by Badger or its licensors. You acknowledge and agree that the Service contains proprietary and confidential information that is protected by applicable intellectual property and other laws. Except as expressly authorized by Badger, you agree not to copy, modify, rent, lease, loan, sell, distribute, perform, display or create derivative works based on the Service, in whole or in part. Badger issues a license for Badger, found [here](https://github.com/Badger/badger-extension/blob/master/LICENSE). For information on other licenses utilized in the development of Badger, please see our attribution page at: [https://badgerwallet.cash/attributions.html](https://badgerwallet.cash/attributions.html)
+All title, ownership and intellectual property rights in and to the Service are owned by Badger or its licensors. You acknowledge and agree that the Service contains proprietary and confidential information that is protected by applicable intellectual property and other laws. Except as expressly authorized by Badger, you agree not to copy, modify, rent, lease, loan, sell, distribute, perform, display or create derivative works based on the Service, in whole or in part. Badger issues a license for Badger, found [here](https://github.com/Bitcoin-com/badger/blob/develop/LICENSE). For information on other licenses utilized in the development of Badger, please see our source code at: [https://github.com/bitcoin-com/badger](https://github.com/bitcoin-com/badger)
 
 ## 9. Links
 
@@ -94,47 +94,19 @@ If you believe that your copyright or the copyright of a person on whose behalf 
 
 Badger’s Copyright Agent can be reached at:
 
-Email: copyright [at] badgerwallet [dot] cash
+Email: badger [at] bitcoin [dot] com
 
 ## 13. Binding Arbitration and Class Action Waiver
 
 PLEASE READ THIS SECTION CAREFULLY – IT MAY SIGNIFICANTLY AFFECT YOUR LEGAL RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT
 
-### 13.1 Initial Dispute Resolution
+### 13.1 Binding Arbitration
 
-The parties shall use their best efforts to engage directly to settle any dispute, claim, question, or disagreement and engage in good faith negotiations which shall be a condition to either party initiating a lawsuit or arbitration.
+Except where prohibited by applicable law, any dispute or difference arising out of or in connection with this agreement shall be referred to and determined by binding arbitration under the electronic transaction arbitration rules of the Hong Kong international arbitration center. Hong Kong shall be the seat of arbitration and any such dispute shall be resolved at the Hong Kong international arbitration center by a single arbitrator.
 
-### 13.2 Binding Arbitration
-
-If the parties do not reach an agreed upon solution within a period of 30 days from the time informal dispute resolution under the Initial Dispute Resolution provision begins, then either party may initiate binding arbitration as the sole means to resolve claims, subject to the terms set forth below. Specifically, all claims arising out of or relating to these Terms (including their formation, performance and breach), the parties’ relationship with each other and/or your use of the Service shall be finally settled by binding arbitration administered by the American Arbitration Association in accordance with the provisions of its Commercial Arbitration Rules and the supplementary procedures for consumer related disputes of the American Arbitration Association (the "AAA"), excluding any rules or procedures governing or permitting class actions.
-
-The arbitrator, and not any federal, state or local court or agency, shall have exclusive authority to resolve all disputes arising out of or relating to the interpretation, applicability, enforceability or formation of these Terms, including, but not limited to any claim that all or any part of these Terms are void or voidable, or whether a claim is subject to arbitration. The arbitrator shall be empowered to grant whatever relief would be available in a court under law or in equity. The arbitrator’s award shall be written, and binding on the parties and may be entered as a judgment in any court of competent jurisdiction.
-
-The parties understand that, absent this mandatory provision, they would have the right to sue in court and have a jury trial. They further understand that, in some instances, the costs of arbitration could exceed the costs of litigation and the right to discovery may be more limited in arbitration than in court.
-
-### 13.3 Location
-
-Binding arbitration shall take place in New York. You agree to submit to the personal jurisdiction of any federal or state court in New York County, New York, in order to compel arbitration, to stay proceedings pending arbitration, or to confirm, modify, vacate or enter judgment on the award entered by the arbitrator.
-
-### 13.4 Class Action Waiver
+### 13.2 Class Action Waiver
 
 The parties further agree that any arbitration shall be conducted in their individual capacities only and not as a class action or other representative action, and the parties expressly waive their right to file a class action or seek relief on a class basis. YOU AND BADGER AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY, AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING. If any court or arbitrator determines that the class action waiver set forth in this paragraph is void or unenforceable for any reason or that an arbitration can proceed on a class basis, then the arbitration provision set forth above shall be deemed null and void in its entirety and the parties shall be deemed to have not agreed to arbitrate disputes.
-
-### 13.5 Exception - Litigation of Intellectual Property and Small Claims Court Claims
-
-Notwithstanding the parties' decision to resolve all disputes through arbitration, either party may bring an action in state or federal court to protect its intellectual property rights ("intellectual property rights" means patents, copyrights, moral rights, trademarks, and trade secrets, but not privacy or publicity rights). Either party may also seek relief in a small claims court for disputes or claims within the scope of that court’s jurisdiction.
-
-### 13.6 30-Day Right to Opt Out
-
-You have the right to opt-out and not be bound by the arbitration and class action waiver provisions set forth above by sending written notice of your decision to opt-out to the following address: Badger ℅ ConsenSys, 49 Bogart Street, Brooklyn NY 11206 and via email at support@badgerwallet.cash. The notice must be sent within 30 days of September 6, 2016 or your first use of the Service, whichever is later, otherwise you shall be bound to arbitrate disputes in accordance with the terms of those paragraphs. If you opt-out of these arbitration provisions, Badger also will not be bound by them.
-
-### 13.7 Changes to This Section
-
-Badger will provide 60-days’ notice of any changes to this section. Changes will become effective on the 60th day, and will apply prospectively only to any claims arising after the 60th day.
-
-For any dispute not subject to arbitration you and Badger agree to submit to the personal and exclusive jurisdiction of and venue in the federal and state courts located in New York, New York. You further agree to accept service of process by mail, and hereby waive any and all jurisdictional and venue defenses otherwise available.
-
-The Terms and the relationship between you and Badger shall be governed by the laws of the State of New York without regard to conflict of law provisions.
 
 ## 14. General Information
 
@@ -156,12 +128,8 @@ The section titles in the Terms are for convenience only and have no legal or co
 
 ### 14.5 Communications
 
-Users with questions, complaints or claims with respect to the Service may contact us using the relevant contact information set forth above and at communications@badgerwallet.cash.
+Users with questions, complaints or claims with respect to the Service may contact us using the relevant contact information set forth above and at badger@bitcoin.com.
 
 ## 15 Related Links
 
-**[Terms of Use](https://badgerwallet.cash/terms.html)**
-
-**[Privacy](https://badgerwallet.cash/privacy.html)**
-
-**[Attributions](https://badgerwallet.cash/attributions.html)**
+**[Privacy](https://www.bitcoin.com/privacy-policy)**

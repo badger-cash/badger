@@ -348,6 +348,9 @@ export default class ConfirmTransactionBase extends Component {
       title = tokenToSend ? `${txParams.value} ${tokenToSend.symbol}` : 'UNKNOWN TOKEN'
       subtitle = tokenToSend ? txParams.sendTokenData.tokenProtocol === 'slp' ? 'Simple Ledger Protocol' : 'Wormhole' : ''
       hideSubtitle = !tokenToSend
+
+      // Update sendTokenData symbol
+      txParams.sendTokenData.tokenSymbol = tokenToSend ? tokenToSend.symbol : 'UNKNOWN TOKEN'
     }
 
     return (

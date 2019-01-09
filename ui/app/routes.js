@@ -24,7 +24,7 @@ const INITIALIZE_BACKUP_PHRASE_ROUTE = '/initialize/backup-phrase'
 const INITIALIZE_CONFIRM_SEED_ROUTE = '/initialize/confirm-phrase'
 
 const CONFIRM_TRANSACTION_ROUTE = '/confirm-transaction'
-const CONFIRM_SEND_ETHER_PATH = '/send-ether'
+const CONFIRM_SEND_ETHER_PATH = '/send-bch'
 const CONFIRM_SEND_TOKEN_PATH = '/send-token'
 const CONFIRM_DEPLOY_CONTRACT_PATH = '/deploy-contract'
 const CONFIRM_APPROVE_PATH = '/approve'

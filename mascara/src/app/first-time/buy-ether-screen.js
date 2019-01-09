@@ -195,8 +195,8 @@ class BuyEtherScreen extends Component {
         <Identicon address={this.props.address} diameter={70} />
         <div className="buy-ether__title">Deposit Bitcoin Cash</div>
         <div className="buy-ether__body-text">
-          Badger works best if you have Ether in your account to pay for
-          transaction gas fees and more. To get Ether, choose from one of these
+          Badger works best if you have Bitcoin Cash in your account to pay for
+          transaction fees and more. To get Bitcoin Cash, choose from one of these
           methods.
         </div>
         <div className="buy-ether__content-wrapper">

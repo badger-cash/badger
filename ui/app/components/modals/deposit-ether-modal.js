@@ -13,8 +13,8 @@ import Button from '../button'
 
 let DIRECT_DEPOSIT_ROW_TITLE
 let DIRECT_DEPOSIT_ROW_TEXT
-let COINBASE_ROW_TITLE
-let COINBASE_ROW_TEXT
+let BUY_ROW_TITLE
+let BUY_ROW_TEXT
 let FAUCET_ROW_TITLE
 
 function mapStateToProps (state) {
@@ -26,7 +26,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    toCoinbase: address => {
+    toBuyBch: address => {
       dispatch(actions.buyEth({ network: '1', address, amount: 0 }))
     },
     hideModal: () => {
@@ -49,8 +49,8 @@ function DepositEtherModal (props, context) {
   // need to set after i18n locale has loaded
   DIRECT_DEPOSIT_ROW_TITLE = context.t('directDepositEther')
   DIRECT_DEPOSIT_ROW_TEXT = context.t('directDepositEtherExplainer')
-  COINBASE_ROW_TITLE = context.t('buyCoinbase')
-  COINBASE_ROW_TEXT = context.t('buyCoinbaseExplainer')
+  BUY_ROW_TITLE = 'Buy on Bitcoin.com'
+  BUY_ROW_TEXT = 'Start buying Bitcoin Cash (BCH) with your credit card today!'
   FAUCET_ROW_TITLE = context.t('testFaucet')
 
   this.state = {
@@ -131,8 +131,9 @@ DepositEtherModal.prototype.renderRow = function ({
 }
 
 DepositEtherModal.prototype.render = function () {
-  const { network, toCoinbase, address, toFaucet } = this.props
-  const { buyingWithShapeshift } = this.state
+  const { network, toBuyBch, address, toFaucet } = this.props
+  // const { buyingWithShapeshift } = this.state
+  const buyingWithShapeshift = false
 
   const isTestNetwork = ['3', '4', '42'].find(n => n === network)
   const networkName = getNetworkDisplayName(network)
@@ -182,14 +183,14 @@ DepositEtherModal.prototype.render = function () {
           this.renderRow({
             logo: h('div.deposit-ether-modal__logo', {
               style: {
-                backgroundImage: "url('./images/coinbase logo.png')",
+                backgroundImage: "url('./images/BTC_full_logo_standard_S.png')",
                 height: '40px',
               },
             }),
-            title: COINBASE_ROW_TITLE,
-            text: COINBASE_ROW_TEXT,
-            buttonLabel: this.context.t('continueToCoinbase'),
-            onButtonClick: () => toCoinbase(address),
+            title: BUY_ROW_TITLE,
+            text: BUY_ROW_TEXT,
+            buttonLabel: 'CONTINUE TO BUY.BITCOIN.COM',
+            onButtonClick: () => toBuyBch(address),
             hide: isTestNetwork || buyingWithShapeshift,
           }),
 

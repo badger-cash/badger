@@ -111,7 +111,7 @@ class BackupPhraseScreen extends Component {
             Your secret backup phrase makes it easy to back up and restore your account.
           </div>
           <div className="backup-phrase__body-text">
-            WARNING: Never disclose your backup phrase. Anyone with this phrase can take your Ether forever.
+            WARNING: Never disclose your backup phrase. Anyone with this phrase can take your Bitcoin Cash forever.
           </div>
           {this.renderSecretWordsContainer()}
         </div>

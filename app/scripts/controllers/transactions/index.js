@@ -163,7 +163,8 @@ class TransactionController extends EventEmitter {
     // skip normalize
     // const normalizedTxParams = txUtils.normalizeTxParams(txParams)
     const normalizedTxParams = txParams
-    // txUtils.validateTxParams(normalizedTxParams)
+    txUtils.validateTxParams(normalizedTxParams)
+    
     // construct txMeta
     let txMeta = this.txStateManager.generateTxMeta({
       txParams: normalizedTxParams,

@@ -1,6 +1,9 @@
 /**
 @module
 */
+
+const BigNumber = require('bignumber.js')
+
 module.exports = {
   normalizeTxParams,
   validateTxParams,
@@ -25,17 +28,28 @@ function normalizeTxParams (txParams) {
 function validateTxParams (txParams) {
   validateFrom(txParams)
   validateRecipient(txParams)
-  if ('value' in txParams) {
-    const value = txParams.value.toString()
-    if (value.includes('-')) {
-      throw new Error(`Invalid transaction value of ${txParams.value} not a positive number.`)
-    }
 
-    // TODO: Accept only satoshis
-    // if (value.includes('.')) {
-    //   throw new Error(`Invalid transaction value of ${txParams.value} number must be in wei`)
-    // }
+  // value property required
+  if (!('value' in txParams)) {
+    throw new Error('Value property must exist')
   }
+
+  // No negative values
+  const value = txParams.value.toString()
+  if (value.includes('-')) {
+    throw new Error(`Invalid transaction value of ${txParams.value} not a positive number.`)
+  }
+
+  // Ensure parse as BigNumber and non negative value
+  const bnValue = new BigNumber(value)
+  if (bnValue.isNaN() || bnValue.isNegative()) {
+    throw new Error('Value property invalid')
+  }
+
+  // TODO: Accept only satoshis
+  // if (value.includes('.')) {
+  //   throw new Error(`Invalid transaction value of ${txParams.value} number must be in wei`)
+  // }
 }
 
  /**

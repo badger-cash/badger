@@ -13,7 +13,7 @@ module.exports = [
   {
     id: 2,
     read: false,
-    date: 'Mon May 08 2017',
+    date: 'Tue Jan 08 2019',
     title: 'Privacy Notice',
     body: fs.readFileSync(path.join(__dirname, '/archive', 'notice_2.md'), 'utf8'),
   },

@@ -197,7 +197,7 @@
     "message": "Deposita Eth"
   },
   "depositEther": {
-    "message": "Deposita Ether"
+    "message": "Deposita Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Deposita con moneta Fiat"
@@ -219,11 +219,11 @@
     "message": "Deposito Diretto"
   },
   "directDepositEther": {
-    "message": "Deposita Direttamente Ether"
+    "message": "Deposita Direttamente Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Se possiedi già degli Ether, questa è la via più veloce per aggiungere Bitcoin Cash al tuo portafoglio con un deposito diretto."
+      "Se possiedi già degli Bitcoin Cash, questa è la via più veloce per aggiungere Bitcoin Cash al tuo portafoglio con un deposito diretto."
   },
   "done": {
     "message": "Finito"
@@ -319,11 +319,11 @@
     "message": "Prezzo Gas Richiesto"
   },
   "getBitcoinCash": {
-    "message": "Ottieni Ether"
+    "message": "Ottieni Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Ottieni Get Bitcoin Cash da un faucet per $1",
-    "description": "Visualizza il nome della rete per il faucet Ether"
+    "description": "Visualizza il nome della rete per il faucet Bitcoin Cash"
   },
   "greaterThanMin": {
     "message": "deve essere maggiore o uguale a $1.",
@@ -347,7 +347,7 @@
     "message": "Nascondi Token?"
   },
   "howToDeposit": {
-    "message": "Come vuoi depositare Ether?"
+    "message": "Come vuoi depositare Bitcoin Cash?"
   },
   "holdEther": {
     "message":
@@ -479,7 +479,7 @@
     "description": "Password e file necessari per importare un account"
   },
   "negativeETH": {
-    "message": "Non puoi inviare una quantità di ETH negativa."
+    "message": "Non puoi inviare una quantità di BCH negativa."
   },
   "networks": {
     "message": "Reti"
@@ -668,7 +668,7 @@
     "message": "Invia"
   },
   "sendETH": {
-    "message": "Invia ETH"
+    "message": "Invia BCH"
   },
   "sendTokens": {
     "message": "Invia Tokens"
@@ -739,7 +739,7 @@
     "message": "A"
   },
   "toETHviaShapeShift": {
-    "message": "$1 a ETH via ShapeShift",
+    "message": "$1 a BCH via ShapeShift",
     "description":
       "il sistema riempirà il tipo di deposito all'inizio del messaggio"
   },

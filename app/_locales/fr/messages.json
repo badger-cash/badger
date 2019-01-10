@@ -64,7 +64,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Coinbase est le moyen le plus populaire au monde d'acheter et de vendre du Bitcoin, de l'Ethereum et du Litecoin."
+      "Coinbase est le moyen le plus populaire au monde d'acheter et de vendre du Bitcoin, de l'Bitcoin Cash et du Litecoin."
   },
   "cancel": {
     "message": "Annuler"
@@ -159,7 +159,7 @@
     "message": "Dépôt Eth"
   },
   "depositEther": {
-    "message": "Dépôt Ether"
+    "message": "Dépôt Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Dépôt de monnaie-fiat"
@@ -181,11 +181,11 @@
     "message": "Dépôt direct"
   },
   "directDepositEther": {
-    "message": "Dépôt direct d'Ether"
+    "message": "Dépôt direct d'Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Si vous avez déjà de l'Ether, le moyen le plus rapide d'obtenir des Bitcoin Cash dans votre nouveau portefeuille est par dépôt direct."
+      "Si vous avez déjà de l'Bitcoin Cash, le moyen le plus rapide d'obtenir des Bitcoin Cash dans votre nouveau portefeuille est par dépôt direct."
   },
   "done": {
     "message": "Fait"
@@ -263,11 +263,11 @@
     "message": "Prix du gaz requis"
   },
   "getBitcoinCash": {
-    "message": "Obtenir des Ether"
+    "message": "Obtenir des Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Obtenir de l'Bitcoin Cash d'une faucet pour $1",
-    "description": "Affiche le nom du réseau pour la faucet d'Ether"
+    "description": "Affiche le nom du réseau pour la faucet d'Bitcoin Cash"
   },
   "greaterThanMin": {
     "message": "doit être supérieur ou égal à $1.",
@@ -288,7 +288,7 @@
     "message": "Masquer le jeton?"
   },
   "howToDeposit": {
-    "message": "Comment voulez-vous déposer de l'Ether?"
+    "message": "Comment voulez-vous déposer de l'Bitcoin Cash?"
   },
   "import": {
     "message": "Importer",
@@ -565,7 +565,7 @@
     "message": "Destinataire"
   },
   "toETHviaShapeShift": {
-    "message": "$1 à ETH via ShapeShift",
+    "message": "$1 à BCH via ShapeShift",
     "description": "le système remplira le type de dépôt au début du message"
   },
   "tokenBalance": {

@@ -198,7 +198,7 @@
     "message": "Depositar Eth"
   },
   "depositEther": {
-    "message": "Depositar Ether"
+    "message": "Depositar Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Depositar moeda fiduciária"
@@ -220,11 +220,11 @@
     "message": "Depósito Direto"
   },
   "directDepositEther": {
-    "message": "Depositar Diretamente Ether"
+    "message": "Depositar Diretamente Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Se já tem Ether, a forma mais rápida de ficar com Bitcoin Cash na sua carteira é através de depósito direto."
+      "Se já tem Bitcoin Cash, a forma mais rápida de ficar com Bitcoin Cash na sua carteira é através de depósito direto."
   },
   "done": {
     "message": "Finalizado"
@@ -320,11 +320,11 @@
     "message": "Preço Gas Necessário"
   },
   "getBitcoinCash": {
-    "message": "Obter Ether"
+    "message": "Obter Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Obter Bitcoin Cash de um faucet por $1",
-    "description": "Mostra nome da rede para faucet de Ether"
+    "description": "Mostra nome da rede para faucet de Bitcoin Cash"
   },
   "greaterThanMin": {
     "message": "tem de ser maior ou igual a $1.",
@@ -348,7 +348,7 @@
     "message": "Ocultar Token?"
   },
   "howToDeposit": {
-    "message": "Como gostaria de depositar Ether?"
+    "message": "Como gostaria de depositar Bitcoin Cash?"
   },
   "holdEther": {
     "message":
@@ -481,7 +481,7 @@
       "Palavra-passe e ficheiro necessários para importar uma conta"
   },
   "negativeETH": {
-    "message": "Não é possível enviar valores negativos de ETH."
+    "message": "Não é possível enviar valores negativos de BCH."
   },
   "networks": {
     "message": "Redes"
@@ -669,7 +669,7 @@
     "message": "Enviar"
   },
   "sendETH": {
-    "message": "Enviar ETH"
+    "message": "Enviar BCH"
   },
   "sendTokens": {
     "message": "Enviar Tokens"
@@ -740,7 +740,7 @@
     "message": "Para"
   },
   "toETHviaShapeShift": {
-    "message": "$1 para ETH via ShapeShift",
+    "message": "$1 para BCH via ShapeShift",
     "description":
       "o sistema irá preencher o tipo de depósito no início da mensagem"
   },

@@ -76,7 +76,7 @@
   },
   "buyCoinbaseExplainer": {
     "message":
-      "Etherを購入できます。Coinbaseは、世界的なBitcoin、Ethereum、そしてLitecoinの取引所です。"
+      "Bitcoin Cashを購入できます。Coinbaseは、世界的なBitcoin、Bitcoin Cash、そしてLitecoinの取引所です。"
   },
   "cancel": {
     "message": "キャンセル"
@@ -167,7 +167,7 @@
     "message": "小数点桁数"
   },
   "defaultNetwork": {
-    "message": "デフォルトのEther送受信ネットワークはメインネットです。"
+    "message": "デフォルトのBitcoin Cash送受信ネットワークはメインネットです。"
   },
   "denExplainer": {
     "message":
@@ -185,10 +185,10 @@
       "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
-    "message": "ETHを入金"
+    "message": "BCHを入金"
   },
   "depositEther": {
-    "message": "Etherを振込"
+    "message": "Bitcoin Cashを振込"
   },
   "depositFiat": {
     "message": "法定通貨でデポジット"
@@ -201,7 +201,7 @@
   },
   "depositShapeShiftExplainer": {
     "message":
-      "他の暗号通貨とEtherを交換して、Badgerのウォレットへ入金できます。アカウント作成は不要です。"
+      "他の暗号通貨とBitcoin Cashを交換して、Badgerのウォレットへ入金できます。アカウント作成は不要です。"
   },
   "details": {
     "message": "詳細"
@@ -210,11 +210,11 @@
     "message": "ダイレクトデポジット"
   },
   "directDepositEther": {
-    "message": "Etherを直接入金"
+    "message": "Bitcoin Cashを直接入金"
   },
   "directDepositEtherExplainer": {
     "message":
-      "既にEtherをお持ちなら、Badgerの新しいウォレットにEtherを送信することができます。"
+      "既にBitcoin Cashをお持ちなら、Badgerの新しいウォレットにBitcoin Cashを送信することができます。"
   },
   "done": {
     "message": "完了"
@@ -289,10 +289,10 @@
     "message": "必要ガスプライス"
   },
   "getBitcoinCash": {
-    "message": "Etherを取得する"
+    "message": "Bitcoin Cashを取得する"
   },
   "getEtherFromFaucet": {
-    "message": "フォーセットで $1のEtherを得ることができます。",
+    "message": "フォーセットで $1のBitcoin Cashを得ることができます。",
     "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
@@ -314,7 +314,7 @@
     "message": "トークンを隠しますか?"
   },
   "howToDeposit": {
-    "message": "どのようにEtherをデポジットしますか?"
+    "message": "どのようにBitcoin Cashをデポジットしますか?"
   },
   "import": {
     "message": "追加",
@@ -404,7 +404,7 @@
     "message": "最大"
   },
   "mainnet": {
-    "message": "Ethereumメインネットワーク"
+    "message": "Bitcoin Cashメインネットワーク"
   },
   "menu": {
     "message": "メニュー"
@@ -423,7 +423,7 @@
   },
   "needEtherInWallet": {
     "message":
-      "Badgerで分散型アプリケーションを使用するためには、このウォレットにEtherが必要です。"
+      "Badgerで分散型アプリケーションを使用するためには、このウォレットにBitcoin Cashが必要です。"
   },
   "needImportFile": {
     "message": "インポートするファイルを選択してください。",
@@ -618,13 +618,13 @@
     "message": "送信"
   },
   "sendETH": {
-    "message": "ETHの送信"
+    "message": "BCHの送信"
   },
   "sendTokens": {
     "message": "トークンを送信"
   },
   "onlySendToEtherAddress": {
-    "message": "ETH はイーサリウムアカウントのみに送信できます。"
+    "message": "BCH はイーサリウムアカウントのみに送信できます。"
   },
   "onlySendTokensToAccountAddress": {
     "message": "$1 はイーサリアムアカウントのみに送信できます。",
@@ -686,7 +686,7 @@
     "message": "送信先"
   },
   "toETHviaShapeShift": {
-    "message": "ShapeShiftで $1をETHにする",
+    "message": "ShapeShiftで $1をBCHにする",
     "description": "system will fill in deposit type in start of message"
   },
   "token": {

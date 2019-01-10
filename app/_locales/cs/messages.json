@@ -188,7 +188,7 @@
     "message": "Počet desetinných míst přesnosti"
   },
   "defaultNetwork": {
-    "message": "Výchozí síť pro Etherové transakce je Main Net."
+    "message": "Výchozí síť pro Bitcoin Cashové transakce je Main Net."
   },
   "denExplainer": {
     "message": "Váš DEN je heslem šifrované uložiště v Badgeru."
@@ -509,7 +509,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Nelze odeslat zápornou částku ETH."
+    "message": "Nelze odeslat zápornou částku BCH."
   },
   "networks": {
     "message": "Sítě"
@@ -733,13 +733,13 @@
     "message": "Odeslat"
   },
   "sendETH": {
-    "message": "Odeslat ETH"
+    "message": "Odeslat BCH"
   },
   "sendTokens": {
     "message": "Odeslat tokeny"
   },
   "onlySendToEtherAddress": {
-    "message": "Posílejte jen ETH na Bitcoin Cash adresu."
+    "message": "Posílejte jen BCH na Bitcoin Cash adresu."
   },
   "searchTokens": {
     "message": "Hledat tokeny"
@@ -822,7 +822,7 @@
     "message": "Komu"
   },
   "toETHviaShapeShift": {
-    "message": "$1 na ETH přes ShapeShift",
+    "message": "$1 na BCH přes ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "tokenAddress": {

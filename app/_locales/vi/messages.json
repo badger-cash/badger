@@ -138,7 +138,7 @@
   },
   "defaultNetwork": {
     "message":
-      "Mạng lưới mặc định dùng cho các giao dịch Bitcoin Cash là Main Net (tiền ETH thật)."
+      "Mạng lưới mặc định dùng cho các giao dịch Bitcoin Cash là Main Net (tiền BCH thật)."
   },
   "denExplainer": {
     "message":
@@ -159,7 +159,7 @@
     "message": "Ký gửi Eth"
   },
   "depositEther": {
-    "message": "Ký gửi Ether"
+    "message": "Ký gửi Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Ký gửi bằng tiền Fiat (USD, GBP, ...)"
@@ -185,7 +185,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Nếu bạn đã có sẵn vài Ether, cách nhanh nhất để thêm Bitcoin Cash vào ví tiền mới của bạn là bằng ký gửi trực tiếp."
+      "Nếu bạn đã có sẵn vài Bitcoin Cash, cách nhanh nhất để thêm Bitcoin Cash vào ví tiền mới của bạn là bằng ký gửi trực tiếp."
   },
   "done": {
     "message": "Hoàn tất"
@@ -262,10 +262,10 @@
     "message": "Giá ga được yêu cầu"
   },
   "getBitcoinCash": {
-    "message": "Lấy Ether"
+    "message": "Lấy Bitcoin Cash"
   },
   "getEtherFromFaucet": {
-    "description": "Hiển thị tên mạng cho vòi Ether",
+    "description": "Hiển thị tên mạng cho vòi Bitcoin Cash",
     "message": "Lấy Bitcoin Cash từ vòi với giá $1"
   },
   "greaterThanMin": {
@@ -352,7 +352,7 @@
     "message": "Nới lỏng"
   },
   "mainnet": {
-    "message": "Mạng Bitcoin Cash MainNet (tiền ETH thật)"
+    "message": "Mạng Bitcoin Cash MainNet (tiền BCH thật)"
   },
   "message": {
     "message": "Tin nhắn"
@@ -555,14 +555,14 @@
     "message": "Chờ quá lâu?"
   },
   "testFaucet": {
-    "message": "Vòi nhận tiền ETH ảo để thử nghiệm"
+    "message": "Vòi nhận tiền BCH ảo để thử nghiệm"
   },
   "to": {
     "message": "Đến"
   },
   "toETHviaShapeShift": {
     "description": "hệ thống sẽ điền vào loại tiền gửi khi bắt đầu tin nhắn",
-    "message": "$1 thành ETH qua ShapeShift"
+    "message": "$1 thành BCH qua ShapeShift"
   },
   "tokenBalance": {
     "message": "Số dư token của bạn là:"

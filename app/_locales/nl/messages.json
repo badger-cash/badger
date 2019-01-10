@@ -177,7 +177,7 @@
     "message": "Decimalen van precisie"
   },
   "defaultNetwork": {
-    "message": "Het standaardnetwerk voor Ether-transacties is Main Net."
+    "message": "Het standaardnetwerk voor Bitcoin Cash-transacties is Main Net."
   },
   "denExplainer": {
     "message": "Uw DEN is uw wachtwoord-gecodeerde opslag binnen Badger."
@@ -197,7 +197,7 @@
     "message": "Aanbetaling Eth"
   },
   "depositEther": {
-    "message": "Stort Ether"
+    "message": "Stort Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Stort met Fiat"
@@ -319,11 +319,11 @@
     "message": "Gasprijs vereist"
   },
   "getBitcoinCash": {
-    "message": "Krijg Ether"
+    "message": "Krijg Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Haal Bitcoin Cash uit een kraan voor de $1",
-    "description": "Geeft de netwerknaam voor Ether-kraan weer"
+    "description": "Geeft de netwerknaam voor Bitcoin Cash-kraan weer"
   },
   "greaterThanMin": {
     "message": "moet groter zijn dan of gelijk zijn aan $1.",
@@ -480,7 +480,7 @@
     "description": "Wachtwoord en bestand nodig om een ​​account te importeren"
   },
   "negativeETH": {
-    "message": "Kan geen negatieve hoeveelheden ETH verzenden."
+    "message": "Kan geen negatieve hoeveelheden BCH verzenden."
   },
   "networks": {
     "message": "netwerken"
@@ -669,7 +669,7 @@
     "message": "Sturen"
   },
   "sendETH": {
-    "message": "Verzend ETH"
+    "message": "Verzend BCH"
   },
   "sendTokens": {
     "message": "Stuur tokens"
@@ -740,7 +740,7 @@
     "message": "Naar"
   },
   "toETHviaShapeShift": {
-    "message": "$1 tot ETH via ShapeShift",
+    "message": "$1 tot BCH via ShapeShift",
     "description":
       "systeem zal het aanbetalingstype invullen bij het begin van het bericht"
   },

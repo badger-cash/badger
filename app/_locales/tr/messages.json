@@ -235,7 +235,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Eğer çoktan Etheriniz varsa, yeni hesabınıza Bitcoin Cash aktarmanın en kolay yolu direk yatırmadır."
+      "Eğer çoktan Bitcoin Cashiniz varsa, yeni hesabınıza Bitcoin Cash aktarmanın en kolay yolu direk yatırmadır."
   },
   "done": {
     "message": "Bitti"
@@ -368,7 +368,7 @@
     "message": "Jetonu gizle?"
   },
   "howToDeposit": {
-    "message": "Ether'i nasıl yatırmak istersiniz?"
+    "message": "Bitcoin Cash'i nasıl yatırmak istersiniz?"
   },
   "holdEther": {
     "message":
@@ -511,7 +511,7 @@
     "description": "Hesap almak için parola ve dosya gerekiyor."
   },
   "negativeETH": {
-    "message": "Negatif ETH miktarları gönderilemez."
+    "message": "Negatif BCH miktarları gönderilemez."
   },
   "networks": {
     "message": "Ağlar"
@@ -734,19 +734,19 @@
     "message": "Gönder"
   },
   "sendETH": {
-    "message": "ETH Gönder"
+    "message": "BCH Gönder"
   },
   "sendTokens": {
     "message": "Jeton Gönder"
   },
   "onlySendToEtherAddress": {
-    "message": "Ethereum adresine sadece ETH gönder."
+    "message": "Bitcoin Cash adresine sadece BCH gönder."
   },
   "searchTokens": {
     "message": "Jeton ara"
   },
   "sendTokensAnywhere": {
-    "message": "Ethereum hesabı olan birine Jeton gönder"
+    "message": "Bitcoin Cash hesabı olan birine Jeton gönder"
   },
   "settings": {
     "message": "Ayarlar"
@@ -823,7 +823,7 @@
     "message": "Kime"
   },
   "toETHviaShapeShift": {
-    "message": "ShapeShift üstünden $1'dan ETH'e",
+    "message": "ShapeShift üstünden $1'dan BCH'e",
     "description": "system will fill in deposit type in start of message"
   },
   "tokenAddress": {

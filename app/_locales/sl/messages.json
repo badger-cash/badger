@@ -193,7 +193,7 @@
       "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
-    "message": "Vplačilo ETH"
+    "message": "Vplačilo BCH"
   },
   "depositEther": {
     "message": "Vplačilo ethera"
@@ -475,7 +475,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Ni mogoče poslati negativne vsote ETH."
+    "message": "Ni mogoče poslati negativne vsote BCH."
   },
   "networks": {
     "message": "Omrežja"
@@ -662,7 +662,7 @@
     "message": "Pošlji"
   },
   "sendETH": {
-    "message": "Pošlji ETH"
+    "message": "Pošlji BCH"
   },
   "sendTokens": {
     "message": "Pošlji žetone"
@@ -733,7 +733,7 @@
     "message": "Za"
   },
   "toETHviaShapeShift": {
-    "message": "$1 v ETH prek ShapeShift",
+    "message": "$1 v BCH prek ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "tokenAddress": {

@@ -788,13 +788,13 @@
     "message": "전송"
   },
   "sendETH": {
-    "message": "ETH 보내기"
+    "message": "BCH 보내기"
   },
   "sendTokens": {
     "message": "토큰 전송"
   },
   "onlySendToEtherAddress": {
-    "message": "이더리움 주소로 ETH만 송금하세요."
+    "message": "이더리움 주소로 BCH만 송금하세요."
   },
   "onlySendTokensToAccountAddress": {
     "message": "이더리움계정 주소로 $1 만 보내기.",
@@ -881,7 +881,7 @@
     "message": "받는이: "
   },
   "toETHviaShapeShift": {
-    "message": "ShapeShift를 통해 $1를 ETH로 바꾸기",
+    "message": "ShapeShift를 통해 $1를 BCH로 바꾸기",
     "description": "시스템이 시작할 때에 입금 유형을 입력해줍니다"
   },
   "token": {

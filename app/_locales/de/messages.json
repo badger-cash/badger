@@ -507,7 +507,7 @@
       "Passwort und Datei sind notwendig um einen Account zu importieren"
   },
   "negativeETH": {
-    "message": "Negative ETH Beträge können nicht versendet werden."
+    "message": "Negative BCH Beträge können nicht versendet werden."
   },
   "networks": {
     "message": "Netzwerke"
@@ -723,13 +723,13 @@
     "message": "Senden"
   },
   "sendETH": {
-    "message": "ETH senden"
+    "message": "BCH senden"
   },
   "sendTokens": {
     "message": "Token senden"
   },
   "onlySendToEtherAddress": {
-    "message": "ETH unbedingt nur zu einer Bitcoin Cash Adresse senden."
+    "message": "BCH unbedingt nur zu einer Bitcoin Cash Adresse senden."
   },
   "sendTokensAnywhere": {
     "message":
@@ -810,7 +810,7 @@
     "message": "An"
   },
   "toETHviaShapeShift": {
-    "message": "$1 an ETH via ShapeShift",
+    "message": "$1 an BCH via ShapeShift",
     "description":
       "Das System wird den Einzahlungstyp im Beginn der Nachricht eintragen"
   },

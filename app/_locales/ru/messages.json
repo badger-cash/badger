@@ -210,7 +210,7 @@
     "message": "Пополнить Eth"
   },
   "depositEther": {
-    "message": "Пополнить Ether"
+    "message": "Пополнить Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Пополнить деньгами"
@@ -232,11 +232,11 @@
     "message": "Прямое пополнение"
   },
   "directDepositEther": {
-    "message": "Прямое пополнение Ether"
+    "message": "Прямое пополнение Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "Если у вас уже есть Ether, то самый быстрый способ получить Bitcoin Cash в ваш новый кошелек – это прямое пополнение."
+      "Если у вас уже есть Bitcoin Cash, то самый быстрый способ получить Bitcoin Cash в ваш новый кошелек – это прямое пополнение."
   },
   "done": {
     "message": "Готово"
@@ -334,7 +334,7 @@
     "message": "Установите стоимость газа"
   },
   "getBitcoinCash": {
-    "message": "Получить Ether"
+    "message": "Получить Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Получить Bitcoin Cash из крана для $1",
@@ -362,7 +362,7 @@
     "message": "Скрыть токен?"
   },
   "howToDeposit": {
-    "message": "Как бы вы хотели пополнить Ether?"
+    "message": "Как бы вы хотели пополнить Bitcoin Cash?"
   },
   "holdEther": {
     "message":
@@ -506,7 +506,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Невозможно отправить отрицательную сумму ETH."
+    "message": "Невозможно отправить отрицательную сумму BCH."
   },
   "networks": {
     "message": "Сети"
@@ -725,13 +725,13 @@
     "message": "Отправить"
   },
   "sendETH": {
-    "message": "Отправить ETH"
+    "message": "Отправить BCH"
   },
   "sendTokens": {
     "message": "Отправить токены"
   },
   "onlySendToEtherAddress": {
-    "message": "Отправляйте ETH только на Bitcoin Cash адреса."
+    "message": "Отправляйте BCH только на Bitcoin Cash адреса."
   },
   "searchTokens": {
     "message": "Поиск токенов"
@@ -814,7 +814,7 @@
     "message": "Получатель"
   },
   "toETHviaShapeShift": {
-    "message": "$1 в ETH через ShapeShift",
+    "message": "$1 в BCH через ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "tokenAddress": {

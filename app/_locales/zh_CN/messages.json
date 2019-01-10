@@ -210,7 +210,7 @@
     "message": "存入 Eth"
   },
   "depositEther": {
-    "message": "存入 Ether"
+    "message": "存入 Bitcoin Cash"
   },
   "depositFiat": {
     "message": "从 Fiat 存入"
@@ -232,11 +232,11 @@
     "message": "直接存入"
   },
   "directDepositEther": {
-    "message": "直接存入 Ether"
+    "message": "直接存入 Bitcoin Cash"
   },
   "directDepositEtherExplainer": {
     "message":
-      "如果你已经有了一些 Ether，通过直接转入是你的新钱包获取 Bitcoin Cash 的最快捷方式。"
+      "如果你已经有了一些 Bitcoin Cash，通过直接转入是你的新钱包获取 Bitcoin Cash 的最快捷方式。"
   },
   "done": {
     "message": "完成"
@@ -344,10 +344,10 @@
     "message": "生成 交易"
   },
   "getBitcoinCash": {
-    "message": "获取 Ether"
+    "message": "获取 Bitcoin Cash"
   },
   "getEtherFromFaucet": {
-    "message": "从水管获取$1网络的 Ether",
+    "message": "从水管获取$1网络的 Bitcoin Cash",
     "description": "Displays network name for Bitcoin Cash faucet"
   },
   "greaterThanMin": {
@@ -372,7 +372,7 @@
     "message": "隐藏代币？"
   },
   "howToDeposit": {
-    "message": "你想怎样转入 Ether？"
+    "message": "你想怎样转入 Bitcoin Cash？"
   },
   "holdEther": {
     "message": "它允许你保存ether和代币，并作为你使用Dapp的桥梁."
@@ -506,7 +506,7 @@
     "message": "至少选择一种代币."
   },
   "needEtherInWallet": {
-    "message": "使用 Badger 与 DAPP 交互，需要你的钱包里有 Ether。"
+    "message": "使用 Badger 与 DAPP 交互，需要你的钱包里有 Bitcoin Cash。"
   },
   "needImportFile": {
     "message": "必须选择导入一个文件。",
@@ -518,7 +518,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Can not send negative amounts of ETH."
+    "message": "Can not send negative amounts of BCH."
   },
   "networks": {
     "message": "网络"
@@ -755,13 +755,13 @@
     "message": "发送"
   },
   "sendETH": {
-    "message": "发送 ETH"
+    "message": "发送 BCH"
   },
   "sendTokens": {
     "message": "发送 代币"
   },
   "onlySendToEtherAddress": {
-    "message": "只发送 ETH 给一个以太坊地址"
+    "message": "只发送 BCH 给一个以太坊地址"
   },
   "searchTokens": {
     "message": "搜索代币"
@@ -843,7 +843,7 @@
     "message": "至"
   },
   "toETHviaShapeShift": {
-    "message": "$1 ETH 通过 ShapeShift",
+    "message": "$1 BCH 通过 ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "tokenAddress": {

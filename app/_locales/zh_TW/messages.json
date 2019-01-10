@@ -481,7 +481,7 @@
     "message": "訊息"
   },
   "metamaskDescription": {
-    "message": "Badger 是Ethereum的安全身份識別金庫."
+    "message": "Badger 是Bitcoin Cash的安全身份識別金庫."
   },
   "min": {
     "message": "最小"
@@ -505,7 +505,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "不能送出負值的 ETH。"
+    "message": "不能送出負值的 BCH。"
   },
   "networks": {
     "message": "網路"
@@ -720,13 +720,13 @@
     "message": "發送"
   },
   "sendETH": {
-    "message": "發送 ETH"
+    "message": "發送 BCH"
   },
   "sendTokens": {
     "message": "發送代幣"
   },
   "onlySendToEtherAddress": {
-    "message": "只發送 ETH 到乙太坊地址."
+    "message": "只發送 BCH 到乙太坊地址."
   },
   "searchTokens": {
     "message": "搜尋代幣"
@@ -808,7 +808,7 @@
     "message": "目的帳號"
   },
   "toETHviaShapeShift": {
-    "message": "$1 ETH 透過 ShapeShift",
+    "message": "$1 BCH 透過 ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "tokenAddress": {

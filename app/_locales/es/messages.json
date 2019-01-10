@@ -218,10 +218,10 @@
       "Informa al usuario que moneda ha elegido para depositar en shapeshift"
   },
   "depositEth": {
-    "message": "Depositar Ether"
+    "message": "Depositar Bitcoin Cash"
   },
   "depositEther": {
-    "message": "Depositar Ether"
+    "message": "Depositar Bitcoin Cash"
   },
   "depositFiat": {
     "message": "Depositar con fiat (divisa nacional)"
@@ -247,7 +247,7 @@
   },
   "directDepositEtherExplainer": {
     "message":
-      "Si posees Ether, la forma más rápida de transferirlo a tu nueva billetera es depositándolo directamente"
+      "Si posees Bitcoin Cash, la forma más rápida de transferirlo a tu nueva billetera es depositándolo directamente"
   },
   "done": {
     "message": "Completo"
@@ -345,11 +345,12 @@
     "message": "Generando semilla..."
   },
   "getBitcoinCash": {
-    "message": "Conseguir Ether"
+    "message": "Conseguir Bitcoin Cash"
   },
   "getEtherFromFaucet": {
     "message": "Obtenga Bitcoin Cash de un faucet (grifo) por $1",
-    "description": "Muestra el nombre de la red para el faucet (grifo) de Ether"
+    "description":
+      "Muestra el nombre de la red para el faucet (grifo) de Bitcoin Cash"
   },
   "greaterThanMin": {
     "message": "Debe ser mayor o igual a $1",
@@ -376,7 +377,7 @@
       "Te permite mantener tus ether y tokens, así como puente para aplicaciones descentralizadas"
   },
   "howToDeposit": {
-    "message": "¿Cómo te gustaria depositar Ether?"
+    "message": "¿Cómo te gustaria depositar Bitcoin Cash?"
   },
   "import": {
     "message": "Importar",
@@ -513,7 +514,7 @@
     "description": "Contraseña y archivo necesarios para importar una cuenta"
   },
   "negativeETH": {
-    "message": "No se pueden mandar cantidades negativas de ETH"
+    "message": "No se pueden mandar cantidades negativas de BCH"
   },
   "networks": {
     "message": "Redes"
@@ -719,7 +720,7 @@
     "message": "Enviar"
   },
   "sendETH": {
-    "message": "Enviar Ether"
+    "message": "Enviar Bitcoin Cash"
   },
   "sendTokens": {
     "message": "Enviar tokens"
@@ -799,7 +800,7 @@
     "message": "Para"
   },
   "toETHviaShapeShift": {
-    "message": "$1 a ETH via ShapeShift",
+    "message": "$1 a BCH via ShapeShift",
     "description":
       "el sistema llenará el tipo de depósito al principio del mensaje"
   },

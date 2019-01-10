@@ -4,6 +4,9 @@
 - Firefox and Chrome: Download the most recent release from https://badger.bitcoin.com
 - Brave: Install from chrome store
 
+## API Documentation
+https://developer.bitcoin.com/badger/docs/getting-started
+
 ## Intro
 
 Badger is a secure identity vault for Bitcoin Cash. It allows you to hold BCH & tokens, and serves as your bridge to decentralized applications (dapps).

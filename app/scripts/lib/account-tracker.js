@@ -290,19 +290,21 @@ class AccountTracker {
         ]
 
         // Validate SLP DAG
-        try {
-          const validSLPTx = await slpjs.bitdb.verifyTransactions(txidsToValidate)
-          for (const validTxid of validSLPTx) {
-            for (const utxo of uncachedUtxos) {
-              if (utxo.txid === validTxid) {
-                utxo.validSlpTx = true
-              }
-            }
-          }
+        // START: Hotfix: Disable SLP Validation
+        // try {
+        //   const validSLPTx = await slpjs.bitdb.verifyTransactions(txidsToValidate)
+        //   for (const validTxid of validSLPTx) {
+        //     for (const utxo of uncachedUtxos) {
+        //       if (utxo.txid === validTxid) {
+        //         utxo.validSlpTx = true
+        //       }
+        //     }
+        //   }
+        // END: Hotfix: Disable SLP Validation
 
-          // Update accountUtxoCache with all uncached utxos
-          accountUtxoCache[address] = accountUtxoCache[address].concat(uncachedUtxos)
-        } catch (validateSLPTxException) {
+        //   // Update accountUtxoCache with all uncached utxos
+        //   accountUtxoCache[address] = accountUtxoCache[address].concat(uncachedUtxos)
+        // } catch (validateSLPTxException) {
           // Validation incomplete. Ignore all uncached SLP UTXOs
           const nonSLPUtxos = uncachedUtxos.filter(txOut => {
             if (txOut.slp === undefined) {
@@ -313,7 +315,7 @@ class AccountTracker {
 
           // Update accountUtxoCache with uncached non SLP Utxos
           accountUtxoCache[address] = accountUtxoCache[address].concat(nonSLPUtxos)
-        }
+        // } // Hotfix: Disable SLP Validation
       }
 
       // loop through UTXO set and accumulate balances for each valid token.

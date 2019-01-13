@@ -13,13 +13,13 @@ Badger is a secure identity vault for Bitcoin Cash. It allows you to hold BCH & 
 
 Bitcoin Cash and tokens enable an entirely new dimension to the web with micro-payments, smart-assets, decentralized exchanges, distributed autonomous organizations and much more.
 
-Badger is your identiy on this new web. You can pay for premium content, run smart contracts and experience dapps seemlessly and trust free.
+Badger is your identity on this new web. You can pay for premium content, run smart contracts and experience dapps seamlessly and trust free.
 
-Powered by BITBOX, Badger is 100% non-custodial. You're private keys never leave your computer.
+Powered by BITBOX, Badger is 100% non-custodial. Your private keys never leave your computer.
 
 ## Badger Button
 
-Badger Button is a library of open source UI components which content creators and entreprenuers can drop in to their site to enable micro payments, premium content, tipping, e-commerce and much more.
+Badger Button is a library of open source UI components which content creators and entrepreneurs can drop in to their site to enable micro-payments, premium content, tipping, e-commerce and much more.
 
 - Usage: https://old.reddit.com/r/btc/comments/9l9j1t/how_to_create_your_own_custom_badger_button/
 - Example buttons visible on articles at https://coinspice.io/

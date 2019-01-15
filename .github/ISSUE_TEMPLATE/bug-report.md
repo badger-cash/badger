@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Using MetaMask, but it's not working as you expect?
+about: Using Badger Wallet, but it's not working as you expect?
 
 ---
 
@@ -25,10 +25,9 @@ A clear description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Browser details (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Badger Version [e.g. 4.9.0]
- - Old UI or New / Beta UI?
+ - OS: [e.g. OSX, Windows]
+ - Browser [e.g. Chrome, Firefox]
+ - Badger Version [e.g. 0.1.3]
 
 **Additional context**
 Add any other context about the problem here.

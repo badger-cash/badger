@@ -50,7 +50,7 @@ TokenMenuDropdown.prototype.render = function () {
     explorerUrl = `https://tokengraph.network/token/${address}`
     tokenId = address
   } else if (protocol === 'wormhole') {
-    explorerUrl = `https://whc.btc.com/tokens/${protocolData.propertyid}`
+    explorerUrl = `https://whc.btc.com/props/${protocolData.propertyid}`
     tokenId = protocolData.propertyid
   }
 

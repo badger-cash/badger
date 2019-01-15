@@ -1,6 +1,7 @@
 # Badger
 
 ## Installation
+
 - Firefox and Chrome: Download the most recent release from https://badger.bitcoin.com
 - Brave: Install from chrome store
 
@@ -25,6 +26,7 @@ Badger Button is a library of open source UI components which content creators a
 - Example buttons visible on articles at https://coinspice.io/
 
 ## CashID
+
 - Allows dapps to authenticate an account and provide previously purchased content
 - CashID react component and example usage by paOol: https://github.com/paOol/react-cashid
 

@@ -1,8 +1,12 @@
 {
   "name": "badger",
-  "version": "0.0.1",
-  "public": false,
-  "private": true,
+  "version": "0.1.1",
+  "license": "MIT",
+  "homepage": "https://badger.bitcoin.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bitcoin-com/badger.git"
+  },
   "scripts": {
     "start": "gulp dev:extension",
     "mascara": "gulp dev:mascara & node ./mascara/example/server",

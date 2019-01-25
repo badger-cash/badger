@@ -12,6 +12,7 @@ const ObservableStore = require('obs-store')
 const log = require('loglevel')
 const chunk = require('lodash.chunk')
 const BigNumber = require('bignumber.js')
+const axios = require('axios')
 // const pify = require('pify')
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
@@ -290,21 +291,30 @@ class AccountTracker {
         ]
 
         // Validate SLP DAG
-        // START: Hotfix: Disable SLP Validation
-        // try {
-        //   const validSLPTx = await slpjs.bitdb.verifyTransactions(txidsToValidate)
-        //   for (const validTxid of validSLPTx) {
-        //     for (const utxo of uncachedUtxos) {
-        //       if (utxo.txid === validTxid) {
-        //         utxo.validSlpTx = true
-        //       }
-        //     }
-        //   }
-        // END: Hotfix: Disable SLP Validation
+        try {
+          const validationResponse = await axios({
+            method: 'POST',
+            url: 'https://rest.bitcoin.com/v2/slp/validate',
+            headers: {
+              'content-type': 'application/json',
+            },
+            data: {
+              txids: txidsToValidate,
+            },
+          })
+          const validSLPTx = validationResponse.data
+          
+          for (const validTxid of validSLPTx) {
+            for (const utxo of uncachedUtxos) {
+              if (utxo.txid === validTxid) {
+                utxo.validSlpTx = true
+              }
+            }
+          }
 
-        //   // Update accountUtxoCache with all uncached utxos
-        //   accountUtxoCache[address] = accountUtxoCache[address].concat(uncachedUtxos)
-        // } catch (validateSLPTxException) {
+          // Update accountUtxoCache with all uncached utxos
+          accountUtxoCache[address] = accountUtxoCache[address].concat(uncachedUtxos)
+        } catch (validateSLPTxException) {
           // Validation incomplete. Ignore all uncached SLP UTXOs
           const nonSLPUtxos = uncachedUtxos.filter(txOut => {
             if (txOut.slp === undefined) {
@@ -315,7 +325,7 @@ class AccountTracker {
 
           // Update accountUtxoCache with uncached non SLP Utxos
           accountUtxoCache[address] = accountUtxoCache[address].concat(nonSLPUtxos)
-        // } // Hotfix: Disable SLP Validation
+        }
       }
 
       // loop through UTXO set and accumulate balances for each valid token.

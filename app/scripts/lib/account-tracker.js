@@ -292,17 +292,21 @@ class AccountTracker {
 
         // Validate SLP DAG
         try {
-          const validationResponse = await axios({
-            method: 'POST',
-            url: 'https://rest.bitcoin.com/v2/slp/validate',
-            headers: {
-              'content-type': 'application/json',
-            },
-            data: {
-              txids: txidsToValidate,
-            },
-          })
-          const validSLPTx = validationResponse.data
+          let validSLPTx = await Promise.all(chunk(txidsToValidate, 20).map(async txidsToValidateChunk => {
+            const validationResponse = await axios({
+              method: 'POST',
+              url: 'https://rest.bitcoin.com/v2/slp/validate',
+              headers: {
+                'content-type': 'application/json',
+              },
+              data: {
+                txids: txidsToValidateChunk,
+              },
+            })
+            const validSLPTxChunk = validationResponse.data
+            return validSLPTxChunk
+          }))
+          validSLPTx = [].concat(...validSLPTx)
           
           for (const validTxid of validSLPTx) {
             for (const utxo of uncachedUtxos) {

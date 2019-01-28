@@ -160,9 +160,7 @@ class TransactionController extends EventEmitter {
 
   async addUnapprovedTransaction (txParams) {
     // validate
-    // skip normalize
-    // const normalizedTxParams = txUtils.normalizeTxParams(txParams)
-    const normalizedTxParams = txParams
+    const normalizedTxParams = txUtils.normalizeTxParams(txParams)
     txUtils.validateTxParams(normalizedTxParams)
     
     // construct txMeta

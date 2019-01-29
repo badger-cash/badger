@@ -2,7 +2,6 @@ const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
 const BITBOX = new BITBOXSDK()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
-const bchaddr = require('bchaddrjs-slp')
 const WH = require('wormhole-sdk/lib/Wormhole').default
 const Wormhole = new WH({
   restURL: `https://rest.bitcoin.com/v1/`,
@@ -136,7 +135,7 @@ class BitboxUtils {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
-        const to = bchaddr.toCashAddress(txParams.to)
+        const to = txParams.to
         const tokenDecimals = tokenMetadata.decimals
         const scaledTokenSendAmount = (new BigNumber(txParams.value)).decimalPlaces(tokenDecimals)
         const tokenSendAmount = scaledTokenSendAmount.times(10 ** tokenDecimals)

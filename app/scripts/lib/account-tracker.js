@@ -265,7 +265,7 @@ class AccountTracker {
         uncachedUtxos[i].tx = txDetails[i]
       }
 
-      // Parse the txDetails for txid and run list against tokengraph validate
+      // Parse the txDetails for txid and run list against slp/validate
       // try to parse out SLP object from SEND or GENESIS txn type
       for (let txOut of uncachedUtxos) {
         try {

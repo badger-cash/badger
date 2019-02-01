@@ -49,11 +49,9 @@ export default class TransactionListItem extends PureComponent {
     //   methodData: { name } = {},
     //   setSelectedToken,
     // } = this.props
-
     // if (name === TOKEN_MBCHOD_TRANSFER) {
     //   setSelectedToken(to)
     // }
-
     // this.resubmit()
   }
 
@@ -70,7 +68,7 @@ export default class TransactionListItem extends PureComponent {
   }
 
   renderPrimaryCurrency () {
-    let {
+    const {
       token,
       transaction: { txParams: { data } = {} } = {},
       transaction: { txParams } = {},
@@ -98,24 +96,20 @@ export default class TransactionListItem extends PureComponent {
         prefix="-"
         numberOfDecimals={8}
         currency={BCH}
-        fromDenomination='SAT'
+        fromDenomination="SAT"
       />
     )
   }
 
   renderSecondaryCurrency () {
-    const { 
-      token, 
-      value,
-      transaction: { txParams } = {},
-     } = this.props
+    const { token, value, transaction: { txParams } = {} } = this.props
 
     return txParams.sendTokenData ? null : (
       <CurrencyDisplay
         className="transaction-list-item__amount transaction-list-item__amount--secondary"
         prefix="-"
         value={value}
-        fromDenomination='SAT'
+        fromDenomination="SAT"
       />
     )
   }

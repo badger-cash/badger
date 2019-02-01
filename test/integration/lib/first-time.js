@@ -39,13 +39,13 @@ async function runFirstTimeUsageTest(assert, done) {
       // still notices to accept
       const termsPageRaw = await findAsync(app, '.markdown')
       const termsPage = (await findAsync(app, '.markdown'))[0]
-      console.log('termsPageRaw', termsPageRaw)
+      // console.log('termsPageRaw', termsPageRaw)
       termsPage.scrollTop = termsPage.scrollHeight
-      console.log('Clearing notice')
+      // console.log('Clearing notice')
       button.click()
     } else {
       // exit loop
-      console.log('No more notices...')
+      // console.log('No more notices...')
       break
     }
   }

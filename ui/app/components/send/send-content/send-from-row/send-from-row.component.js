@@ -4,7 +4,6 @@ import SendRowWrapper from '../send-row-wrapper/'
 import FromDropdown from './from-dropdown/'
 
 export default class SendFromRow extends Component {
-
   static propTypes = {
     closeFromDropdown: PropTypes.func,
     conversionRate: PropTypes.number,
@@ -15,18 +14,14 @@ export default class SendFromRow extends Component {
     tokenContract: PropTypes.object,
     updateSendFrom: PropTypes.func,
     setSendTokenBalance: PropTypes.func,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   async handleFromChange (newFrom) {
-    const {
-      updateSendFrom,
-      tokenContract,
-      setSendTokenBalance,
-    } = this.props
+    const { updateSendFrom, tokenContract, setSendTokenBalance } = this.props
 
     if (tokenContract) {
       const usersToken = await tokenContract.balanceOf(newFrom.address)
@@ -60,5 +55,4 @@ export default class SendFromRow extends Component {
       </SendRowWrapper>
     )
   }
-
 }

@@ -24,10 +24,8 @@ describe('TransactionListItemDetails Component', () => {
     }
 
     const wrapper = shallow(
-      <TransactionListItemDetails
-        transaction={transaction}
-      />,
-      { context: { t: (str1, str2) => str2 ? str1 + str2 : str1 } }
+      <TransactionListItemDetails transaction={transaction} />,
+      { context: { t: (str1, str2) => (str2 ? str1 + str2 : str1) } }
     )
 
     assert.ok(wrapper.hasClass('transaction-list-item-details'))
@@ -53,11 +51,8 @@ describe('TransactionListItemDetails Component', () => {
     }
 
     const wrapper = shallow(
-      <TransactionListItemDetails
-        transaction={transaction}
-        showRetry={true}
-      />,
-      { context: { t: (str1, str2) => str2 ? str1 + str2 : str1 } }
+      <TransactionListItemDetails transaction={transaction} showRetry={true} />,
+      { context: { t: (str1, str2) => (str2 ? str1 + str2 : str1) } }
     )
 
     assert.ok(wrapper.hasClass('transaction-list-item-details'))

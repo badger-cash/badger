@@ -171,7 +171,9 @@ class AccountTracker {
 
     // query balance
     let balance = await this._updateAccountTokens(address)
-    if (!balance) balance = accounts[address].balance ? accounts[address].balance : balance
+    if (!balance) {
+      balance = accounts[address].balance ? accounts[address].balance : balance
+    }
 
     const result = { address, balance }
 
@@ -190,7 +192,9 @@ class AccountTracker {
           tokens = tokens.concat(wormholeTokens)
         }
 
-        const { slpTokens, bchBalanceSatoshis } = await this._getSlpTokens(address)
+        const { slpTokens, bchBalanceSatoshis } = await this._getSlpTokens(
+          address
+        )
 
         if (slpTokens) {
           tokens = tokens.concat(slpTokens)
@@ -198,7 +202,10 @@ class AccountTracker {
 
         balance = bchBalanceSatoshis
       } catch (err) {
-        log.error('AccountTracker::_updateAccountTokens - Token update failed', err)
+        log.error(
+          'AccountTracker::_updateAccountTokens - Token update failed',
+          err
+        )
       }
 
       // Remove current tokens
@@ -213,9 +220,8 @@ class AccountTracker {
       tokens.forEach(async token => {
         await this._preferences.addTokenByAccount(address, 'mainnet', token)
       })
-
     } catch (error) {
-      log.error('AccountTracker::_updateAccountTokens', error)
+      // log.error('AccountTracker::_updateAccountTokens', error)
     }
 
     return balance
@@ -232,21 +238,31 @@ class AccountTracker {
       const allCurrentUtxos = await bitboxUtils.getAllUtxo(address)
 
       // Remove spent utxos from cache
-      accountUtxoCache[address] = accountUtxoCache[address].filter(cachedUtxo => {
-        return allCurrentUtxos.some(currentUtxo => {
-          return (currentUtxo.txid === cachedUtxo.txid && currentUtxo.vout === cachedUtxo.vout)
-        })
-      })
+      accountUtxoCache[address] = accountUtxoCache[address].filter(
+        cachedUtxo => {
+          return allCurrentUtxos.some(currentUtxo => {
+            return (
+              currentUtxo.txid === cachedUtxo.txid &&
+              currentUtxo.vout === cachedUtxo.vout
+            )
+          })
+        }
+      )
 
       // Remove not yet validated slp txs from cache
-      accountUtxoCache[address] = accountUtxoCache[address].filter(cachedUtxo => {
-        return !(cachedUtxo.slp && cachedUtxo.validSlpTx !== true)
-      })
+      accountUtxoCache[address] = accountUtxoCache[address].filter(
+        cachedUtxo => {
+          return !(cachedUtxo.slp && cachedUtxo.validSlpTx !== true)
+        }
+      )
 
       // Find current utxos that aren't cached
       const uncachedUtxos = allCurrentUtxos.filter(currentUtxo => {
         return !accountUtxoCache[address].some(cachedUtxo => {
-          return (currentUtxo.txid === cachedUtxo.txid && currentUtxo.vout === cachedUtxo.vout)
+          return (
+            currentUtxo.txid === cachedUtxo.txid &&
+            currentUtxo.vout === cachedUtxo.vout
+          )
         })
       })
 
@@ -254,9 +270,11 @@ class AccountTracker {
       const txIds = uncachedUtxos.map(i => i.txid)
 
       // Split txIds into chunks of 20 (BitBox limit), run the detail queries in parallel
-      let txDetails = await Promise.all(chunk(txIds, 20).map(txIdchunk => {
+      let txDetails = await Promise.all(
+        chunk(txIds, 20).map(txIdchunk => {
           return bitboxUtils.getTransactionDetails(txIdchunk)
-      }))
+        })
+      )
 
       // concat the chunked arrays
       txDetails = [].concat(...txDetails)
@@ -267,10 +285,10 @@ class AccountTracker {
 
       // Parse the txDetails for txid and run list against slp/validate
       // try to parse out SLP object from SEND or GENESIS txn type
-      for (let txOut of uncachedUtxos) {
+      for (const txOut of uncachedUtxos) {
         try {
           txOut.slp = slpUtils.decodeTxOut(txOut)
-          
+
           // All utxos with slp metadata are unspendable -- valid or invalid
           txOut.spendable = false
         } catch (e) {
@@ -282,32 +300,38 @@ class AccountTracker {
       // get set of VALID SLP txn ids
       if (uncachedUtxos.length) {
         const txidsToValidate = [
-          ...new Set(uncachedUtxos.filter(txOut => {
-            if (txOut.slp === undefined) {
-              return false
-            }
-            return true
-          }).map(txOut => txOut.txid)),
+          ...new Set(
+            uncachedUtxos
+              .filter(txOut => {
+                if (txOut.slp === undefined) {
+                  return false
+                }
+                return true
+              })
+              .map(txOut => txOut.txid)
+          ),
         ]
 
         // Validate SLP DAG
         try {
-          let validSLPTx = await Promise.all(chunk(txidsToValidate, 20).map(async txidsToValidateChunk => {
-            const validationResponse = await axios({
-              method: 'POST',
-              url: 'https://rest.bitcoin.com/v2/slp/validate',
-              headers: {
-                'content-type': 'application/json',
-              },
-              data: {
-                txids: txidsToValidateChunk,
-              },
+          let validSLPTx = await Promise.all(
+            chunk(txidsToValidate, 20).map(async txidsToValidateChunk => {
+              const validationResponse = await axios({
+                method: 'POST',
+                url: 'https://rest.bitcoin.com/v2/slp/validate',
+                headers: {
+                  'content-type': 'application/json',
+                },
+                data: {
+                  txids: txidsToValidateChunk,
+                },
+              })
+              const validSLPTxChunk = validationResponse.data
+              return validSLPTxChunk
             })
-            const validSLPTxChunk = validationResponse.data
-            return validSLPTxChunk
-          }))
+          )
           validSLPTx = [].concat(...validSLPTx)
-          
+
           for (const validTxid of validSLPTx) {
             for (const utxo of uncachedUtxos) {
               if (utxo.txid === validTxid) {
@@ -317,7 +341,9 @@ class AccountTracker {
           }
 
           // Update accountUtxoCache with all uncached utxos
-          accountUtxoCache[address] = accountUtxoCache[address].concat(uncachedUtxos)
+          accountUtxoCache[address] = accountUtxoCache[address].concat(
+            uncachedUtxos
+          )
         } catch (validateSLPTxException) {
           // Validation incomplete. Ignore all uncached SLP UTXOs
           const nonSLPUtxos = uncachedUtxos.filter(txOut => {
@@ -328,7 +354,9 @@ class AccountTracker {
           })
 
           // Update accountUtxoCache with uncached non SLP Utxos
-          accountUtxoCache[address] = accountUtxoCache[address].concat(nonSLPUtxos)
+          accountUtxoCache[address] = accountUtxoCache[address].concat(
+            nonSLPUtxos
+          )
         }
       }
 
@@ -341,16 +369,22 @@ class AccountTracker {
       const validTokenIds = []
       const batons = []
       for (const txOut of accountUtxoCache[address]) {
-        if ("slp" in txOut && txOut.slp.baton === false && txOut.validSlpTx === true) {
+        if (
+          'slp' in txOut &&
+          txOut.slp.baton === false &&
+          txOut.validSlpTx === true
+        ) {
           if (!(txOut.slp.token in bals)) {
             bals[txOut.slp.token] = new BigNumber(0)
           }
-          bals[txOut.slp.token] = bals[txOut.slp.token].plus(
-            txOut.slp.quantity
-          )
+          bals[txOut.slp.token] = bals[txOut.slp.token].plus(txOut.slp.quantity)
           bals.satoshis_locked_in_token += txOut.satoshis
           validTokenIds.push(txOut.slp.token)
-        } else if (txOut.slp && txOut.slp.baton === true && txOut.validSlpTx === true) {
+        } else if (
+          txOut.slp &&
+          txOut.slp.baton === true &&
+          txOut.validSlpTx === true
+        ) {
           bals.satoshis_locked_in_minting_baton += txOut.satoshis
           validTokenIds.push(txOut.slp.token)
           batons.push(txOut.slp.token)
@@ -364,49 +398,64 @@ class AccountTracker {
       // Get token metadata
       const tokenMetadataCache = this.store.getState().tokenCache
 
-      const uncachedTokenIds = validTokenIds.filter(tokenId =>
-        !tokenMetadataCache.slp.some(slpMetadata => slpMetadata.id === tokenId)
+      const uncachedTokenIds = validTokenIds.filter(
+        tokenId =>
+          !tokenMetadataCache.slp.some(
+            slpMetadata => slpMetadata.id === tokenId
+          )
       )
 
-      let tokenTxDetailsList = await Promise.all(chunk(uncachedTokenIds, 20).map(txIdchunk => {
-        return bitboxUtils.getTransactionDetails(txIdchunk)
-      }))
+      let tokenTxDetailsList = await Promise.all(
+        chunk(uncachedTokenIds, 20).map(txIdchunk => {
+          return bitboxUtils.getTransactionDetails(txIdchunk)
+        })
+      )
 
       // concat the chunked arrays
       tokenTxDetailsList = [].concat(...tokenTxDetailsList)
-      
-      const tokenMetadataList = tokenTxDetailsList.map(txDetails => {
-        try {
-          const decodedMetadata = slpUtils.decodeMetadata(txDetails)
-          return {
-            id: decodedMetadata.token,
-            ticker: decodedMetadata.ticker,
-            name: decodedMetadata.name,
-            decimals: decodedMetadata.decimals,
+
+      const tokenMetadataList = tokenTxDetailsList
+        .map(txDetails => {
+          try {
+            const decodedMetadata = slpUtils.decodeMetadata(txDetails)
+            return {
+              id: decodedMetadata.token,
+              ticker: decodedMetadata.ticker,
+              name: decodedMetadata.name,
+              decimals: decodedMetadata.decimals,
+            }
+          } catch (err) {
+            // log.error('Could not parse SLP genesis:', err)
+            return null
           }
-        } catch (err) {
-          log.error('Could not parse SLP genesis:', err)
-          return null
-        }
-      }).filter(tokenMetadata => tokenMetadata)
+        })
+        .filter(tokenMetadata => tokenMetadata)
 
       tokenMetadataCache.slp = tokenMetadataCache.slp.concat(tokenMetadataList)
 
       Object.keys(bals)
         .filter(key => key.length === 64)
         .forEach(key => {
-          const tokenMetadata = tokenMetadataCache.slp.find(token => token.id === key)
+          const tokenMetadata = tokenMetadataCache.slp.find(
+            token => token.id === key
+          )
           const addTokenData = {
             address: key,
-            symbol: tokenMetadata.ticker ? tokenMetadata.ticker.slice(0, 12) : tokenMetadata.name ? tokenMetadata.name.slice(0, 12) : 'N/A',
+            symbol: tokenMetadata.ticker
+              ? tokenMetadata.ticker.slice(0, 12)
+              : tokenMetadata.name
+                ? tokenMetadata.name.slice(0, 12)
+                : 'N/A',
             decimals: tokenMetadata.decimals,
-            string: tokenMetadata.decimals ? bals[key].div(10 ** tokenMetadata.decimals).toString() : bals[key].toString(),
+            string: tokenMetadata.decimals
+              ? bals[key].div(10 ** tokenMetadata.decimals).toString()
+              : bals[key].toString(),
             protocol: 'slp',
             protocolData: {
               baton: false,
             },
           }
-          if ((new BigNumber(addTokenData.string)).gt(0)) {
+          if (new BigNumber(addTokenData.string).gt(0)) {
             rtnTokens.push(addTokenData)
           }
         })
@@ -431,7 +480,7 @@ class AccountTracker {
       mutableAccountUtxoCache[address] = accountUtxoCache[address]
       this.store.updateState({ accountUtxoCache, tokenMetadataCache })
     } catch (error) {
-      log.error('AccountTracker::_updateAccountTokens', error)
+      // log.error('AccountTracker::_updateAccountTokens', error)
     }
 
     const slpTokens = rtnTokens
@@ -459,7 +508,9 @@ class AccountTracker {
         }
 
         const addTokenData = {
-          address: `qqqqqqqqqqqqqqqqqqqqqqqqqqqqqu08dsyxz98whc${tokenData.propertyid}`,
+          address: `qqqqqqqqqqqqqqqqqqqqqqqqqqqqqu08dsyxz98whc${
+            tokenData.propertyid
+          }`,
           symbol: tokenData.name,
           decimals: tokenData.precision,
           string: token.balance.toString(), // token balance string
@@ -472,7 +523,7 @@ class AccountTracker {
         rtnTokens.push(addTokenData)
       }
     } catch (error) {
-      log.error('AccountTracker::_getWormholeTokens', error)
+      // log.error('AccountTracker::_getWormholeTokens', error)
     }
 
     return rtnTokens
@@ -488,7 +539,7 @@ class AccountTracker {
     try {
       balances = await Wormhole.DataRetrieval.balancesForAddress(address)
     } catch (error) {
-      log.debug("AccountTracker::_getTokenBalance no wh tokens", error)
+      // log.debug("AccountTracker::_getTokenBalance no wh tokens", error)
     }
     return balances
   }

@@ -1,5 +1,7 @@
 export { default } from './confirm-page-container.component'
-export { default as ConfirmPageContainerHeader } from './confirm-page-container-header'
+export {
+  default as ConfirmPageContainerHeader,
+} from './confirm-page-container-header'
 export { default as ConfirmDetailRow } from './confirm-detail-row'
 export {
   default as ConfirmPageContainerContent,

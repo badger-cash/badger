@@ -19,22 +19,19 @@ proxyquire('../send-header.container.js', {
   },
   '../../../actions': actionSpies,
   './send-header.selectors': {
-    getTitleKey: (s) => `mockTitleKey:${s}`,
-    getSubtitleParams: (s) => `mockSubtitleParams:${s}`,
+    getTitleKey: s => `mockTitleKey:${s}`,
+    getSubtitleParams: s => `mockSubtitleParams:${s}`,
   },
 })
 
 describe('send-header container', () => {
-
   describe('mapStateToProps()', () => {
-
     it('should map the correct properties to props', () => {
       assert.deepEqual(mapStateToProps('mockState'), {
         titleKey: 'mockTitleKey:mockState',
         subtitleParams: 'mockSubtitleParams:mockState',
       })
     })
-
   })
 
   describe('mapDispatchToProps()', () => {
@@ -53,7 +50,5 @@ describe('send-header container', () => {
         assert(actionSpies.clearSend.calledOnce)
       })
     })
-
   })
-
 })

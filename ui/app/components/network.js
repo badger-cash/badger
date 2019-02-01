@@ -12,7 +12,6 @@ Network.contextTypes = {
 
 module.exports = connect()(Network)
 
-
 inherits(Network, Component)
 
 function Network () {
@@ -32,22 +31,26 @@ Network.prototype.render = function () {
   let iconName, hoverText
 
   if (networkNumber === 'loading') {
-    return h('span.pointer.network-indicator', {
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-      },
-      onClick: (event) => this.props.onClick(event),
-    }, [
-      h('img', {
-        title: context.t('attemptingConnect'),
+    return h(
+      'span.pointer.network-indicator',
+      {
         style: {
-          width: '27px',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
         },
-        src: 'images/loading.svg',
-      }),
-    ])
+        onClick: event => this.props.onClick(event),
+      },
+      [
+        h('img', {
+          title: context.t('attemptingConnect'),
+          style: {
+            width: '27px',
+          },
+          src: 'images/loading.svg',
+        }),
+      ]
+    )
   } else if (providerName === 'mainnet') {
     hoverText = context.t('mainnet')
     iconName = 'ethereum-network'
@@ -68,22 +71,25 @@ Network.prototype.render = function () {
     iconName = 'unknown-private-network'
   }
 
-  return (
-    h('div.network-component.pointer', {
+  return h(
+    'div.network-component.pointer',
+    {
       className: classnames({
         'network-component--disabled': this.props.disabled,
         'ethereum-network': providerName === 'mainnet',
-        'ropsten-test-network': providerName === 'ropsten' || parseInt(networkNumber) === 3,
+        'ropsten-test-network':
+          providerName === 'ropsten' || parseInt(networkNumber) === 3,
         'kovan-test-network': providerName === 'kovan',
         'rinkeby-test-network': providerName === 'rinkeby',
       }),
       title: hoverText,
-      onClick: (event) => {
+      onClick: event => {
         if (!this.props.disabled) {
           this.props.onClick(event)
         }
       },
-    }, [
+    },
+    [
       (function () {
         switch (iconName) {
           case 'ethereum-network':
@@ -136,6 +142,6 @@ Network.prototype.render = function () {
             ])
         }
       })(),
-    ])
+    ]
   )
 }

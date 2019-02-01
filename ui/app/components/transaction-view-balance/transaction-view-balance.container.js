@@ -2,18 +2,23 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import TransactionViewBalance from './transaction-view-balance.component'
-import { getSelectedToken, getSelectedAddress, getSelectedTokenAssetImage } from '../../selectors'
+import {
+  getSelectedToken,
+  getSelectedAddress,
+  getSelectedTokenAssetImage,
+} from '../../selectors'
 import { showModal } from '../../actions'
 
 const mapStateToProps = state => {
   const selectedAddress = getSelectedAddress(state)
-  const { metamask: { network, accounts } } = state
+  const {
+    metamask: { network, accounts },
+  } = state
   const account = accounts[selectedAddress]
   let { balance } = account
   if (balance) {
     balance = balance.toString()
-  }
-  else {
+  } else {
     balance = '0'
   }
 
@@ -33,5 +38,8 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(TransactionViewBalance)

@@ -24,28 +24,28 @@ proxyquire('../send.container.js', {
     },
   },
   'react-router-dom': { withRouter: () => {} },
-  'recompose': { compose: (arg1, arg2) => () => arg2() },
+  recompose: { compose: (arg1, arg2) => () => arg2() },
   './send.selectors': {
-    getAmountConversionRate: (s) => `mockAmountConversionRate:${s}`,
-    getBlockGasLimit: (s) => `mockBlockGasLimit:${s}`,
-    getConversionRate: (s) => `mockConversionRate:${s}`,
-    getCurrentNetwork: (s) => `mockNetwork:${s}`,
-    getGasLimit: (s) => `mockGasLimit:${s}`,
-    getGasPrice: (s) => `mockGasPrice:${s}`,
-    getGasTotal: (s) => `mockGasTotal:${s}`,
-    getPrimaryCurrency: (s) => `mockPrimaryCurrency:${s}`,
-    getRecentBlocks: (s) => `mockRecentBlocks:${s}`,
-    getSelectedAddress: (s) => `mockSelectedAddress:${s}`,
-    getSelectedToken: (s) => `mockSelectedToken:${s}`,
-    getSelectedTokenContract: (s) => `mockTokenContract:${s}`,
-    getSelectedTokenToFiatRate: (s) => `mockTokenToFiatRate:${s}`,
-    getSendHexDataFeatureFlagState: (s) => `mockSendHexDataFeatureFlagState:${s}`,
-    getSendAmount: (s) => `mockAmount:${s}`,
-    getSendTo: (s) => `mockTo:${s}`,
-    getSendEditingTransactionId: (s) => `mockEditingTransactionId:${s}`,
-    getSendFromObject: (s) => `mockFrom:${s}`,
-    getTokenBalance: (s) => `mockTokenBalance:${s}`,
-    getQrCodeData: (s) => `mockQrCodeData:${s}`,
+    getAmountConversionRate: s => `mockAmountConversionRate:${s}`,
+    getBlockGasLimit: s => `mockBlockGasLimit:${s}`,
+    getConversionRate: s => `mockConversionRate:${s}`,
+    getCurrentNetwork: s => `mockNetwork:${s}`,
+    getGasLimit: s => `mockGasLimit:${s}`,
+    getGasPrice: s => `mockGasPrice:${s}`,
+    getGasTotal: s => `mockGasTotal:${s}`,
+    getPrimaryCurrency: s => `mockPrimaryCurrency:${s}`,
+    getRecentBlocks: s => `mockRecentBlocks:${s}`,
+    getSelectedAddress: s => `mockSelectedAddress:${s}`,
+    getSelectedToken: s => `mockSelectedToken:${s}`,
+    getSelectedTokenContract: s => `mockTokenContract:${s}`,
+    getSelectedTokenToFiatRate: s => `mockTokenToFiatRate:${s}`,
+    getSendHexDataFeatureFlagState: s => `mockSendHexDataFeatureFlagState:${s}`,
+    getSendAmount: s => `mockAmount:${s}`,
+    getSendTo: s => `mockTo:${s}`,
+    getSendEditingTransactionId: s => `mockEditingTransactionId:${s}`,
+    getSendFromObject: s => `mockFrom:${s}`,
+    getTokenBalance: s => `mockTokenBalance:${s}`,
+    getQrCodeData: s => `mockQrCodeData:${s}`,
   },
   '../../actions': actionSpies,
   '../../ducks/send.duck': duckActionSpies,
@@ -55,9 +55,7 @@ proxyquire('../send.container.js', {
 })
 
 describe('send container', () => {
-
   describe('mapStateToProps()', () => {
-
     it('should map the correct properties to props', () => {
       assert.deepEqual(mapStateToProps('mockState'), {
         amount: 'mockAmount:mockState',
@@ -82,7 +80,6 @@ describe('send container', () => {
         qrCodeData: 'mockQrCodeData:mockState',
       })
     })
-
   })
 
   describe('mapDispatchToProps()', () => {
@@ -110,22 +107,30 @@ describe('send container', () => {
       it('should dispatch a setGasTotal action when editingTransactionId is truthy', () => {
         mapDispatchToPropsObject.updateAndSetGasTotal(mockProps)
         assert(dispatchSpy.calledOnce)
-        assert.equal(
-          actionSpies.setGasTotal.getCall(0).args[0],
-          '0x30x4'
-        )
+        assert.equal(actionSpies.setGasTotal.getCall(0).args[0], '0x30x4')
       })
 
       it('should dispatch an updateGasData action when editingTransactionId is falsy', () => {
-        const { selectedAddress, selectedToken, recentBlocks, blockGasLimit, to, value } = mockProps
+        const {
+          selectedAddress,
+          selectedToken,
+          recentBlocks,
+          blockGasLimit,
+          to,
+          value,
+        } = mockProps
         mapDispatchToPropsObject.updateAndSetGasTotal(
-          Object.assign({}, mockProps, {editingTransactionId: false})
+          Object.assign({}, mockProps, { editingTransactionId: false })
         )
         assert(dispatchSpy.calledOnce)
-        assert.deepEqual(
-          actionSpies.updateGasData.getCall(0).args[0],
-          { selectedAddress, selectedToken, recentBlocks, blockGasLimit, to, value }
-        )
+        assert.deepEqual(actionSpies.updateGasData.getCall(0).args[0], {
+          selectedAddress,
+          selectedToken,
+          recentBlocks,
+          blockGasLimit,
+          to,
+          value,
+        })
       })
     })
 
@@ -133,11 +138,13 @@ describe('send container', () => {
       const mockProps = {
         address: '0x10',
         tokenContract: '0x00a',
-        selectedToken: {address: '0x1'},
+        selectedToken: { address: '0x1' },
       }
 
       it('should dispatch an action', () => {
-        mapDispatchToPropsObject.updateSendTokenBalance(Object.assign({}, mockProps))
+        mapDispatchToPropsObject.updateSendTokenBalance(
+          Object.assign({}, mockProps)
+        )
         assert(dispatchSpy.calledOnce)
         assert.deepEqual(
           actionSpies.updateSendTokenBalance.getCall(0).args[0],
@@ -161,13 +168,8 @@ describe('send container', () => {
       it('should dispatch an action', () => {
         mapDispatchToPropsObject.resetSendState()
         assert(dispatchSpy.calledOnce)
-        assert.equal(
-          duckActionSpies.resetSendState.getCall(0).args.length,
-          0
-        )
+        assert.equal(duckActionSpies.resetSendState.getCall(0).args.length, 0)
       })
     })
-
   })
-
 })

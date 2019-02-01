@@ -54,7 +54,8 @@ class TransactionController extends EventEmitter {
     this.networkStore = opts.networkStore || new ObservableStore({})
     this.preferencesStore = opts.preferencesStore || new ObservableStore({})
     this.accountTracker = opts.accountTracker
-    this.accountTrackerStore = this.accountTracker.store || new ObservableStore({})
+    this.accountTrackerStore =
+      this.accountTracker.store || new ObservableStore({})
     this.provider = opts.provider
     this.signEthTx = opts.signTransaction
     this.exportKeyPair = opts.exportKeyPair
@@ -75,9 +76,13 @@ class TransactionController extends EventEmitter {
 
     this.pendingTxTracker = new PendingTransactionTracker({
       provider: this.provider,
-      publishTransaction: (rawTx) => this.query.sendRawTransaction(rawTx),
-      getPendingTransactions: this.txStateManager.getPendingTransactions.bind(this.txStateManager),
-      getCompletedTransactions: this.txStateManager.getConfirmedTransactions.bind(this.txStateManager),
+      publishTransaction: rawTx => this.query.sendRawTransaction(rawTx),
+      getPendingTransactions: this.txStateManager.getPendingTransactions.bind(
+        this.txStateManager
+      ),
+      getCompletedTransactions: this.txStateManager.getConfirmedTransactions.bind(
+        this.txStateManager
+      ),
     })
 
     this.txStateManager.store.subscribe(() => this.emit('update:badge'))
@@ -101,7 +106,7 @@ class TransactionController extends EventEmitter {
     }
   }
 
-/**
+  /**
   Adds a tx to the txlist
   @emits ${txMeta.id}:unapproved
 */
@@ -127,27 +132,49 @@ class TransactionController extends EventEmitter {
   */
 
   async newUnapprovedTransaction (txParams, opts = {}) {
-    log.debug(`MetaMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`)
+    // log.debug(`MetaMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`)
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)
     initialTxMeta.origin = opts.origin
-    this.txStateManager.updateTx(initialTxMeta, '#newUnapprovedTransaction - adding the origin')
+    this.txStateManager.updateTx(
+      initialTxMeta,
+      '#newUnapprovedTransaction - adding the origin'
+    )
     // listen for tx completion (success, fail)
     return new Promise((resolve, reject) => {
-      this.txStateManager.once(`${initialTxMeta.id}:finished`, (finishedTxMeta) => {
-        switch (finishedTxMeta.status) {
-          // TODO: Remove confirmed after txQueue is live, only submit to queue
-          case 'confirmed':
-            return resolve(finishedTxMeta.hash)
-          case 'submitted':
-            return resolve(finishedTxMeta.hash)
-          case 'rejected':
-            return reject(cleanErrorStack(new Error('Badger Tx Signature: User denied transaction signature.')))
-          case 'failed':
-            return reject(cleanErrorStack(new Error(finishedTxMeta.err.message)))
-          default:
-            return reject(cleanErrorStack(new Error(`Badger Tx Signature: Unknown problem: ${JSON.stringify(finishedTxMeta.txParams)}`)))
+      this.txStateManager.once(
+        `${initialTxMeta.id}:finished`,
+        finishedTxMeta => {
+          switch (finishedTxMeta.status) {
+            // TODO: Remove confirmed after txQueue is live, only submit to queue
+            case 'confirmed':
+              return resolve(finishedTxMeta.hash)
+            case 'submitted':
+              return resolve(finishedTxMeta.hash)
+            case 'rejected':
+              return reject(
+                cleanErrorStack(
+                  new Error(
+                    'Badger Tx Signature: User denied transaction signature.'
+                  )
+                )
+              )
+            case 'failed':
+              return reject(
+                cleanErrorStack(new Error(finishedTxMeta.err.message))
+              )
+            default:
+              return reject(
+                cleanErrorStack(
+                  new Error(
+                    `Badger Tx Signature: Unknown problem: ${JSON.stringify(
+                      finishedTxMeta.txParams
+                    )}`
+                  )
+                )
+              )
+          }
         }
-      })
+      )
     })
   }
 
@@ -162,9 +189,9 @@ class TransactionController extends EventEmitter {
     // validate & normalize
     const normalizedTxParams = txUtils.normalizeTxParams(txParams)
     txUtils.validateTxParams(normalizedTxParams)
-    
+
     // construct txMeta
-    let txMeta = this.txStateManager.generateTxMeta({
+    const txMeta = this.txStateManager.generateTxMeta({
       txParams: normalizedTxParams,
       type: TRANSACTION_TYPE_STANDARD,
     })
@@ -173,12 +200,15 @@ class TransactionController extends EventEmitter {
 
     try {
       // check whether recipient account is blacklisted
-      recipientBlacklistChecker.checkAccount(txMeta.metamaskNetworkId, normalizedTxParams.to)
+      recipientBlacklistChecker.checkAccount(
+        txMeta.metamaskNetworkId,
+        normalizedTxParams.to
+      )
       // add default tx params
       // skip gas
       // txMeta = await this.addTxGasDefaults(txMeta)
     } catch (error) {
-      log.warn(error)
+      // log.warn(error)
       this.txStateManager.setTxStatusFailed(txMeta.id, error)
       throw error
     }
@@ -188,7 +218,7 @@ class TransactionController extends EventEmitter {
 
     return txMeta
   }
-/**
+  /**
   adds the tx gas defaults: gas && gasPrice
   @param txMeta {Object} - the txMeta object
   @returns {Promise<object>} resolves with txMeta
@@ -276,7 +306,10 @@ class TransactionController extends EventEmitter {
 
       // Update balances
       setTimeout(() => this.accountTracker._updateAccount(fromAddress), 3000)
-      setTimeout(() => this.accountTracker._updateAccount(txMeta.txParams.to), 6000)
+      setTimeout(
+        () => this.accountTracker._updateAccount(txMeta.txParams.to),
+        6000
+      )
 
       // TODO: split signAndPublish method
       // const rawTx = await this.signTransaction(txId)
@@ -287,7 +320,7 @@ class TransactionController extends EventEmitter {
       try {
         this.txStateManager.setTxStatusFailed(txId, err)
       } catch (err) {
-        log.error(err)
+        // log.error(err)
       }
       // continue with error chain
       throw err
@@ -308,32 +341,53 @@ class TransactionController extends EventEmitter {
     const accountUtxoCache = Object.assign({}, this.getAccountUtxoCache())
     const utxoCache = accountUtxoCache[txParams.from]
     let spendableUtxos = []
-    
+
     if (utxoCache && utxoCache.length) {
       spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)
     }
-    
+
     let txHash
     if (txParams.sendTokenData) {
       const tokenProtocol = txParams.sendTokenData.tokenProtocol
       const tokenId = txParams.sendTokenData.tokenId
       const tokenMetadataCache = Object.assign({}, this.getTokenMetadataCache())
 
-      const tokenMetadata = tokenMetadataCache[tokenProtocol].find(token => token.id === tokenId)
-
+      const tokenMetadata = tokenMetadataCache[tokenProtocol].find(
+        token => token.id === tokenId
+      )
 
       if (tokenProtocol === 'slp') {
         const spendableTokenUtxos = utxoCache.filter(utxo => {
-          return utxo.slp && utxo.slp.baton === false && utxo.validSlpTx === true && utxo.slp.token === tokenId
+          return (
+            utxo.slp &&
+            utxo.slp.baton === false &&
+            utxo.validSlpTx === true &&
+            utxo.slp.token === tokenId
+          )
         })
 
-        txHash = await bitboxUtils.signAndPublishSlpTransaction(txParams, keyPair, spendableUtxos, tokenMetadata, spendableTokenUtxos)
+        txHash = await bitboxUtils.signAndPublishSlpTransaction(
+          txParams,
+          keyPair,
+          spendableUtxos,
+          tokenMetadata,
+          spendableTokenUtxos
+        )
       } else if (tokenProtocol === 'wormhole') {
         const propertyId = tokenId.slice(42)
-        txHash = await bitboxUtils.signAndPublishWormholeTransaction(txParams, keyPair, spendableUtxos, propertyId)
+        txHash = await bitboxUtils.signAndPublishWormholeTransaction(
+          txParams,
+          keyPair,
+          spendableUtxos,
+          propertyId
+        )
       }
     } else {
-      txHash = await bitboxUtils.signAndPublishBchTransaction(txParams, keyPair, spendableUtxos)
+      txHash = await bitboxUtils.signAndPublishBchTransaction(
+        txParams,
+        keyPair,
+        spendableUtxos
+      )
     }
 
     this.setTxHash(txId, txHash)
@@ -400,9 +454,9 @@ class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#setTxHash')
   }
 
-//
-//           PRIVATE METHODS
-//
+  //
+  //           PRIVATE METHODS
+  //
   /** maps methods for convenience*/
   _mapMethods () {
     /** @returns the state in transaction controller */
@@ -410,20 +464,25 @@ class TransactionController extends EventEmitter {
     /** @returns the network number stored in networkStore */
     this.getNetwork = () => this.networkStore.getState()
     /** @returns the user selected address */
-    this.getSelectedAddress = () => this.preferencesStore.getState().selectedAddress
+    this.getSelectedAddress = () =>
+      this.preferencesStore.getState().selectedAddress
     /** @returns the utxo cache for accounts */
-    this.getAccountUtxoCache = () => this.accountTrackerStore.getState().accountUtxoCache
+    this.getAccountUtxoCache = () =>
+      this.accountTrackerStore.getState().accountUtxoCache
     /** @returns the token metadata cache */
-    this.getTokenMetadataCache = () => this.accountTrackerStore.getState().tokenCache
+    this.getTokenMetadataCache = () =>
+      this.accountTrackerStore.getState().tokenCache
     /** Returns an array of transactions whos status is unapproved */
-    this.getUnapprovedTxCount = () => Object.keys(this.txStateManager.getUnapprovedTxList()).length
+    this.getUnapprovedTxCount = () =>
+      Object.keys(this.txStateManager.getUnapprovedTxList()).length
     /**
       @returns a number that represents how many transactions have the status submitted
       @param account {String} - hex prefixed account
     */
-    this.getPendingTxCount = (account) => this.txStateManager.getPendingTransactions(account).length
+    this.getPendingTxCount = account =>
+      this.txStateManager.getPendingTransactions(account).length
     /** see txStateManager */
-    this.getFilteredTxList = (opts) => this.txStateManager.getFilteredTxList(opts)
+    this.getFilteredTxList = opts => this.txStateManager.getFilteredTxList(opts)
   }
 
   /**
@@ -433,41 +492,65 @@ class TransactionController extends EventEmitter {
   */
 
   _onBootCleanUp () {
-    this.txStateManager.getFilteredTxList({
-      status: 'unapproved',
-      loadingDefaults: true,
-    }).forEach((tx) => {
-      this.addTxGasDefaults(tx)
-      .then((txMeta) => {
-        txMeta.loadingDefaults = false
-        this.txStateManager.updateTx(txMeta, 'transactions: gas estimation for tx on boot')
-      }).catch((error) => {
-        this.txStateManager.setTxStatusFailed(tx.id, error)
+    this.txStateManager
+      .getFilteredTxList({
+        status: 'unapproved',
+        loadingDefaults: true,
       })
-    })
+      .forEach(tx => {
+        this.addTxGasDefaults(tx)
+          .then(txMeta => {
+            txMeta.loadingDefaults = false
+            this.txStateManager.updateTx(
+              txMeta,
+              'transactions: gas estimation for tx on boot'
+            )
+          })
+          .catch(error => {
+            this.txStateManager.setTxStatusFailed(tx.id, error)
+          })
+      })
 
-    this.txStateManager.getFilteredTxList({
-      status: TRANSACTION_STATUS_APPROVED,
-    }).forEach((txMeta) => {
-      const txSignError = new Error('Transaction found as "approved" during boot - possibly stuck during signing')
-      this.txStateManager.setTxStatusFailed(txMeta.id, txSignError)
-    })
+    this.txStateManager
+      .getFilteredTxList({
+        status: TRANSACTION_STATUS_APPROVED,
+      })
+      .forEach(txMeta => {
+        const txSignError = new Error(
+          'Transaction found as "approved" during boot - possibly stuck during signing'
+        )
+        this.txStateManager.setTxStatusFailed(txMeta.id, txSignError)
+      })
   }
 
   /**
     is called in constructor applies the listeners for pendingTxTracker txStateManager
   */
   _setupListeners () {
-    this.txStateManager.on('tx:status-update', this.emit.bind(this, 'tx:status-update'))
-    this.pendingTxTracker.on('tx:warning', (txMeta) => {
-      this.txStateManager.updateTx(txMeta, 'transactions/pending-tx-tracker#event: tx:warning')
+    this.txStateManager.on(
+      'tx:status-update',
+      this.emit.bind(this, 'tx:status-update')
+    )
+    this.pendingTxTracker.on('tx:warning', txMeta => {
+      this.txStateManager.updateTx(
+        txMeta,
+        'transactions/pending-tx-tracker#event: tx:warning'
+      )
     })
-    this.pendingTxTracker.on('tx:failed', this.txStateManager.setTxStatusFailed.bind(this.txStateManager))
-    this.pendingTxTracker.on('tx:confirmed', (txId) => this.confirmTransaction(txId))
-    this.pendingTxTracker.on('tx:retry', (txMeta) => {
+    this.pendingTxTracker.on(
+      'tx:failed',
+      this.txStateManager.setTxStatusFailed.bind(this.txStateManager)
+    )
+    this.pendingTxTracker.on('tx:confirmed', txId =>
+      this.confirmTransaction(txId)
+    )
+    this.pendingTxTracker.on('tx:retry', txMeta => {
       if (!('retryCount' in txMeta)) txMeta.retryCount = 0
       txMeta.retryCount++
-      this.txStateManager.updateTx(txMeta, 'transactions/pending-tx-tracker#event: tx:retry')
+      this.txStateManager.updateTx(
+        txMeta,
+        'transactions/pending-tx-tracker#event: tx:retry'
+      )
     })
   }
 

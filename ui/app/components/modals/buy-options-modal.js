@@ -4,7 +4,9 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
 const actions = require('../../actions')
-const { getNetworkDisplayName } = require('../../../../app/scripts/controllers/network/util')
+const {
+  getNetworkDisplayName,
+} = require('../../../../app/scripts/controllers/network/util')
 
 function mapStateToProps (state) {
   return {
@@ -15,7 +17,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    toCoinbase: (address) => {
+    toCoinbase: address => {
       dispatch(actions.buyEth({ network: '1', address, amount: 0 }))
     },
     hideModal: () => {
@@ -37,16 +39,26 @@ BuyOptions.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(BuyOptions)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BuyOptions)
 
-
-BuyOptions.prototype.renderModalContentOption = function (title, header, onClick) {
-  return h('div.buy-modal-content-option', {
-    onClick,
-  }, [
-    h('div.buy-modal-content-option-title', {}, title),
-    h('div.buy-modal-content-option-subtitle', {}, header),
-  ])
+BuyOptions.prototype.renderModalContentOption = function (
+  title,
+  header,
+  onClick
+) {
+  return h(
+    'div.buy-modal-content-option',
+    {
+      onClick,
+    },
+    [
+      h('div.buy-modal-content-option-title', {}, title),
+      h('div.buy-modal-content-option-subtitle', {}, header),
+    ]
+  )
 }
 
 BuyOptions.prototype.render = function () {
@@ -55,22 +67,36 @@ BuyOptions.prototype.render = function () {
   const networkName = getNetworkDisplayName(network)
 
   return h('div', {}, [
-    h('div.buy-modal-content.transfers-subview', {
-    }, [
-      h('div.buy-modal-content-title-wrapper.flex-column.flex-center', {
-        style: {},
-      }, [
-        h('div.buy-modal-content-title', {
+    h('div.buy-modal-content.transfers-subview', {}, [
+      h(
+        'div.buy-modal-content-title-wrapper.flex-column.flex-center',
+        {
           style: {},
-        }, this.context.t('transfers')),
-        h('div', {}, this.context.t('howToDeposit')),
-      ]),
+        },
+        [
+          h(
+            'div.buy-modal-content-title',
+            {
+              style: {},
+            },
+            this.context.t('transfers')
+          ),
+          h('div', {}, this.context.t('howToDeposit')),
+        ]
+      ),
 
       h('div.buy-modal-content-options.flex-column.flex-center', {}, [
-
         isTestNetwork
-          ? this.renderModalContentOption(networkName, this.context.t('testFaucet'), () => toFaucet(network))
-          : this.renderModalContentOption('Coinbase', this.context.t('depositFiat'), () => toCoinbase(address)),
+          ? this.renderModalContentOption(
+              networkName,
+              this.context.t('testFaucet'),
+              () => toFaucet(network)
+            )
+          : this.renderModalContentOption(
+              'Coinbase',
+              this.context.t('depositFiat'),
+              () => toCoinbase(address)
+            ),
 
         // h('div.buy-modal-content-option', {}, [
         //   h('div.buy-modal-content-option-title', {}, 'Shapeshift'),
@@ -82,15 +108,24 @@ BuyOptions.prototype.render = function () {
           this.context.t('depositFromAccount'),
           () => this.goToAccountDetailsModal()
         ),
-
       ]),
 
-      h('button', {
-        style: {
-          background: 'white',
+      h(
+        'button',
+        {
+          style: {
+            background: 'white',
+          },
+          onClick: () => {
+            this.props.hideModal()
+          },
         },
-        onClick: () => { this.props.hideModal() },
-      }, h('div.buy-modal-content-footer#buy-modal-content-footer-text', {}, this.context.t('cancel'))),
+        h(
+          'div.buy-modal-content-footer#buy-modal-content-footer-text',
+          {},
+          this.context.t('cancel')
+        )
+      ),
     ]),
   ])
 }

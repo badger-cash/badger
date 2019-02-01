@@ -42,9 +42,9 @@
           }
           web4bch.bch.sendTransaction(txParams, (err, res) => {
             if (err) {
-              console.log('send err', err)
+              // console.log('send err', err)
             } else {
-              console.log('send success:', res)
+              // console.log('send success:', res)
               var paywallId = badgerButton.getAttribute("data-paywall-id")
               if (paywallId) {
                 var paywall = document.getElementById("paywall")

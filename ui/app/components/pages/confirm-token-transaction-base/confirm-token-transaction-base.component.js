@@ -26,7 +26,12 @@ export default class ConfirmTokenTransactionBase extends Component {
   }
 
   getFiatTransactionAmount () {
-    const { tokenAmount, currentCurrency, conversionRate, contractExchangeRate } = this.props
+    const {
+      tokenAmount,
+      currentCurrency,
+      conversionRate,
+      contractExchangeRate,
+    } = this.props
 
     return convertTokenToFiat({
       value: tokenAmount,
@@ -43,13 +48,19 @@ export default class ConfirmTokenTransactionBase extends Component {
       return this.context.t('noConversionRateAvailable')
     } else {
       const fiatTransactionAmount = this.getFiatTransactionAmount()
-      const roundedFiatTransactionAmount = roundExponential(fiatTransactionAmount)
+      const roundedFiatTransactionAmount = roundExponential(
+        fiatTransactionAmount
+      )
       return formatCurrency(roundedFiatTransactionAmount, currentCurrency)
     }
   }
 
   getFiatTotalTextOverride () {
-    const { fiatTransactionTotal, currentCurrency, contractExchangeRate } = this.props
+    const {
+      fiatTransactionTotal,
+      currentCurrency,
+      contractExchangeRate,
+    } = this.props
 
     if (typeof contractExchangeRate === 'undefined') {
       return formatCurrency(fiatTransactionTotal, currentCurrency)

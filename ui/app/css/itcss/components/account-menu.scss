@@ -72,7 +72,7 @@
       background-color: $dusty-gray;
       color: $black;
       font-weight: normal;
-      letter-spacing: .5px;
+      letter-spacing: 0.5px;
     }
   }
 
@@ -117,7 +117,7 @@
   }
 
   &__check-mark-icon {
-    background-image: url("images/check-white.svg");
+    background-image: url('images/check-white.svg');
     height: 18px;
     width: 18px;
     background-repeat: no-repeat;

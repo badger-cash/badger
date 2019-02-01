@@ -17,14 +17,17 @@ describe('FromDropdown Component', function () {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallow(<FromDropdown
-      accounts={['mockAccount']}
-      closeDropdown={propsMethodSpies.closeDropdown}
-      dropdownOpen={false}
-      onSelect={propsMethodSpies.onSelect}
-      openDropdown={propsMethodSpies.openDropdown}
-      selectedAccount={ { address: 'mockAddress' } }
-    />, { context: { t: str => str + '_t' } })
+    wrapper = shallow(
+      <FromDropdown
+        accounts={['mockAccount']}
+        closeDropdown={propsMethodSpies.closeDropdown}
+        dropdownOpen={false}
+        onSelect={propsMethodSpies.onSelect}
+        openDropdown={propsMethodSpies.openDropdown}
+        selectedAccount={{ address: 'mockAddress' }}
+      />,
+      { context: { t: str => str + '_t' } }
+    )
   })
 
   afterEach(() => {
@@ -39,19 +42,23 @@ describe('FromDropdown Component', function () {
     })
 
     it('should render an AccountListItem as the first child of the .send-v2__from-dropdown div', () => {
-      assert(wrapper.find('.send-v2__from-dropdown').childAt(0).is(AccountListItem))
+      assert(
+        wrapper
+          .find('.send-v2__from-dropdown')
+          .childAt(0)
+          .is(AccountListItem)
+      )
     })
 
     it('should pass the correct props to AccountListItem', () => {
-      const {
-        account,
-        handleClick,
-        icon,
-      } = wrapper.find('.send-v2__from-dropdown').childAt(0).props()
+      const { account, handleClick, icon } = wrapper
+        .find('.send-v2__from-dropdown')
+        .childAt(0)
+        .props()
       assert.deepEqual(account, { address: 'mockAddress' })
       assert.deepEqual(
         icon,
-        <i className={`fa fa-caret-down fa-lg`} style={ { color: '#dedede' } }/>
+        <i className={`fa fa-caret-down fa-lg`} style={{ color: '#dedede' }} />
       )
       assert.equal(propsMethodSpies.openDropdown.callCount, 0)
       handleClick()
@@ -69,12 +76,9 @@ describe('FromDropdown Component', function () {
 
     it('should pass the correct props to the SendDropdownList]', () => {
       wrapper.setProps({ dropdownOpen: true })
-      const {
-        accounts,
-        closeDropdown,
-        onSelect,
-        activeAddress,
-      } = wrapper.find(SendDropdownList).props()
+      const { accounts, closeDropdown, onSelect, activeAddress } = wrapper
+        .find(SendDropdownList)
+        .props()
       assert.deepEqual(accounts, ['mockAccount'])
       assert.equal(activeAddress, 'mockAddress')
       assert.equal(propsMethodSpies.closeDropdown.callCount, 0)

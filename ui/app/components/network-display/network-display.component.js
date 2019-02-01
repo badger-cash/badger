@@ -29,40 +29,49 @@ export default class NetworkDisplay extends Component {
     const { network } = this.props
     const networkClass = networkToClassHash[network]
 
-    return networkClass
-      ? <div className={`network-display__icon network-display__icon--${networkClass}`} />
-      : <div
-          className="i fa fa-question-circle fa-med"
-          style={{
-            margin: '0 4px',
-            color: 'rgb(125, 128, 130)',
-          }}
-        />
+    return networkClass ? (
+      <div
+        className={`network-display__icon network-display__icon--${networkClass}`}
+      />
+    ) : (
+      <div
+        className="i fa fa-question-circle fa-med"
+        style={{
+          margin: '0 4px',
+          color: 'rgb(125, 128, 130)',
+        }}
+      />
+    )
   }
 
   render () {
-    const { network, provider: { type } } = this.props
+    const {
+      network,
+      provider: { type },
+    } = this.props
     const networkClass = networkToClassHash[network]
 
     return (
-      <div className={classnames(
-        'network-display__container',
-        networkClass && ('network-display__container--' + networkClass)
-      )}>
-        {
-          networkClass
-            ? <div className={`network-display__icon network-display__icon--${networkClass}`} />
-            : <div
-                className="i fa fa-question-circle fa-med"
-                style={{
-                  margin: '0 4px',
-                  color: 'rgb(125, 128, 130)',
-                }}
-              />
-        }
-        <div className="network-display__name">
-          { this.context.t(type) }
-        </div>
+      <div
+        className={classnames(
+          'network-display__container',
+          networkClass && 'network-display__container--' + networkClass
+        )}
+      >
+        {networkClass ? (
+          <div
+            className={`network-display__icon network-display__icon--${networkClass}`}
+          />
+        ) : (
+          <div
+            className="i fa fa-question-circle fa-med"
+            style={{
+              margin: '0 4px',
+              color: 'rgb(125, 128, 130)',
+            }}
+          />
+        )}
+        <div className="network-display__name">{this.context.t(type)}</div>
       </div>
     )
   }

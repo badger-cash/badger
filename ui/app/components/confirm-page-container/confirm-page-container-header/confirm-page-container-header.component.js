@@ -20,7 +20,8 @@ export default class ConfirmPageContainer extends Component {
   renderTop () {
     const { onEdit, showEdit } = this.props
     const windowType = window.METAMASK_UI_TYPE
-    const isFullScreen = windowType !== ENVIRONMENT_TYPE_NOTIFICATION &&
+    const isFullScreen =
+      windowType !== ENVIRONMENT_TYPE_NOTIFICATION &&
       windowType !== ENVIRONMENT_TYPE_POPUP
 
     if (!showEdit && isFullScreen) {
@@ -35,17 +36,15 @@ export default class ConfirmPageContainer extends Component {
             visibility: showEdit ? 'initial' : 'hidden',
           }}
         >
-          <img
-            src="/images/caret-left.svg"
-          />
+          <img src="/images/caret-left.svg" />
           <span
             className="confirm-page-container-header__back-button"
             onClick={() => onEdit()}
           >
-            { this.context.t('edit') }
+            {this.context.t('edit')}
           </span>
         </div>
-        { !isFullScreen && <NetworkDisplay /> }
+        {!isFullScreen && <NetworkDisplay />}
       </div>
     )
   }
@@ -55,8 +54,8 @@ export default class ConfirmPageContainer extends Component {
 
     return (
       <div className="confirm-page-container-header">
-        { this.renderTop() }
-        { children }
+        {this.renderTop()}
+        {children}
       </div>
     )
   }

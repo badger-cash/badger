@@ -83,7 +83,10 @@ export async function getTransactionActionKey (transaction, methodData) {
   }
 }
 
-export function getLatestSubmittedTxWithNonce (transactions = [], nonce = '0x0') {
+export function getLatestSubmittedTxWithNonce (
+  transactions = [],
+  nonce = '0x0'
+) {
   if (!transactions.length) {
     return {}
   }
@@ -93,7 +96,9 @@ export function getLatestSubmittedTxWithNonce (transactions = [], nonce = '0x0')
 
     if (currentNonce === nonce) {
       return acc.submittedTime
-        ? submittedTime > acc.submittedTime ? current : acc
+        ? submittedTime > acc.submittedTime
+          ? current
+          : acc
         : current
     } else {
       return acc

@@ -11,7 +11,10 @@ TokenMenuDropdown.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(TokenMenuDropdown)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TokenMenuDropdown)
 
 function mapStateToProps (state) {
   return {
@@ -21,12 +24,11 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    showHideTokenConfirmationModal: (token) => {
+    showHideTokenConfirmationModal: token => {
       dispatch(actions.showModal({ name: 'HIDE_TOKEN_CONFIRMATION', token }))
     },
   }
 }
-
 
 inherits(TokenMenuDropdown, Component)
 function TokenMenuDropdown () {
@@ -43,7 +45,7 @@ TokenMenuDropdown.prototype.onClose = function (e) {
 TokenMenuDropdown.prototype.render = function () {
   const { showHideTokenConfirmationModal } = this.props
   const { address, protocol, protocolData } = this.props.token
-  
+
   // Set protocol specific token data
   let explorerUrl, tokenId
   if (protocol === 'slp') {
@@ -53,7 +55,6 @@ TokenMenuDropdown.prototype.render = function () {
     explorerUrl = `https://whc.btc.com/props/${protocolData.propertyid}`
     tokenId = protocolData.propertyid
   }
-
 
   return h(Menu, { className: 'token-menu-dropdown', isShowing: true }, [
     h(CloseArea, {
@@ -69,7 +70,7 @@ TokenMenuDropdown.prototype.render = function () {
     //   text: this.context.t('hideToken'),
     // }),
     h(Item, {
-      onClick: (e) => {
+      onClick: e => {
         e.stopPropagation()
         copyToClipboard(tokenId)
         this.props.onClose()
@@ -77,7 +78,7 @@ TokenMenuDropdown.prototype.render = function () {
       text: this.context.t('copyContractAddress'),
     }),
     h(Item, {
-      onClick: (e) => {
+      onClick: e => {
         e.stopPropagation()
         global.platform.openWindow({ url: explorerUrl })
         this.props.onClose()

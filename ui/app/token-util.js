@@ -20,7 +20,10 @@ async function getSymbolFromContract (tokenAddress) {
     const result = await token.symbol()
     return result[0]
   } catch (error) {
-    log.warn(`symbol() call for token at address ${tokenAddress} resulted in error:`, error)
+    log.warn(
+      `symbol() call for token at address ${tokenAddress} resulted in error:`,
+      error
+    )
   }
 }
 
@@ -32,7 +35,10 @@ async function getDecimalsFromContract (tokenAddress) {
     const decimalsBN = result[0]
     return decimalsBN && decimalsBN.toString()
   } catch (error) {
-    log.warn(`decimals() call for token at address ${tokenAddress} resulted in error:`, error)
+    log.warn(
+      `decimals() call for token at address ${tokenAddress} resulted in error:`,
+      error
+    )
   }
 }
 
@@ -69,7 +75,9 @@ async function getDecimals (tokenAddress) {
 }
 
 export async function getSymbolAndDecimals (tokenAddress, existingTokens = []) {
-  const existingToken = existingTokens.find(({ address }) => tokenAddress === address)
+  const existingToken = existingTokens.find(
+    ({ address }) => tokenAddress === address
+  )
 
   if (existingToken) {
     return {
@@ -84,7 +92,10 @@ export async function getSymbolAndDecimals (tokenAddress, existingTokens = []) {
     symbol = await getSymbol(tokenAddress)
     decimals = await getDecimals(tokenAddress)
   } catch (error) {
-    log.warn(`symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`, error)
+    log.warn(
+      `symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`,
+      error
+    )
   }
 
   return {
@@ -96,7 +107,7 @@ export async function getSymbolAndDecimals (tokenAddress, existingTokens = []) {
 export function tokenInfoGetter () {
   const tokens = {}
 
-  return async (address) => {
+  return async address => {
     if (tokens[address]) {
       return tokens[address]
     }

@@ -8,12 +8,7 @@ const actions = require('../../actions')
 const mapStateToProps = state => {
   const { appState, metamask } = state
   const { networkDropdownOpen } = appState
-  const {
-    network,
-    provider,
-    selectedAddress,
-    isUnlocked,
-  } = metamask
+  const { network, provider, selectedAddress, isUnlocked } = metamask
 
   return {
     networkDropdownOpen,
@@ -34,5 +29,8 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(AppHeader)

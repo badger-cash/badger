@@ -9,11 +9,15 @@ import { getTokenData } from '../../helpers/transactions.util'
 import { formatDate } from '../../util'
 
 const mapStateToProps = (state, ownProps) => {
-  const { transaction: { txParams: { value, nonce, data } = {}, time } = {} } = ownProps
+  const {
+    transaction: { txParams: { value, nonce, data } = {}, time } = {},
+  } = ownProps
   const sendTokenData = ownProps.transaction.txParams.sendTokenData
 
   const tokenData = data && getTokenData(data)
-  const nonceAndDate = nonce ? `#${hexToDecimal(nonce)} - ${formatDate(time)}` : formatDate(time)
+  const nonceAndDate = nonce
+    ? `#${hexToDecimal(nonce)} - ${formatDate(time)}`
+    : formatDate(time)
 
   return {
     value,
@@ -26,12 +30,16 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     setSelectedToken: tokenAddress => dispatch(setSelectedToken(tokenAddress)),
-    retryTransaction: transactionId => dispatch(retryTransaction(transactionId)),
+    retryTransaction: transactionId =>
+      dispatch(retryTransaction(transactionId)),
   }
 }
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-  withMethodData,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  withMethodData
 )(TransactionListItem)

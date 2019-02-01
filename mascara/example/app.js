@@ -4,18 +4,19 @@ window.addEventListener('load', loadProvider)
 window.addEventListener('message', console.warn)
 
 async function loadProvider () {
-  const ethereumProvider = window.metamask.createDefaultProvider({ host: 'http://localhost:9001' })
+  const ethereumProvider = window.metamask.createDefaultProvider({
+    host: 'http://localhost:9001',
+  })
   const ethQuery = new EthQuery(ethereumProvider)
   const accounts = await ethQuery.accounts()
-   window.METAMASK_ACCOUNT = accounts[0] || 'locked'
+  window.METAMASK_ACCOUNT = accounts[0] || 'locked'
   logToDom(accounts.length ? accounts[0] : 'LOCKED or undefined', 'account')
   setupButtons(ethQuery)
 }
 
-
 function logToDom (message, context) {
   document.getElementById(context).innerText = message
-  console.log(message)
+  // console.log(message)
 }
 
 function setupButtons (ethQuery) {

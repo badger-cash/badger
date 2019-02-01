@@ -4,7 +4,7 @@
   border-radius: 4px;
   background-color: #f0f0f0;
   color: #5e6064;
-  font-size: .625rem;
+  font-size: 0.625rem;
   text-transform: uppercase;
   display: flex;
   justify-content: center;
@@ -13,7 +13,7 @@
   @media screen and (max-width: $break-small) {
     height: 16px;
     width: 70px;
-    font-size: .5rem;
+    font-size: 0.5rem;
   }
 
   &--confirmed {
@@ -21,8 +21,9 @@
     color: #609a1c;
   }
 
-  &--approved, &--submitted {
-    background-color: #FFF2DB;
-    color: #CA810A;
+  &--approved,
+  &--submitted {
+    background-color: #fff2db;
+    color: #ca810a;
   }
 }

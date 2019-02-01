@@ -13,7 +13,6 @@ import SendContent from './send-content/'
 import SendFooter from './send-footer/'
 
 export default class SendTransactionScreen extends PersistentForm {
-
   static propTypes = {
     amount: PropTypes.string,
     amountConversionRate: PropTypes.oneOfType([
@@ -41,11 +40,11 @@ export default class SendTransactionScreen extends PersistentForm {
     scanQrCode: PropTypes.func,
     qrCodeDetected: PropTypes.func,
     qrCodeData: PropTypes.object,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.qrCodeData) {
@@ -135,25 +134,24 @@ export default class SendTransactionScreen extends PersistentForm {
         selectedToken,
         tokenBalance,
       })
-      
+
       const gasFeeErrorObject = { gasFee: null }
       // const gasFeeErrorObject = selectedToken
-        // ? getGasFeeErrorObject({
-        //   amount,
-        //   amountConversionRate,
-        //   balance,
-        //   conversionRate,
-        //   gasTotal,
-        //   primaryCurrency,
-        //   selectedToken,
-        //   tokenBalance,
-        // })
-        // : { gasFee: null }
+      // ? getGasFeeErrorObject({
+      //   amount,
+      //   amountConversionRate,
+      //   balance,
+      //   conversionRate,
+      //   gasTotal,
+      //   primaryCurrency,
+      //   selectedToken,
+      //   tokenBalance,
+      // })
+      // : { gasFee: null }
       updateSendErrors(Object.assign(amountErrorObject, gasFeeErrorObject))
     }
 
     if (!uninitialized) {
-
       if (network !== prevNetwork && network !== 'loading') {
         updateSendTokenBalance({
           selectedToken,
@@ -199,15 +197,14 @@ export default class SendTransactionScreen extends PersistentForm {
 
     return (
       <div className="page-container">
-        <SendHeader history={history}/>
+        <SendHeader history={history} />
         <SendContent
-          updateGas={(updateData) => this.updateGas(updateData)}
+          updateGas={updateData => this.updateGas(updateData)}
           scanQrCode={_ => this.props.scanQrCode()}
           showHexData={showHexData}
         />
-        <SendFooter history={history}/>
+        <SendFooter history={history} />
       </div>
     )
   }
-
 }

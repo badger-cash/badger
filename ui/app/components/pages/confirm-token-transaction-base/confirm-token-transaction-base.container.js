@@ -7,7 +7,10 @@ import {
 
 const mapStateToProps = (state, ownProps) => {
   const { tokenAmount: ownTokenAmount } = ownProps
-  const { confirmTransaction, metamask: { currentCurrency, conversionRate } } = state
+  const {
+    confirmTransaction,
+    metamask: { currentCurrency, conversionRate },
+  } = state
   const {
     txData: { txParams: { to: tokenAddress } = {} } = {},
     tokenProps: { tokenSymbol } = {},
@@ -21,7 +24,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     toAddress,
     tokenAddress,
-    tokenAmount: typeof ownTokenAmount !== 'undefined' ? ownTokenAmount : tokenAmount,
+    tokenAmount:
+      typeof ownTokenAmount !== 'undefined' ? ownTokenAmount : tokenAmount,
     tokenSymbol,
     currentCurrency,
     conversionRate,

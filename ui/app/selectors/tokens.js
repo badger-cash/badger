@@ -1,11 +1,15 @@
 import { createSelector } from 'reselect'
 
-export const selectedTokenAddressSelector = state => state.metamask.selectedTokenAddress
-export const tokenSelector = state => { 
-  const selectedAddress = state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
+export const selectedTokenAddressSelector = state =>
+  state.metamask.selectedTokenAddress
+export const tokenSelector = state => {
+  const selectedAddress =
+    state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
   const providerType = state.metamask.provider.type
   const addressAccountTokens = state.metamask.accountTokens[selectedAddress]
-  const accountTokens = addressAccountTokens ? addressAccountTokens[providerType] : []
+  const accountTokens = addressAccountTokens
+    ? addressAccountTokens[providerType]
+    : []
   return accountTokens
 }
 export const selectedTokenSelector = createSelector(

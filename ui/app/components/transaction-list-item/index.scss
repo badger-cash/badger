@@ -14,20 +14,20 @@
     display: grid;
     grid-template-columns: 45px 1fr 1fr 1fr;
     grid-template-areas:
-      "identicon action status primary-amount"
-      "identicon nonce status secondary-amount";
+      'identicon action status primary-amount'
+      'identicon nonce status secondary-amount';
 
     @media screen and (max-width: $break-small) {
       padding: 8px 20px 12px;
       grid-template-columns: 45px 5fr 3fr;
       grid-template-areas:
-        "nonce nonce nonce"
-        "identicon action primary-amount"
-        "identicon status secondary-amount";
+        'nonce nonce nonce'
+        'identicon action primary-amount'
+        'identicon status secondary-amount';
     }
 
     &:hover {
-      background: rgba($alto, .2);
+      background: rgba($alto, 0.2);
     }
   }
 
@@ -62,7 +62,7 @@
   }
 
   &__nonce {
-    font-size: .75rem;
+    font-size: 0.75rem;
     color: #5e6064;
     white-space: nowrap;
     overflow: hidden;
@@ -92,7 +92,7 @@
 
     &--secondary {
       text-align: end;
-      font-size: .75rem;
+      font-size: 0.75rem;
       color: #5e6064;
       grid-area: secondary-amount;
       align-self: start;
@@ -102,13 +102,13 @@
   &__retry {
     background: #d1edff;
     border-radius: 12px;
-    font-size: .75rem;
+    font-size: 0.75rem;
     padding: 4px 12px;
     cursor: pointer;
     margin-top: 8px;
 
     @media screen and (max-width: $break-small) {
-      font-size: .5rem;
+      font-size: 0.5rem;
     }
   }
 

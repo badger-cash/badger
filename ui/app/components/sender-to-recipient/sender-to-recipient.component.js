@@ -37,13 +37,12 @@ export default class SenderToRecipient extends PureComponent {
   }
 
   renderSenderIdenticon () {
-    return !this.props.addressOnly && (
-      <div className="sender-to-recipient__sender-icon">
-        <Identicon
-          address={this.props.senderAddress}
-          diameter={24}
-        />
-      </div>
+    return (
+      !this.props.addressOnly && (
+        <div className="sender-to-recipient__sender-icon">
+          <Identicon address={this.props.senderAddress} diameter={24} />
+        </div>
+      )
     )
   }
 
@@ -54,29 +53,35 @@ export default class SenderToRecipient extends PureComponent {
     return (
       <Tooltip
         position="bottom"
-        title={this.state.senderAddressCopied ? t('copiedExclamation') : t('copyAddress')}
+        title={
+          this.state.senderAddressCopied
+            ? t('copiedExclamation')
+            : t('copyAddress')
+        }
         wrapperClassName="sender-to-recipient__tooltip-wrapper"
         containerClassName="sender-to-recipient__tooltip-container"
         onHidden={() => this.setState({ senderAddressCopied: false })}
       >
-      <div className="sender-to-recipient__name">
-        { addressOnly ? `${t('from')}: ${senderAddress}` : senderName }
-      </div>
-    </Tooltip>
+        <div className="sender-to-recipient__name">
+          {addressOnly ? `${t('from')}: ${senderAddress}` : senderName}
+        </div>
+      </Tooltip>
     )
   }
 
   renderRecipientIdenticon () {
     const { recipientAddress, assetImage } = this.props
 
-    return !this.props.addressOnly && (
-      <div className="sender-to-recipient__sender-icon">
-        <Identicon
-          address={recipientAddress}
-          diameter={24}
-          image={assetImage}
-        />
-      </div>
+    return (
+      !this.props.addressOnly && (
+        <div className="sender-to-recipient__sender-icon">
+          <Identicon
+            address={recipientAddress}
+            diameter={24}
+            image={assetImage}
+          />
+        </div>
+      )
     )
   }
 
@@ -92,20 +97,22 @@ export default class SenderToRecipient extends PureComponent {
           copyToClipboard(recipientAddress)
         }}
       >
-        { this.renderRecipientIdenticon() }
+        {this.renderRecipientIdenticon()}
         <Tooltip
           position="bottom"
-          title={this.state.recipientAddressCopied ? t('copiedExclamation') : t('copyAddress')}
+          title={
+            this.state.recipientAddressCopied
+              ? t('copiedExclamation')
+              : t('copyAddress')
+          }
           wrapperClassName="sender-to-recipient__tooltip-wrapper"
           containerClassName="sender-to-recipient__tooltip-container"
           onHidden={() => this.setState({ recipientAddressCopied: false })}
         >
           <div className="sender-to-recipient__name">
-            {
-              addressOnly
-                ? `${t('to')}: ${recipientAddress}`
-                : (recipientName || this.context.t('newContract'))
-            }
+            {addressOnly
+              ? `${t('to')}: ${recipientAddress}`
+              : recipientName || this.context.t('newContract')}
           </div>
         </Tooltip>
       </div>
@@ -115,34 +122,26 @@ export default class SenderToRecipient extends PureComponent {
   renderRecipientWithoutAddress () {
     return (
       <div className="sender-to-recipient__party sender-to-recipient__party--recipient">
-        { !this.props.addressOnly && <i className="fa fa-file-text-o" /> }
+        {!this.props.addressOnly && <i className="fa fa-file-text-o" />}
         <div className="sender-to-recipient__name">
-          { this.context.t('newContract') }
+          {this.context.t('newContract')}
         </div>
       </div>
     )
   }
 
   renderArrow () {
-    return this.props.variant === CARDS_VARIANT
-      ? (
-        <div className="sender-to-recipient__arrow-container">
-          <img
-            height={20}
-            src="./images/caret-right.svg"
-          />
+    return this.props.variant === CARDS_VARIANT ? (
+      <div className="sender-to-recipient__arrow-container">
+        <img height={20} src="./images/caret-right.svg" />
+      </div>
+    ) : (
+      <div className="sender-to-recipient__arrow-container">
+        <div className="sender-to-recipient__arrow-circle">
+          <img height={15} width={15} src="./images/arrow-right.svg" />
         </div>
-      ) : (
-        <div className="sender-to-recipient__arrow-container">
-          <div className="sender-to-recipient__arrow-circle">
-            <img
-              height={15}
-              width={15}
-              src="./images/arrow-right.svg"
-            />
-          </div>
-        </div>
-      )
+      </div>
+    )
   }
 
   render () {
@@ -151,21 +150,21 @@ export default class SenderToRecipient extends PureComponent {
     return (
       <div className={classnames(variantHash[variant])}>
         <div
-          className={classnames('sender-to-recipient__party sender-to-recipient__party--sender')}
+          className={classnames(
+            'sender-to-recipient__party sender-to-recipient__party--sender'
+          )}
           onClick={() => {
             this.setState({ senderAddressCopied: true })
             copyToClipboard(senderAddress)
           }}
         >
-          { this.renderSenderIdenticon() }
-          { this.renderSenderAddress() }
+          {this.renderSenderIdenticon()}
+          {this.renderSenderAddress()}
         </div>
-        { this.renderArrow() }
-        {
-          recipientAddress
-            ? this.renderRecipientWithAddress()
-            : this.renderRecipientWithoutAddress()
-        }
+        {this.renderArrow()}
+        {recipientAddress
+          ? this.renderRecipientWithAddress()
+          : this.renderRecipientWithoutAddress()}
       </div>
     )
   }

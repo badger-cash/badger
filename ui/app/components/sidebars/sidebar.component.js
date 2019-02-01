@@ -5,16 +5,20 @@ import WalletView from '../wallet-view'
 import { WALLET_VIEW_SIDEBAR } from './sidebar.constants'
 
 export default class Sidebar extends Component {
-
   static propTypes = {
     sidebarOpen: PropTypes.bool,
     hideSidebar: PropTypes.func,
     transitionName: PropTypes.string,
     type: PropTypes.string,
-  };
+  }
 
   renderOverlay () {
-    return <div className="sidebar-overlay" onClick={() => this.props.hideSidebar()} />
+    return (
+      <div
+        className="sidebar-overlay"
+        onClick={() => this.props.hideSidebar()}
+      />
+    )
   }
 
   renderSidebarContent () {
@@ -22,11 +26,10 @@ export default class Sidebar extends Component {
 
     switch (type) {
       case WALLET_VIEW_SIDEBAR:
-        return <WalletView responsiveDisplayClassname={'sidebar-right' } />
+        return <WalletView responsiveDisplayClassname={'sidebar-right'} />
       default:
         return null
     }
-
   }
 
   render () {
@@ -39,11 +42,10 @@ export default class Sidebar extends Component {
           transitionEnterTimeout={300}
           transitionLeaveTimeout={200}
         >
-          { sidebarOpen ? this.renderSidebarContent() : null }
+          {sidebarOpen ? this.renderSidebarContent() : null}
         </ReactCSSTransitionGroup>
-        { sidebarOpen ? this.renderOverlay() : null }
+        {sidebarOpen ? this.renderOverlay() : null}
       </div>
     )
   }
-
 }

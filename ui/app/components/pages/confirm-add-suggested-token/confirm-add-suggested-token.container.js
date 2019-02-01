@@ -18,12 +18,16 @@ const mapStateToProps = ({ metamask }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addToken: ({address, symbol, decimals, image}) => dispatch(addToken(address, symbol, decimals, image)),
+    addToken: ({ address, symbol, decimals, image }) =>
+      dispatch(addToken(address, symbol, decimals, image)),
     removeSuggestedTokens: () => dispatch(removeSuggestedTokens()),
   }
 }
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(ConfirmAddSuggestedToken)

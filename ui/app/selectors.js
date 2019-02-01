@@ -1,12 +1,8 @@
 const abi = require('human-standard-token-abi')
 
-import {
-  transactionsSelector,
-} from './selectors/transactions'
+import { transactionsSelector } from './selectors/transactions'
 
-const {
-  multiplyCurrencies,
-} = require('./conversion-util')
+const { multiplyCurrencies } = require('./conversion-util')
 
 const selectors = {
   getSelectedAddress,
@@ -38,7 +34,8 @@ const selectors = {
 module.exports = selectors
 
 function getSelectedAddress (state) {
-  const selectedAddress = state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
+  const selectedAddress =
+    state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
 
   return selectedAddress
 }
@@ -62,12 +59,17 @@ function getSelectedToken (state) {
   const selectedTokenAddress = state.metamask.selectedTokenAddress
   const providerType = state.metamask.provider.type
   const addressAccountTokens = state.metamask.accountTokens[selectedAddress]
-  const accountTokens = addressAccountTokens ? addressAccountTokens[providerType] : []
-  const selectedToken = accountTokens && accountTokens.length ? accountTokens.filter(({ address, string }) => { 
-    // TODO: filter for mint baton by properties
-    if (string === 'Mint Baton') return false
-    return address === selectedTokenAddress
-  })[0] : null
+  const accountTokens = addressAccountTokens
+    ? addressAccountTokens[providerType]
+    : []
+  const selectedToken =
+    accountTokens && accountTokens.length
+      ? accountTokens.filter(({ address, string }) => {
+          // TODO: filter for mint baton by properties
+          if (string === 'Mint Baton') return false
+          return address === selectedTokenAddress
+        })[0]
+      : null
   const sendToken = state.metamask.send.token
 
   return selectedToken || sendToken || null
@@ -106,14 +108,13 @@ function getAddressBook (state) {
 }
 
 function accountsWithSendEtherInfoSelector (state) {
-  const {
-    accounts,
-    identities,
-  } = state.metamask
+  const { accounts, identities } = state.metamask
 
-  const accountsWithSendEtherInfo = Object.entries(accounts).map(([key, account]) => {
-    return Object.assign({}, account, identities[key])
-  })
+  const accountsWithSendEtherInfo = Object.entries(accounts).map(
+    ([key, account]) => {
+      return Object.assign({}, account, identities[key])
+    }
+  )
 
   return accountsWithSendEtherInfo
 }
@@ -178,9 +179,10 @@ function autoAddToBetaUI (state) {
   const numberOfAccounts = Object.keys(state.metamask.accounts).length
   const numberOfTokensAdded = state.metamask.tokens.length
 
-  const userPassesThreshold = (numberOfTransactions > autoAddTransactionThreshold) &&
-    (numberOfAccounts > autoAddAccountsThreshold) &&
-    (numberOfTokensAdded > autoAddTokensThreshold)
+  const userPassesThreshold =
+    numberOfTransactions > autoAddTransactionThreshold &&
+    numberOfAccounts > autoAddAccountsThreshold &&
+    numberOfTokensAdded > autoAddTokensThreshold
   const userIsNotInBeta = !state.metamask.featureFlags.betaUI
 
   return userIsNotInBeta && userPassesThreshold
@@ -199,6 +201,10 @@ function getTotalUnapprovedCount ({ metamask }) {
     unapprovedTypedMessagesCount,
   } = metamask
 
-  return Object.keys(unapprovedTxs).length + unapprovedMsgCount + unapprovedPersonalMsgCount +
+  return (
+    Object.keys(unapprovedTxs).length +
+    unapprovedMsgCount +
+    unapprovedPersonalMsgCount +
     unapprovedTypedMessagesCount
+  )
 }

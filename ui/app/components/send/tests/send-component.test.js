@@ -17,7 +17,9 @@ const propsMethodSpies = {
 const utilsMethodStubs = {
   getAmountErrorObject: sinon.stub().returns({ amount: 'mockAmountError' }),
   getGasFeeErrorObject: sinon.stub().returns({ gasFee: 'mockGasFeeError' }),
-  doesAmountErrorRequireUpdate: sinon.stub().callsFake(obj => obj.balance !== obj.prevBalance),
+  doesAmountErrorRequireUpdate: sinon
+    .stub()
+    .callsFake(obj => obj.balance !== obj.prevBalance),
 }
 
 const SendTransactionScreen = proxyquire('../send.component.js', {
@@ -31,30 +33,32 @@ describe('Send Component', function () {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallow(<SendTransactionScreen
-      amount={'mockAmount'}
-      amountConversionRate={'mockAmountConversionRate'}
-      blockGasLimit={'mockBlockGasLimit'}
-      conversionRate={10}
-      editingTransactionId={'mockEditingTransactionId'}
-      from={ { address: 'mockAddress', balance: 'mockBalance' } }
-      gasLimit={'mockGasLimit'}
-      gasPrice={'mockGasPrice'}
-      gasTotal={'mockGasTotal'}
-      history={{ mockProp: 'history-abc'}}
-      network={'3'}
-      primaryCurrency={'mockPrimaryCurrency'}
-      recentBlocks={['mockBlock']}
-      selectedAddress={'mockSelectedAddress'}
-      selectedToken={'mockSelectedToken'}
-      showHexData={true}
-      tokenBalance={'mockTokenBalance'}
-      tokenContract={'mockTokenContract'}
-      updateAndSetGasTotal={propsMethodSpies.updateAndSetGasTotal}
-      updateSendErrors={propsMethodSpies.updateSendErrors}
-      updateSendTokenBalance={propsMethodSpies.updateSendTokenBalance}
-      resetSendState={propsMethodSpies.resetSendState}
-    />)
+    wrapper = shallow(
+      <SendTransactionScreen
+        amount={'mockAmount'}
+        amountConversionRate={'mockAmountConversionRate'}
+        blockGasLimit={'mockBlockGasLimit'}
+        conversionRate={10}
+        editingTransactionId={'mockEditingTransactionId'}
+        from={{ address: 'mockAddress', balance: 'mockBalance' }}
+        gasLimit={'mockGasLimit'}
+        gasPrice={'mockGasPrice'}
+        gasTotal={'mockGasTotal'}
+        history={{ mockProp: 'history-abc' }}
+        network={'3'}
+        primaryCurrency={'mockPrimaryCurrency'}
+        recentBlocks={['mockBlock']}
+        selectedAddress={'mockSelectedAddress'}
+        selectedToken={'mockSelectedToken'}
+        showHexData={true}
+        tokenBalance={'mockTokenBalance'}
+        tokenContract={'mockTokenContract'}
+        updateAndSetGasTotal={propsMethodSpies.updateAndSetGasTotal}
+        updateSendErrors={propsMethodSpies.updateSendErrors}
+        updateSendTokenBalance={propsMethodSpies.updateSendTokenBalance}
+        resetSendState={propsMethodSpies.resetSendState}
+      />
+    )
   })
 
   afterEach(() => {
@@ -198,10 +202,10 @@ describe('Send Component', function () {
         },
       })
       assert.equal(propsMethodSpies.updateSendErrors.callCount, 1)
-      assert.deepEqual(
-        propsMethodSpies.updateSendErrors.getCall(0).args[0],
-        { amount: 'mockAmountError', gasFee: null }
-      )
+      assert.deepEqual(propsMethodSpies.updateSendErrors.getCall(0).args[0], {
+        amount: 'mockAmountError',
+        gasFee: null,
+      })
     })
 
     it('should call updateSendErrors with the expected params if selectedToken is truthy', () => {
@@ -213,10 +217,10 @@ describe('Send Component', function () {
         },
       })
       assert.equal(propsMethodSpies.updateSendErrors.callCount, 1)
-      assert.deepEqual(
-        propsMethodSpies.updateSendErrors.getCall(0).args[0],
-        { amount: 'mockAmountError', gasFee: 'mockGasFeeError' }
-      )
+      assert.deepEqual(propsMethodSpies.updateSendErrors.getCall(0).args[0], {
+        amount: 'mockAmountError',
+        gasFee: 'mockGasFeeError',
+      })
     })
 
     it('should not call updateSendTokenBalance or this.updateGas if network === prevNetwork', () => {
@@ -299,14 +303,17 @@ describe('Send Component', function () {
       wrapper.instance().updateGas()
       assert.equal(
         propsMethodSpies.updateAndSetGasTotal.getCall(0).args[0].to,
-        'someaddress',
+        'someaddress'
       )
     })
 
     it('should call updateAndSetGasTotal with to set to lowercase if passed', () => {
       propsMethodSpies.updateAndSetGasTotal.resetHistory()
       wrapper.instance().updateGas({ to: '0xABC' })
-      assert.equal(propsMethodSpies.updateAndSetGasTotal.getCall(0).args[0].to, '0xabc')
+      assert.equal(
+        propsMethodSpies.updateAndSetGasTotal.getCall(0).args[0].to,
+        '0xabc'
+      )
     })
   })
 
@@ -322,12 +329,9 @@ describe('Send Component', function () {
     })
 
     it('should pass the history prop to SendHeader and SendFooter', () => {
-      assert.deepEqual(
-        wrapper.find(SendFooter).props(),
-        {
-          history: { mockProp: 'history-abc' },
-        }
-      )
+      assert.deepEqual(wrapper.find(SendFooter).props(), {
+        history: { mockProp: 'history-abc' },
+      })
     })
 
     it('should pass showHexData to SendContent', () => {

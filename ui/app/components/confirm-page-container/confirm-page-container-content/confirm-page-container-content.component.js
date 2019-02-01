@@ -29,7 +29,6 @@ export default class ConfirmPageContainerContent extends Component {
   renderContent () {
     // TODO: render details, fee and total
     // const { detailsComponent, dataComponent } = this.props
-
     // if (detailsComponent && dataComponent) {
     //   return this.renderTabs()
     // } else {
@@ -42,12 +41,8 @@ export default class ConfirmPageContainerContent extends Component {
 
     return (
       <Tabs>
-        <Tab name="Details">
-          { detailsComponent }
-        </Tab>
-        <Tab name="Data">
-          { dataComponent }
-        </Tab>
+        <Tab name="Details">{detailsComponent}</Tab>
+        <Tab name="Data">{dataComponent}</Tab>
       </Tabs>
     )
   }
@@ -71,38 +66,31 @@ export default class ConfirmPageContainerContent extends Component {
 
     return (
       <div className="confirm-page-container-content">
-        {
-          warning && (
-            <ConfirmPageContainerWarning warning={warning} />
-          )
-        }
-        {
-          summaryComponent || (
-            <ConfirmPageContainerSummary
-              className={classnames({
-                'confirm-page-container-summary--border': !detailsComponent || !dataComponent,
-              })}
-              action={action}
-              title={title}
-              subtitle={subtitle}
-              hideSubtitle={hideSubtitle}
-              identiconAddress={identiconAddress}
-              nonce={nonce}
-              assetImage={assetImage}
+        {warning && <ConfirmPageContainerWarning warning={warning} />}
+        {summaryComponent || (
+          <ConfirmPageContainerSummary
+            className={classnames({
+              'confirm-page-container-summary--border':
+                !detailsComponent || !dataComponent,
+            })}
+            action={action}
+            title={title}
+            subtitle={subtitle}
+            hideSubtitle={hideSubtitle}
+            identiconAddress={identiconAddress}
+            nonce={nonce}
+            assetImage={assetImage}
+          />
+        )}
+        {this.renderContent()}
+        {(errorKey || errorMessage) && (
+          <div className="confirm-page-container-content__error-container">
+            <ConfirmPageContainerError
+              errorMessage={errorMessage}
+              errorKey={errorKey}
             />
-          )
-        }
-        { this.renderContent() }
-        {
-          (errorKey || errorMessage) && (
-            <div className="confirm-page-container-content__error-container">
-              <ConfirmPageContainerError
-                errorMessage={errorMessage}
-                errorKey={errorKey}
-              />
-            </div>
-          )
-        }
+          </div>
+        )}
       </div>
     )
   }

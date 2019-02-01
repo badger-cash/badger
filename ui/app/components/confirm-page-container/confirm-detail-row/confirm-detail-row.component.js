@@ -15,25 +15,24 @@ const ConfirmDetailRow = props => {
 
   return (
     <div className="confirm-detail-row">
-      <div className="confirm-detail-row__label">
-        { label }
-      </div>
+      <div className="confirm-detail-row__label">{label}</div>
       <div className="confirm-detail-row__details">
         <div
-          className={classnames('confirm-detail-row__header-text', headerTextClassName)}
+          className={classnames(
+            'confirm-detail-row__header-text',
+            headerTextClassName
+          )}
           onClick={() => onHeaderClick && onHeaderClick()}
         >
-          { headerText }
+          {headerText}
         </div>
         <div
           className="confirm-detail-row__fiat"
           style={{ color: fiatTextColor }}
         >
-          { fiatText }
+          {fiatText}
         </div>
-        <div className="confirm-detail-row__eth">
-          { ethText }
-        </div>
+        <div className="confirm-detail-row__eth">{ethText}</div>
       </div>
     </div>
   )

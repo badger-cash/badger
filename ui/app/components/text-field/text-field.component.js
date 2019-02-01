@@ -64,7 +64,14 @@ const styles = {
 }
 
 const TextField = props => {
-  const { error, classes, material, startAdornment, largeLabel, ...textFieldProps } = props
+  const {
+    error,
+    classes,
+    material,
+    startAdornment,
+    largeLabel,
+    ...textFieldProps
+  } = props
 
   return (
     <MaterialTextField
@@ -72,10 +79,16 @@ const TextField = props => {
       helperText={error}
       InputLabelProps={{
         shrink: material ? undefined : true,
-        className: material ? '' : (largeLabel ? classes.largeInputLabel : classes.inputLabel),
+        className: material
+          ? ''
+          : largeLabel
+            ? classes.largeInputLabel
+            : classes.inputLabel,
         FormLabelClasses: {
           root: material ? classes.materialLabel : classes.formLabel,
-          focused: material ? classes.materialFocused : classes.formLabelFocused,
+          focused: material
+            ? classes.materialFocused
+            : classes.formLabelFocused,
           error: classes.materialError,
         },
       }}

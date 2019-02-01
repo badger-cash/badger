@@ -3,7 +3,13 @@ import CustomizeGas from './customize-gas.component'
 import { hideModal } from '../../../actions'
 
 const mapStateToProps = state => {
-  const { appState: { modal: { modalState: { props } } } } = state
+  const {
+    appState: {
+      modal: {
+        modalState: { props },
+      },
+    },
+  } = state
   const { txData, onSubmit, validate } = props
 
   return {
@@ -19,4 +25,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomizeGas)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomizeGas)

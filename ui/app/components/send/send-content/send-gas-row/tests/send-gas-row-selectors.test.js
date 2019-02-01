@@ -5,7 +5,6 @@ import {
 } from '../send-gas-row.selectors.js'
 
 describe('send-gas-row selectors', () => {
-
   describe('getGasLoadingError()', () => {
     it('should return send.errors.gasLoading', () => {
       const state = {
@@ -45,5 +44,4 @@ describe('send-gas-row selectors', () => {
       assert.equal(gasFeeIsInError(state), false)
     })
   })
-
 })

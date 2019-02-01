@@ -62,18 +62,22 @@ ConfirmTxScreen.prototype.getUnapprovedMessagesTotal = function () {
     unapprovedTypedMessagesCount = 0,
   } = this.props
 
-  return unapprovedTypedMessagesCount + unapprovedMsgCount + unapprovedPersonalMsgCount
+  return (
+    unapprovedTypedMessagesCount +
+    unapprovedMsgCount +
+    unapprovedPersonalMsgCount
+  )
 }
 
 ConfirmTxScreen.prototype.componentDidMount = function () {
-  const {
-    unapprovedTxs = {},
-    network,
-    send,
-  } = this.props
+  const { unapprovedTxs = {}, network, send } = this.props
   const unconfTxList = txHelper(unapprovedTxs, {}, {}, {}, network)
 
-  if (unconfTxList.length === 0 && !send.to && this.getUnapprovedMessagesTotal() === 0) {
+  if (
+    unconfTxList.length === 0 &&
+    !send.to &&
+    this.getUnapprovedMessagesTotal() === 0
+  ) {
     this.props.history.push(DEFAULT_ROUTE)
   }
 }
@@ -91,7 +95,9 @@ ConfirmTxScreen.prototype.componentDidUpdate = function (prevProps) {
   let prevTx
 
   if (transactionId) {
-    prevTx = R.find(({ id }) => id + '' === transactionId)(selectedAddressTxList)
+    prevTx = R.find(({ id }) => id + '' === transactionId)(
+      selectedAddressTxList
+    )
   } else {
     const { index: prevIndex, unapprovedTxs: prevUnapprovedTxs } = prevProps
     const prevUnconfTxList = txHelper(prevUnapprovedTxs, {}, {}, {}, network)
@@ -102,15 +108,21 @@ ConfirmTxScreen.prototype.componentDidUpdate = function (prevProps) {
   const unconfTxList = txHelper(unapprovedTxs, {}, {}, {}, network)
 
   if (prevTx && prevTx.status === 'dropped') {
-    this.props.dispatch(actions.showModal({
-      name: 'TRANSACTION_CONFIRMED',
-      onHide: () => history.push(DEFAULT_ROUTE),
-    }))
+    this.props.dispatch(
+      actions.showModal({
+        name: 'TRANSACTION_CONFIRMED',
+        onHide: () => history.push(DEFAULT_ROUTE),
+      })
+    )
 
     return
   }
 
-  if (unconfTxList.length === 0 && !send.to && this.getUnapprovedMessagesTotal() === 0) {
+  if (
+    unconfTxList.length === 0 &&
+    !send.to &&
+    this.getUnapprovedMessagesTotal() === 0
+  ) {
     this.props.history.push(DEFAULT_ROUTE)
   }
 }
@@ -134,7 +146,7 @@ ConfirmTxScreen.prototype.getTxData = function () {
     network
   )
 
-  log.info(`rendering a combined ${unconfTxList.length} unconf msgs & txs`)
+  // log.info(`rendering a combined ${unconfTxList.length} unconf msgs & txs`)
 
   return transactionId
     ? R.find(({ id }) => id + '' === transactionId)(unconfTxList)
@@ -143,11 +155,7 @@ ConfirmTxScreen.prototype.getTxData = function () {
 
 ConfirmTxScreen.prototype.render = function () {
   const props = this.props
-  const {
-    currentCurrency,
-    conversionRate,
-    blockGasLimit,
-  } = props
+  const { currentCurrency, conversionRate, blockGasLimit } = props
 
   var txData = this.getTxData() || {}
   const { msgParams } = txData
@@ -155,28 +163,28 @@ ConfirmTxScreen.prototype.render = function () {
 
   return msgParams
     ? h(SignatureRequest, {
-      // Properties
-      txData: txData,
-      key: txData.id,
-      selectedAddress: props.selectedAddress,
-      accounts: props.accounts,
-      identities: props.identities,
-      conversionRate,
-      currentCurrency,
-      blockGasLimit,
-      // Actions
-      signMessage: this.signMessage.bind(this, txData),
-      signPersonalMessage: this.signPersonalMessage.bind(this, txData),
-      signTypedMessage: this.signTypedMessage.bind(this, txData),
-      cancelMessage: this.cancelMessage.bind(this, txData),
-      cancelPersonalMessage: this.cancelPersonalMessage.bind(this, txData),
-      cancelTypedMessage: this.cancelTypedMessage.bind(this, txData),
-    })
+        // Properties
+        txData: txData,
+        key: txData.id,
+        selectedAddress: props.selectedAddress,
+        accounts: props.accounts,
+        identities: props.identities,
+        conversionRate,
+        currentCurrency,
+        blockGasLimit,
+        // Actions
+        signMessage: this.signMessage.bind(this, txData),
+        signPersonalMessage: this.signPersonalMessage.bind(this, txData),
+        signTypedMessage: this.signTypedMessage.bind(this, txData),
+        cancelMessage: this.cancelMessage.bind(this, txData),
+        cancelPersonalMessage: this.cancelPersonalMessage.bind(this, txData),
+        cancelTypedMessage: this.cancelTypedMessage.bind(this, txData),
+      })
     : h(Loading)
 }
 
 ConfirmTxScreen.prototype.signMessage = function (msgData, event) {
-  log.info('conf-tx.js: signing message')
+  // log.info('conf-tx.js: signing message')
   var params = msgData.msgParams
   params.metamaskId = msgData.id
   this.stopPropagation(event)
@@ -190,7 +198,7 @@ ConfirmTxScreen.prototype.stopPropagation = function (event) {
 }
 
 ConfirmTxScreen.prototype.signPersonalMessage = function (msgData, event) {
-  log.info('conf-tx.js: signing personal message')
+  // log.info('conf-tx.js: signing personal message')
   var params = msgData.msgParams
   params.metamaskId = msgData.id
   this.stopPropagation(event)
@@ -198,7 +206,7 @@ ConfirmTxScreen.prototype.signPersonalMessage = function (msgData, event) {
 }
 
 ConfirmTxScreen.prototype.signTypedMessage = function (msgData, event) {
-  log.info('conf-tx.js: signing typed message')
+  // log.info('conf-tx.js: signing typed message')
   var params = msgData.msgParams
   params.metamaskId = msgData.id
   this.stopPropagation(event)
@@ -206,19 +214,19 @@ ConfirmTxScreen.prototype.signTypedMessage = function (msgData, event) {
 }
 
 ConfirmTxScreen.prototype.cancelMessage = function (msgData, event) {
-  log.info('canceling message')
+  // log.info('canceling message')
   this.stopPropagation(event)
   return this.props.dispatch(actions.cancelMsg(msgData))
 }
 
 ConfirmTxScreen.prototype.cancelPersonalMessage = function (msgData, event) {
-  log.info('canceling personal message')
+  // log.info('canceling personal message')
   this.stopPropagation(event)
   return this.props.dispatch(actions.cancelPersonalMsg(msgData))
 }
 
 ConfirmTxScreen.prototype.cancelTypedMessage = function (msgData, event) {
-  log.info('canceling typed message')
+  // log.info('canceling typed message')
   this.stopPropagation(event)
   return this.props.dispatch(actions.cancelTypedMsg(msgData))
 }

@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ConfirmPageContainer, { ConfirmDetailRow } from '../../confirm-page-container'
+import ConfirmPageContainer, {
+  ConfirmDetailRow,
+} from '../../confirm-page-container'
 import { formatCurrency } from '../../../helpers/confirm-transaction/util'
-import { isBalanceSufficient, isTokenBalanceSufficient } from '../../send/send.utils'
+import {
+  isBalanceSufficient,
+  isTokenBalanceSufficient,
+} from '../../send/send.utils'
 import { DEFAULT_ROUTE } from '../../../routes'
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
@@ -103,22 +108,20 @@ export default class ConfirmTransactionBase extends Component {
       balance,
       conversionRate,
       hexGasTotal,
-      txData: {
-        simulationFails,
-        txParams: {
-          value: amount,
-        } = {},
-      } = {},
+      txData: { simulationFails, txParams: { value: amount } = {} } = {},
       txParams,
       accountTokens,
     } = this.props
 
-    const insufficientBalance = txParams.sendTokenData ? false : balance && !isBalanceSufficient({
-      amount,
-      gasTotal: hexGasTotal || '0x0',
-      balance,
-      conversionRate,
-    })
+    const insufficientBalance = txParams.sendTokenData
+      ? false
+      : balance &&
+        !isBalanceSufficient({
+          amount,
+          gasTotal: hexGasTotal || '0x0',
+          balance,
+          conversionRate,
+        })
 
     if (insufficientBalance) {
       return {
@@ -129,12 +132,16 @@ export default class ConfirmTransactionBase extends Component {
 
     let insufficientTokens = !!txParams.sendTokenData
     if (txParams.sendTokenData) {
-      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(token => token.address === txParams.sendTokenData.tokenId)
-      insufficientTokens = tokenToSend ? !isTokenBalanceSufficient({
-        tokenBalance: tokenToSend.string,
-        amount,
-        decimals: tokenToSend.decimals,
-      }) : true
+      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
+        token => token.address === txParams.sendTokenData.tokenId
+      )
+      insufficientTokens = tokenToSend
+        ? !isTokenBalanceSufficient({
+            tokenBalance: tokenToSend.string,
+            amount,
+            decimals: tokenToSend.decimals,
+          })
+        : true
     }
 
     if (insufficientTokens) {
@@ -183,7 +190,10 @@ export default class ConfirmTransactionBase extends Component {
       return null
     }
 
-    const formattedCurrency = formatCurrency(fiatTransactionTotal, currentCurrency)
+    const formattedCurrency = formatCurrency(
+      fiatTransactionTotal,
+      currentCurrency
+    )
 
     return (
       detailsComponent || (
@@ -216,15 +226,8 @@ export default class ConfirmTransactionBase extends Component {
   renderData () {
     const { t } = this.context
     const {
-      txData: {
-        txParams: {
-          data,
-        } = {},
-      } = {},
-      methodData: {
-        name,
-        params,
-      } = {},
+      txData: { txParams: { data } = {} } = {},
+      methodData: { name, params } = {},
       hideData,
       dataComponent,
     } = this.props
@@ -233,33 +236,31 @@ export default class ConfirmTransactionBase extends Component {
       return null
     }
 
-    return dataComponent || (
-      <div className="confirm-page-container-content__data">
-        <div className="confirm-page-container-content__data-box-label">
-          {`${t('functionType')}:`}
-          <span className="confirm-page-container-content__function-type">
-            { name || t('notFound') }
-          </span>
-        </div>
-        {
-          params && (
+    return (
+      dataComponent || (
+        <div className="confirm-page-container-content__data">
+          <div className="confirm-page-container-content__data-box-label">
+            {`${t('functionType')}:`}
+            <span className="confirm-page-container-content__function-type">
+              {name || t('notFound')}
+            </span>
+          </div>
+          {params && (
             <div className="confirm-page-container-content__data-box">
               <div className="confirm-page-container-content__data-field-label">
-                { `${t('parameters')}:` }
+                {`${t('parameters')}:`}
               </div>
               <div>
-                <pre>{ JSON.stringify(params, null, 2) }</pre>
+                <pre>{JSON.stringify(params, null, 2)}</pre>
               </div>
             </div>
-          )
-        }
-        <div className="confirm-page-container-content__data-box-label">
-          {`${t('hexData')}:`}
+          )}
+          <div className="confirm-page-container-content__data-box-label">
+            {`${t('hexData')}:`}
+          </div>
+          <div className="confirm-page-container-content__data-box">{data}</div>
         </div>
-        <div className="confirm-page-container-content__data-box">
-          { data }
-        </div>
-      </div>
+      )
     )
   }
 
@@ -269,21 +270,32 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   handleCancel () {
-    const { onCancel, txData, cancelTransaction, history, clearConfirmTransaction } = this.props
+    const {
+      onCancel,
+      txData,
+      cancelTransaction,
+      history,
+      clearConfirmTransaction,
+    } = this.props
 
     if (onCancel) {
       onCancel(txData)
     } else {
-      cancelTransaction(txData)
-        .then(() => {
-          clearConfirmTransaction()
-          history.push(DEFAULT_ROUTE)
-        })
+      cancelTransaction(txData).then(() => {
+        clearConfirmTransaction()
+        history.push(DEFAULT_ROUTE)
+      })
     }
   }
 
   handleSubmit () {
-    const { sendTransaction, clearConfirmTransaction, txData, history, onSubmit } = this.props
+    const {
+      sendTransaction,
+      clearConfirmTransaction,
+      txData,
+      history,
+      onSubmit,
+    } = this.props
     const { submitting } = this.state
 
     if (submitting) {
@@ -293,8 +305,9 @@ export default class ConfirmTransactionBase extends Component {
     this.setState({ submitting: true, submitError: null })
 
     if (onSubmit) {
-      Promise.resolve(onSubmit(txData))
-        .then(this.setState({ submitting: false }))
+      Promise.resolve(onSubmit(txData)).then(
+        this.setState({ submitting: false })
+      )
     } else {
       sendTransaction(txData)
         .then(() => {
@@ -339,18 +352,31 @@ export default class ConfirmTransactionBase extends Component {
     const { submitting, submitError } = this.state
 
     const { name } = methodData
-    const fiatConvertedAmount = formatCurrency(fiatTransactionAmount, currentCurrency)
+    const fiatConvertedAmount = formatCurrency(
+      fiatTransactionAmount,
+      currentCurrency
+    )
     const { valid, errorKey } = this.getErrorKey()
 
     // Send Token Settings
     if (txParams.sendTokenData) {
-      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(token => token.address === txParams.sendTokenData.tokenId)
-      title = tokenToSend ? `${txParams.value} ${tokenToSend.symbol}` : 'UNKNOWN TOKEN'
-      subtitle = tokenToSend ? txParams.sendTokenData.tokenProtocol === 'slp' ? 'Simple Ledger Protocol' : 'Wormhole' : ''
+      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
+        token => token.address === txParams.sendTokenData.tokenId
+      )
+      title = tokenToSend
+        ? `${txParams.value} ${tokenToSend.symbol}`
+        : 'UNKNOWN TOKEN'
+      subtitle = tokenToSend
+        ? txParams.sendTokenData.tokenProtocol === 'slp'
+          ? 'Simple Ledger Protocol'
+          : 'Wormhole'
+        : ''
       hideSubtitle = !tokenToSend
 
       // Update sendTokenData symbol
-      txParams.sendTokenData.tokenSymbol = tokenToSend ? tokenToSend.symbol : 'UNKNOWN TOKEN'
+      txParams.sendTokenData.tokenSymbol = tokenToSend
+        ? tokenToSend.symbol
+        : 'UNKNOWN TOKEN'
     }
 
     return (
@@ -361,7 +387,9 @@ export default class ConfirmTransactionBase extends Component {
         toAddress={toAddress}
         showEdit={onEdit && !isTxReprice && !txParams.sendTokenData}
         action={action || name || this.context.t('unknownFunction')}
-        title={title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`}
+        title={
+          title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`
+        }
         subtitle={subtitle || `\u2666 ${ethTransactionAmount}`}
         hideSubtitle={hideSubtitle}
         summaryComponent={summaryComponent}

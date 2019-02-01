@@ -22,7 +22,8 @@ import Home from './components/pages/home'
 const Authenticated = require('./components/pages/authenticated')
 const Initialized = require('./components/pages/initialized')
 const Settings = require('./components/pages/settings')
-const RestoreVaultPage = require('./components/pages/keychains/restore-vault').default
+const RestoreVaultPage = require('./components/pages/keychains/restore-vault')
+  .default
 const RevealSeedConfirmation = require('./components/pages/keychains/reveal-seed')
 const AddTokenPage = require('./components/pages/add-token')
 const ConfirmAddTokenPage = require('./components/pages/confirm-add-token')
@@ -71,26 +72,51 @@ class App extends Component {
   renderRoutes () {
     const exact = true
 
-    return (
-      h(Switch, [
-        h(Route, { path: INITIALIZE_ROUTE, component: InitializeScreen }),
-        h(Initialized, { path: UNLOCK_ROUTE, exact, component: UnlockPage }),
-        h(Initialized, { path: RESTORE_VAULT_ROUTE, exact, component: RestoreVaultPage }),
-        h(Authenticated, { path: REVEAL_SEED_ROUTE, exact, component: RevealSeedConfirmation }),
-        h(Authenticated, { path: SETTINGS_ROUTE, component: Settings }),
-        h(Authenticated, { path: NOTICE_ROUTE, exact, component: NoticeScreen }),
-        h(Authenticated, {
-          path: `${CONFIRM_TRANSACTION_ROUTE}/:id?`,
-          component: ConfirmTransaction,
-        }),
-        h(Authenticated, { path: SEND_ROUTE, exact, component: SendTransactionScreen }),
-        h(Authenticated, { path: ADD_TOKEN_ROUTE, exact, component: AddTokenPage }),
-        h(Authenticated, { path: CONFIRM_ADD_TOKEN_ROUTE, exact, component: ConfirmAddTokenPage }),
-        h(Authenticated, { path: CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE, exact, component: ConfirmAddSuggestedTokenPage }),
-        h(Authenticated, { path: NEW_ACCOUNT_ROUTE, component: CreateAccountPage }),
-        h(Authenticated, { path: DEFAULT_ROUTE, exact, component: Home }),
-      ])
-    )
+    return h(Switch, [
+      h(Route, { path: INITIALIZE_ROUTE, component: InitializeScreen }),
+      h(Initialized, { path: UNLOCK_ROUTE, exact, component: UnlockPage }),
+      h(Initialized, {
+        path: RESTORE_VAULT_ROUTE,
+        exact,
+        component: RestoreVaultPage,
+      }),
+      h(Authenticated, {
+        path: REVEAL_SEED_ROUTE,
+        exact,
+        component: RevealSeedConfirmation,
+      }),
+      h(Authenticated, { path: SETTINGS_ROUTE, component: Settings }),
+      h(Authenticated, { path: NOTICE_ROUTE, exact, component: NoticeScreen }),
+      h(Authenticated, {
+        path: `${CONFIRM_TRANSACTION_ROUTE}/:id?`,
+        component: ConfirmTransaction,
+      }),
+      h(Authenticated, {
+        path: SEND_ROUTE,
+        exact,
+        component: SendTransactionScreen,
+      }),
+      h(Authenticated, {
+        path: ADD_TOKEN_ROUTE,
+        exact,
+        component: AddTokenPage,
+      }),
+      h(Authenticated, {
+        path: CONFIRM_ADD_TOKEN_ROUTE,
+        exact,
+        component: ConfirmAddTokenPage,
+      }),
+      h(Authenticated, {
+        path: CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE,
+        exact,
+        component: ConfirmAddSuggestedTokenPage,
+      }),
+      h(Authenticated, {
+        path: NEW_ACCOUNT_ROUTE,
+        component: CreateAccountPage,
+      }),
+      h(Authenticated, { path: DEFAULT_ROUTE, exact, component: Home }),
+    ])
   }
 
   render () {
@@ -106,13 +132,17 @@ class App extends Component {
       setMouseUserState,
       sidebar,
     } = this.props
-    const isLoadingNetwork = network === 'loading' && currentView.name !== 'config'
-    const loadMessage = loadingMessage || isLoadingNetwork ?
-      this.getConnectingLabel(loadingMessage) : null
-    log.debug('Main ui render function')
+    const isLoadingNetwork =
+      network === 'loading' && currentView.name !== 'config'
+    const loadMessage =
+      loadingMessage || isLoadingNetwork
+        ? this.getConnectingLabel(loadingMessage)
+        : null
+    // log.debug('Main ui render function')
 
-    return (
-      h('.flex-column.full-height', {
+    return h(
+      '.flex-column.full-height',
+      {
         className: classnames({ 'mouse-user-styles': isMouseUser }),
         style: {
           overflowX: 'hidden',
@@ -121,18 +151,18 @@ class App extends Component {
         },
         tabIndex: '0',
         onClick: () => setMouseUserState(true),
-        onKeyDown: (e) => {
+        onKeyDown: e => {
           if (e.keyCode === 9) {
             setMouseUserState(false)
           }
         },
-      }, [
-
+      },
+      [
         // global modal
         h(Modal, {}, []),
 
         // global alert
-        h(Alert, {visible: this.props.alertOpen, msg: alertMessage}),
+        h(Alert, { visible: this.props.alertOpen, msg: alertMessage }),
 
         h(AppHeader),
 
@@ -145,20 +175,25 @@ class App extends Component {
         }),
 
         // network dropdown
-        h(NetworkDropdown, {
-          provider,
-          frequentRpcList,
-        }, []),
+        h(
+          NetworkDropdown,
+          {
+            provider,
+            frequentRpcList,
+          },
+          []
+        ),
 
         h(AccountMenu),
 
-        (isLoading || isLoadingNetwork) && h(Loading, {
-          loadingMessage: loadMessage,
-        }),
+        (isLoading || isLoadingNetwork) &&
+          h(Loading, {
+            loadingMessage: loadMessage,
+          }),
 
         // content
         this.renderRoutes(),
-      ])
+      ]
     )
   }
 
@@ -343,7 +378,8 @@ function mapDispatchToProps (dispatch, ownProps) {
     hideNetworkDropdown: () => dispatch(actions.hideNetworkDropdown()),
     setCurrentCurrencyToUSD: () => dispatch(actions.setCurrentCurrency('usd')),
     toggleAccountMenu: () => dispatch(actions.toggleAccountMenu()),
-    setMouseUserState: (isMouseUser) => dispatch(actions.setMouseUserState(isMouseUser)),
+    setMouseUserState: isMouseUser =>
+      dispatch(actions.setMouseUserState(isMouseUser)),
   }
 }
 
@@ -353,5 +389,8 @@ App.contextTypes = {
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(App)

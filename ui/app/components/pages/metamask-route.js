@@ -3,13 +3,16 @@ const PropTypes = require('prop-types')
 const { Route } = require('react-router-dom')
 const h = require('react-hyperscript')
 
-const MetamaskRoute = ({ component, mascaraComponent, isMascara, ...props }) => {
-  return (
-    h(Route, {
-      ...props,
-      component: isMascara && mascaraComponent ? mascaraComponent : component,
-    })
-  )
+const MetamaskRoute = ({
+  component,
+  mascaraComponent,
+  isMascara,
+  ...props
+}) => {
+  return h(Route, {
+    ...props,
+    component: isMascara && mascaraComponent ? mascaraComponent : component,
+  })
 }
 
 MetamaskRoute.propTypes = {
@@ -19,7 +22,9 @@ MetamaskRoute.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const { metamask: { isMascara } } = state
+  const {
+    metamask: { isMascara },
+  } = state
   return {
     isMascara,
   }

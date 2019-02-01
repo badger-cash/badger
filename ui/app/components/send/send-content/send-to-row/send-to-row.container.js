@@ -1,16 +1,11 @@
 import { connect } from 'react-redux'
 import {
-    getCurrentNetwork,
-    getSendTo,
-    getSendToAccounts,
+  getCurrentNetwork,
+  getSendTo,
+  getSendToAccounts,
 } from '../../send.selectors.js'
-import {
-    getToDropdownOpen,
-    sendToIsInError,
-} from './send-to-row.selectors.js'
-import {
-    updateSendTo,
-} from '../../../../actions'
+import { getToDropdownOpen, sendToIsInError } from './send-to-row.selectors.js'
+import { updateSendTo } from '../../../../actions'
 import {
   updateSendErrors,
   openToDropdown,
@@ -18,7 +13,10 @@ import {
 } from '../../../../ducks/send.duck'
 import SendToRow from './send-to-row.component'
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendToRow)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendToRow)
 
 function mapStateToProps (state) {
   return {
@@ -35,8 +33,8 @@ function mapDispatchToProps (dispatch) {
     closeToDropdown: () => dispatch(closeToDropdown()),
     openToDropdown: () => dispatch(openToDropdown()),
     updateSendTo: (to, nickname) => dispatch(updateSendTo(to, nickname)),
-    updateSendToError: (toErrorObject) => {
-        dispatch(updateSendErrors(toErrorObject))
+    updateSendToError: toErrorObject => {
+      dispatch(updateSendErrors(toErrorObject))
     },
   }
 }

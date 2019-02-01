@@ -25,27 +25,30 @@ describe('SendFooter Component', function () {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallow(<SendFooter
-      addToAddressBookIfNew={propsMethodSpies.addToAddressBookIfNew}
-      amount={'mockAmount'}
-      clearSend={propsMethodSpies.clearSend}
-      disabled={true}
-      editingTransactionId={'mockEditingTransactionId'}
-      errors={{}}
-      from={ { address: 'mockAddress', balance: 'mockBalance' } }
-      gasLimit={'mockGasLimit'}
-      gasPrice={'mockGasPrice'}
-      gasTotal={'mockGasTotal'}
-      history={historySpies}
-      inError={false}
-      selectedToken={{ mockProp: 'mockSelectedTokenProp' }}
-      sign={propsMethodSpies.sign}
-      to={'mockTo'}
-      toAccounts={['mockAccount']}
-      tokenBalance={'mockTokenBalance'}
-      unapprovedTxs={['mockTx']}
-      update={propsMethodSpies.update}
-    />, { context: { t: str => str } })
+    wrapper = shallow(
+      <SendFooter
+        addToAddressBookIfNew={propsMethodSpies.addToAddressBookIfNew}
+        amount={'mockAmount'}
+        clearSend={propsMethodSpies.clearSend}
+        disabled={true}
+        editingTransactionId={'mockEditingTransactionId'}
+        errors={{}}
+        from={{ address: 'mockAddress', balance: 'mockBalance' }}
+        gasLimit={'mockGasLimit'}
+        gasPrice={'mockGasPrice'}
+        gasTotal={'mockGasTotal'}
+        history={historySpies}
+        inError={false}
+        selectedToken={{ mockProp: 'mockSelectedTokenProp' }}
+        sign={propsMethodSpies.sign}
+        to={'mockTo'}
+        toAccounts={['mockAccount']}
+        tokenBalance={'mockTokenBalance'}
+        unapprovedTxs={['mockTx']}
+        update={propsMethodSpies.update}
+      />,
+      { context: { t: str => str } }
+    )
   })
 
   afterEach(() => {
@@ -73,7 +76,6 @@ describe('SendFooter Component', function () {
       assert.equal(historySpies.push.getCall(0).args[0], DEFAULT_ROUTE)
     })
   })
-
 
   describe('formShouldBeDisabled()', () => {
     const config = {
@@ -108,7 +110,10 @@ describe('SendFooter Component', function () {
     Object.entries(config).map(([description, obj]) => {
       it(description, () => {
         wrapper.setProps(obj)
-        assert.equal(wrapper.instance().formShouldBeDisabled(), obj.expectedResult)
+        assert.equal(
+          wrapper.instance().formShouldBeDisabled(),
+          obj.expectedResult
+        )
       })
     })
   })
@@ -117,29 +122,26 @@ describe('SendFooter Component', function () {
     it('should call addToAddressBookIfNew with the correct params', () => {
       wrapper.instance().onSubmit(MOCK_EVENT)
       assert(propsMethodSpies.addToAddressBookIfNew.calledOnce)
-      assert.deepEqual(
-        propsMethodSpies.addToAddressBookIfNew.getCall(0).args,
-        ['mockTo', ['mockAccount']]
-      )
+      assert.deepEqual(propsMethodSpies.addToAddressBookIfNew.getCall(0).args, [
+        'mockTo',
+        ['mockAccount'],
+      ])
     })
 
     it('should call props.update if editingTransactionId is truthy', () => {
       wrapper.instance().onSubmit(MOCK_EVENT)
       assert(propsMethodSpies.update.calledOnce)
-      assert.deepEqual(
-        propsMethodSpies.update.getCall(0).args[0],
-        {
-          data: undefined,
-          amount: 'mockAmount',
-          editingTransactionId: 'mockEditingTransactionId',
-          from: 'mockAddress',
-          gas: 'mockGasLimit',
-          gasPrice: 'mockGasPrice',
-          selectedToken: { mockProp: 'mockSelectedTokenProp' },
-          to: 'mockTo',
-          unapprovedTxs: ['mockTx'],
-        }
-      )
+      assert.deepEqual(propsMethodSpies.update.getCall(0).args[0], {
+        data: undefined,
+        amount: 'mockAmount',
+        editingTransactionId: 'mockEditingTransactionId',
+        from: 'mockAddress',
+        gas: 'mockGasLimit',
+        gasPrice: 'mockGasPrice',
+        selectedToken: { mockProp: 'mockSelectedTokenProp' },
+        to: 'mockTo',
+        unapprovedTxs: ['mockTx'],
+      })
     })
 
     it('should not call props.sign if editingTransactionId is truthy', () => {
@@ -150,18 +152,15 @@ describe('SendFooter Component', function () {
       wrapper.setProps({ editingTransactionId: null })
       wrapper.instance().onSubmit(MOCK_EVENT)
       assert(propsMethodSpies.sign.calledOnce)
-      assert.deepEqual(
-        propsMethodSpies.sign.getCall(0).args[0],
-        {
-          data: undefined,
-          amount: 'mockAmount',
-          from: 'mockAddress',
-          gas: 'mockGasLimit',
-          gasPrice: 'mockGasPrice',
-          selectedToken: { mockProp: 'mockSelectedTokenProp' },
-          to: 'mockTo',
-        }
-      )
+      assert.deepEqual(propsMethodSpies.sign.getCall(0).args[0], {
+        data: undefined,
+        amount: 'mockAmount',
+        from: 'mockAddress',
+        gas: 'mockGasLimit',
+        gasPrice: 'mockGasPrice',
+        selectedToken: { mockProp: 'mockSelectedTokenProp' },
+        to: 'mockTo',
+      })
     })
 
     it('should not call props.update if editingTransactionId is falsy', () => {
@@ -169,39 +168,46 @@ describe('SendFooter Component', function () {
     })
 
     it('should call history.push', done => {
-      Promise.resolve(wrapper.instance().onSubmit(MOCK_EVENT))
-        .then(() => {
-          assert.equal(historySpies.push.callCount, 1)
-          assert.equal(historySpies.push.getCall(0).args[0], CONFIRM_TRANSACTION_ROUTE)
-          done()
-        })
+      Promise.resolve(wrapper.instance().onSubmit(MOCK_EVENT)).then(() => {
+        assert.equal(historySpies.push.callCount, 1)
+        assert.equal(
+          historySpies.push.getCall(0).args[0],
+          CONFIRM_TRANSACTION_ROUTE
+        )
+        done()
+      })
     })
   })
 
   describe('render', () => {
     beforeEach(() => {
-      sinon.stub(SendFooter.prototype, 'formShouldBeDisabled').returns('formShouldBeDisabledReturn')
-      wrapper = shallow(<SendFooter
-        addToAddressBookIfNew={propsMethodSpies.addToAddressBookIfNew}
-        amount={'mockAmount'}
-        clearSend={propsMethodSpies.clearSend}
-        disabled={true}
-        editingTransactionId={'mockEditingTransactionId'}
-        errors={{}}
-        from={ { address: 'mockAddress', balance: 'mockBalance' } }
-        gasLimit={'mockGasLimit'}
-        gasPrice={'mockGasPrice'}
-        gasTotal={'mockGasTotal'}
-        history={historySpies}
-        inError={false}
-        selectedToken={{ mockProp: 'mockSelectedTokenProp' }}
-        sign={propsMethodSpies.sign}
-        to={'mockTo'}
-        toAccounts={['mockAccount']}
-        tokenBalance={'mockTokenBalance'}
-        unapprovedTxs={['mockTx']}
-        update={propsMethodSpies.update}
-      />, { context: { t: str => str } })
+      sinon
+        .stub(SendFooter.prototype, 'formShouldBeDisabled')
+        .returns('formShouldBeDisabledReturn')
+      wrapper = shallow(
+        <SendFooter
+          addToAddressBookIfNew={propsMethodSpies.addToAddressBookIfNew}
+          amount={'mockAmount'}
+          clearSend={propsMethodSpies.clearSend}
+          disabled={true}
+          editingTransactionId={'mockEditingTransactionId'}
+          errors={{}}
+          from={{ address: 'mockAddress', balance: 'mockBalance' }}
+          gasLimit={'mockGasLimit'}
+          gasPrice={'mockGasPrice'}
+          gasTotal={'mockGasTotal'}
+          history={historySpies}
+          inError={false}
+          selectedToken={{ mockProp: 'mockSelectedTokenProp' }}
+          sign={propsMethodSpies.sign}
+          to={'mockTo'}
+          toAccounts={['mockAccount']}
+          tokenBalance={'mockTokenBalance'}
+          unapprovedTxs={['mockTx']}
+          update={propsMethodSpies.update}
+        />,
+        { context: { t: str => str } }
+      )
     })
 
     afterEach(() => {
@@ -213,11 +219,9 @@ describe('SendFooter Component', function () {
     })
 
     it('should pass the correct props to PageContainerFooter', () => {
-      const {
-        onCancel,
-        onSubmit,
-        disabled,
-      } = wrapper.find(PageContainerFooter).props()
+      const { onCancel, onSubmit, disabled } = wrapper
+        .find(PageContainerFooter)
+        .props()
       assert.equal(disabled, 'formShouldBeDisabledReturn')
 
       assert.equal(SendFooter.prototype.onSubmit.callCount, 0)

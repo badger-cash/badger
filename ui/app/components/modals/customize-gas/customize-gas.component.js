@@ -32,7 +32,9 @@ export default class CustomizeGas extends Component {
 
   componentDidMount () {
     const { txData = {} } = this.props
-    const { txParams: { gas: hexGasLimit, gasPrice: hexGasPrice } = {} } = txData
+    const {
+      txParams: { gas: hexGasLimit, gasPrice: hexGasPrice } = {},
+    } = txData
 
     const gasLimit = getDecimalGasLimit(hexGasLimit)
     const gasPrice = getDecimalGasPrice(hexGasPrice)
@@ -60,8 +62,9 @@ export default class CustomizeGas extends Component {
     const prefixedHexGasPrice = getPrefixedHexGasPrice(gasPrice)
     const prefixedHexGasLimit = getPrefixedHexGasLimit(gasLimit)
 
-    Promise.resolve(onSubmit({ gasPrice: prefixedHexGasPrice, gasLimit: prefixedHexGasLimit }))
-      .then(() => hideModal())
+    Promise.resolve(
+      onSubmit({ gasPrice: prefixedHexGasPrice, gasLimit: prefixedHexGasLimit })
+    ).then(() => hideModal())
   }
 
   validate () {
@@ -83,12 +86,9 @@ export default class CustomizeGas extends Component {
         <div className="customize-gas__content">
           <div className="customize-gas__header">
             <div className="customize-gas__title">
-              { this.context.t('customGas') }
+              {this.context.t('customGas')}
             </div>
-            <div
-              className="customize-gas__close"
-              onClick={() => hideModal()}
-            />
+            <div className="customize-gas__close" onClick={() => hideModal()} />
           </div>
           <div className="customize-gas__body">
             <GasModalCard
@@ -109,12 +109,14 @@ export default class CustomizeGas extends Component {
             />
           </div>
           <div className="customize-gas__footer">
-            { !valid && <div className="customize-gas__error-message">{ t(errorKey) }</div> }
+            {!valid && (
+              <div className="customize-gas__error-message">{t(errorKey)}</div>
+            )}
             <div
               className="customize-gas__revert"
               onClick={() => this.handleRevert()}
             >
-              { t('revert') }
+              {t('revert')}
             </div>
             <div className="customize-gas__buttons">
               <Button
@@ -123,7 +125,7 @@ export default class CustomizeGas extends Component {
                 onClick={() => hideModal()}
                 style={{ marginRight: '10px' }}
               >
-                { t('cancel') }
+                {t('cancel')}
               </Button>
               <Button
                 type="primary"
@@ -132,7 +134,7 @@ export default class CustomizeGas extends Component {
                 style={{ marginRight: '10px' }}
                 disabled={!valid}
               >
-                { t('save') }
+                {t('save')}
               </Button>
             </div>
           </div>

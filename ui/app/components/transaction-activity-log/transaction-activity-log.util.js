@@ -43,7 +43,11 @@ export function getActivities (transaction) {
 
   return history.reduce((acc, base) => {
     // First history item should be transaction creation
-    if (!Array.isArray(base) && base.status === UNAPPROVED_STATUS && base.txParams) {
+    if (
+      !Array.isArray(base) &&
+      base.status === UNAPPROVED_STATUS &&
+      base.txParams
+    ) {
       const { time, txParams: { value } = {} } = base
       return acc.concat(eventCreator(TRANSACTION_CREATED_EVENT, time, value))
     } else if (Array.isArray(base)) {
@@ -63,7 +67,9 @@ export function getActivities (transaction) {
             }
 
             case GAS_PRICE_PATH: {
-              events.push(eventCreator(TRANSACTION_UPDATED_GAS_EVENT, timestamp, value))
+              events.push(
+                eventCreator(TRANSACTION_UPDATED_GAS_EVENT, timestamp, value)
+              )
               break
             }
 

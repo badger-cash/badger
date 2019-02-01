@@ -8,7 +8,7 @@ describe('TransactionAction Component', () => {
   const tOrDefault = key => key
   global.eth = {
     getCode: sinon.stub().callsFake(address => {
-      console.log('CALLED')
+      // console.log('CALLED')
       const code = address === 'approveAddress' ? 'contract' : '0x'
       return Promise.resolve(code)
     }),

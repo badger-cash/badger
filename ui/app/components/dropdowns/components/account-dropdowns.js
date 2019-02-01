@@ -11,7 +11,6 @@ const { checksumAddress } = require('../../../util')
 const copyToClipboard = require('copy-to-clipboard')
 const { formatBalance } = require('../../../util')
 
-
 class AccountDropdowns extends Component {
   constructor (props) {
     super(props)
@@ -26,19 +25,30 @@ class AccountDropdowns extends Component {
   }
 
   renderAccounts () {
-    const { identities, accounts, selected, menuItemStyles, actions, keyrings } = this.props
+    const {
+      identities,
+      accounts,
+      selected,
+      menuItemStyles,
+      actions,
+      keyrings,
+    } = this.props
 
     return Object.keys(identities).map((key, index) => {
       const identity = identities[key]
       const isSelected = identity.address === selected
 
       const balanceValue = accounts[key].balance
-      const formattedBalance = balanceValue ? formatBalance(balanceValue, 8) : '0'
+      const formattedBalance = balanceValue
+        ? formatBalance(balanceValue, 8)
+        : '0'
       const simpleAddress = identity.address.substring(2).toLowerCase()
 
-      const keyring = keyrings.find((kr) => {
-        return kr.accounts.includes(simpleAddress) ||
+      const keyring = keyrings.find(kr => {
+        return (
+          kr.accounts.includes(simpleAddress) ||
           kr.accounts.includes(identity.address)
+        )
       })
 
       return h(
@@ -54,86 +64,107 @@ class AccountDropdowns extends Component {
               fontSize: '24px',
               width: '260px',
             },
-            menuItemStyles,
+            menuItemStyles
           ),
         },
         [
           h('div.flex-row.flex-center', {}, [
-
-            h('span', {
-              style: {
-                flex: '1 1 0',
-                minWidth: '20px',
-                minHeight: '30px',
-              },
-            }, [
-              h('span', {
-                style: {
-                  flex: '1 1 auto',
-                  fontSize: '14px',
-                },
-              }, isSelected ? h('i.fa.fa-check') : null),
-            ]),
-
             h(
-              Identicon,
+              'span',
               {
-                address: identity.address,
-                diameter: 24,
                 style: {
-                  flex: '1 1 auto',
-                  marginLeft: '10px',
+                  flex: '1 1 0',
+                  minWidth: '20px',
+                  minHeight: '30px',
                 },
               },
+              [
+                h(
+                  'span',
+                  {
+                    style: {
+                      flex: '1 1 auto',
+                      fontSize: '14px',
+                    },
+                  },
+                  isSelected ? h('i.fa.fa-check') : null
+                ),
+              ]
             ),
 
-            h('span.flex-column', {
+            h(Identicon, {
+              address: identity.address,
+              diameter: 24,
               style: {
-                flex: '10 10 auto',
-                width: '175px',
-                alignItems: 'flex-start',
-                justifyContent: 'center',
+                flex: '1 1 auto',
                 marginLeft: '10px',
-                position: 'relative',
               },
-            }, [
-              this.indicateIfLoose(keyring),
-              h('span.account-dropdown-name', {
-                style: {
-                  fontSize: '18px',
-                  maxWidth: '145px',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                },
-              }, identity.name || ''),
+            }),
 
-              h('span.account-dropdown-balance', {
+            h(
+              'span.flex-column',
+              {
                 style: {
-                  fontSize: '14px',
-                  fontFamily: 'Avenir',
-                  fontWeight: 500,
+                  flex: '10 10 auto',
+                  width: '175px',
+                  alignItems: 'flex-start',
+                  justifyContent: 'center',
+                  marginLeft: '10px',
+                  position: 'relative',
                 },
-              }, formattedBalance),
-            ]),
-
-            h('span', {
-              style: {
-                flex: '3 3 auto',
               },
-            }, [
-              h('span.account-dropdown-edit-button.allcaps', {
-                style: {
-                  fontSize: '16px',
-                },
-                onClick: () => {
-                  actions.showEditAccountModal(identity)
-                },
-              }, [
-                this.context.t('edit'),
-              ]),
-            ]),
+              [
+                this.indicateIfLoose(keyring),
+                h(
+                  'span.account-dropdown-name',
+                  {
+                    style: {
+                      fontSize: '18px',
+                      maxWidth: '145px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    },
+                  },
+                  identity.name || ''
+                ),
 
+                h(
+                  'span.account-dropdown-balance',
+                  {
+                    style: {
+                      fontSize: '14px',
+                      fontFamily: 'Avenir',
+                      fontWeight: 500,
+                    },
+                  },
+                  formattedBalance
+                ),
+              ]
+            ),
+
+            h(
+              'span',
+              {
+                style: {
+                  flex: '3 3 auto',
+                },
+              },
+              [
+                h(
+                  'span.account-dropdown-edit-button.allcaps',
+                  {
+                    style: {
+                      fontSize: '16px',
+                    },
+                    onClick: () => {
+                      actions.showEditAccountModal(identity)
+                    },
+                  },
+                  [this.context.t('edit')]
+                ),
+              ]
+            ),
           ]),
         ]
       )
@@ -141,11 +172,16 @@ class AccountDropdowns extends Component {
   }
 
   indicateIfLoose (keyring) {
-    try { // Sometimes keyrings aren't loaded yet:
+    try {
+      // Sometimes keyrings aren't loaded yet:
       const type = keyring.type
       const isLoose = type !== 'HD Key Tree'
-      return isLoose ? h('.keyring-label.allcaps', this.context.t('loose')) : null
-    } catch (e) { return }
+      return isLoose
+        ? h('.keyring-label.allcaps', this.context.t('loose'))
+        : null
+    } catch (e) {
+      return
+    }
   }
 
   renderAccountSelector () {
@@ -166,9 +202,11 @@ class AccountDropdowns extends Component {
         },
         innerStyle,
         isOpen: accountSelectorActive,
-        onClickOutside: (event) => {
+        onClickOutside: event => {
           const { classList } = event.target
-          const isNotToggleElement = !classList.contains(this.accountSelectorToggleClassName)
+          const isNotToggleElement = !classList.contains(
+            this.accountSelectorToggleClassName
+          )
           if (accountSelectorActive && isNotToggleElement) {
             this.setState({ accountSelectorActive: false })
           }
@@ -180,30 +218,28 @@ class AccountDropdowns extends Component {
           DropdownMenuItem,
           {
             closeMenu: () => {},
-            style: Object.assign(
-              {},
-              menuItemStyles,
-            ),
+            style: Object.assign({}, menuItemStyles),
             onClick: () => actions.showNewAccountPageCreateForm(),
           },
           [
+            h('i.fa.fa-plus.fa-lg', {
+              style: {
+                marginLeft: '8px',
+              },
+            }),
             h(
-              'i.fa.fa-plus.fa-lg',
+              'span',
               {
                 style: {
-                  marginLeft: '8px',
+                  marginLeft: '14px',
+                  fontFamily: 'DIN OT',
+                  fontSize: '16px',
+                  lineHeight: '23px',
                 },
-              }
-            ),
-            h('span', {
-              style: {
-                marginLeft: '14px',
-                fontFamily: 'DIN OT',
-                fontSize: '16px',
-                lineHeight: '23px',
               },
-            }, this.context.t('createAccount')),
-          ],
+              this.context.t('createAccount')
+            ),
+          ]
         ),
         // TODO: Import account
         // h(
@@ -264,12 +300,14 @@ class AccountDropdowns extends Component {
             position: 'absolute',
             width: '29vh', // affects both mobile and laptop views
           },
-          dropdownWrapperStyle,
+          dropdownWrapperStyle
         ),
         isOpen: optionsMenuActive,
-        onClickOutside: (event) => {
+        onClickOutside: event => {
           const { classList } = event.target
-          const isNotToggleElement = !classList.contains(this.optionsMenuToggleClassName)
+          const isNotToggleElement = !classList.contains(
+            this.optionsMenuToggleClassName
+          )
           if (optionsMenuActive && isNotToggleElement) {
             this.setState({ optionsMenuActive: false })
           }
@@ -283,12 +321,9 @@ class AccountDropdowns extends Component {
             onClick: () => {
               this.props.actions.showAccountDetailModal()
             },
-            style: Object.assign(
-              dropdownMenuItemStyle,
-              menuItemStyles,
-            ),
+            style: Object.assign(dropdownMenuItemStyle, menuItemStyles),
           },
-          this.context.t('accountDetails'),
+          this.context.t('accountDetails')
         ),
         h(
           DropdownMenuItem,
@@ -299,12 +334,9 @@ class AccountDropdowns extends Component {
               const url = genAccountLink(selected, network)
               global.platform.openWindow({ url })
             },
-            style: Object.assign(
-              dropdownMenuItemStyle,
-              menuItemStyles,
-            ),
+            style: Object.assign(dropdownMenuItemStyle, menuItemStyles),
           },
-          this.context.t('etherscanView'),
+          this.context.t('etherscanView')
         ),
         h(
           DropdownMenuItem,
@@ -314,24 +346,18 @@ class AccountDropdowns extends Component {
               const { selected } = this.props
               copyToClipboard(checksumAddress(selected))
             },
-            style: Object.assign(
-              dropdownMenuItemStyle,
-              menuItemStyles,
-            ),
+            style: Object.assign(dropdownMenuItemStyle, menuItemStyles),
           },
-          this.context.t('copyAddress'),
+          this.context.t('copyAddress')
         ),
         h(
           DropdownMenuItem,
           {
             closeMenu: () => {},
             onClick: () => this.props.actions.showExportPrivateKeyModal(),
-            style: Object.assign(
-              dropdownMenuItemStyle,
-              menuItemStyles,
-            ),
+            style: Object.assign(dropdownMenuItemStyle, menuItemStyles),
           },
-          this.context.t('exportPrivateKey'),
+          this.context.t('exportPrivateKey')
         ),
         h(
           DropdownMenuItem,
@@ -341,14 +367,10 @@ class AccountDropdowns extends Component {
               actions.hideSidebar()
               actions.showAddTokenPage()
             },
-            style: Object.assign(
-              dropdownMenuItemStyle,
-              menuItemStyles,
-            ),
+            style: Object.assign(dropdownMenuItemStyle, menuItemStyles),
           },
-          this.context.t('addToken'),
+          this.context.t('addToken')
         ),
-
       ]
     )
   }
@@ -363,39 +385,41 @@ class AccountDropdowns extends Component {
         style: style,
       },
       [
-        enableAccountsSelector && h(
-          'i.fa.fa-angle-down',
-          {
-            style: {
-              cursor: 'pointer',
+        enableAccountsSelector &&
+          h(
+            'i.fa.fa-angle-down',
+            {
+              style: {
+                cursor: 'pointer',
+              },
+              onClick: event => {
+                event.stopPropagation()
+                this.setState({
+                  accountSelectorActive: !accountSelectorActive,
+                  optionsMenuActive: false,
+                })
+              },
             },
-            onClick: (event) => {
-              event.stopPropagation()
-              this.setState({
-                accountSelectorActive: !accountSelectorActive,
-                optionsMenuActive: false,
-              })
+            this.renderAccountSelector()
+          ),
+        enableAccountOptions &&
+          h(
+            'i.fa.fa-ellipsis-h',
+            {
+              style: {
+                fontSize: '135%',
+                cursor: 'pointer',
+              },
+              onClick: event => {
+                event.stopPropagation()
+                this.setState({
+                  accountSelectorActive: false,
+                  optionsMenuActive: !optionsMenuActive,
+                })
+              },
             },
-          },
-          this.renderAccountSelector(),
-        ),
-        enableAccountOptions && h(
-          'i.fa.fa-ellipsis-h',
-          {
-            style: {
-              fontSize: '135%',
-              cursor: 'pointer',
-            },
-            onClick: (event) => {
-              event.stopPropagation()
-              this.setState({
-                accountSelectorActive: false,
-                optionsMenuActive: !optionsMenuActive,
-              })
-            },
-          },
-          this.renderAccountOptions()
-        ),
+            this.renderAccountOptions()
+          ),
       ]
     )
   }
@@ -425,25 +449,29 @@ AccountDropdowns.propTypes = {
   enableAccountsSelector: PropTypes.bool,
   enableAccountOption: PropTypes.bool,
   enableAccountOptions: PropTypes.bool,
-    t: PropTypes.func,
+  t: PropTypes.func,
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     actions: {
       hideSidebar: () => dispatch(actions.hideSidebar()),
       showConfigPage: () => dispatch(actions.showConfigPage()),
-      showAccountDetail: (address) => dispatch(actions.showAccountDetail(address)),
+      showAccountDetail: address =>
+        dispatch(actions.showAccountDetail(address)),
       showAccountDetailModal: () => {
         dispatch(actions.showModal({ name: 'ACCOUNT_DETAILS' }))
       },
-      showEditAccountModal: (identity) => {
-        dispatch(actions.showModal({
-          name: 'EDIT_ACCOUNT_NAME',
-          identity,
-        }))
+      showEditAccountModal: identity => {
+        dispatch(
+          actions.showModal({
+            name: 'EDIT_ACCOUNT_NAME',
+            identity,
+          })
+        )
       },
-      showNewAccountPageCreateForm: () => dispatch(actions.showNewAccountPage({ form: 'CREATE' })),
+      showNewAccountPageCreateForm: () =>
+        dispatch(actions.showNewAccountPage({ form: 'CREATE' })),
       showExportPrivateKeyModal: () => {
         dispatch(actions.showModal({ name: 'EXPORT_PRIVATE_KEY' }))
       },
@@ -451,8 +479,10 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(actions.showAddTokenPage())
       },
       addNewAccount: () => dispatch(actions.addNewAccount()),
-      showNewAccountPageImportForm: () => dispatch(actions.showNewAccountPage({ form: 'IMPORT' })),
-      showQrView: (selected, identity) => dispatch(actions.showQrView(selected, identity)),
+      showNewAccountPageImportForm: () =>
+        dispatch(actions.showNewAccountPage({ form: 'IMPORT' })),
+      showQrView: (selected, identity) =>
+        dispatch(actions.showQrView(selected, identity)),
     },
   }
 }
@@ -468,5 +498,7 @@ AccountDropdowns.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(AccountDropdowns)
-
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountDropdowns)

@@ -6,13 +6,17 @@ const { withRouter } = require('react-router-dom')
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
 const actions = require('../../actions')
-const { Menu, Item, Divider, CloseArea } = require('../dropdowns/components/menu')
+const {
+  Menu,
+  Item,
+  Divider,
+  CloseArea,
+} = require('../dropdowns/components/menu')
 const Identicon = require('../identicon')
 const { formatBalance } = require('../../util')
 const { ENVIRONMENT_TYPE_POPUP } = require('../../../../app/scripts/lib/enums')
 const { getEnvironmentType } = require('../../../../app/scripts/lib/util')
 const Tooltip = require('../tooltip')
-
 
 const {
   SETTINGS_ROUTE,
@@ -25,7 +29,10 @@ const {
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(AccountMenu)
 
 AccountMenu.contextTypes = {
@@ -33,7 +40,9 @@ AccountMenu.contextTypes = {
 }
 
 inherits(AccountMenu, Component)
-function AccountMenu () { Component.call(this) }
+function AccountMenu () {
+  Component.call(this)
+}
 
 function mapStateToProps (state) {
   return {
@@ -69,8 +78,10 @@ function mapDispatchToProps (dispatch) {
       dispatch(actions.hideSidebar())
       dispatch(actions.toggleAccountMenu())
     },
-    showRemoveAccountConfirmationModal: (identity) => {
-      return dispatch(actions.showModal({ name: 'CONFIRM_REMOVE_ACCOUNT', identity }))
+    showRemoveAccountConfirmationModal: identity => {
+      return dispatch(
+        actions.showModal({ name: 'CONFIRM_REMOVE_ACCOUNT', identity })
+      )
     },
   }
 }
@@ -85,17 +96,25 @@ AccountMenu.prototype.render = function () {
 
   return h(Menu, { className: 'account-menu', isShowing: isAccountMenuOpen }, [
     h(CloseArea, { onClick: toggleAccountMenu }),
-    h(Item, {
-      className: 'account-menu__header',
-    }, [
-      this.context.t('myAccounts'),
-      h('button.account-menu__logout-button', {
-        onClick: () => {
-          lockMetamask()
-          history.push(DEFAULT_ROUTE)
-        },
-      }, this.context.t('logout')),
-    ]),
+    h(
+      Item,
+      {
+        className: 'account-menu__header',
+      },
+      [
+        this.context.t('myAccounts'),
+        h(
+          'button.account-menu__logout-button',
+          {
+            onClick: () => {
+              lockMetamask()
+              history.push(DEFAULT_ROUTE)
+            },
+          },
+          this.context.t('logout')
+        ),
+      ]
+    ),
     h(Divider),
     h('div.account-menu__accounts', this.renderAccounts()),
     h(Divider),
@@ -104,7 +123,9 @@ AccountMenu.prototype.render = function () {
         toggleAccountMenu()
         history.push(NEW_ACCOUNT_ROUTE)
       },
-      icon: h('img.account-menu__item-icon', { src: 'images/plus-btn-white.svg' }),
+      icon: h('img.account-menu__item-icon', {
+        src: 'images/plus-btn-white.svg',
+      }),
       text: this.context.t('createAccount'),
     }),
     // TODO: Import account
@@ -157,9 +178,11 @@ AccountMenu.prototype.renderAccounts = function () {
     showAccountDetail,
   } = this.props
 
-  const accountOrder = keyrings.reduce((list, keyring) => list.concat(keyring.accounts), [])
-  return accountOrder.filter(address => !!identities[address]).map((address) => {
-
+  const accountOrder = keyrings.reduce(
+    (list, keyring) => list.concat(keyring.accounts),
+    []
+  )
+  return accountOrder.filter(address => !!identities[address]).map(address => {
     const identity = identities[address]
     const isSelected = identity.address === selectedAddress
 
@@ -167,9 +190,11 @@ AccountMenu.prototype.renderAccounts = function () {
     const formattedBalance = balanceValue ? formatBalance(balanceValue, 8) : '0'
     const simpleAddress = identity.address.substring(2).toLowerCase()
 
-    const keyring = keyrings.find((kr) => {
-      return kr.accounts.includes(simpleAddress) ||
+    const keyring = keyrings.find(kr => {
+      return (
+        kr.accounts.includes(simpleAddress) ||
         kr.accounts.includes(identity.address)
+      )
     })
 
     return h(
@@ -180,13 +205,10 @@ AccountMenu.prototype.renderAccounts = function () {
           isSelected ? h('div.account-menu__check-mark-icon') : null,
         ]),
 
-        h(
-          Identicon,
-          {
-            address: identity.address,
-            diameter: 24,
-          },
-        ),
+        h(Identicon, {
+          address: identity.address,
+          diameter: 24,
+        }),
 
         h('div.account-menu__account-info', [
           h('div.account-menu__name', identity.name || ''),
@@ -195,7 +217,7 @@ AccountMenu.prototype.renderAccounts = function () {
 
         this.renderKeyringType(keyring),
         this.renderRemoveAccount(keyring, identity),
-      ],
+      ]
     )
   })
 }
@@ -205,14 +227,22 @@ AccountMenu.prototype.renderRemoveAccount = function (keyring, identity) {
   const type = keyring.type
   const isRemovable = type !== 'HD Key Tree'
   if (isRemovable) {
-    return h(Tooltip, {
-      title: this.context.t('removeAccount'),
-      position: 'bottom',
-    }, [
-        h('a.remove-account-icon', {
-          onClick: (e) => this.removeAccount(e, identity),
-        }, ''),
-      ])
+    return h(
+      Tooltip,
+      {
+        title: this.context.t('removeAccount'),
+        position: 'bottom',
+      },
+      [
+        h(
+          'a.remove-account-icon',
+          {
+            onClick: e => this.removeAccount(e, identity),
+          },
+          ''
+        ),
+      ]
+    )
   }
   return null
 }
@@ -225,22 +255,24 @@ AccountMenu.prototype.removeAccount = function (e, identity) {
 }
 
 AccountMenu.prototype.renderKeyringType = function (keyring) {
-  try { // Sometimes keyrings aren't loaded yet:
+  try {
+    // Sometimes keyrings aren't loaded yet:
     const type = keyring.type
     let label
     switch (type) {
       case 'Trezor Hardware':
       case 'Ledger Hardware':
         label = this.context.t('hardware')
-      break
+        break
       case 'Simple Key Pair':
         label = this.context.t('imported')
-      break
+        break
       default:
         label = ''
     }
 
     return label !== '' ? h('.keyring-label.allcaps', label) : null
-
-  } catch (e) { return }
+  } catch (e) {
+    return
+  }
 }

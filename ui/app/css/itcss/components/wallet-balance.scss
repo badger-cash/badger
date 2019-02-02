@@ -1,6 +1,6 @@
 $wallet-balance-bg: #e7e7e7;
 $wallet-balance-breakpoint: 890px;
-$wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (max-width: #{$wallet-balance-breakpoint})";
+$wallet-balance-breakpoint-range: 'screen and (min-width: #{$break-large}) and (max-width: #{$wallet-balance-breakpoint})';
 
 .wallet-balance-wrapper {
   flex: 0 0 auto;
@@ -46,7 +46,7 @@ $wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (
     }
 
     .fiat-amount {
-      margin-top: .25%;
+      margin-top: 0.25%;
       font-size: 105%;
     }
 

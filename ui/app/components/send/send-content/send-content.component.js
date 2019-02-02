@@ -8,12 +8,11 @@ import SendFromRow from './send-from-row/'
 import SendToRow from './send-to-row/'
 
 export default class SendContent extends Component {
-
   static propTypes = {
     updateGas: PropTypes.func,
     scanQrCode: PropTypes.func,
     showHexData: PropTypes.bool,
-  };
+  }
 
   render () {
     return (
@@ -22,16 +21,15 @@ export default class SendContent extends Component {
           <SendFromRow />
           <SendToRow
             // updateGas={(updateData) => this.props.updateGas(updateData)}
-            scanQrCode={ _ => this.props.scanQrCode()}
+            scanQrCode={_ => this.props.scanQrCode()}
           />
-          <SendAmountRow 
-            // updateGas={(updateData) => this.props.updateGas(updateData)}               
-            />
+          <SendAmountRow
+          // updateGas={(updateData) => this.props.updateGas(updateData)}
+          />
           {/* <SendGasRow />
           { this.props.showHexData ? <SendHexDataRow /> : null } */}
         </div>
       </PageContainerContent>
     )
   }
-
 }

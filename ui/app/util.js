@@ -64,14 +64,24 @@ module.exports = {
 
 function valuesFor (obj) {
   if (!obj) return []
-  return Object.keys(obj)
-    .map(function (key) { return obj[key] })
+  return Object.keys(obj).map(function (key) {
+    return obj[key]
+  })
 }
 
-function addressSummary (address, firstSegLength = 10, lastSegLength = 4, includeHex = true) {
+function addressSummary (
+  address,
+  firstSegLength = 10,
+  lastSegLength = 4,
+  includeHex = true
+) {
   if (!address) return ''
 
-  return address ? address.slice(12, 12 + firstSegLength) + '...' + address.slice(address.length - lastSegLength) : '...'
+  return address
+    ? address.slice(12, 12 + firstSegLength) +
+        '...' +
+        address.slice(address.length - lastSegLength)
+    : '...'
 }
 
 function miniAddressSummary (address) {
@@ -120,9 +130,16 @@ function parseBalance (balance) {
   var satoshisString = satoshis.toString()
   const trailingZeros = /0+$/
 
-  var beforeDecimal = satoshisString.length > 8 ? satoshisString.slice(0, satoshisString.length - 8) : '0'
-  var afterDecimal = ('00000000' + satoshis).slice(-8).replace(trailingZeros, '')
-  if (afterDecimal === '') { afterDecimal = '0' }
+  var beforeDecimal =
+    satoshisString.length > 8
+      ? satoshisString.slice(0, satoshisString.length - 8)
+      : '0'
+  var afterDecimal = ('00000000' + satoshis)
+    .slice(-8)
+    .replace(trailingZeros, '')
+  if (afterDecimal === '') {
+    afterDecimal = '0'
+  }
   return [beforeDecimal, afterDecimal]
 }
 
@@ -137,7 +154,9 @@ function formatBalance (balance, decimalsToKeep = 8, needsParse = true) {
     if (beforeDecimal === '0') {
       if (afterDecimal !== '0') {
         var sigFigs = afterDecimal.match(/^0*(.{2})/) // default: grabs 2 most significant digits
-        if (sigFigs) { afterDecimal = sigFigs[0] }
+        if (sigFigs) {
+          afterDecimal = sigFigs[0]
+        }
         formatted = '0.' + afterDecimal + ' BCH'
       }
     } else {
@@ -145,11 +164,11 @@ function formatBalance (balance, decimalsToKeep = 8, needsParse = true) {
     }
   } else {
     afterDecimal += Array(decimalsToKeep).join('0')
-    formatted = beforeDecimal + '.' + afterDecimal.slice(0, decimalsToKeep) + ' BCH'
+    formatted =
+      beforeDecimal + '.' + afterDecimal.slice(0, decimalsToKeep) + ' BCH'
   }
   return formatted
 }
-
 
 function generateBalanceObject (formattedBalance, decimalsToKeep = 8) {
   var balance = formattedBalance.split(' ')[0]
@@ -256,7 +275,11 @@ function bnMultiplyByFraction (targetBN, numerator, denominator) {
   return targetBN.mul(numBN).div(denomBN)
 }
 
-function getTxFeeBn (gas, gasPrice = MIN_GAS_PRICE_BN.toString(16), blockGasLimit) {
+function getTxFeeBn (
+  gas,
+  gasPrice = MIN_GAS_PRICE_BN.toString(16),
+  blockGasLimit
+) {
   const gasBn = hexToBn(gas)
   const gasPriceBn = hexToBn(gasPrice)
   const txFeeBn = gasBn.mul(gasPriceBn)
@@ -270,7 +293,7 @@ function getContractAtAddress (tokenAddress) {
 
 function exportAsFile (filename, data, type = 'text/csv') {
   // source: https://stackoverflow.com/a/33542499 by Ludovic Feltz
-  const blob = new Blob([data], {type})
+  const blob = new Blob([data], { type })
   if (window.navigator.msSaveOrOpenBlob) {
     window.navigator.msSaveBlob(blob, filename)
   } else {

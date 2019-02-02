@@ -33,15 +33,12 @@ export default function withTokenTracker (WrappedComponent) {
     componentDidUpdate (prevProps) {
       // const { userAddress: newAddress, token: { address: newTokenAddress } } = this.props
       // const { userAddress: oldAddress, token: { address: oldTokenAddress } } = prevProps
-
       // if ((oldAddress === newAddress) && (oldTokenAddress === newTokenAddress)) {
       //   return
       // }
-
       // if ((!oldAddress || !newAddress) && (!oldTokenAddress || !newTokenAddress)) {
       //   return
       // }
-
       // this.createFreshTokenTracker()
     }
 
@@ -98,7 +95,7 @@ export default function withTokenTracker (WrappedComponent) {
 
       return (
         <WrappedComponent
-          { ...this.props }
+          {...this.props}
           string={string}
           symbol={symbol}
           error={error}

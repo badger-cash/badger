@@ -8,7 +8,15 @@ function addHexPrefixToObjectValues (obj) {
   }, {})
 }
 
-function constructTxParams ({ selectedToken, data, to, amount, from, gas, gasPrice }) {
+function constructTxParams ({
+  selectedToken,
+  data,
+  to,
+  amount,
+  from,
+  gas,
+  gasPrice,
+}) {
   const txParams = {
     data,
     from,
@@ -35,20 +43,19 @@ function constructUpdatedTx ({
   unapprovedTxs,
 }) {
   const unapprovedTx = unapprovedTxs[editingTransactionId]
-  const txParamsData = unapprovedTx.txParams.data ? unapprovedTx.txParams.data : data
+  const txParamsData = unapprovedTx.txParams.data
+    ? unapprovedTx.txParams.data
+    : data
   const editingTx = {
     ...unapprovedTx,
-    txParams: Object.assign(
-      unapprovedTx.txParams,
-      {
-        data: txParamsData,
-        to,
-        from,
-        gas,
-        gasPrice,
-        value: amount,
-      }
-    ),
+    txParams: Object.assign(unapprovedTx.txParams, {
+      data: txParamsData,
+      to,
+      from,
+      gas,
+      gasPrice,
+      value: amount,
+    }),
   }
 
   // TODO Removed for abi

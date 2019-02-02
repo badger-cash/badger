@@ -32,7 +32,7 @@ export default class Home extends PureComponent {
 
     // suggested new tokens
     if (Object.keys(suggestedTokens).length > 0) {
-        history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE)
+      history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE)
     }
 
     if (unconfirmedTransactionsCount > 0) {
@@ -55,7 +55,7 @@ export default class Home extends PureComponent {
 
     // seed words
     if (seedWords) {
-      return <Redirect to={{ pathname: INITIALIZE_BACKUP_PHRASE_ROUTE }}/>
+      return <Redirect to={{ pathname: INITIALIZE_BACKUP_PHRASE_ROUTE }} />
     }
 
     if (forgottenPassword) {
@@ -65,10 +65,7 @@ export default class Home extends PureComponent {
     return (
       <div className="main-container">
         <div className="account-and-transaction-details">
-          <Media
-            query="(min-width: 576px)"
-            render={() => <WalletView />}
-          />
+          <Media query="(min-width: 576px)" render={() => <WalletView />} />
           <TransactionView />
         </div>
       </div>

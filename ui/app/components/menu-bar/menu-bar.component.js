@@ -21,31 +21,23 @@ export default class MenuBar extends PureComponent {
 
     return (
       <div className="menu-bar">
-        <Tooltip
-          title={t('menu')}
-          position="bottom"
-        >
+        <Tooltip title={t('menu')} position="bottom">
           <div
             className="fa fa-bars menu-bar__sidebar-button"
-            onClick={() => sidebarOpen ? hideSidebar() : showSidebar()}
+            onClick={() => (sidebarOpen ? hideSidebar() : showSidebar())}
           />
         </Tooltip>
         <SelectedAccount />
-        {
-          !isMascara && (
-            <Tooltip
-              title={t('openInTab')}
-              position="bottom"
+        {!isMascara && (
+          <Tooltip title={t('openInTab')} position="bottom">
+            <div
+              className="menu-bar__open-in-browser"
+              onClick={() => global.platform.openExtensionInBrowser()}
             >
-              <div
-                className="menu-bar__open-in-browser"
-                onClick={() => global.platform.openExtensionInBrowser()}
-              >
-                <img src="images/popout.svg" />
-              </div>
-            </Tooltip>
-          )
-        }
+              <img src="images/popout.svg" />
+            </div>
+          </Tooltip>
+        )}
       </div>
     )
   }

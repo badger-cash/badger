@@ -19,4 +19,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddToken)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddToken)

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import {
-    getConversionRate,
-    getCurrentCurrency,
-    getSelectedToken,
+  getConversionRate,
+  getCurrentCurrency,
+  getSelectedToken,
 } from '../send.selectors.js'
 import AccountListItem from './account-list-item.component'
 

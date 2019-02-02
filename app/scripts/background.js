@@ -162,7 +162,7 @@ async function initialize () {
   const initState = await loadStateFromPersistence()
   const initLangCode = await getFirstPreferredLangCode()
   await setupController(initState, initLangCode)
-  log.debug('Badger initialization complete.')
+  // log.debug('Badger initialization complete.')
 }
 
 //
@@ -289,7 +289,7 @@ function setupController (initState, initLangCode) {
     storeTransform(versionifyData),
     createStreamSink(persistData),
     error => {
-      log.error('Badger - Persistence pipeline failed', error)
+      // log.error('Badger - Persistence pipeline failed', error)
     }
   )
 
@@ -315,7 +315,7 @@ function setupController (initState, initLangCode) {
         await localStore.set(state)
       } catch (err) {
         // log error so we dont break the pipeline
-        log.error('error setting state in local store:', err)
+        // log.error('error setting state in local store:', err)
       }
     }
   }
@@ -449,7 +449,8 @@ function triggerUi () {
     const currentlyActiveMetamaskTab = Boolean(
       tabs.find(tab => openMetamaskTabsIDs[tab.id])
     )
-    if (!popupIsOpen && !currentlyActiveMetamaskTab) { // && !notificationIsOpen) {
+    if (!popupIsOpen && !currentlyActiveMetamaskTab) {
+      // && !notificationIsOpen) {
       notificationManager.showPopup()
     }
   })

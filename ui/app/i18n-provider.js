@@ -52,4 +52,3 @@ module.exports = compose(
   withRouter,
   connect(mapStateToProps)
 )(I18nProvider)
-

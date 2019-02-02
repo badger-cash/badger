@@ -23,18 +23,17 @@ function mapDispatchToProps (dispatch) {
 inherits(ShapeshiftDepositTxModal, Component)
 function ShapeshiftDepositTxModal () {
   Component.call(this)
-
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(ShapeshiftDepositTxModal)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShapeshiftDepositTxModal)
 
 ShapeshiftDepositTxModal.prototype.render = function () {
   const { Qr } = this.props
 
-  return h(AccountModalContainer, {
-  }, [
-    h('div', {}, [
-      h(QrView, {key: 'qr', Qr}),
-    ]),
+  return h(AccountModalContainer, {}, [
+    h('div', {}, [h(QrView, { key: 'qr', Qr })]),
   ])
 }

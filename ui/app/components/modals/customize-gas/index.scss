@@ -1,8 +1,8 @@
 .customize-gas {
-  border: 1px solid #D8D8D8;
+  border: 1px solid #d8d8d8;
   border-radius: 4px;
-  background-color: #FFFFFF;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.14);
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14);
   font-family: Roboto;
   display: flex;
   flex-flow: column;
@@ -74,7 +74,10 @@
     margin-right: 21.25px;
   }
 
-  &__revert, &__cancel, &__save, &__save__error {
+  &__revert,
+  &__cancel,
+  &__save,
+  &__save__error {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +91,9 @@
     margin-left: 21.25px;
   }
 
-  &__cancel, &__save, &__save__error {
+  &__cancel,
+  &__save,
+  &__save__error {
     width: 85.74px;
     min-width: initial;
   }

@@ -18,21 +18,19 @@ proxyquire('../send-gas-row.container.js', {
     },
   },
   '../../send.selectors.js': {
-    getConversionRate: (s) => `mockConversionRate:${s}`,
-    getCurrentCurrency: (s) => `mockConvertedCurrency:${s}`,
-    getGasTotal: (s) => `mockGasTotal:${s}`,
+    getConversionRate: s => `mockConversionRate:${s}`,
+    getCurrentCurrency: s => `mockConvertedCurrency:${s}`,
+    getGasTotal: s => `mockGasTotal:${s}`,
   },
   './send-gas-row.selectors.js': {
-    getGasLoadingError: (s) => `mockGasLoadingError:${s}`,
-    gasFeeIsInError: (s) => `mockGasFeeError:${s}`,
+    getGasLoadingError: s => `mockGasLoadingError:${s}`,
+    gasFeeIsInError: s => `mockGasFeeError:${s}`,
   },
   '../../../../actions': actionSpies,
 })
 
 describe('send-gas-row container', () => {
-
   describe('mapStateToProps()', () => {
-
     it('should map the correct properties to props', () => {
       assert.deepEqual(mapStateToProps('mockState'), {
         conversionRate: 'mockConversionRate:mockState',
@@ -42,7 +40,6 @@ describe('send-gas-row container', () => {
         gasLoadingError: 'mockGasLoadingError:mockState',
       })
     })
-
   })
 
   describe('mapDispatchToProps()', () => {
@@ -58,13 +55,10 @@ describe('send-gas-row container', () => {
       it('should dispatch an action', () => {
         mapDispatchToPropsObject.showCustomizeGasModal()
         assert(dispatchSpy.calledOnce)
-        assert.deepEqual(
-          actionSpies.showModal.getCall(0).args[0],
-          { name: 'CUSTOMIZE_GAS' }
-        )
+        assert.deepEqual(actionSpies.showModal.getCall(0).args[0], {
+          name: 'CUSTOMIZE_GAS',
+        })
       })
     })
-
   })
-
 })

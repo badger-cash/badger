@@ -1,11 +1,7 @@
 import assert from 'assert'
-import {
-  getToDropdownOpen,
-  sendToIsInError,
-} from '../send-to-row.selectors.js'
+import { getToDropdownOpen, sendToIsInError } from '../send-to-row.selectors.js'
 
 describe('send-to-row selectors', () => {
-
   describe('getToDropdownOpen()', () => {
     it('should return send.getToDropdownOpen', () => {
       const state = {
@@ -43,5 +39,4 @@ describe('send-to-row selectors', () => {
       assert.equal(sendToIsInError(state), false)
     })
   })
-
 })

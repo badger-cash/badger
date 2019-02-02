@@ -14,10 +14,10 @@ function setupRaven (opts) {
   const isBrave = Boolean(window.chrome.ipcRenderer)
 
   if (METAMASK_DEBUG) {
-    console.log('Setting up Sentry Remote Error Reporting: DEV')
+    // console.log('Setting up Sentry Remote Error Reporting: DEV')
     ravenTarget = DEV
   } else {
-    console.log('Setting up Sentry Remote Error Reporting: PROD')
+    // console.log('Setting up Sentry Remote Error Reporting: PROD')
     ravenTarget = PROD
   }
 
@@ -48,15 +48,21 @@ function setupRaven (opts) {
 
 function rewriteErrorLikeExceptions (report) {
   // handle errors that lost their error-ness in serialization (e.g. dnode)
-  rewriteErrorMessages(report, (errorMessage) => {
-    if (!errorMessage.includes('Non-Error exception captured with keys:')) return errorMessage
-    if (!(report.extra && report.extra.__serialized__ && report.extra.__serialized__.message)) return errorMessage
+  rewriteErrorMessages(report, errorMessage => {
+    if (!errorMessage.includes('Non-Error exception captured with keys:')) { return errorMessage }
+    if (
+      !(
+        report.extra &&
+        report.extra.__serialized__ &&
+        report.extra.__serialized__.message
+      )
+    ) { return errorMessage }
     return `Non-Error Exception: ${report.extra.__serialized__.message}`
   })
 }
 
 function simplifyErrorMessages (report) {
-  rewriteErrorMessages(report, (errorMessage) => {
+  rewriteErrorMessages(report, errorMessage => {
     // simplify ethjs error messages
     errorMessage = extractEthjsErrorMessage(errorMessage)
     // simplify 'Transaction Failed: known transaction'
@@ -70,7 +76,7 @@ function simplifyErrorMessages (report) {
 
 function rewriteErrorMessages (report, rewriteFn) {
   // rewrite top level message
-  if (typeof report.message === 'string') report.message = rewriteFn(report.message)
+  if (typeof report.message === 'string') { report.message = rewriteFn(report.message) }
   // rewrite each exception message
   if (report.exception && report.exception.values) {
     report.exception.values.forEach(item => {

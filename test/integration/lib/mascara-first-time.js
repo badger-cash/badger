@@ -1,9 +1,5 @@
 const PASSWORD = 'password123'
-const {
-  timeout,
-  findAsync,
-  queryAsync,
-} = require('../../lib/util')
+const { timeout, findAsync, queryAsync } = require('../../lib/util')
 
 async function runFirstTimeUsageTest (assert, done) {
   await timeout(4000)
@@ -12,7 +8,8 @@ async function runFirstTimeUsageTest (assert, done) {
 
   // Used to set values on TextField input component
   const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-    window.HTMLInputElement.prototype, 'value'
+    window.HTMLInputElement.prototype,
+    'value'
   ).set
 
   await skipNotices(app)
@@ -29,17 +26,24 @@ async function runFirstTimeUsageTest (assert, done) {
   const confBox = (await findAsync(app, '#confirm-password'))[0]
 
   nativeInputValueSetter.call(pwBox, PASSWORD)
-  pwBox.dispatchEvent(new Event('input', { bubbles: true}))
+  pwBox.dispatchEvent(new Event('input', { bubbles: true }))
 
   nativeInputValueSetter.call(confBox, PASSWORD)
-  confBox.dispatchEvent(new Event('input', { bubbles: true}))
+  confBox.dispatchEvent(new Event('input', { bubbles: true }))
 
   // Create Password
-  const createButton = (await findAsync(app, 'button.first-time-flow__button'))[0]
+  const createButton = (await findAsync(
+    app,
+    'button.first-time-flow__button'
+  ))[0]
   createButton.click()
 
   const created = (await findAsync(app, '.unique-image__title'))[0]
-  assert.equal(created.textContent, 'Your unique account image', 'unique image screen')
+  assert.equal(
+    created.textContent,
+    'Your unique account image',
+    'unique image screen'
+  )
 
   // Agree button
   const button = (await findAsync(app, 'button'))[0]
@@ -50,15 +54,22 @@ async function runFirstTimeUsageTest (assert, done) {
 
   // secret backup phrase
   const seedTitle = (await findAsync(app, '.backup-phrase__title'))[0]
-  assert.equal(seedTitle.textContent, 'Secret Backup Phrase', 'seed phrase screen')
+  assert.equal(
+    seedTitle.textContent,
+    'Secret Backup Phrase',
+    'seed phrase screen'
+  )
   ;(await findAsync(app, '.backup-phrase__reveal-button')).click()
-  const seedPhrase = (await findAsync(app, '.backup-phrase__secret-words')).text().split(' ')
+  const seedPhrase = (await findAsync(app, '.backup-phrase__secret-words'))
+    .text()
+    .split(' ')
   ;(await findAsync(app, '.first-time-flow__button')).click()
 
   await timeout()
   const selectPhrase = text => {
-    const option = $('.backup-phrase__confirm-seed-option')
-      .filter((i, d) => d.textContent === text)[0]
+    const option = $('.backup-phrase__confirm-seed-option').filter(
+      (i, d) => d.textContent === text
+    )[0]
     $(option).click()
   }
 
@@ -67,7 +78,11 @@ async function runFirstTimeUsageTest (assert, done) {
 
   // Deposit Bitcoin Cash Screen
   const depositEthTitle = (await findAsync(app, '.page-container__title'))[0]
-  assert.equal(depositEthTitle.textContent, 'Deposit Bitcoin Cash', 'deposit ether screen')
+  assert.equal(
+    depositEthTitle.textContent,
+    'Deposit Bitcoin Cash',
+    'deposit ether screen'
+  )
   ;(await findAsync(app, '.page-container__header-close')).click()
 
   const menu = (await findAsync(app, '.account-menu__icon'))[0]
@@ -84,7 +99,7 @@ async function runFirstTimeUsageTest (assert, done) {
   await timeout(1000)
 
   nativeInputValueSetter.call(pwBox2, PASSWORD)
-  pwBox2.dispatchEvent(new Event('input', { bubbles: true}))
+  pwBox2.dispatchEvent(new Event('input', { bubbles: true }))
 
   const createButton2 = (await findAsync(app, 'button[type="submit"]'))[0]
   createButton2.click()
@@ -126,7 +141,7 @@ async function skipNotices (app) {
       button.click()
       await timeout()
     } else {
-      console.log('No more notices...')
+      // console.log('No more notices...')
       break
     }
   }

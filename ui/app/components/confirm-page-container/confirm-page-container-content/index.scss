@@ -18,14 +18,14 @@
   }
 
   &__data {
-   padding: 16px;
-   color: $oslo-gray;
+    padding: 16px;
+    color: $oslo-gray;
   }
 
   &__data-box {
     background-color: #f9fafa;
     padding: 12px;
-    font-size: .75rem;
+    font-size: 0.75rem;
     margin-bottom: 16px;
     word-wrap: break-word;
     max-height: 200px;
@@ -57,7 +57,7 @@
   }
 
   &__function-type {
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 500;
     text-transform: capitalize;
     color: $black;

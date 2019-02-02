@@ -11,7 +11,6 @@ CoinbaseForm.contextTypes = {
 
 module.exports = connect(mapStateToProps)(CoinbaseForm)
 
-
 function mapStateToProps (state) {
   return {
     warning: state.appState.warning,
@@ -27,29 +26,45 @@ function CoinbaseForm () {
 CoinbaseForm.prototype.render = function () {
   var props = this.props
 
-  return h('.flex-column', {
-    style: {
-      marginTop: '35px',
-      padding: '25px',
-      width: '100%',
-    },
-  }, [
-    h('.flex-row', {
+  return h(
+    '.flex-column',
+    {
       style: {
-        justifyContent: 'space-around',
-        margin: '33px',
-        marginTop: '0px',
+        marginTop: '35px',
+        padding: '25px',
+        width: '100%',
       },
-    }, [
-      h('button.btn-green', {
-        onClick: this.toCoinbase.bind(this),
-      }, this.context.t('continueToCoinbase')),
+    },
+    [
+      h(
+        '.flex-row',
+        {
+          style: {
+            justifyContent: 'space-around',
+            margin: '33px',
+            marginTop: '0px',
+          },
+        },
+        [
+          h(
+            'button.btn-green',
+            {
+              onClick: this.toCoinbase.bind(this),
+            },
+            this.context.t('continueToCoinbase')
+          ),
 
-      h('button.btn-red', {
-        onClick: () => props.dispatch(actions.goHome()),
-      }, this.context.t('cancel')),
-    ]),
-  ])
+          h(
+            'button.btn-red',
+            {
+              onClick: () => props.dispatch(actions.goHome()),
+            },
+            this.context.t('cancel')
+          ),
+        ]
+      ),
+    ]
+  )
 }
 
 CoinbaseForm.prototype.toCoinbase = function () {

@@ -943,7 +943,7 @@ module.exports = class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} Full state update.
    */
   async signMessage (msgParams) {
-    log.info('BadgerController - signMessage')
+    // log.info('BadgerController - signMessage')
     const msgId = msgParams.metamaskId
 
     // sets the status op the message to 'approved'
@@ -951,9 +951,15 @@ module.exports = class MetamaskController extends EventEmitter {
     const cleanMsgParams = await this.messageManager.approveMessage(msgParams)
     const rawSig = await this.keyringController.signMessage(cleanMsgParams)
 
-    const requestProtocolSwapper = new RegExp('cashid:[\/]{0,2}')
-    const requestUri = msgParams.data.substring(0, msgParams.data.indexOf('?')).replace(requestProtocolSwapper, 'https://')
-    const requestData = JSON.stringify({ request: msgParams.data, address: msgParams.from, signature: rawSig })
+    const requestProtocolSwapper = new RegExp('cashid:[/]{0,2}')
+    const requestUri = msgParams.data
+      .substring(0, msgParams.data.indexOf('?'))
+      .replace(requestProtocolSwapper, 'https://')
+    const requestData = JSON.stringify({
+      request: msgParams.data,
+      address: msgParams.from,
+      signature: rawSig,
+    })
 
     const requestRes = await axios.post(requestUri, requestData, {
       headers: {
@@ -961,7 +967,7 @@ module.exports = class MetamaskController extends EventEmitter {
       },
     })
 
-    this.messageManager.setMsgStatusSigned(msgId, {success: true})
+    this.messageManager.setMsgStatusSigned(msgId, { success: true })
     return this.getState()
   }
 
@@ -1009,7 +1015,7 @@ module.exports = class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} - A full state update.
    */
   signPersonalMessage (msgParams) {
-    log.info('MetaMaskController - signPersonalMessage')
+    // log.info('MetaMaskController - signPersonalMessage')
     const msgId = msgParams.metamaskId
     // sets the status op the message to 'approved'
     // and removes the metamaskId for signing
@@ -1066,7 +1072,7 @@ module.exports = class MetamaskController extends EventEmitter {
    * @returns {Object} Full state update.
    */
   async signTypedMessage (msgParams) {
-    log.info('MetaMaskController - eth_signTypedData')
+    // log.info('MetaMaskController - eth_signTypedData')
     const msgId = msgParams.metamaskId
     const version = msgParams.version
     try {
@@ -1095,7 +1101,7 @@ module.exports = class MetamaskController extends EventEmitter {
       this.typedMessageManager.setMsgStatusSigned(msgId, signature)
       return this.getState()
     } catch (error) {
-      log.info('MetaMaskController - eth_signTypedData failed.', error)
+      // log.info('MetaMaskController - eth_signTypedData failed.', error)
       this.typedMessageManager.errorMessage(msgId, error)
     }
   }
@@ -1216,7 +1222,7 @@ module.exports = class MetamaskController extends EventEmitter {
   setupUntrustedCommunication (connectionStream, originDomain) {
     // Check if new connection is blacklisted
     if (this.blacklistController.checkForPhishing(originDomain)) {
-      log.debug('Badger - sending phishing warning for', originDomain)
+      // log.debug('Badger - sending phishing warning for', originDomain)
       this.sendPhishingWarning(connectionStream, originDomain)
       return
     }

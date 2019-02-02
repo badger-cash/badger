@@ -47,14 +47,25 @@ export default class TransactionStatus extends PureComponent {
   render () {
     const { className, statusKey, title, transaction } = this.props
     let statusText = this.context.t(statusToTextHash[statusKey] || statusKey)
-    if (transaction && transaction.txParams && transaction.txParams.sendTokenData && transaction.txParams.sendTokenData.tokenProtocol === 'wormhole') {
+    if (
+      transaction &&
+      transaction.txParams &&
+      transaction.txParams.sendTokenData &&
+      transaction.txParams.sendTokenData.tokenProtocol === 'wormhole'
+    ) {
       statusText = `Pending until 1 confirmation`
     }
 
     return (
-      <div className={classnames('transaction-status', className, statusToClassNameHash[statusKey])}>
+      <div
+        className={classnames(
+          'transaction-status',
+          className,
+          statusToClassNameHash[statusKey]
+        )}
+      >
         <Tooltip position="top" title={title}>
-          { statusText }
+          {statusText}
         </Tooltip>
       </div>
     )

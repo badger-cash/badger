@@ -5,17 +5,16 @@ const VERSION = require('../dist/chrome/manifest.json').version
 start().catch(console.error)
 
 async function start () {
-
   const GITHUB_COMMENT_TOKEN = process.env.GITHUB_COMMENT_TOKEN
   const CIRCLE_PULL_REQUEST = process.env.CIRCLE_PULL_REQUEST
-  console.log('CIRCLE_PULL_REQUEST', CIRCLE_PULL_REQUEST)
+  // console.log('CIRCLE_PULL_REQUEST', CIRCLE_PULL_REQUEST)
   const CIRCLE_SHA1 = process.env.CIRCLE_SHA1
-  console.log('CIRCLE_SHA1', CIRCLE_SHA1)
+  // console.log('CIRCLE_SHA1', CIRCLE_SHA1)
   const CIRCLE_BUILD_NUM = process.env.CIRCLE_BUILD_NUM
-  console.log('CIRCLE_BUILD_NUM', CIRCLE_BUILD_NUM)
+  // console.log('CIRCLE_BUILD_NUM', CIRCLE_BUILD_NUM)
 
   if (!CIRCLE_PULL_REQUEST) {
-    console.warn(`No pull request detected for commit "${CIRCLE_SHA1}"`)
+    // console.warn(`No pull request detected for commit "${CIRCLE_SHA1}"`)
     return
   }
 
@@ -46,17 +45,16 @@ async function start () {
 
   const JSON_PAYLOAD = JSON.stringify({ body: commentBody })
   const POST_COMMENT_URI = `https://api.github.com/repos/metamask/metamask-extension/issues/${CIRCLE_PR_NUMBER}/comments`
-  console.log(`Announcement:\n${commentBody}`)
-  console.log(`Posting to: ${POST_COMMENT_URI}`)
+  // console.log(`Announcement:\n${commentBody}`)
+  // console.log(`Posting to: ${POST_COMMENT_URI}`)
 
   await request({
-      method: 'POST',
-      uri: POST_COMMENT_URI,
-      body: JSON_PAYLOAD,
-      headers: {
-        'User-Agent': 'metamaskbot',
-        'Authorization': `token ${GITHUB_COMMENT_TOKEN}`,
-      },
+    method: 'POST',
+    uri: POST_COMMENT_URI,
+    body: JSON_PAYLOAD,
+    headers: {
+      'User-Agent': 'metamaskbot',
+      Authorization: `token ${GITHUB_COMMENT_TOKEN}`,
+    },
   })
-
 }

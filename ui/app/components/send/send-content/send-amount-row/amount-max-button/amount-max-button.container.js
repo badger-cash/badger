@@ -7,19 +7,16 @@ import {
 } from '../../../send.selectors.js'
 import { getMaxModeOn } from './amount-max-button.selectors.js'
 import { calcMaxAmount } from './amount-max-button.utils.js'
-import {
-  updateSendAmount,
-  setMaxModeTo,
-} from '../../../../../actions'
+import { updateSendAmount, setMaxModeTo } from '../../../../../actions'
 import AmountMaxButton from './amount-max-button.component'
-import {
-  updateSendErrors,
-} from '../../../../../ducks/send.duck'
+import { updateSendErrors } from '../../../../../ducks/send.duck'
 
-export default connect(mapStateToProps, mapDispatchToProps)(AmountMaxButton)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AmountMaxButton)
 
 function mapStateToProps (state) {
-
   return {
     balance: getSendFromBalance(state),
     gasTotal: getGasTotal(state),

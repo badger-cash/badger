@@ -121,11 +121,11 @@ module.exports = class PersonalMessageManager extends EventEmitter {
    *
    */
   addUnapprovedMessage (msgParams, req) {
-    log.debug(
-      `PersonalMessageManager addUnapprovedMessage: ${JSON.stringify(
-        msgParams
-      )}`
-    )
+    // log.debug(
+    //   `PersonalMessageManager addUnapprovedMessage: ${JSON.stringify(
+    //     msgParams
+    //   )}`
+    // )
     // add origin from request
     if (req) msgParams.origin = req.origin
     msgParams.data = this.normalizeMsgData(msgParams.data)
@@ -247,10 +247,10 @@ module.exports = class PersonalMessageManager extends EventEmitter {
   _setMsgStatus (msgId, status) {
     const msg = this.getMsg(msgId)
     if (!msg) {
-throw new Error(
+      throw new Error(
         'PersonalMessageManager - Message not found for id: "${msgId}".'
       )
-}
+    }
     msg.status = status
     this._updateMsg(msg)
     this.emit(`${msgId}:${status}`, msg)
@@ -308,7 +308,7 @@ throw new Error(
         return ethUtil.addHexPrefix(stripped)
       }
     } catch (e) {
-      log.debug(`Message was not hex encoded, interpreting as utf8.`)
+      // log.debug(`Message was not hex encoded, interpreting as utf8.`)
     }
 
     return ethUtil.bufferToHex(new Buffer(data, 'utf8'))

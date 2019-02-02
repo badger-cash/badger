@@ -43,7 +43,7 @@ addUnconfTx({
 })
 
 function addUnconfTx (txParams) {
-  var time = (new Date()).getTime()
+  var time = new Date().getTime()
   var id = createRandomId()
   unapprovedTxs[id] = {
     id: id,

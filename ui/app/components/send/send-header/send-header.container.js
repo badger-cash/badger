@@ -3,7 +3,10 @@ import { clearSend } from '../../../actions'
 import SendHeader from './send-header.component'
 import { getSubtitleParams, getTitleKey } from './send-header.selectors'
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendHeader)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendHeader)
 
 function mapStateToProps (state) {
   return {

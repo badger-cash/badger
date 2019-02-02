@@ -3,7 +3,9 @@ const actions = require('../actions')
 const MetamascaraPlatform = require('../../../app/scripts/platforms/window')
 const { getEnvironmentType } = require('../../../app/scripts/lib/util')
 const { ENVIRONMENT_TYPE_POPUP } = require('../../../app/scripts/lib/enums')
-const { OLD_UI_NETWORK_TYPE } = require('../../../app/scripts/controllers/network/enums')
+const {
+  OLD_UI_NETWORK_TYPE,
+} = require('../../../app/scripts/controllers/network/enums')
 
 module.exports = reduceMetamask
 
@@ -11,50 +13,53 @@ function reduceMetamask (state, action) {
   let newState
 
   // clone + defaults
-  var metamaskState = extend({
-    isInitialized: false,
-    isUnlocked: false,
-    isAccountMenuOpen: false,
-    isMascara: window.platform instanceof MetamascaraPlatform,
-    isPopup: getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP,
-    rpcTarget: 'https://rawtestrpc.metamask.io/',
-    identities: {},
-    unapprovedTxs: {},
-    noActiveNotices: true,
-    nextUnreadNotice: undefined,
-    frequentRpcList: [],
-    addressBook: [],
-    selectedTokenAddress: null,
-    contractExchangeRates: {},
-    tokenExchangeRates: {},
-    tokens: [],
-    pendingTokens: {},
-    send: {
-      gasLimit: null,
-      gasPrice: null,
-      gasTotal: null,
-      tokenBalance: null,
-      from: '',
-      to: '',
-      amount: '0',
-      memo: '',
-      errors: {},
-      maxModeOn: false,
-      editingTransactionId: null,
-      forceGasMin: null,
-      toNickname: '',
+  var metamaskState = extend(
+    {
+      isInitialized: false,
+      isUnlocked: false,
+      isAccountMenuOpen: false,
+      isMascara: window.platform instanceof MetamascaraPlatform,
+      isPopup:
+        getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP,
+      rpcTarget: 'https://rawtestrpc.metamask.io/',
+      identities: {},
+      unapprovedTxs: {},
+      noActiveNotices: true,
+      nextUnreadNotice: undefined,
+      frequentRpcList: [],
+      addressBook: [],
+      selectedTokenAddress: null,
+      contractExchangeRates: {},
+      tokenExchangeRates: {},
+      tokens: [],
+      pendingTokens: {},
+      send: {
+        gasLimit: null,
+        gasPrice: null,
+        gasTotal: null,
+        tokenBalance: null,
+        from: '',
+        to: '',
+        amount: '0',
+        memo: '',
+        errors: {},
+        maxModeOn: false,
+        editingTransactionId: null,
+        forceGasMin: null,
+        toNickname: '',
+      },
+      coinOptions: {},
+      useBlockie: false,
+      featureFlags: {},
+      networkEndpointType: OLD_UI_NETWORK_TYPE,
+      isRevealingSeedWords: false,
+      welcomeScreenSeen: false,
+      currentLocale: '',
     },
-    coinOptions: {},
-    useBlockie: false,
-    featureFlags: {},
-    networkEndpointType: OLD_UI_NETWORK_TYPE,
-    isRevealingSeedWords: false,
-    welcomeScreenSeen: false,
-    currentLocale: '',
-  }, state.metamask)
+    state.metamask
+  )
 
   switch (action.type) {
-
     case actions.SHOW_ACCOUNTS_PAGE:
       newState = extend(metamaskState, {
         isRevealingSeedWords: false,
@@ -133,7 +138,6 @@ function reduceMetamask (state, action) {
           editingTransactionId: action.value,
         },
       })
-
 
     case actions.SHOW_NEW_VAULT_SEED:
       return extend(metamaskState, {
@@ -311,7 +315,9 @@ function reduceMetamask (state, action) {
       })
 
     case actions.PAIR_UPDATE:
-      const { value: { marketinfo: pairMarketInfo } } = action
+      const {
+        value: { marketinfo: pairMarketInfo },
+      } = action
       return extend(metamaskState, {
         tokenExchangeRates: {
           ...metamaskState.tokenExchangeRates,
@@ -320,7 +326,9 @@ function reduceMetamask (state, action) {
       })
 
     case actions.SHAPESHIFT_SUBVIEW:
-      const { value: { marketinfo: ssMarketInfo, coinOptions } } = action
+      const {
+        value: { marketinfo: ssMarketInfo, coinOptions },
+      } = action
       return extend(metamaskState, {
         tokenExchangeRates: {
           ...metamaskState.tokenExchangeRates,
@@ -330,9 +338,9 @@ function reduceMetamask (state, action) {
       })
 
     case actions.SET_USE_BLOCKIE:
-          return extend(metamaskState, {
-            useBlockie: action.value,
-          })
+      return extend(metamaskState, {
+        useBlockie: action.value,
+      })
 
     case actions.UPDATE_FEATURE_FLAGS:
       return extend(metamaskState, {
@@ -367,6 +375,5 @@ function reduceMetamask (state, action) {
 
     default:
       return metamaskState
-
   }
 }

@@ -83,7 +83,9 @@ export default class ConfirmTransactionSwitch extends Component {
     if (txData.txParams) {
       return this.redirectToTransaction()
     } else if (txData.msgParams) {
-      const pathname = `${CONFIRM_TRANSACTION_ROUTE}/${txData.id}${SIGNATURE_REQUEST_PATH}`
+      const pathname = `${CONFIRM_TRANSACTION_ROUTE}/${
+        txData.id
+      }${SIGNATURE_REQUEST_PATH}`
       return <Redirect to={{ pathname }} />
     }
 

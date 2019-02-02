@@ -34,13 +34,13 @@ function mapStateToPropsFactory () {
 function mapDispatchToProps (dispatch) {
   return {
     exportAccount: (password, address) => {
-      return dispatch(actions.exportAccount(password, address))
-        .then((res) => {
-          dispatch(actions.hideWarning())
-          return res
-        })
+      return dispatch(actions.exportAccount(password, address)).then(res => {
+        dispatch(actions.hideWarning())
+        return res
+      })
     },
-    showAccountDetailModal: () => dispatch(actions.showModal({ name: 'ACCOUNT_DETAILS' })),
+    showAccountDetailModal: () =>
+      dispatch(actions.showModal({ name: 'ACCOUNT_DETAILS' })),
     hideModal: () => dispatch(actions.hideModal()),
   }
 }
@@ -60,24 +60,33 @@ ExportPrivateKeyModal.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToPropsFactory, mapDispatchToProps)(ExportPrivateKeyModal)
+module.exports = connect(
+  mapStateToPropsFactory,
+  mapDispatchToProps
+)(ExportPrivateKeyModal)
 
-
-ExportPrivateKeyModal.prototype.exportAccountAndGetPrivateKey = function (password, address) {
+ExportPrivateKeyModal.prototype.exportAccountAndGetPrivateKey = function (
+  password,
+  address
+) {
   const { exportAccount } = this.props
 
   exportAccount(password, address)
-    .then(privateKey => this.setState({
-      privateKey,
-      showWarning: false,
-    }))
-    .catch((e) => log.error(e))
+    .then(privateKey =>
+      this.setState({
+        privateKey,
+        showWarning: false,
+      })
+    )
+    .catch(e => log.error(e))
 }
 
 ExportPrivateKeyModal.prototype.renderPasswordLabel = function (privateKey) {
-  return h('span.private-key-password-label', privateKey
-    ? this.context.t('copyPrivateKey')
-    : this.context.t('typePassword')
+  return h(
+    'span.private-key-password-label',
+    privateKey
+      ? this.context.t('copyPrivateKey')
+      : this.context.t('typePassword')
   )
 }
 
@@ -93,38 +102,53 @@ ExportPrivateKeyModal.prototype.renderPasswordInput = function (privateKey) {
         onClick: () => copyToClipboard(plainKey),
       })
     : h('input.private-key-password-input', {
-      type: 'password',
-      onChange: event => this.setState({ password: event.target.value }),
-    })
+        type: 'password',
+        onChange: event => this.setState({ password: event.target.value }),
+      })
 }
 
-ExportPrivateKeyModal.prototype.renderButtons = function (privateKey, password, address, hideModal) {
+ExportPrivateKeyModal.prototype.renderButtons = function (
+  privateKey,
+  password,
+  address,
+  hideModal
+) {
   return h('div.export-private-key-buttons', {}, [
-    !privateKey && h(Button, {
-      type: 'default',
-      large: true,
-      className: 'export-private-key__button export-private-key__button--cancel',
-      onClick: () => hideModal(),
-    }, this.context.t('cancel')),
-
-    (privateKey
-      ? (
-          h(Button, {
-          type: 'primary',
+    !privateKey &&
+      h(
+        Button,
+        {
+          type: 'default',
           large: true,
-          className: 'export-private-key__button',
+          className:
+            'export-private-key__button export-private-key__button--cancel',
           onClick: () => hideModal(),
-        }, this.context.t('done'))
-      ) : (
-          h(Button, {
-          type: 'primary',
-          large: true,
-          className: 'export-private-key__button',
-          onClick: () => this.exportAccountAndGetPrivateKey(this.state.password, address),
-        }, this.context.t('confirm'))
-      )
-    ),
+        },
+        this.context.t('cancel')
+      ),
 
+    privateKey
+      ? h(
+          Button,
+          {
+            type: 'primary',
+            large: true,
+            className: 'export-private-key__button',
+            onClick: () => hideModal(),
+          },
+          this.context.t('done')
+        )
+      : h(
+          Button,
+          {
+            type: 'primary',
+            large: true,
+            className: 'export-private-key__button',
+            onClick: () =>
+              this.exportAccountAndGetPrivateKey(this.state.password, address),
+          },
+          this.context.t('confirm')
+        ),
   ])
 }
 
@@ -138,17 +162,16 @@ ExportPrivateKeyModal.prototype.render = function () {
   } = this.props
   const { name, address } = selectedIdentity
 
-  const {
-    privateKey,
-    showWarning,
-  } = this.state
+  const { privateKey, showWarning } = this.state
 
-  return h(AccountModalContainer, {
-    selectedIdentity,
-    showBackButton: previousModalState === 'ACCOUNT_DETAILS',
-    backButtonAction: () => showAccountDetailModal(),
-  }, [
-
+  return h(
+    AccountModalContainer,
+    {
+      selectedIdentity,
+      showBackButton: previousModalState === 'ACCOUNT_DETAILS',
+      backButtonAction: () => showAccountDetailModal(),
+    },
+    [
       h('span.account-name', name),
 
       h(ReadOnlyInput, {
@@ -166,12 +189,17 @@ ExportPrivateKeyModal.prototype.render = function () {
 
         this.renderPasswordInput(privateKey),
 
-        showWarning && warning ? h('span.private-key-password-error', warning) : null,
+        showWarning && warning
+          ? h('span.private-key-password-error', warning)
+          : null,
       ]),
 
-      h('div.private-key-password-warning', this.context.t('privateKeyWarning')),
+      h(
+        'div.private-key-password-warning',
+        this.context.t('privateKeyWarning')
+      ),
 
       this.renderButtons(privateKey, this.state.password, address, hideModal),
-
-  ])
+    ]
+  )
 }

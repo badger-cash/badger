@@ -5,7 +5,6 @@ const connect = require('react-redux').connect
 const actions = require('../../ui/app/actions')
 const Tooltip = require('./components/tooltip.js')
 
-
 const ethUtil = require('ethereumjs-util')
 const abi = require('human-standard-token-abi')
 const Eth = require('ethjs-query')
@@ -37,49 +36,63 @@ AddTokenScreen.prototype.render = function () {
   const props = this.props
   const { warning, symbol, decimals } = state
 
-  return (
-    h('.flex-column.flex-grow', [
+  return h('.flex-column.flex-grow', [
+    // subtitle and nav
+    h('.section-title.flex-row.flex-center', [
+      h('i.fa.fa-arrow-left.fa-lg.cursor-pointer', {
+        onClick: event => {
+          props.dispatch(actions.goHome())
+        },
+      }),
+      h('h2.page-subtitle', 'Add Token'),
+    ]),
 
-      // subtitle and nav
-      h('.section-title.flex-row.flex-center', [
-        h('i.fa.fa-arrow-left.fa-lg.cursor-pointer', {
-          onClick: (event) => {
-            props.dispatch(actions.goHome())
-          },
-        }),
-        h('h2.page-subtitle', 'Add Token'),
-      ]),
-
-      h('.error', {
+    h(
+      '.error',
+      {
         style: {
           display: warning ? 'block' : 'none',
           padding: '0 20px',
           textAlign: 'center',
         },
-      }, warning),
+      },
+      warning
+    ),
 
-      // conf view
-      h('.flex-column.flex-justify-center.flex-grow.select-none', [
-        h('.flex-space-around', {
+    // conf view
+    h('.flex-column.flex-justify-center.flex-grow.select-none', [
+      h(
+        '.flex-space-around',
+        {
           style: {
             padding: '20px',
           },
-        }, [
-
+        },
+        [
           h('div', [
-            h(Tooltip, {
-              position: 'top',
-              title: 'The contract of the actual token contract. Click for more info.',
-            }, [
-              h('a', {
-                style: { fontWeight: 'bold', paddingRight: '10px'},
-                href: 'https://support.metamask.io/kb/article/24-what-is-a-token-contract-address',
-                target: '_blank',
-              }, [
-                h('span', 'Token Contract Address  '),
-                h('i.fa.fa-question-circle'),
-              ]),
-            ]),
+            h(
+              Tooltip,
+              {
+                position: 'top',
+                title:
+                  'The contract of the actual token contract. Click for more info.',
+              },
+              [
+                h(
+                  'a',
+                  {
+                    style: { fontWeight: 'bold', paddingRight: '10px' },
+                    href:
+                      'https://support.metamask.io/kb/article/24-what-is-a-token-contract-address',
+                    target: '_blank',
+                  },
+                  [
+                    h('span', 'Token Contract Address  '),
+                    h('i.fa.fa-question-circle'),
+                  ]
+                ),
+              ]
+            ),
           ]),
 
           h('section.flex-row.flex-center', [
@@ -97,12 +110,16 @@ AddTokenScreen.prototype.render = function () {
           ]),
 
           h('div', [
-            h('span', {
-              style: { fontWeight: 'bold', paddingRight: '10px'},
-            }, 'Token Symbol'),
+            h(
+              'span',
+              {
+                style: { fontWeight: 'bold', paddingRight: '10px' },
+              },
+              'Token Symbol'
+            ),
           ]),
 
-          h('div', { style: {display: 'flex'} }, [
+          h('div', { style: { display: 'flex' } }, [
             h('input#token_symbol', {
               placeholder: `Like "ETH"`,
               value: symbol,
@@ -112,7 +129,7 @@ AddTokenScreen.prototype.render = function () {
                 height: '30px',
                 margin: '8px',
               },
-              onChange: (event) => {
+              onChange: event => {
                 var element = event.target
                 var symbol = element.value
                 this.setState({ symbol })
@@ -121,12 +138,16 @@ AddTokenScreen.prototype.render = function () {
           ]),
 
           h('div', [
-            h('span', {
-              style: { fontWeight: 'bold', paddingRight: '10px'},
-            }, 'Decimals of Precision'),
+            h(
+              'span',
+              {
+                style: { fontWeight: 'bold', paddingRight: '10px' },
+              },
+              'Decimals of Precision'
+            ),
           ]),
 
-          h('div', { style: {display: 'flex'} }, [
+          h('div', { style: { display: 'flex' } }, [
             h('input#token_decimals', {
               value: decimals,
               type: 'number',
@@ -138,7 +159,7 @@ AddTokenScreen.prototype.render = function () {
                 height: '30px',
                 margin: '8px',
               },
-              onChange: (event) => {
+              onChange: event => {
                 var element = event.target
                 var decimals = element.value.trim()
                 this.setState({ decimals })
@@ -146,25 +167,32 @@ AddTokenScreen.prototype.render = function () {
             }),
           ]),
 
-          h('button', {
-            style: {
-              alignSelf: 'center',
-            },
-            onClick: (event) => {
-              const valid = this.validateInputs()
-              if (!valid) return
+          h(
+            'button',
+            {
+              style: {
+                alignSelf: 'center',
+              },
+              onClick: event => {
+                const valid = this.validateInputs()
+                if (!valid) return
 
-              const { address, symbol, decimals } = this.state
-              this.props.dispatch(actions.addToken(address.trim(), symbol.trim(), decimals))
-                .then(() => {
-                  this.props.dispatch(actions.goHome())
-                })
+                const { address, symbol, decimals } = this.state
+                this.props
+                  .dispatch(
+                    actions.addToken(address.trim(), symbol.trim(), decimals)
+                  )
+                  .then(() => {
+                    this.props.dispatch(actions.goHome())
+                  })
+              },
             },
-          }, 'Add'),
-        ]),
-      ]),
-    ])
-  )
+            'Add'
+          ),
+        ]
+      ),
+    ]),
+  ])
 }
 
 AddTokenScreen.prototype.componentWillMount = function () {
@@ -225,17 +253,16 @@ AddTokenScreen.prototype.validateInputs = function () {
   return isValid
 }
 
-AddTokenScreen.prototype.attemptToAutoFillTokenParams = async function (address) {
+AddTokenScreen.prototype.attemptToAutoFillTokenParams = async function (
+  address
+) {
   const contract = this.TokenContract.at(address)
 
-  const results = await Promise.all([
-    contract.symbol(),
-    contract.decimals(),
-  ])
+  const results = await Promise.all([contract.symbol(), contract.decimals()])
 
-  const [ symbol, decimals ] = results
+  const [symbol, decimals] = results
   if (symbol && decimals) {
-    console.log('SETTING SYMBOL AND DECIMALS', { symbol, decimals })
+    // console.log('SETTING SYMBOL AND DECIMALS', { symbol, decimals })
     this.setState({ symbol: symbol[0], decimals: decimals[0].toString() })
   }
 }

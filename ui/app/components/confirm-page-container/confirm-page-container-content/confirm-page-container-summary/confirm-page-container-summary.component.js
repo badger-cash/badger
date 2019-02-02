@@ -4,14 +4,21 @@ import classnames from 'classnames'
 import Identicon from '../../../identicon'
 
 const ConfirmPageContainerSummary = props => {
-  const { action, title, subtitle, hideSubtitle, className, identiconAddress, nonce, assetImage } = props
+  const {
+    action,
+    title,
+    subtitle,
+    hideSubtitle,
+    className,
+    identiconAddress,
+    nonce,
+    assetImage,
+  } = props
 
   return (
     <div className={classnames('confirm-page-container-summary', className)}>
       <div className="confirm-page-container-summary__action-row">
-        <div className="confirm-page-container-summary__action">
-          { action }
-        </div>
+        <div className="confirm-page-container-summary__action">{action}</div>
         {/* {
           nonce && (
             <div className="confirm-page-container-summary__nonce">
@@ -21,25 +28,23 @@ const ConfirmPageContainerSummary = props => {
         } */}
       </div>
       <div className="confirm-page-container-summary__title">
-        {
-          identiconAddress && (
-            <Identicon
-              className="confirm-page-container-summary__identicon"
-              diameter={36}
-              address={identiconAddress}
-              image={assetImage}
-            />
-          )
-        }
+        {identiconAddress && (
+          <Identicon
+            className="confirm-page-container-summary__identicon"
+            diameter={36}
+            address={identiconAddress}
+            image={assetImage}
+          />
+        )}
         <div className="confirm-page-container-summary__title-text">
-          { title }
+          {title}
         </div>
       </div>
-      {
-        hideSubtitle || <div className="confirm-page-container-summary__subtitle">
-          { subtitle }
+      {hideSubtitle || (
+        <div className="confirm-page-container-summary__subtitle">
+          {subtitle}
         </div>
-      }
+      )}
     </div>
   )
 }

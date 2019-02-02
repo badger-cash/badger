@@ -35,7 +35,9 @@ export default class ConfirmTransaction extends Component {
   }
 
   getParamsTransactionId () {
-    const { match: { params: { id } = {} } } = this.props
+    const {
+      match: { params: { id } = {} },
+    } = this.props
     return id || null
   }
 
@@ -65,7 +67,11 @@ export default class ConfirmTransaction extends Component {
     } = this.props
     const paramsTransactionId = this.getParamsTransactionId()
 
-    if (paramsTransactionId && transactionId && paramsTransactionId !== transactionId + '') {
+    if (
+      paramsTransactionId &&
+      transactionId &&
+      paramsTransactionId !== transactionId + ''
+    ) {
       clearConfirmTransaction()
       setTransactionToConfirm(paramsTransactionId)
       return
@@ -86,7 +92,9 @@ export default class ConfirmTransaction extends Component {
 
     if (paramsTransactionId) {
       // Check to make sure params ID is valid
-      const tx = unconfirmedTransactions.find(({ id }) => id + '' === paramsTransactionId)
+      const tx = unconfirmedTransactions.find(
+        ({ id }) => id + '' === paramsTransactionId
+      )
 
       if (!tx) {
         history.replace(DEFAULT_ROUTE)
@@ -111,47 +119,47 @@ export default class ConfirmTransaction extends Component {
     // Show routes when state.confirmTransaction has been set and when either the ID in the params
     // isn't specified or is specified and matches the ID in state.confirmTransaction in order to
     // support URLs of /confirm-transaction or /confirm-transaction/<transactionId>
-    return id && (!paramsTransactionId || paramsTransactionId === id + '')
-      ? (
-        <Switch>
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_DEPLOY_CONTRACT_PATH}`}
-            component={ConfirmDeployContract}
-          />
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_TOKEN_METHOD_PATH}`}
-            component={ConfirmTransactionBase}
-          />
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_SEND_ETHER_PATH}`}
-            component={ConfirmSendEther}
-          />
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_SEND_TOKEN_PATH}`}
-            component={ConfirmSendToken}
-          />
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_APPROVE_PATH}`}
-            component={ConfirmApprove}
-          />
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_TRANSFER_FROM_PATH}`}
-            component={ConfirmTokenTransactionBase}
-          />
-          <Route
-            exact
-            path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${SIGNATURE_REQUEST_PATH}`}
-            component={ConfTx}
-          />
-          <Route path="*" component={ConfirmTransactionSwitch} />
-        </Switch>
-      )
-      : <Loading />
+    return id && (!paramsTransactionId || paramsTransactionId === id + '') ? (
+      <Switch>
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_DEPLOY_CONTRACT_PATH}`}
+          component={ConfirmDeployContract}
+        />
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_TOKEN_METHOD_PATH}`}
+          component={ConfirmTransactionBase}
+        />
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_SEND_ETHER_PATH}`}
+          component={ConfirmSendEther}
+        />
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_SEND_TOKEN_PATH}`}
+          component={ConfirmSendToken}
+        />
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_APPROVE_PATH}`}
+          component={ConfirmApprove}
+        />
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${CONFIRM_TRANSFER_FROM_PATH}`}
+          component={ConfirmTokenTransactionBase}
+        />
+        <Route
+          exact
+          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${SIGNATURE_REQUEST_PATH}`}
+          component={ConfTx}
+        />
+        <Route path="*" component={ConfirmTransactionSwitch} />
+      </Switch>
+    ) : (
+      <Loading />
+    )
   }
 }

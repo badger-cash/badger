@@ -74,14 +74,12 @@ export default class ConfirmPageContainer extends Component {
       assetImage,
       warning,
     } = this.props
-    const renderAssetImage = contentComponent || (!contentComponent && !identiconAddress)
+    const renderAssetImage =
+      contentComponent || (!contentComponent && !identiconAddress)
 
     return (
       <div className="page-container">
-        <ConfirmPageContainerHeader
-          showEdit={showEdit}
-          onEdit={() => onEdit()}
-        >
+        <ConfirmPageContainerHeader showEdit={showEdit} onEdit={() => onEdit()}>
           <SenderToRecipient
             senderName={fromName}
             senderAddress={fromAddress}
@@ -90,26 +88,24 @@ export default class ConfirmPageContainer extends Component {
             assetImage={renderAssetImage ? assetImage : undefined}
           />
         </ConfirmPageContainerHeader>
-        {
-          contentComponent || (
-            <ConfirmPageContainerContent
-              action={action}
-              title={title}
-              titleComponent={titleComponent}
-              subtitle={subtitle}
-              hideSubtitle={hideSubtitle}
-              summaryComponent={summaryComponent}
-              detailsComponent={detailsComponent}
-              dataComponent={dataComponent}
-              errorMessage={errorMessage}
-              errorKey={errorKey}
-              identiconAddress={identiconAddress}
-              nonce={nonce}
-              assetImage={assetImage}
-              warning={warning}
-            />
-          )
-        }
+        {contentComponent || (
+          <ConfirmPageContainerContent
+            action={action}
+            title={title}
+            titleComponent={titleComponent}
+            subtitle={subtitle}
+            hideSubtitle={hideSubtitle}
+            summaryComponent={summaryComponent}
+            detailsComponent={detailsComponent}
+            dataComponent={dataComponent}
+            errorMessage={errorMessage}
+            errorKey={errorKey}
+            identiconAddress={identiconAddress}
+            nonce={nonce}
+            assetImage={assetImage}
+            warning={warning}
+          />
+        )}
         <PageContainerFooter
           onCancel={() => onCancel()}
           onSubmit={() => onSubmit()}

@@ -4,7 +4,6 @@ import AccountListItem from '../../../account-list-item/'
 import SendDropdownList from '../../send-dropdown-list/'
 
 export default class FromDropdown extends Component {
-
   static propTypes = {
     accounts: PropTypes.array,
     closeDropdown: PropTypes.func,
@@ -12,11 +11,11 @@ export default class FromDropdown extends Component {
     onSelect: PropTypes.func,
     openDropdown: PropTypes.func,
     selectedAccount: PropTypes.object,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   render () {
     const {
@@ -29,19 +28,32 @@ export default class FromDropdown extends Component {
       onSelect,
     } = this.props
 
-    return <div className="send-v2__from-dropdown">
-      <AccountListItem
-        account={selectedAccount}
-        handleClick={openDropdown}
-        icon={!selectedToken ? <i className={`fa fa-caret-down fa-lg`} style={ { color: '#dedede' } }/> : '' }
-      />
-      {dropdownOpen && !selectedToken && <SendDropdownList
-        accounts={accounts}
-        closeDropdown={closeDropdown}
-        onSelect={onSelect}
-        activeAddress={selectedAccount.address}
-      />}
-    </div>
+    return (
+      <div className="send-v2__from-dropdown">
+        <AccountListItem
+          account={selectedAccount}
+          handleClick={openDropdown}
+          icon={
+            !selectedToken ? (
+              <i
+                className={`fa fa-caret-down fa-lg`}
+                style={{ color: '#dedede' }}
+              />
+            ) : (
+              ''
+            )
+          }
+        />
+        {dropdownOpen &&
+          !selectedToken && (
+            <SendDropdownList
+              accounts={accounts}
+              closeDropdown={closeDropdown}
+              onSelect={onSelect}
+              activeAddress={selectedAccount.address}
+            />
+          )}
+      </div>
+    )
   }
-
 }

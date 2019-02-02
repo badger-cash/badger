@@ -49,17 +49,17 @@
     flex: 1;
     max-width: 100%;
 
-    input[type="number"] {
+    input[type='number'] {
       -moz-appearance: textfield;
     }
 
-    input[type="number"]::-webkit-inner-spin-button {
+    input[type='number']::-webkit-inner-spin-button {
       -webkit-appearance: none;
       -moz-appearance: none;
       display: none;
     }
 
-    input[type="number"]:hover::-webkit-inner-spin-button {
+    input[type='number']:hover::-webkit-inner-spin-button {
       -webkit-appearance: none;
       -moz-appearance: none;
       display: none;
@@ -72,13 +72,13 @@
   }
 
   .react-numeric-input {
-    input[type="number"]::-webkit-inner-spin-button {
+    input[type='number']::-webkit-inner-spin-button {
       -webkit-appearance: none;
       -moz-appearance: none;
       display: none;
     }
 
-    input[type="number"]:hover::-webkit-inner-spin-button {
+    input[type='number']:hover::-webkit-inner-spin-button {
       -webkit-appearance: none;
       -moz-appearance: none;
       display: none;

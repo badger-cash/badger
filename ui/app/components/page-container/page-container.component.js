@@ -44,16 +44,23 @@ export default class PageContainer extends PureComponent {
 
     const numberOfTabs = React.Children.count(tabsComponent.props.children)
 
-    return React.Children.map(tabsComponent.props.children, (child, tabIndex) => {
-      return child && React.cloneElement(child, {
-        onClick: index => this.handleTabClick(index),
-        tabIndex,
-        isActive: numberOfTabs > 1 && tabIndex === this.state.activeTabIndex,
-        key: tabIndex,
-        className: 'page-container__tab',
-        activeClassName: 'page-container__tab--selected',
-      })
-    })
+    return React.Children.map(
+      tabsComponent.props.children,
+      (child, tabIndex) => {
+        return (
+          child &&
+          React.cloneElement(child, {
+            onClick: index => this.handleTabClick(index),
+            tabIndex,
+            isActive:
+              numberOfTabs > 1 && tabIndex === this.state.activeTabIndex,
+            key: tabIndex,
+            className: 'page-container__tab',
+            activeClassName: 'page-container__tab--selected',
+          })
+        )
+      }
+    )
   }
 
   renderActiveTabContent () {
@@ -106,9 +113,7 @@ export default class PageContainer extends PureComponent {
           backButtonString={backButtonString}
           tabs={this.renderTabs()}
         />
-        <div className="page-container__content">
-          { this.renderContent() }
-        </div>
+        <div className="page-container__content">{this.renderContent()}</div>
         <PageContainerFooter
           onCancel={onCancel}
           cancelText={cancelText}

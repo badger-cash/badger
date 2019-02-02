@@ -13,8 +13,7 @@ class ConfirmResetAccount extends Component {
   }
 
   handleReset () {
-    this.props.resetAccount()
-      .then(() => this.props.hideModal())
+    this.props.resetAccount().then(() => this.props.hideModal())
   }
 
   render () {
@@ -24,10 +23,10 @@ class ConfirmResetAccount extends Component {
       <div className="modal-container">
         <div className="modal-container__content">
           <div className="modal-container__title">
-            { `${t('resetAccount')}?` }
+            {`${t('resetAccount')}?`}
           </div>
           <div className="modal-container__description">
-            { t('resetAccountDescription') }
+            {t('resetAccountDescription')}
           </div>
         </div>
         <div className="modal-container__footer">
@@ -36,14 +35,14 @@ class ConfirmResetAccount extends Component {
             className="modal-container__footer-button"
             onClick={() => this.props.hideModal()}
           >
-            { t('nevermind') }
+            {t('nevermind')}
           </Button>
           <Button
             type="secondary"
             className="modal-container__footer-button"
             onClick={() => this.handleReset()}
           >
-            { t('reset') }
+            {t('reset')}
           </Button>
         </div>
       </div>

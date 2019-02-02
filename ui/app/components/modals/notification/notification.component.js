@@ -5,13 +5,10 @@ import Button from '../../button'
 const Notification = (props, context) => {
   return (
     <div className="modal-container">
-      { props.children }
+      {props.children}
       <div className="modal-container__footer">
-        <Button
-          type="primary"
-          onClick={() => props.onHide()}
-        >
-          { context.t('ok') }
+        <Button type="primary" onClick={() => props.onHide()}>
+          {context.t('ok')}
         </Button>
       </div>
     </div>

@@ -14,7 +14,6 @@ ExportAccountView.contextTypes = {
 
 module.exports = connect(mapStateToProps)(ExportAccountView)
 
-
 inherits(ExportAccountView, Component)
 function ExportAccountView () {
   Component.call(this)
@@ -42,20 +41,24 @@ ExportAccountView.prototype.render = function () {
 
   if (exportRequested) {
     const warning = this.context.t('exportPrivateKeyWarning')
-    return (
-      h('div', {
+    return h(
+      'div',
+      {
         style: {
           display: 'inline-block',
           textAlign: 'center',
         },
       },
-        [
-          h('div', {
+      [
+        h(
+          'div',
+          {
             key: 'exporting',
             style: {
               margin: '0 20px',
             },
-          }, [
+          },
+          [
             h('p.error', warning),
             h('input#exportAccount.sizing-input', {
               type: 'password',
@@ -67,65 +70,107 @@ ExportAccountView.prototype.render = function () {
                 marginBottom: '7px',
               },
             }),
-          ]),
-          h('div', {
+          ]
+        ),
+        h(
+          'div',
+          {
             key: 'buttons',
             style: {
               margin: '0 20px',
             },
           },
-            [
-              h('button', {
-                onClick: () => this.onExportKeyPress({ key: 'Enter', preventDefault: () => {} }),
+          [
+            h(
+              'button',
+              {
+                onClick: () =>
+                  this.onExportKeyPress({
+                    key: 'Enter',
+                    preventDefault: () => {},
+                  }),
                 style: {
                   marginRight: '10px',
                 },
-              }, this.context.t('submit')),
-              h('button', {
-                onClick: () => this.props.dispatch(actions.backToAccountDetail(this.props.address)),
-              }, this.context.t('cancel')),
-            ]),
-          (this.props.warning) && (
-          h('span.error', {
-            style: {
-              margin: '20px',
-            },
-          }, this.props.warning.split('-'))
+              },
+              this.context.t('submit')
+            ),
+            h(
+              'button',
+              {
+                onClick: () =>
+                  this.props.dispatch(
+                    actions.backToAccountDetail(this.props.address)
+                  ),
+              },
+              this.context.t('cancel')
+            ),
+          ]
         ),
-        ])
+        this.props.warning &&
+          h(
+            'span.error',
+            {
+              style: {
+                margin: '20px',
+              },
+            },
+            this.props.warning.split('-')
+          ),
+      ]
     )
   }
 
   if (accountExported) {
     const plainKey = accountDetail.privateKey
 
-    return h('div.privateKey', {
-      style: {
-        margin: '0 20px',
+    return h(
+      'div.privateKey',
+      {
+        style: {
+          margin: '0 20px',
+        },
       },
-    }, [
-      h('label', this.context.t('copyPrivateKey') + ':'),
-      h('p.error.cursor-pointer', {
-        style: {
-          textOverflow: 'ellipsis',
-          overflow: 'hidden',
-          webkitUserSelect: 'text',
-          maxWidth: '275px',
-        },
-        onClick: function (event) {
-          copyToClipboard(accountDetail.privateKey)
-        },
-      }, plainKey),
-      h('button', {
-        onClick: () => this.props.dispatch(actions.backToAccountDetail(this.props.address)),
-      }, this.context.t('done')),
-      h('button', {
-        style: {
-          marginLeft: '10px',
-        },
-        onClick: () => exportAsFile(`Badger ${nickname} Private Key`, plainKey),
-      }, this.context.t('saveAsFile')),
-    ])
+      [
+        h('label', this.context.t('copyPrivateKey') + ':'),
+        h(
+          'p.error.cursor-pointer',
+          {
+            style: {
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              webkitUserSelect: 'text',
+              maxWidth: '275px',
+            },
+            onClick: function (event) {
+              copyToClipboard(accountDetail.privateKey)
+            },
+          },
+          plainKey
+        ),
+        h(
+          'button',
+          {
+            onClick: () =>
+              this.props.dispatch(
+                actions.backToAccountDetail(this.props.address)
+              ),
+          },
+          this.context.t('done')
+        ),
+        h(
+          'button',
+          {
+            style: {
+              marginLeft: '10px',
+            },
+            onClick: () =>
+              exportAsFile(`Badger ${nickname} Private Key`, plainKey),
+          },
+          this.context.t('saveAsFile')
+        ),
+      ]
+    )
   }
 }
 

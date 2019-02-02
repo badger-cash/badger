@@ -29,7 +29,10 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(TokenCell)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TokenCell)
 
 inherits(TokenCell, Component)
 function TokenCell () {
@@ -76,25 +79,32 @@ TokenCell.prototype.render = function () {
       numberOfDecimals: 2,
       conversionRate: currentTokenToFiatRate,
     })
-    formattedFiat = currentTokenInFiat.toString() === '0'
-      ? ''
-      : `${currentTokenInFiat} ${currentCurrency.toUpperCase()}`
+    formattedFiat =
+      currentTokenInFiat.toString() === '0'
+        ? ''
+        : `${currentTokenInFiat} ${currentCurrency.toUpperCase()}`
   }
 
-  const showFiat = Boolean(currentTokenInFiat) && currentCurrency.toUpperCase() !== symbol
+  const showFiat =
+    Boolean(currentTokenInFiat) && currentCurrency.toUpperCase() !== symbol
 
-  return (
-    h('div.token-list-item', {
-      className: `token-list-item ${selectedTokenAddress === address ? 'token-list-item--active' : ''}`,
-      style: { cursor: network == '1' || network === 'mainnet' ? 'pointer' : 'default' },
+  return h(
+    'div.token-list-item',
+    {
+      className: `token-list-item ${
+        selectedTokenAddress === address ? 'token-list-item--active' : ''
+      }`,
+      style: {
+        cursor: network == '1' || network === 'mainnet' ? 'pointer' : 'default',
+      },
       // onClick: this.view.bind(this, address, userAddress, network),
 
       onClick: () => {
         setSelectedToken(address)
         selectedTokenAddress !== address && sidebarOpen && hideSidebar()
       },
-    }, [
-
+    },
+    [
       h(Identicon, {
         className: 'token-list-item__identicon',
         diameter: 50,
@@ -107,34 +117,41 @@ TokenCell.prototype.render = function () {
         h('div.token-list-item__balance-wrapper', null, [
           h('div.token-list-item__token-balance', `${string || 0}`),
           h('div.token-list-item__token-symbol', symbol),
-          h('div.token-list-item__fiat-amount', {
-            style: {},
-          }, protocol === 'wormhole' ? 'Wormhole' : 'Simple Ledger'),
-          showFiat && h('div.token-list-item__fiat-amount', {
-            style: {},
-          }, formattedFiat),
+          h(
+            'div.token-list-item__fiat-amount',
+            {
+              style: {},
+            },
+            protocol === 'wormhole' ? 'Wormhole' : 'Simple Ledger'
+          ),
+          showFiat &&
+            h(
+              'div.token-list-item__fiat-amount',
+              {
+                style: {},
+              },
+              formattedFiat
+            ),
         ]),
 
         h('i.fa.fa-ellipsis-h.fa-lg.token-list-item__ellipsis.cursor-pointer', {
-          onClick: (e) => {
+          onClick: e => {
             e.stopPropagation()
             this.setState({ tokenMenuOpen: true })
           },
         }),
-
       ]),
 
-
-      tokenMenuOpen && h(TokenMenuDropdown, {
-        onClose: () => this.setState({ tokenMenuOpen: false }),
-        token: { symbol, address, protocol, protocolData },
-      }),
+      tokenMenuOpen &&
+        h(TokenMenuDropdown, {
+          onClose: () => this.setState({ tokenMenuOpen: false }),
+          token: { symbol, address, protocol, protocolData },
+        }),
 
       // h('button', {
       //   onClick: this.send.bind(this, address),
       // }, 'SEND'),
-
-    ])
+    ]
   )
 }
 
@@ -166,4 +183,3 @@ function etherscanLinkFor (tokenAddress, address, network) {
 function tokenFactoryFor (tokenAddress) {
   return `https://tokenfactory.surge.sh/#/token/${tokenAddress}`
 }
-

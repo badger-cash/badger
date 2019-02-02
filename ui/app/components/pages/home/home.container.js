@@ -6,12 +6,7 @@ import { unconfirmedTransactionsCountSelector } from '../../../selectors/confirm
 
 const mapStateToProps = state => {
   const { metamask, appState } = state
-  const {
-    noActiveNotices,
-    lostAccounts,
-    seedWords,
-    suggestedTokens,
-  } = metamask
+  const { noActiveNotices, lostAccounts, seedWords, suggestedTokens } = metamask
   const { forgottenPassword } = appState
 
   return {

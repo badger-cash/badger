@@ -6,22 +6,24 @@ const log = require('loglevel')
 const POLLING_INTERVAL = 3000
 
 class ShapeshiftController {
-
-    /**
-     * Controller responsible for managing the list of shapeshift transactions. On construction, it initiates a poll
-     * that queries a shapeshift.io API for updates to any pending shapeshift transactions
-     *
-     * @typedef {Object} ShapeshiftController
-     * @param {object} opts Overrides the defaults for the initial state of this.store
-     * @property {array} opts.initState  initializes the the state of the ShapeshiftController. Can contain an
-     * shapeShiftTxList array.
-     * @property {array} shapeShiftTxList An array of ShapeShiftTx objects
-     *
-     */
+  /**
+   * Controller responsible for managing the list of shapeshift transactions. On construction, it initiates a poll
+   * that queries a shapeshift.io API for updates to any pending shapeshift transactions
+   *
+   * @typedef {Object} ShapeshiftController
+   * @param {object} opts Overrides the defaults for the initial state of this.store
+   * @property {array} opts.initState  initializes the the state of the ShapeshiftController. Can contain an
+   * shapeShiftTxList array.
+   * @property {array} shapeShiftTxList An array of ShapeShiftTx objects
+   *
+   */
   constructor (opts = {}) {
-    const initState = extend({
-      shapeShiftTxList: [],
-    }, opts.initState)
+    const initState = extend(
+      {
+        shapeShiftTxList: [],
+      },
+      opts.initState
+    )
     this.store = new ObservableStore(initState)
     this.pollForUpdates()
   }
@@ -61,7 +63,9 @@ class ShapeshiftController {
    */
   getPendingTxs () {
     const txs = this.getShapeShiftTxList()
-    const pending = txs.filter(tx => tx.response && tx.response.status !== 'complete')
+    const pending = txs.filter(
+      tx => tx.response && tx.response.status !== 'complete'
+    )
     return pending
   }
 
@@ -81,24 +85,28 @@ class ShapeshiftController {
       return
     }
 
-    Promise.all(pendingTxs.map((tx) => {
-      return this.updateTx(tx)
-    }))
-    .then((results) => {
+    Promise.all(
+      pendingTxs.map(tx => {
+        return this.updateTx(tx)
+      })
+    ).then(results => {
       results.forEach(tx => this.saveTx(tx))
-      this.timeout = setTimeout(this.pollForUpdates.bind(this), POLLING_INTERVAL)
+      this.timeout = setTimeout(
+        this.pollForUpdates.bind(this),
+        POLLING_INTERVAL
+      )
     })
   }
 
-    /**
-     * Attempts to update a ShapeShiftTx with data from a shapeshift.io API. Both the response and time properties
-     * can be updated. The response property is updated with every call, but the time property is only updated when
-     * the response status updates to 'complete'. This will occur once the user makes a deposit as the ShapeShiftTx
-     * depositAddress
-     *
-     * @param {ShapeShiftTx} tx The tx to update
-     *
-     */
+  /**
+   * Attempts to update a ShapeShiftTx with data from a shapeshift.io API. Both the response and time properties
+   * can be updated. The response property is updated with every call, but the time property is only updated when
+   * the response status updates to 'complete'. This will occur once the user makes a deposit as the ShapeShiftTx
+   * depositAddress
+   *
+   * @param {ShapeShiftTx} tx The tx to update
+   *
+   */
   async updateTx (tx) {
     try {
       const url = `https://shapeshift.io/txStat/${tx.depositAddress}`
@@ -110,7 +118,7 @@ class ShapeshiftController {
       }
       return tx
     } catch (err) {
-      log.warn(err)
+      // log.warn(err)
     }
   }
 
@@ -174,7 +182,6 @@ class ShapeshiftController {
     this.store.updateState({ shapeShiftTxList })
     this.pollForUpdates()
   }
-
 }
 
 module.exports = ShapeshiftController

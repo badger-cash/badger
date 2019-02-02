@@ -39,14 +39,22 @@ async function checkBrowserForConsoleErrors (driver) {
     // Third-party Favicon 404s show up as errors
     'favicon.ico - Failed to load resource: the server responded with a status of 404 (Not Found)',
     // React Development build - known issue blocked by test build sys
-    'Warning: It looks like you\'re using a minified copy of the development build of React.',
+    "Warning: It looks like you're using a minified copy of the development build of React.",
     // Redux Development build - known issue blocked by test build sys
     'This means that you are running a slower development build of Redux.',
   ]
-  const browserLogs = await driver.manage().logs().get('browser')
-  const errorEntries = browserLogs.filter(entry => !ignoredLogTypes.includes(entry.level.toString()))
+  const browserLogs = await driver
+    .manage()
+    .logs()
+    .get('browser')
+  const errorEntries = browserLogs.filter(
+    entry => !ignoredLogTypes.includes(entry.level.toString())
+  )
   const errorObjects = errorEntries.map(entry => entry.toJSON())
-  return errorObjects.filter(entry => !ignoredErrorMessages.some(message => entry.message.includes(message)))
+  return errorObjects.filter(
+    entry =>
+      !ignoredErrorMessages.some(message => entry.message.includes(message))
+  )
 }
 
 async function verboseReportOnFailure (driver, test) {
@@ -59,7 +67,9 @@ async function verboseReportOnFailure (driver, test) {
   const filepathBase = `${artifactDir}/test-failure`
   await pify(mkdirp)(artifactDir)
   const screenshot = await driver.takeScreenshot()
-  await pify(fs.writeFile)(`${filepathBase}-screenshot.png`, screenshot, { encoding: 'base64' })
+  await pify(fs.writeFile)(`${filepathBase}-screenshot.png`, screenshot, {
+    encoding: 'base64',
+  })
   const htmlSource = await driver.getPageSource()
   await pify(fs.writeFile)(`${filepathBase}-dom.html`, htmlSource)
 }
@@ -109,8 +119,8 @@ async function switchToWindowWithTitle (driver, title, windowHandles) {
 }
 
 async function closeAllWindowHandlesExcept (driver, exceptions, windowHandles) {
-  exceptions = typeof exceptions === 'string' ? [ exceptions ] : exceptions
-  windowHandles = windowHandles || await driver.getAllWindowHandles()
+  exceptions = typeof exceptions === 'string' ? [exceptions] : exceptions
+  windowHandles = windowHandles || (await driver.getAllWindowHandles())
   const lastWindowHandle = windowHandles.pop()
   if (!exceptions.includes(lastWindowHandle)) {
     await driver.switchTo().window(lastWindowHandle)
@@ -118,7 +128,10 @@ async function closeAllWindowHandlesExcept (driver, exceptions, windowHandles) {
     await driver.close()
     await delay(1000)
   }
-  return windowHandles.length && await closeAllWindowHandlesExcept(driver, exceptions, windowHandles)
+  return (
+    windowHandles.length &&
+    (await closeAllWindowHandlesExcept(driver, exceptions, windowHandles))
+  )
 }
 
 async function assertElementNotPresent (webdriver, driver, by) {
@@ -126,8 +139,11 @@ async function assertElementNotPresent (webdriver, driver, by) {
   try {
     dataTab = await findElement(driver, by, 4000)
   } catch (err) {
-    console.log(err)
-    assert(err instanceof webdriver.error.NoSuchElementError || err instanceof webdriver.error.TimeoutError)
+    // console.log(err)
+    assert(
+      err instanceof webdriver.error.NoSuchElementError ||
+        err instanceof webdriver.error.TimeoutError
+    )
   }
   if (dataTab) {
     assert(false, 'Data tab should not be present')

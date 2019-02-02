@@ -43,7 +43,7 @@ export default function withMethodData (WrappedComponent) {
 
       return (
         <WrappedComponent
-          { ...this.props }
+          {...this.props}
           methodData={{ data: methodData, done, error }}
         />
       )

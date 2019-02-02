@@ -71,12 +71,12 @@ window.logStateString = function (cb) {
 window.logState = function (toClipboard) {
   return window.logStateString((err, result) => {
     if (err) {
-      console.error(err.message)
+      // console.error(err.message)
     } else if (toClipboard) {
       copyToClipboard(result)
-      console.log('State log copied')
+      // console.log('State log copied')
     } else {
-      console.log(result)
+      // console.log(result)
     }
   })
 }

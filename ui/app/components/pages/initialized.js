@@ -16,7 +16,9 @@ Initialized.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const { metamask: { isInitialized } } = state
+  const {
+    metamask: { isInitialized },
+  } = state
   return {
     isInitialized,
   }

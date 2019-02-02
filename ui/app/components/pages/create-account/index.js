@@ -20,16 +20,19 @@ class CreateAccountPage extends Component {
     const { history, location } = this.props
 
     return h('div.new-account__tabs', [
-      h('div.new-account__tabs__tab', {
-        className: classnames('new-account__tabs__tab', {
-          'new-account__tabs__selected': matchPath(location.pathname, {
-            path: NEW_ACCOUNT_ROUTE, exact: true,
+      h(
+        'div.new-account__tabs__tab',
+        {
+          className: classnames('new-account__tabs__tab', {
+            'new-account__tabs__selected': matchPath(location.pathname, {
+              path: NEW_ACCOUNT_ROUTE,
+              exact: true,
+            }),
           }),
-        }),
-        onClick: () => history.push(NEW_ACCOUNT_ROUTE),
-      }, [
-        this.context.t('create'),
-      ]),
+          onClick: () => history.push(NEW_ACCOUNT_ROUTE),
+        },
+        [this.context.t('create')]
+      ),
 
       // TODO: Import account
       // h('div.new-account__tabs__tab', {
@@ -106,12 +109,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   displayForm: form => dispatch(actions.setNewAccountForm(form)),
-  showQrView: (selected, identity) => dispatch(actions.showQrView(selected, identity)),
+  showQrView: (selected, identity) =>
+    dispatch(actions.showQrView(selected, identity)),
   showExportPrivateKeyModal: () => {
     dispatch(actions.showModal({ name: 'EXPORT_PRIVATE_KEY' }))
   },
   hideModal: () => dispatch(actions.hideModal()),
-  setAccountLabel: (address, label) => dispatch(actions.setAccountLabel(address, label)),
+  setAccountLabel: (address, label) =>
+    dispatch(actions.setAccountLabel(address, label)),
 })
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(CreateAccountPage)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateAccountPage)

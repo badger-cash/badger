@@ -19,16 +19,17 @@ import {
   getTokenBalance,
   getUnapprovedTxs,
 } from '../send.selectors'
-import {
-  isSendFormInError,
-} from './send-footer.selectors'
+import { isSendFormInError } from './send-footer.selectors'
 import {
   addressIsNew,
   constructTxParams,
   constructUpdatedTx,
 } from './send-footer.utils'
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendFooter)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendFooter)
 
 function mapStateToProps (state) {
   return {
@@ -58,7 +59,16 @@ function mapDispatchToProps (dispatch) {
       })
 
       selectedToken
-        ? dispatch(signTokenTx(selectedToken.address, to, amount, txParams, selectedToken.protocol, selectedToken.symbol))
+        ? dispatch(
+            signTokenTx(
+              selectedToken.address,
+              to,
+              amount,
+              txParams,
+              selectedToken.protocol,
+              selectedToken.symbol
+            )
+          )
         : dispatch(signTx(txParams))
     },
     update: ({

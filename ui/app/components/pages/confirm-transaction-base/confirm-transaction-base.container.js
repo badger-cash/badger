@@ -8,7 +8,12 @@ import {
   clearConfirmTransaction,
   updateGasAndCalculate,
 } from '../../../ducks/confirm-transaction.duck'
-import { clearSend, cancelTx, updateAndApproveTx, showModal } from '../../../actions'
+import {
+  clearSend,
+  cancelTx,
+  updateAndApproveTx,
+  showModal,
+} from '../../../actions'
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
@@ -61,11 +66,15 @@ const mapStateToProps = (state, props) => {
   const toAddress = propsToAddress || txParamsToAddress
   const toName = identities[toAddress]
     ? identities[toAddress].name
-    : casedContractMap[toAddress] ? casedContractMap[toAddress].name : addressSlicer(toAddress)
+    : casedContractMap[toAddress]
+      ? casedContractMap[toAddress].name
+      : addressSlicer(toAddress)
 
   const isTxReprice = Boolean(lastGasPrice)
 
-  const transaction = R.find(({ id }) => id === transactionId)(selectedAddressTxList)
+  const transaction = R.find(({ id }) => id === transactionId)(
+    selectedAddressTxList
+  )
   const transactionStatus = transaction ? transaction.status : ''
 
   return {
@@ -104,7 +113,9 @@ const mapDispatchToProps = dispatch => {
       return dispatch(showModal({ name: 'TRANSACTION_CONFIRMED', onHide }))
     },
     showCustomizeGasModal: ({ txData, onSubmit, validate }) => {
-      return dispatch(showModal({ name: 'CONFIRM_CUSTOMIZE_GAS', txData, onSubmit, validate }))
+      return dispatch(
+        showModal({ name: 'CONFIRM_CUSTOMIZE_GAS', txData, onSubmit, validate })
+      )
     },
     updateGasAndCalculate: ({ gasLimit, gasPrice }) => {
       return dispatch(updateGasAndCalculate({ gasLimit, gasPrice }))
@@ -133,17 +144,19 @@ const getValidateEditGas = ({ balance, conversionRate, txData }) => {
       }
     }
 
-    const gasLimitTooLow = gasLimit && conversionGreaterThan(
-      {
-        value: MIN_GAS_LIMIT_DEC,
-        fromNumericBase: 'dec',
-        conversionRate,
-      },
-      {
-        value: gasLimit,
-        fromNumericBase: 'hex',
-      },
-    )
+    const gasLimitTooLow =
+      gasLimit &&
+      conversionGreaterThan(
+        {
+          value: MIN_GAS_LIMIT_DEC,
+          fromNumericBase: 'dec',
+          conversionRate,
+        },
+        {
+          value: gasLimit,
+          fromNumericBase: 'hex',
+        }
+      )
 
     if (gasLimitTooLow) {
       return {
@@ -166,21 +179,30 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...otherDispatchProps
   } = dispatchProps
 
-  const validateEditGas = getValidateEditGas({ balance, conversionRate, txData })
+  const validateEditGas = getValidateEditGas({
+    balance,
+    conversionRate,
+    txData,
+  })
 
   return {
     ...stateProps,
     ...otherDispatchProps,
     ...ownProps,
-    showCustomizeGasModal: () => dispatchShowCustomizeGasModal({
-      txData,
-      onSubmit: txData => dispatchUpdateGasAndCalculate(txData),
-      validate: validateEditGas,
-    }),
+    showCustomizeGasModal: () =>
+      dispatchShowCustomizeGasModal({
+        txData,
+        onSubmit: txData => dispatchUpdateGasAndCalculate(txData),
+        validate: validateEditGas,
+      }),
   }
 }
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps, mergeProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    mergeProps
+  )
 )(ConfirmTransactionBase)

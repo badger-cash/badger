@@ -23,21 +23,24 @@ proxyquire('../send-from-row.container.js', {
     },
   },
   '../../send.selectors.js': {
-    accountsWithSendEtherInfoSelector: (s) => `mockFromAccounts:${s}`,
-    getConversionRate: (s) => `mockConversionRate:${s}`,
-    getSelectedTokenContract: (s) => `mockTokenContract:${s}`,
-    getSendFromObject: (s) => `mockFrom:${s}`,
+    accountsWithSendEtherInfoSelector: s => `mockFromAccounts:${s}`,
+    getConversionRate: s => `mockConversionRate:${s}`,
+    getSelectedTokenContract: s => `mockTokenContract:${s}`,
+    getSendFromObject: s => `mockFrom:${s}`,
   },
-  './send-from-row.selectors.js': { getFromDropdownOpen: (s) => `mockFromDropdownOpen:${s}` },
-  '../../send.utils.js': { calcTokenBalance: ({ usersToken, selectedToken }) => usersToken + selectedToken },
+  './send-from-row.selectors.js': {
+    getFromDropdownOpen: s => `mockFromDropdownOpen:${s}`,
+  },
+  '../../send.utils.js': {
+    calcTokenBalance: ({ usersToken, selectedToken }) =>
+      usersToken + selectedToken,
+  },
   '../../../../actions': actionSpies,
   '../../../../ducks/send.duck': duckActionSpies,
 })
 
 describe('send-from-row container', () => {
-
   describe('mapStateToProps()', () => {
-
     it('should map the correct properties to props', () => {
       assert.deepEqual(mapStateToProps('mockState'), {
         conversionRate: 'mockConversionRate:mockState',
@@ -47,7 +50,6 @@ describe('send-from-row container', () => {
         tokenContract: 'mockTokenContract:mockState',
       })
     })
-
   })
 
   describe('mapDispatchToProps()', () => {
@@ -87,16 +89,16 @@ describe('send-from-row container', () => {
       it('should dispatch an updateSendFrom action', () => {
         mapDispatchToPropsObject.updateSendFrom('mockFrom')
         assert(dispatchSpy.calledOnce)
-        assert.equal(
-          actionSpies.updateSendFrom.getCall(0).args[0],
-          'mockFrom'
-        )
+        assert.equal(actionSpies.updateSendFrom.getCall(0).args[0], 'mockFrom')
       })
     })
 
     describe('setSendTokenBalance()', () => {
       it('should dispatch an setSendTokenBalance action', () => {
-        mapDispatchToPropsObject.setSendTokenBalance('mockUsersToken', 'mockSelectedToken')
+        mapDispatchToPropsObject.setSendTokenBalance(
+          'mockUsersToken',
+          'mockSelectedToken'
+        )
         assert(dispatchSpy.calledOnce)
         assert.equal(
           actionSpies.setSendTokenBalance.getCall(0).args[0],
@@ -104,7 +106,5 @@ describe('send-from-row container', () => {
         )
       })
     })
-
   })
-
 })

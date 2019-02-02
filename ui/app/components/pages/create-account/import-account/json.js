@@ -23,58 +23,65 @@ class JsonImportSubview extends Component {
   render () {
     const { error } = this.props
 
-    return (
-      h('div.new-account-import-form__json', [
-
-        h('p', this.context.t('usedByClients')),
-        h('a.warning', {
+    return h('div.new-account-import-form__json', [
+      h('p', this.context.t('usedByClients')),
+      h(
+        'a.warning',
+        {
           href: HELP_LINK,
           target: '_blank',
-        }, this.context.t('fileImportFail')),
+        },
+        this.context.t('fileImportFail')
+      ),
 
-        h(FileInput, {
-          readAs: 'text',
-          onLoad: this.onLoad.bind(this),
-          style: {
-            margin: '20px 0px 12px 34%',
-            fontSize: '15px',
-            display: 'flex',
-            justifyContent: 'center',
-          },
-        }),
+      h(FileInput, {
+        readAs: 'text',
+        onLoad: this.onLoad.bind(this),
+        style: {
+          margin: '20px 0px 12px 34%',
+          fontSize: '15px',
+          display: 'flex',
+          justifyContent: 'center',
+        },
+      }),
 
-        h('input.new-account-import-form__input-password', {
-          type: 'password',
-          placeholder: this.context.t('enterPassword'),
-          id: 'json-password-box',
-          onKeyPress: this.createKeyringOnEnter.bind(this),
-        }),
+      h('input.new-account-import-form__input-password', {
+        type: 'password',
+        placeholder: this.context.t('enterPassword'),
+        id: 'json-password-box',
+        onKeyPress: this.createKeyringOnEnter.bind(this),
+      }),
 
-        h('div.new-account-create-form__buttons', {}, [
-
-          h(Button, {
+      h('div.new-account-create-form__buttons', {}, [
+        h(
+          Button,
+          {
             type: 'default',
             large: true,
             className: 'new-account-create-form__button',
             onClick: () => this.props.history.push(DEFAULT_ROUTE),
-          }, [this.context.t('cancel')]),
+          },
+          [this.context.t('cancel')]
+        ),
 
-          h(Button, {
+        h(
+          Button,
+          {
             type: 'primary',
             large: true,
             className: 'new-account-create-form__button',
             onClick: () => this.createNewKeychain(),
-          }, [this.context.t('import')]),
+          },
+          [this.context.t('import')]
+        ),
+      ]),
 
-        ]),
-
-        error ? h('span.error', error) : null,
-      ])
-    )
+      error ? h('span.error', error) : null,
+    ])
   }
 
   onLoad (event, file) {
-    this.setState({file: file, fileContents: event.target.result})
+    this.setState({ file: file, fileContents: event.target.result })
   }
 
   createKeyringOnEnter (event) {
@@ -85,7 +92,13 @@ class JsonImportSubview extends Component {
   }
 
   createNewKeychain () {
-    const { firstAddress, displayWarning, importNewJsonAccount, setSelectedAddress, history } = this.props
+    const {
+      firstAddress,
+      displayWarning,
+      importNewJsonAccount,
+      setSelectedAddress,
+      history,
+    } = this.props
     const state = this.state
 
     if (!state) {
@@ -108,7 +121,7 @@ class JsonImportSubview extends Component {
       return displayWarning(message)
     }
 
-    importNewJsonAccount([ fileContents, password ])
+    importNewJsonAccount([fileContents, password])
       .then(({ selectedAddress }) => {
         if (selectedAddress) {
           history.push(DEFAULT_ROUTE)
@@ -144,8 +157,10 @@ const mapDispatchToProps = dispatch => {
   return {
     goHome: () => dispatch(actions.goHome()),
     displayWarning: warning => dispatch(actions.displayWarning(warning)),
-    importNewJsonAccount: options => dispatch(actions.importNewAccount('JSON File', options)),
-    setSelectedAddress: (address) => dispatch(actions.setSelectedAddress(address)),
+    importNewJsonAccount: options =>
+      dispatch(actions.importNewAccount('JSON File', options)),
+    setSelectedAddress: address =>
+      dispatch(actions.setSelectedAddress(address)),
   }
 }
 
@@ -155,5 +170,8 @@ JsonImportSubview.contextTypes = {
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(JsonImportSubview)

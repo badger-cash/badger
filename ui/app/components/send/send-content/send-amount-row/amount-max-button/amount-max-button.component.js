@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class AmountMaxButton extends Component {
-
   static propTypes = {
     balance: PropTypes.string,
     gasTotal: PropTypes.string,
@@ -11,11 +10,11 @@ export default class AmountMaxButton extends Component {
     setAmountToMax: PropTypes.func,
     setMaxModeTo: PropTypes.func,
     tokenBalance: PropTypes.string,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   setMaxAmount () {
     const {
@@ -40,7 +39,7 @@ export default class AmountMaxButton extends Component {
     return (
       <div
         className="send-v2__amount-max"
-        onClick={(event) => {
+        onClick={event => {
           event.preventDefault()
           setMaxModeTo(true)
           this.setMaxAmount()
@@ -50,5 +49,4 @@ export default class AmountMaxButton extends Component {
       </div>
     )
   }
-
 }

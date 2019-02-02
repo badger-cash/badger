@@ -3,7 +3,12 @@ import MenuBar from './menu-bar.component'
 import { showSidebar, hideSidebar } from '../../actions'
 
 const mapStateToProps = state => {
-  const { appState: { sidebar: { isOpen }, isMascara } } = state
+  const {
+    appState: {
+      sidebar: { isOpen },
+      isMascara,
+    },
+  } = state
 
   return {
     sidebarOpen: isOpen,
@@ -14,13 +19,18 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     showSidebar: () => {
-      dispatch(showSidebar({
-        transitionName: 'sidebar-right',
-        type: 'wallet-view',
-      }))
+      dispatch(
+        showSidebar({
+          transitionName: 'sidebar-right',
+          type: 'wallet-view',
+        })
+      )
     },
     hideSidebar: () => dispatch(hideSidebar()),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MenuBar)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MenuBar)

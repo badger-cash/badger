@@ -12,7 +12,6 @@ const bumpType = normalizeType(process.argv[2])
 start().catch(console.error)
 
 async function start () {
-
   const changeBuffer = await readFile(changelogPath)
   const changelog = changeBuffer.toString()
 
@@ -23,9 +22,8 @@ async function start () {
   await writeFile(changelogPath, newData.changelog)
   await writeFile(manifestPath, manifestString)
 
-  console.log(`Bumped ${bumpType} to version ${newData.version}`)
+  // console.log(`Bumped ${bumpType} to version ${newData.version}`)
 }
-
 
 function normalizeType (userInput) {
   const err = new Error('First option must be a type (major, minor, or patch)')

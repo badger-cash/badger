@@ -318,7 +318,7 @@ class AccountTracker {
             chunk(txidsToValidate, 20).map(async txidsToValidateChunk => {
               const validationResponse = await axios({
                 method: 'POST',
-                url: 'https://rest.bitcoin.com/v2/slp/validate',
+                url: 'https://rest.bitcoin.com/v2/slp/validateTxid',
                 headers: {
                   'content-type': 'application/json',
                 },

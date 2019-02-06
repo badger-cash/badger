@@ -327,13 +327,11 @@ class AccountTracker {
                 },
               })
               const validSLPTxChunk = validationResponse.data
+                .filter(chunkResult => chunkResult.valid === true)
+                .map(chunkResult => chunkResult.txid)
               return validSLPTxChunk
             })
-            const validSLPTxChunk = validationResponse.data
-              .filter(chunkResult => chunkResult.valid === true)
-              .map(chunkResult => chunkResult.txid)
-            return validSLPTxChunk
-          }))
+          )
           validSLPTx = [].concat(...validSLPTx)
 
           for (const validTxid of validSLPTx) {

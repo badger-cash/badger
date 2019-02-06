@@ -17,7 +17,8 @@ class Config extends Component {
           { content: this.context.t('settings'), key: SETTINGS_ROUTE },
           { content: this.context.t('info'), key: INFO_ROUTE },
         ],
-        isActive: key => matchPath(location.pathname, { path: key, exact: true }),
+        isActive: key =>
+          matchPath(location.pathname, { path: key, exact: true }),
         onSelect: key => history.push(key),
       }),
     ])
@@ -26,28 +27,26 @@ class Config extends Component {
   render () {
     const { history } = this.props
 
-    return (
-      h('.main-container.settings', {}, [
-        h('.settings__header', [
-          h('div.settings__close-button', {
-            onClick: () => history.push(DEFAULT_ROUTE),
-          }),
-          this.renderTabs(),
-        ]),
-        h(Switch, [
-          h(Route, {
-            exact: true,
-            path: INFO_ROUTE,
-            component: Info,
-          }),
-          h(Route, {
-            exact: true,
-            path: SETTINGS_ROUTE,
-            component: Settings,
-          }),
-        ]),
-      ])
-    )
+    return h('.main-container.settings', {}, [
+      h('.settings__header', [
+        h('div.settings__close-button', {
+          onClick: () => history.push(DEFAULT_ROUTE),
+        }),
+        this.renderTabs(),
+      ]),
+      h(Switch, [
+        h(Route, {
+          exact: true,
+          path: INFO_ROUTE,
+          component: Info,
+        }),
+        h(Route, {
+          exact: true,
+          path: SETTINGS_ROUTE,
+          component: Settings,
+        }),
+      ]),
+    ])
   }
 }
 

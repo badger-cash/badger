@@ -4,7 +4,6 @@ import PageContainerFooter from '../../page-container/page-container-footer'
 import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
 
 export default class SendFooter extends Component {
-
   static propTypes = {
     addToAddressBookIfNew: PropTypes.func,
     amount: PropTypes.string,
@@ -23,11 +22,11 @@ export default class SendFooter extends Component {
     tokenBalance: PropTypes.string,
     unapprovedTxs: PropTypes.object,
     update: PropTypes.func,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   onCancel () {
     this.props.clearSend()
@@ -41,7 +40,7 @@ export default class SendFooter extends Component {
       amount,
       data,
       editingTransactionId,
-      from: {address: from},
+      from: { address: from },
       selectedToken,
       sign,
       to,
@@ -64,18 +63,17 @@ export default class SendFooter extends Component {
 
     const promise = editingTransactionId
       ? update({
-        amount,
-        data,
-        editingTransactionId,
-        from,
-        selectedToken,
-        to,
-        unapprovedTxs,
-      })
+          amount,
+          data,
+          editingTransactionId,
+          from,
+          selectedToken,
+          to,
+          unapprovedTxs,
+        })
       : sign({ data, selectedToken, to, amount, from })
 
-    Promise.resolve(promise)
-      .then(() => history.push(CONFIRM_TRANSACTION_ROUTE))
+    Promise.resolve(promise).then(() => history.push(CONFIRM_TRANSACTION_ROUTE))
   }
 
   formShouldBeDisabled () {
@@ -93,5 +91,4 @@ export default class SendFooter extends Component {
       />
     )
   }
-
 }

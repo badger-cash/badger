@@ -30,7 +30,6 @@ export default class TransactionListItemDetails extends PureComponent {
   handleRetry = event => {
     // TODO: handleRetry
     // const { onRetry } = this.props
-
     // event.stopPropagation()
     // onRetry()
   }
@@ -48,17 +47,15 @@ export default class TransactionListItemDetails extends PureComponent {
         <div className="transaction-list-item-details__header">
           <div>Details</div>
           <div className="transaction-list-item-details__header-buttons">
-            {
-              showRetry && (
-                <Button
-                  type="raised"
-                  onClick={this.handleRetry}
-                  className="transaction-list-item-details__header-button"
-                >
-                  { t('speedUp') }
-                </Button>
-              )
-            }
+            {showRetry && (
+              <Button
+                type="raised"
+                onClick={this.handleRetry}
+                className="transaction-list-item-details__header-button"
+              >
+                {t('speedUp')}
+              </Button>
+            )}
             <Button
               type="raised"
               onClick={this.handleEtherscanClick}
@@ -76,7 +73,7 @@ export default class TransactionListItemDetails extends PureComponent {
             senderAddress={from}
           />
         </div>
-        { !sendTokenData && 
+        {!sendTokenData && (
           <div className="transaction-list-item-details__cards-container">
             <TransactionBreakdown
               transaction={transaction}
@@ -87,7 +84,7 @@ export default class TransactionListItemDetails extends PureComponent {
               className="transaction-list-item-details__transaction-activity-log"
             />
           </div>
-        }
+        )}
       </div>
     )
   }

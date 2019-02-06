@@ -1,26 +1,24 @@
 import { connect } from 'react-redux'
 import {
-    accountsWithSendEtherInfoSelector,
-    getConversionRate,
-    getSelectedToken,
-    getSelectedTokenContract,
-    getSendFromObject,
+  accountsWithSendEtherInfoSelector,
+  getConversionRate,
+  getSelectedToken,
+  getSelectedTokenContract,
+  getSendFromObject,
 } from '../../send.selectors.js'
-import {
-  getFromDropdownOpen,
-} from './send-from-row.selectors.js'
+import { getFromDropdownOpen } from './send-from-row.selectors.js'
 import { calcTokenBalance } from '../../send.utils.js'
+import { updateSendFrom, setSendTokenBalance } from '../../../../actions'
 import {
-    updateSendFrom,
-    setSendTokenBalance,
-} from '../../../../actions'
-import {
-    closeFromDropdown,
-    openFromDropdown,
+  closeFromDropdown,
+  openFromDropdown,
 } from '../../../../ducks/send.duck'
 import SendFromRow from './send-from-row.component'
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendFromRow)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendFromRow)
 
 function mapStateToProps (state) {
   return {
@@ -39,11 +37,11 @@ function mapDispatchToProps (dispatch) {
     openFromDropdown: () => dispatch(openFromDropdown()),
     updateSendFrom: newFrom => dispatch(updateSendFrom(newFrom)),
     setSendTokenBalance: (usersToken, selectedToken) => {
-        if (!usersToken) return
+      if (!usersToken) return
 
-        // const tokenBalance = calcTokenBalance({ usersToken, selectedToken })
-        const tokenBalance = usersToken.string
-        dispatch(setSendTokenBalance(tokenBalance))
+      // const tokenBalance = calcTokenBalance({ usersToken, selectedToken })
+      const tokenBalance = usersToken.string
+      dispatch(setSendTokenBalance(tokenBalance))
     },
   }
 }

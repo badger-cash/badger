@@ -20,14 +20,12 @@ EnsInput.contextTypes = {
 
 module.exports = connect()(EnsInput)
 
-
 inherits(EnsInput, Component)
 function EnsInput () {
   Component.call(this)
 }
 
 EnsInput.prototype.onChange = function (recipient) {
-
   const network = this.props.network
   const networkHasEnsSupport = getNetworkEnsSupport(network)
 
@@ -57,12 +55,13 @@ EnsInput.prototype.render = function () {
     onChange: this.onChange.bind(this),
     qrScanner: true,
   })
-  return h('div', {
-    style: { width: '100%', position: 'relative' },
-  }, [
-    h(ToAutoComplete, { ...opts }),
-    this.ensIcon(),
-  ])
+  return h(
+    'div',
+    {
+      style: { width: '100%', position: 'relative' },
+    },
+    [h(ToAutoComplete, { ...opts }), this.ensIcon()]
+  )
 }
 
 EnsInput.prototype.componentDidMount = function () {
@@ -80,39 +79,43 @@ EnsInput.prototype.componentDidMount = function () {
 EnsInput.prototype.lookupEnsName = function (recipient) {
   const { ensResolution } = this.state
 
-  log.info(`ENS attempting to resolve name: ${recipient}`)
-  this.ens.lookup(recipient.trim())
-  .then((address) => {
-    if (address === ZERO_ADDRESS) throw new Error(this.context.t('noAddressForName'))
-    if (address !== ensResolution) {
-      this.setState({
+  // log.info(`ENS attempting to resolve name: ${recipient}`)
+  this.ens
+    .lookup(recipient.trim())
+    .then(address => {
+      if (address === ZERO_ADDRESS) { throw new Error(this.context.t('noAddressForName')) }
+      if (address !== ensResolution) {
+        this.setState({
+          loadingEns: false,
+          ensResolution: address,
+          nickname: recipient.trim(),
+          hoverText: address + '\n' + this.context.t('clickCopy'),
+          ensFailure: false,
+          toError: null,
+        })
+      }
+    })
+    .catch(reason => {
+      const setStateObj = {
         loadingEns: false,
-        ensResolution: address,
-        nickname: recipient.trim(),
-        hoverText: address + '\n' + this.context.t('clickCopy'),
-        ensFailure: false,
+        ensResolution: recipient,
+        ensFailure: true,
         toError: null,
-      })
-    }
-  })
-  .catch((reason) => {
-    const setStateObj = {
-      loadingEns: false,
-      ensResolution: recipient,
-      ensFailure: true,
-      toError: null,
-    }
-    if (isValidENSAddress(recipient) && reason.message === 'ENS name not defined.') {
-      setStateObj.hoverText = this.context.t('ensNameNotFound')
-      setStateObj.toError = 'ensNameNotFound'
-      setStateObj.ensFailure = false
-    } else {
-      log.error(reason)
-      setStateObj.hoverText = reason.message
-    }
+      }
+      if (
+        isValidENSAddress(recipient) &&
+        reason.message === 'ENS name not defined.'
+      ) {
+        setStateObj.hoverText = this.context.t('ensNameNotFound')
+        setStateObj.toError = 'ensNameNotFound'
+        setStateObj.ensFailure = false
+      } else {
+        log.error(reason)
+        setStateObj.hoverText = reason.message
+      }
 
-    return this.setState(setStateObj)
-  })
+      return this.setState(setStateObj)
+    })
 }
 
 EnsInput.prototype.componentDidUpdate = function (prevProps, prevState) {
@@ -126,26 +129,40 @@ EnsInput.prototype.componentDidUpdate = function (prevProps, prevState) {
     this.ens = new ENS({ provider, network: this.props.network })
     this.onChange(ensResolution)
   }
-  if (prevState && ensResolution && this.props.onChange &&
-      ensResolution !== prevState.ensResolution) {
-    this.props.onChange({ toAddress: ensResolution, nickname, toError: state.toError })
+  if (
+    prevState &&
+    ensResolution &&
+    this.props.onChange &&
+    ensResolution !== prevState.ensResolution
+  ) {
+    this.props.onChange({
+      toAddress: ensResolution,
+      nickname,
+      toError: state.toError,
+    })
   }
 }
 
 EnsInput.prototype.ensIcon = function (recipient) {
   const { hoverText } = this.state || {}
-  return h('span.#ensIcon', {
-    title: hoverText,
-    style: {
-      position: 'absolute',
-      top: '16px',
-      left: '-25px',
+  return h(
+    'span.#ensIcon',
+    {
+      title: hoverText,
+      style: {
+        position: 'absolute',
+        top: '16px',
+        left: '-25px',
+      },
     },
-  }, this.ensIconContents(recipient))
+    this.ensIconContents(recipient)
+  )
 }
 
 EnsInput.prototype.ensIconContents = function (recipient) {
-  const { loadingEns, ensFailure, ensResolution, toError } = this.state || { ensResolution: ZERO_ADDRESS }
+  const { loadingEns, ensFailure, ensResolution, toError } = this.state || {
+    ensResolution: ZERO_ADDRESS,
+  }
 
   if (toError) return
 
@@ -164,10 +181,10 @@ EnsInput.prototype.ensIconContents = function (recipient) {
     return h('i.fa.fa-warning.fa-lg.warning')
   }
 
-  if (ensResolution && (ensResolution !== ZERO_ADDRESS)) {
+  if (ensResolution && ensResolution !== ZERO_ADDRESS) {
     return h('i.fa.fa-check-circle.fa-lg.cursor-pointer', {
       style: { color: 'green' },
-      onClick: (event) => {
+      onClick: event => {
         event.preventDefault()
         event.stopPropagation()
         copyToClipboard(ensResolution)

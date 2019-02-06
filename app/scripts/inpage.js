@@ -57,9 +57,9 @@ if (typeof window.web4bch !== 'undefined') {
 }
 var web4bch = new Web4Bch(inpageProvider)
 web4bch.setProvider = function () {
-  log.debug('Badger - overrode web4bch.setProvider')
+  // log.debug('Badger - overrode web4bch.setProvider')
 }
-log.debug('Badger - injected web4bch')
+// log.debug('Badger - injected web4bch')
 
 setupDappAutoReload(web4bch, inpageProvider.publicConfigStore)
 

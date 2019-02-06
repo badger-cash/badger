@@ -2,7 +2,6 @@ const inherits = require('util').inherits
 const Component = require('react').Component
 const h = require('react-hyperscript')
 
-
 inherits(NetworkDropdownIcon, Component)
 module.exports = NetworkDropdownIcon
 
@@ -18,7 +17,9 @@ NetworkDropdownIcon.prototype.render = function () {
     diameter = '12',
   } = this.props
 
-  return h(`.menu-icon-circle${isSelected ? '--active' : ''}`, {},
+  return h(
+    `.menu-icon-circle${isSelected ? '--active' : ''}`,
+    {},
     h('div', {
       style: {
         background: backgroundColor,

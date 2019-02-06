@@ -32,21 +32,17 @@ import {
   showQrScanner,
   qrCodeDetected,
 } from '../../actions'
-import {
-  resetSendState,
-  updateSendErrors,
-} from '../../ducks/send.duck'
-import {
-  calcGasTotal,
-} from './send.utils.js'
+import { resetSendState, updateSendErrors } from '../../ducks/send.duck'
+import { calcGasTotal } from './send.utils.js'
 
-import {
-  SEND_ROUTE,
-} from '../../routes'
+import { SEND_ROUTE } from '../../routes'
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(SendEther)
 
 function mapStateToProps (state) {
@@ -88,20 +84,31 @@ function mapDispatchToProps (dispatch) {
       value,
     }) => {
       !editingTransactionId
-        ? dispatch(updateGasData({ recentBlocks, selectedAddress, selectedToken, blockGasLimit, to, value }))
+        ? dispatch(
+            updateGasData({
+              recentBlocks,
+              selectedAddress,
+              selectedToken,
+              blockGasLimit,
+              to,
+              value,
+            })
+          )
         : dispatch(setGasTotal(calcGasTotal(gasLimit, gasPrice)))
     },
     updateSendTokenBalance: ({ selectedToken, tokenContract, address }) => {
-      dispatch(updateSendTokenBalance({
-        selectedToken,
-        tokenContract,
-        address,
-      }))
+      dispatch(
+        updateSendTokenBalance({
+          selectedToken,
+          tokenContract,
+          address,
+        })
+      )
     },
     updateSendErrors: newError => dispatch(updateSendErrors(newError)),
     resetSendState: () => dispatch(resetSendState()),
     scanQrCode: () => dispatch(showQrScanner(SEND_ROUTE)),
-    qrCodeDetected: (data) => dispatch(qrCodeDetected(data)),
+    qrCodeDetected: data => dispatch(qrCodeDetected(data)),
     updateSendTo: (to, nickname) => dispatch(updateSendTo(to, nickname)),
   }
 }

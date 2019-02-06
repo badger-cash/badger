@@ -11,7 +11,9 @@ const {
 import UnlockPage from './unlock-page.component'
 
 const mapStateToProps = state => {
-  const { metamask: { isUnlocked } } = state
+  const {
+    metamask: { isUnlocked },
+  } = state
   return {
     isUnlocked,
   }
@@ -27,5 +29,8 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(UnlockPage)

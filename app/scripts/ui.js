@@ -77,7 +77,7 @@ async function start () {
     container.innerHTML =
       '<div class="critical-error">The Badger app failed to load: please open and close Badger again to restart.</div>'
     container.style.height = '80px'
-    log.error(err.stack)
+    // log.error(err.stack)
     throw err
   }
 }

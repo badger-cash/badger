@@ -4,17 +4,16 @@ import PageContainerHeader from '../../page-container/page-container-header'
 import { DEFAULT_ROUTE } from '../../../routes'
 
 export default class SendHeader extends Component {
-
   static propTypes = {
     clearSend: PropTypes.func,
     history: PropTypes.object,
     titleKey: PropTypes.string,
     subtitleParams: PropTypes.array,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   onClose () {
     this.props.clearSend()
@@ -30,5 +29,4 @@ export default class SendHeader extends Component {
       />
     )
   }
-
 }

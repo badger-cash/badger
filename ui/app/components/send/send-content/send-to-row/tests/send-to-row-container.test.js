@@ -23,22 +23,20 @@ proxyquire('../send-to-row.container.js', {
     },
   },
   '../../send.selectors.js': {
-    getCurrentNetwork: (s) => `mockNetwork:${s}`,
-    getSendTo: (s) => `mockTo:${s}`,
-    getSendToAccounts: (s) => `mockToAccounts:${s}`,
+    getCurrentNetwork: s => `mockNetwork:${s}`,
+    getSendTo: s => `mockTo:${s}`,
+    getSendToAccounts: s => `mockToAccounts:${s}`,
   },
   './send-to-row.selectors.js': {
-    getToDropdownOpen: (s) => `mockToDropdownOpen:${s}`,
-    sendToIsInError: (s) => `mockInError:${s}`,
+    getToDropdownOpen: s => `mockToDropdownOpen:${s}`,
+    sendToIsInError: s => `mockInError:${s}`,
   },
   '../../../../actions': actionSpies,
   '../../../../ducks/send.duck': duckActionSpies,
 })
 
 describe('send-to-row container', () => {
-
   describe('mapStateToProps()', () => {
-
     it('should map the correct properties to props', () => {
       assert.deepEqual(mapStateToProps('mockState'), {
         inError: 'mockInError:mockState',
@@ -48,7 +46,6 @@ describe('send-to-row container', () => {
         toDropdownOpen: 'mockToDropdownOpen:mockState',
       })
     })
-
   })
 
   describe('mapDispatchToProps()', () => {
@@ -89,10 +86,10 @@ describe('send-to-row container', () => {
         mapDispatchToPropsObject.updateSendTo('mockTo', 'mockNickname')
         assert(dispatchSpy.calledOnce)
         assert(actionSpies.updateSendTo.calledOnce)
-        assert.deepEqual(
-          actionSpies.updateSendTo.getCall(0).args,
-          ['mockTo', 'mockNickname']
-        )
+        assert.deepEqual(actionSpies.updateSendTo.getCall(0).args, [
+          'mockTo',
+          'mockNickname',
+        ])
       })
     })
 
@@ -107,7 +104,5 @@ describe('send-to-row container', () => {
         )
       })
     })
-
   })
-
 })

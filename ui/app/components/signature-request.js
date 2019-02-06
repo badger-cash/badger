@@ -54,9 +54,11 @@ SignatureRequest.contextTypes = {
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(SignatureRequest)
-
 
 inherits(SignatureRequest, Component)
 function SignatureRequest (props) {
@@ -70,7 +72,6 @@ function SignatureRequest (props) {
 
 SignatureRequest.prototype.renderHeader = function () {
   return h('div.request-signature__header', [
-
     h('div.request-signature__header-background'),
 
     h('div.request-signature__header__text', this.context.t('sigRequest')),
@@ -78,22 +79,15 @@ SignatureRequest.prototype.renderHeader = function () {
     h('div.request-signature__header__tip-container', [
       h('div.request-signature__header__tip'),
     ]),
-
   ])
 }
 
 SignatureRequest.prototype.renderAccountDropdown = function () {
-  const {
-    selectedAccount,
-    accountDropdownOpen,
-  } = this.state
+  const { selectedAccount, accountDropdownOpen } = this.state
 
-  const {
-    accounts,
-  } = this.props
+  const { accounts } = this.props
 
   return h('div.request-signature__account', [
-
     h('div.request-signature__account-text', [this.context.t('account') + ':']),
 
     h(AccountDropdownMini, {
@@ -104,7 +98,6 @@ SignatureRequest.prototype.renderAccountDropdown = function () {
       openDropdown: () => this.setState({ accountDropdownOpen: true }),
       closeDropdown: () => this.setState({ accountDropdownOpen: false }),
     }),
-
   ])
 }
 
@@ -120,23 +113,19 @@ SignatureRequest.prototype.renderBalance = function () {
   })
 
   return h('div.request-signature__balance', [
-
     h('div.request-signature__balance-text', `${this.context.t('balance')}:`),
 
     h('div.request-signature__balance-value', `${balanceInBch} BCH`),
-
   ])
 }
 
 SignatureRequest.prototype.renderAccountInfo = function () {
   return h('div.request-signature__account-info', [
-
     this.renderAccountDropdown(),
 
     this.renderRequestIcon(),
 
     this.renderBalance(),
-
   ])
 }
 
@@ -153,11 +142,7 @@ SignatureRequest.prototype.renderRequestIcon = function () {
 
 SignatureRequest.prototype.renderRequestInfo = function () {
   return h('div.request-signature__request-info', [
-
-    h('div.request-signature__headline', [
-      this.context.t('yourSigRequested'),
-    ]),
-
+    h('div.request-signature__headline', [this.context.t('yourSigRequested')]),
   ])
 }
 
@@ -176,14 +161,26 @@ SignatureRequest.prototype.renderTypedDataV3 = function (data) {
   const { domain, message } = JSON.parse(data)
   return [
     h('div.request-signature__typed-container', [
-      domain ? h('div', [
-        h('h1', 'Domain'),
-        h(ObjectInspector, { data: domain, expandLevel: 1, name: 'domain' }),
-      ]) : '',
-      message ? h('div', [
-        h('h1', 'Message'),
-        h(ObjectInspector, { data: message, expandLevel: 1, name: 'message' }),
-      ]) : '',
+      domain
+        ? h('div', [
+            h('h1', 'Domain'),
+            h(ObjectInspector, {
+              data: domain,
+              expandLevel: 1,
+              name: 'domain',
+            }),
+          ])
+        : '',
+      message
+        ? h('div', [
+            h('h1', 'Message'),
+            h(ObjectInspector, {
+              data: message,
+              expandLevel: 1,
+              name: 'message',
+            }),
+          ])
+        : '',
     ]),
   ]
 }
@@ -193,7 +190,10 @@ SignatureRequest.prototype.renderBody = function () {
   let notice = this.context.t('youSign') + ':'
 
   const { txData } = this.props
-  const { type, msgParams: { data, version } } = txData
+  const {
+    type,
+    msgParams: { data, version },
+  } = txData
 
   if (type === 'personal_sign') {
     rows = [{ name: this.context.t('message'), value: this.msgHexToText(data) }]
@@ -202,9 +202,7 @@ SignatureRequest.prototype.renderBody = function () {
   } else if (type === 'eth_sign') {
     const cashId = parseCashIdUri(data)
 
-    rows = [
-      { name: 'Domain', value: cashId.domain },
-    ]
+    rows = [{ name: 'Domain', value: cashId.domain }]
 
     let action = cashId.parameters.action
     if (!action) {
@@ -220,29 +218,35 @@ SignatureRequest.prototype.renderBody = function () {
   }
 
   return h('div.request-signature__body', {}, [
-
     this.renderAccountInfo(),
 
     this.renderRequestInfo(),
 
-    h('div.request-signature__notice', {
-      className: classnames({
-        'request-signature__notice': type === 'personal_sign' || type === 'eth_signTypedData',
-        'request-signature__warning': type === 'eth_sign',
-      }),
-    }, [notice]),
+    h(
+      'div.request-signature__notice',
+      {
+        className: classnames({
+          'request-signature__notice':
+            type === 'personal_sign' || type === 'eth_signTypedData',
+          'request-signature__warning': type === 'eth_sign',
+        }),
+      },
+      [notice]
+    ),
 
-    h('div.request-signature__rows', type === 'eth_signTypedData' && version === 'V3' ?
-      this.renderTypedDataV3(data) :
-      rows.map(({ name, value }) => {
-        if (typeof value === 'boolean') {
-          value = value.toString()
-        }
-        return h('div.request-signature__row', [
-          h('div.request-signature__row-title', [`${name}:`]),
-          h('div.request-signature__row-value', value),
-        ])
-      }),
+    h(
+      'div.request-signature__rows',
+      type === 'eth_signTypedData' && version === 'V3'
+        ? this.renderTypedDataV3(data)
+        : rows.map(({ name, value }) => {
+            if (typeof value === 'boolean') {
+              value = value.toString()
+            }
+            return h('div.request-signature__row', [
+              h('div.request-signature__row-title', [`${name}:`]),
+              h('div.request-signature__row-value', value),
+            ])
+          })
     ),
   ])
 }
@@ -274,43 +278,44 @@ SignatureRequest.prototype.renderFooter = function () {
   }
 
   return h('div.request-signature__footer', [
-    h(Button, {
-      type: 'default',
-      large: true,
-      className: 'request-signature__footer__cancel-button',
-      onClick: event => {
-        cancel(event).then(() => {
-          this.props.clearConfirmTransaction()
-          this.props.history.push(DEFAULT_ROUTE)
-        })
+    h(
+      Button,
+      {
+        type: 'default',
+        large: true,
+        className: 'request-signature__footer__cancel-button',
+        onClick: event => {
+          cancel(event).then(() => {
+            this.props.clearConfirmTransaction()
+            this.props.history.push(DEFAULT_ROUTE)
+          })
+        },
       },
-    }, this.context.t('cancel')),
-    h(Button, {
-      type: 'primary',
-      large: true,
-      onClick: event => {
-        sign(event).then(() => {
-          this.props.clearConfirmTransaction()
-          this.props.history.push(DEFAULT_ROUTE)
-        })
+      this.context.t('cancel')
+    ),
+    h(
+      Button,
+      {
+        type: 'primary',
+        large: true,
+        onClick: event => {
+          sign(event).then(() => {
+            this.props.clearConfirmTransaction()
+            this.props.history.push(DEFAULT_ROUTE)
+          })
+        },
       },
-    }, this.context.t('sign')),
+      this.context.t('sign')
+    ),
   ])
 }
 
 SignatureRequest.prototype.render = function () {
-  return (
+  return h('div.request-signature__container', [
+    this.renderHeader(),
 
-    h('div.request-signature__container', [
+    this.renderBody(),
 
-      this.renderHeader(),
-
-      this.renderBody(),
-
-      this.renderFooter(),
-
-    ])
-
-  )
-
+    this.renderFooter(),
+  ])
 }

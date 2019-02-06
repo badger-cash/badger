@@ -10,4 +10,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(ConfirmResetAccount)
+export default connect(
+  null,
+  mapDispatchToProps
+)(ConfirmResetAccount)

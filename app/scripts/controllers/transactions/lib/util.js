@@ -3,6 +3,7 @@
 */
 
 const BigNumber = require('bignumber.js')
+const bchaddr = require('bchaddrjs-slp')
 
 module.exports = {
   normalizeTxParams,
@@ -18,6 +19,13 @@ module.exports = {
   @returns {object} normalized txParams
  */
 function normalizeTxParams (txParams) {
+  if (txParams.to) {
+    txParams.to = bchaddr.toCashAddress(txParams.to)
+  }
+  if (txParams.from) {
+    txParams.from = bchaddr.toCashAddress(txParams.from)
+  }
+
   return txParams
 }
 
@@ -58,6 +66,9 @@ function validateTxParams (txParams) {
  */
 function validateFrom (txParams) {
   if (!(typeof txParams.from === 'string')) throw new Error(`Invalid from address ${txParams.from} not a string`)
+  else if (txParams.from !== undefined && !isValidAddress(txParams.from)) {
+    throw new Error('Invalid from address')
+  }
 }
 
  /**
@@ -65,15 +76,22 @@ function validateFrom (txParams) {
   @param txParams {object}
  */
 function validateRecipient (txParams) {
-  // TODO: validate address
-  function isValidAddress () { return true }
-
   if (txParams.to === '' || txParams.to === null) {
     throw new Error('Invalid recipient address')
   } else if (txParams.to !== undefined && !isValidAddress(txParams.to)) {
     throw new Error('Invalid recipient address')
   }
   return txParams
+}
+
+function isValidAddress (address) {
+  try {
+    const legacyAddress = bchaddr.toLegacyAddress(address)
+    const addrIsMain = bchaddr.isMainnetAddress(legacyAddress)
+    return addrIsMain
+  } catch (err) {
+    return false
+  }
 }
 
   /**

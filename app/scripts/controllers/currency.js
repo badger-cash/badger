@@ -116,11 +116,11 @@ class CurrencyController {
       this.setConversionRate(Number(rate))
       this.setConversionDate(Number(new Date()))
     } catch (err) {
-      log.warn(
-        `Badger - Failed to query currency conversion:`,
-        currentCurrency,
-        err
-      )
+      // log.warn(
+      //   `Badger - Failed to query currency conversion:`,
+      //   currentCurrency,
+      //   err
+      // )
       this.setConversionRate(0)
       this.setConversionDate('N/A')
     }

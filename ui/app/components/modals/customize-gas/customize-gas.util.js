@@ -18,17 +18,21 @@ export function getDecimalGasPrice (hexGasPrice) {
 }
 
 export function getPrefixedHexGasLimit (gasLimit) {
-  return ethUtil.addHexPrefix(conversionUtil(gasLimit, {
-    fromNumericBase: 'dec',
-    toNumericBase: 'hex',
-  }))
+  return ethUtil.addHexPrefix(
+    conversionUtil(gasLimit, {
+      fromNumericBase: 'dec',
+      toNumericBase: 'hex',
+    })
+  )
 }
 
 export function getPrefixedHexGasPrice (gasPrice) {
-  return ethUtil.addHexPrefix(conversionUtil(gasPrice, {
-    fromNumericBase: 'dec',
-    toNumericBase: 'hex',
-    fromDenomination: 'GWEI',
-    toDenomination: 'WEI',
-  }))
+  return ethUtil.addHexPrefix(
+    conversionUtil(gasPrice, {
+      fromNumericBase: 'dec',
+      toNumericBase: 'hex',
+      fromDenomination: 'GWEI',
+      toDenomination: 'WEI',
+    })
+  )
 }

@@ -37,47 +37,55 @@ EditAccountNameModal.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(EditAccountNameModal)
-
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditAccountNameModal)
 
 EditAccountNameModal.prototype.render = function () {
   const { hideModal, setAccountLabel, identity } = this.props
 
   return h('div', {}, [
-    h('div.flex-column.edit-account-name-modal-content', {
-    }, [
-
-      h('div.edit-account-name-modal-cancel', {
-        onClick: () => {
-          hideModal()
-        },
-      }, [
-        h('i.fa.fa-times'),
-      ]),
-
-      h('div.edit-account-name-modal-title', {
-      }, [this.context.t('editAccountName')]),
-
-      h('input.edit-account-name-modal-input', {
-        placeholder: identity.name,
-        onChange: (event) => {
-          this.setState({ inputText: event.target.value })
-        },
-        value: this.state.inputText,
-      }, []),
-
-      h('button.btn-clear.edit-account-name-modal-save-button.allcaps', {
-        onClick: () => {
-          if (this.state.inputText.length !== 0) {
-            setAccountLabel(identity.address, this.state.inputText)
+    h('div.flex-column.edit-account-name-modal-content', {}, [
+      h(
+        'div.edit-account-name-modal-cancel',
+        {
+          onClick: () => {
             hideModal()
-          }
+          },
         },
-        disabled: this.state.inputText.length === 0,
-      }, [
-        this.context.t('save'),
+        [h('i.fa.fa-times')]
+      ),
+
+      h('div.edit-account-name-modal-title', {}, [
+        this.context.t('editAccountName'),
       ]),
 
+      h(
+        'input.edit-account-name-modal-input',
+        {
+          placeholder: identity.name,
+          onChange: event => {
+            this.setState({ inputText: event.target.value })
+          },
+          value: this.state.inputText,
+        },
+        []
+      ),
+
+      h(
+        'button.btn-clear.edit-account-name-modal-save-button.allcaps',
+        {
+          onClick: () => {
+            if (this.state.inputText.length !== 0) {
+              setAccountLabel(identity.address, this.state.inputText)
+              hideModal()
+            }
+          },
+          disabled: this.state.inputText.length === 0,
+        },
+        [this.context.t('save')]
+      ),
     ]),
   ])
 }

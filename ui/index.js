@@ -17,10 +17,9 @@ function launchMetamaskUi (opts, cb) {
   // check if we are unlocked first
   accountManager.getState(function (err, metamaskState) {
     if (err) return cb(err)
-    startApp(metamaskState, accountManager, opts)
-      .then((store) => {
-        cb(null, store)
-      })
+    startApp(metamaskState, accountManager, opts).then(store => {
+      cb(null, store)
+    })
   })
 }
 
@@ -34,7 +33,6 @@ async function startApp (metamaskState, accountManager, opts) {
   const enLocaleMessages = await fetchLocale('en')
 
   const store = configureStore({
-
     // metamaskState represents the cross-tab state
     metamask: metamaskState,
 
@@ -51,12 +49,20 @@ async function startApp (metamaskState, accountManager, opts) {
   })
 
   // if unconfirmed txs, start on txConf page
-  const unapprovedTxsAll = txHelper(metamaskState.unapprovedTxs, metamaskState.unapprovedMsgs, metamaskState.unapprovedPersonalMsgs, metamaskState.unapprovedTypedMessages, metamaskState.network)
+  const unapprovedTxsAll = txHelper(
+    metamaskState.unapprovedTxs,
+    metamaskState.unapprovedMsgs,
+    metamaskState.unapprovedPersonalMsgs,
+    metamaskState.unapprovedTypedMessages,
+    metamaskState.network
+  )
   const numberOfUnapprovedTx = unapprovedTxsAll.length
   if (numberOfUnapprovedTx > 0) {
-    store.dispatch(actions.showConfTxPage({
-      id: unapprovedTxsAll[numberOfUnapprovedTx - 1].id,
-    }))
+    store.dispatch(
+      actions.showConfTxPage({
+        id: unapprovedTxsAll[numberOfUnapprovedTx - 1].id,
+      })
+    )
   }
 
   accountManager.on('update', function (metamaskState) {
@@ -65,10 +71,10 @@ async function startApp (metamaskState, accountManager, opts) {
 
   // global metamask api - used by tooling
   global.metamask = {
-    updateCurrentLocale: (code) => {
+    updateCurrentLocale: code => {
       store.dispatch(actions.updateCurrentLocale(code))
     },
-    setProviderType: (type) => {
+    setProviderType: type => {
       store.dispatch(actions.setProviderType(type))
     },
   }
@@ -78,8 +84,9 @@ async function startApp (metamaskState, accountManager, opts) {
     h(Root, {
       // inject initial state
       store: store,
-    }
-  ), opts.container)
+    }),
+    opts.container
+  )
 
   return store
 }

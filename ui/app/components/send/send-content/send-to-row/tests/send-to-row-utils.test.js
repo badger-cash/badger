@@ -8,7 +8,9 @@ import {
 } from '../../../send.constants'
 
 const stubs = {
-  isValidAddress: sinon.stub().callsFake(to => Boolean(to.match(/^[0xabcdef123456798]+$/))),
+  isValidAddress: sinon
+    .stub()
+    .callsFake(to => Boolean(to.match(/^[0xabcdef123456798]+$/))),
 }
 
 const toRowUtils = proxyquire('../send-to-row.utils.js', {
@@ -16,12 +18,9 @@ const toRowUtils = proxyquire('../send-to-row.utils.js', {
     isValidAddress: stubs.isValidAddress,
   },
 })
-const {
-  getToErrorObject,
-} = toRowUtils
+const { getToErrorObject } = toRowUtils
 
 describe('send-to-row utils', () => {
-
   describe('getToErrorObject()', () => {
     it('should return a required error if to is falsy', () => {
       assert.deepEqual(getToErrorObject(null), {
@@ -42,10 +41,12 @@ describe('send-to-row utils', () => {
     })
 
     it('should return the passed error if to is truthy but invalid if to is truthy and valid', () => {
-      assert.deepEqual(getToErrorObject('invalid #$ 345878', 'someExplicitError'), {
-        to: 'someExplicitError',
-      })
+      assert.deepEqual(
+        getToErrorObject('invalid #$ 345878', 'someExplicitError'),
+        {
+          to: 'someExplicitError',
+        }
+      )
     })
   })
-
 })

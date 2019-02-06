@@ -15,19 +15,19 @@
   display: flex;
 
   &.ethereum-network .menu-icon-circle div {
-    background-color: rgba(3, 135, 137, .7) !important;
+    background-color: rgba(3, 135, 137, 0.7) !important;
   }
 
   &.ropsten-test-network .menu-icon-circle div {
-    background-color: rgba(233, 21, 80, .7) !important;
+    background-color: rgba(233, 21, 80, 0.7) !important;
   }
 
   &.kovan-test-network .menu-icon-circle div {
-    background-color: rgba(105, 4, 150, .7) !important;
+    background-color: rgba(105, 4, 150, 0.7) !important;
   }
 
   &.rinkeby-test-network .menu-icon-circle div {
-    background-color: rgba(235, 179, 63, .7) !important;
+    background-color: rgba(235, 179, 63, 0.7) !important;
   }
 }
 
@@ -41,7 +41,7 @@
 .network-indicator {
   display: flex;
   align-items: center;
-  font-size: .6em;
+  font-size: 0.6em;
 
   .fa-caret-down {
     line-height: 15px;
@@ -108,7 +108,7 @@
 
 .menu-icon-circle--active {
   border: 1px solid $white;
-  background: rgba(100, 100, 100, .4);
+  background: rgba(100, 100, 100, 0.4);
 }
 
 .menu-icon-circle div,

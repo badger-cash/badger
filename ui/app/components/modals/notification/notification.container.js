@@ -4,7 +4,13 @@ import Notification from './notification.component'
 const { hideModal } = require('../../../actions')
 
 const mapStateToProps = state => {
-  const { appState: { modal: { modalState: { props } } } } = state
+  const {
+    appState: {
+      modal: {
+        modalState: { props },
+      },
+    },
+  } = state
   const { onHide } = props
   return {
     onHide,
@@ -35,4 +41,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Notification)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(Notification)

@@ -16,7 +16,7 @@
 
 .send-screen-card {
   background-color: #fff;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .08);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
   padding: 46px 40.5px 26px;
   position: relative;
   // top: -26px;
@@ -50,7 +50,7 @@
   width: 70px;
   height: 70px;
   border: 1px solid $alto;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
   position: absolute;
   top: -35px;
   z-index: 25;
@@ -187,7 +187,7 @@
   padding: 13px 19px;
   font-size: 16px;
   border-radius: 4px;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-weight: 500;
 }
 
@@ -203,12 +203,14 @@
   box-shadow: 2px 2px 2px $alto;
 }
 
-.customize-gas-tooltip-container input[type="number"]::-webkit-inner-spin-button {
+.customize-gas-tooltip-container
+  input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   display: none;
 }
 
-.customize-gas-tooltip-container input[type="number"]:hover::-webkit-inner-spin-button {
+.customize-gas-tooltip-container
+  input[type='number']:hover::-webkit-inner-spin-button {
   -webkit-appearance: none;
   display: none;
 }
@@ -272,7 +274,7 @@
   display: flex;
   flex-direction: column;
   color: #9b9b9b;
-  font-size: .8em;
+  font-size: 0.8em;
   padding: 1px 4px;
   cursor: pointer;
 }
@@ -308,7 +310,7 @@
   }
 
   &__send-button__disabled {
-    opacity: .5;
+    opacity: 0.5;
     cursor: auto;
   }
 }
@@ -323,7 +325,7 @@
     width: 498px;
     height: 605px;
     background-color: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .08);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     padding: 46px 40.5px 26px;
     position: relative;
     // top: -26px;
@@ -405,7 +407,7 @@
     width: 380px;
     border-radius: 8px;
     background-color: $white;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .08);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     display: flex;
     flex-flow: column nowrap;
     z-index: 25;
@@ -611,7 +613,7 @@
       border: 1px solid $geyser;
       border-radius: 4px;
       background-color: $white;
-      box-shadow: 0 3px 6px 0 rgba(0 ,0 ,0 ,.11);
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.11);
       margin-top: 11px;
       margin-left: -1px;
       overflow-y: scroll;
@@ -647,7 +649,9 @@
     }
   }
 
-  &__to-autocomplete, &__memo-text-area, &__hex-data {
+  &__to-autocomplete,
+  &__memo-text-area,
+  &__hex-data {
     &__input {
       z-index: 1025;
       position: relative;
@@ -729,10 +733,10 @@
   }
 
   &__customize-gas {
-    border: 1px solid #D8D8D8;
+    border: 1px solid #d8d8d8;
     border-radius: 4px;
-    background-color: #FFFFFF;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.14);
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14);
     font-family: Roboto;
     display: flex;
     flex-flow: column;
@@ -804,7 +808,10 @@
       margin-right: 21.25px;
     }
 
-    &__revert, &__cancel, &__save, &__save__error {
+    &__revert,
+    &__cancel,
+    &__save,
+    &__save__error {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -818,7 +825,9 @@
       margin-left: 21.25px;
     }
 
-    &__cancel, &__save, &__save__error {
+    &__cancel,
+    &__save,
+    &__save__error {
       width: 85.74px;
       min-width: initial;
     }
@@ -903,12 +912,12 @@
       justify-content: center;
     }
 
-    input[type="number"]::-webkit-inner-spin-button {
+    input[type='number']::-webkit-inner-spin-button {
       -webkit-appearance: none;
       display: none;
     }
 
-    input[type="number"]:hover::-webkit-inner-spin-button {
+    input[type='number']:hover::-webkit-inner-spin-button {
       -webkit-appearance: none;
       display: none;
     }

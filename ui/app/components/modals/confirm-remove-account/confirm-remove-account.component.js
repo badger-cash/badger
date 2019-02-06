@@ -18,7 +18,8 @@ class ConfirmRemoveAccount extends Component {
   }
 
   handleRemove () {
-    this.props.removeAccount(this.props.identity.address)
+    this.props
+      .removeAccount(this.props.identity.address)
       .then(() => this.props.hideModal())
   }
 
@@ -27,18 +28,19 @@ class ConfirmRemoveAccount extends Component {
     return (
       <div className="modal-container__account">
         <div className="modal-container__account__identicon">
-          <Identicon
-              address={identity.address}
-              diameter={32}
-          />
+          <Identicon address={identity.address} diameter={32} />
         </div>
         <div className="modal-container__account__name">
-            <span className="modal-container__account__label">Name</span>
-            <span className="account_value">{identity.name}</span>
+          <span className="modal-container__account__label">Name</span>
+          <span className="account_value">{identity.name}</span>
         </div>
         <div className="modal-container__account__address">
-            <span className="modal-container__account__label">Public Address</span>
-            <span className="account_value">{ addressSummary(identity.address, 4, 4) }</span>
+          <span className="modal-container__account__label">
+            Public Address
+          </span>
+          <span className="account_value">
+            {addressSummary(identity.address, 4, 4)}
+          </span>
         </div>
         <div className="modal-container__account__link">
           <a
@@ -61,12 +63,19 @@ class ConfirmRemoveAccount extends Component {
       <div className="modal-container">
         <div className="modal-container__content">
           <div className="modal-container__title">
-            { `${t('removeAccount')}` }?
+            {`${t('removeAccount')}`}?
           </div>
-            { this.renderSelectedAccount() }
+          {this.renderSelectedAccount()}
           <div className="modal-container__description">
-            { t('removeAccountDescription') }
-            <a className="modal-container__link" rel="noopener noreferrer" target="_blank" href="https://consensys.zendesk.com/hc/en-us/articles/360004180111-What-are-imported-accounts-New-UI-">{ t('learnMore') }</a>
+            {t('removeAccountDescription')}
+            <a
+              className="modal-container__link"
+              rel="noopener noreferrer"
+              target="_blank"
+              href="https://consensys.zendesk.com/hc/en-us/articles/360004180111-What-are-imported-accounts-New-UI-"
+            >
+              {t('learnMore')}
+            </a>
           </div>
         </div>
         <div className="modal-container__footer">
@@ -75,14 +84,14 @@ class ConfirmRemoveAccount extends Component {
             className="modal-container__footer-button"
             onClick={() => this.props.hideModal()}
           >
-            { t('nevermind') }
+            {t('nevermind')}
           </Button>
           <Button
             type="secondary"
             className="modal-container__footer-button"
             onClick={() => this.handleRemove()}
           >
-            { t('remove') }
+            {t('remove')}
           </Button>
         </div>
       </div>

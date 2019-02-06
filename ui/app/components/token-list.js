@@ -49,10 +49,12 @@ TokenList.prototype.render = function () {
   const { userAddress, assetImages } = this.props
   const state = this.state
   const { isLoading, error } = state
-  console.log('------------props------------', this.props)
+  // console.log('------------props------------', this.props)
   let tokens
-  try { 
-    tokens = this.props.accountTokens[this.props.userAddress][this.props.provider.type]
+  try {
+    tokens = this.props.accountTokens[this.props.userAddress][
+      this.props.provider.type
+    ]
   } catch (err) {
     tokens = []
   }

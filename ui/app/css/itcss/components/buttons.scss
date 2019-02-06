@@ -12,7 +12,7 @@
   border-radius: 4px;
   font-size: 14px;
   font-weight: 400;
-  transition: border-color .3s ease;
+  transition: border-color 0.3s ease;
   padding: 0 16px;
   min-width: 140px;
   width: 100%;
@@ -23,7 +23,7 @@
   &--disabled,
   &[disabled] {
     cursor: auto;
-    opacity: .5;
+    opacity: 0.5;
     pointer-events: none;
   }
 }
@@ -97,13 +97,13 @@
 .btn-clear {
   background: $white;
   text-align: center;
-  padding: .8rem 1rem;
+  padding: 0.8rem 1rem;
   color: $curious-blue;
   border: 2px solid $spindle;
   border-radius: 4px;
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 400;
-  transition: border-color .3s ease;
+  transition: border-color 0.3s ease;
 
   &:hover {
     border-color: $curious-blue;
@@ -112,7 +112,7 @@
   &--disabled,
   &[disabled] {
     cursor: auto;
-    opacity: .5;
+    opacity: 0.5;
     pointer-events: none;
   }
 }
@@ -120,13 +120,13 @@
 .btn-cancel {
   background: $white;
   text-align: center;
-  padding: .9rem 1rem;
+  padding: 0.9rem 1rem;
   color: $scorpion;
   border: 2px solid $dusty-gray;
   border-radius: 4px;
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 400;
-  transition: border-color .3s ease;
+  transition: border-color 0.3s ease;
   width: 100%;
 
   &:hover {
@@ -151,9 +151,9 @@
 // }
 
 button[disabled],
-input[type="submit"][disabled] {
+input[type='submit'][disabled] {
   cursor: not-allowed;
-  opacity: .5;
+  opacity: 0.5;
   // background: rgba(197, 197, 197, 1);
   // box-shadow: 0 3px 6px rgba(197, 197, 197, .36);
 }
@@ -172,7 +172,7 @@ input[type="submit"][disabled] {
 button.primary {
   padding: 8px 12px;
   background: #f7861c;
-  box-shadow: 0 3px 6px rgba(247, 134, 28, .36);
+  box-shadow: 0 3px 6px rgba(247, 134, 28, 0.36);
   color: $white;
   font-size: 1.1em;
   font-family: Roboto;
@@ -182,7 +182,7 @@ button.primary {
 .btn-light {
   padding: 8px 12px;
   // background: #FFFFFF; // $bg-white
-  box-shadow: 0 3px 6px rgba(247, 134, 28, .36);
+  box-shadow: 0 3px 6px rgba(247, 134, 28, 0.36);
   color: #585d67; // TODO: make reusable light button color
   font-size: 1.1em;
   font-family: Roboto;
@@ -191,7 +191,7 @@ button.primary {
   line-height: 20px;
   border-radius: 2px;
   border: 1px solid #979797; // #TODO: make reusable light border color
-  opacity: .5;
+  opacity: 0.5;
 }
 
 // TODO: cleanup: not used anywhere

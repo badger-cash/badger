@@ -4,7 +4,6 @@ import SendRowWrapper from '../send-row-wrapper/'
 import GasFeeDisplay from './gas-fee-display/gas-fee-display.component'
 
 export default class SendGasRow extends Component {
-
   static propTypes = {
     conversionRate: PropTypes.number,
     convertedCurrency: PropTypes.string,
@@ -12,11 +11,11 @@ export default class SendGasRow extends Component {
     gasLoadingError: PropTypes.bool,
     gasTotal: PropTypes.string,
     showCustomizeGasModal: PropTypes.func,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   render () {
     const {
@@ -44,5 +43,4 @@ export default class SendGasRow extends Component {
       </SendRowWrapper>
     )
   }
-
 }

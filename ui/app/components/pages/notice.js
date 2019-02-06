@@ -55,40 +55,48 @@ class Notice extends Component {
     const { title, date, body } = notice
     const { disclaimerDisabled } = this.state
 
-    return (
-      h('.flex-column.flex-center.flex-grow', {
+    return h(
+      '.flex-column.flex-center.flex-grow',
+      {
         style: {
           width: '100%',
         },
-      }, [
-        h('h3.flex-center.text-transform-uppercase.terms-header', {
-          style: {
-            background: '#EBEBEB',
-            color: '#AEAEAE',
-            width: '100%',
-            fontSize: '20px',
-            textAlign: 'center',
-            padding: 6,
+      },
+      [
+        h(
+          'h3.flex-center.text-transform-uppercase.terms-header',
+          {
+            style: {
+              background: '#EBEBEB',
+              color: '#AEAEAE',
+              width: '100%',
+              fontSize: '20px',
+              textAlign: 'center',
+              padding: 6,
+            },
           },
-        }, [
-          title,
-        ]),
+          [title]
+        ),
 
-        h('h5.flex-center.text-transform-uppercase.terms-header', {
-          style: {
-            background: '#EBEBEB',
-            color: '#AEAEAE',
-            marginBottom: 24,
-            width: '100%',
-            fontSize: '20px',
-            textAlign: 'center',
-            padding: 6,
+        h(
+          'h5.flex-center.text-transform-uppercase.terms-header',
+          {
+            style: {
+              background: '#EBEBEB',
+              color: '#AEAEAE',
+              marginBottom: 24,
+              width: '100%',
+              fontSize: '20px',
+              textAlign: 'center',
+              padding: 6,
+            },
           },
-        }, [
-          date,
-        ]),
+          [date]
+        ),
 
-        h('style', `
+        h(
+          'style',
+          `
 
           .markdown {
             overflow-x: hidden;
@@ -114,42 +122,53 @@ class Notice extends Component {
             color: #df6b0e;
           }
 
-        `),
+        `
+        ),
 
-        h('div.markdown', {
-          onScroll: (e) => {
-            var object = e.currentTarget
-            if (object.offsetHeight + object.scrollTop + 100 >= object.scrollHeight) {
-              this.setState({ disclaimerDisabled: false })
-            }
+        h(
+          'div.markdown',
+          {
+            onScroll: e => {
+              var object = e.currentTarget
+              if (
+                object.offsetHeight + object.scrollTop + 100 >=
+                object.scrollHeight
+              ) {
+                this.setState({ disclaimerDisabled: false })
+              }
+            },
+            style: {
+              background: 'rgb(235, 235, 235)',
+              height: '310px',
+              padding: '6px',
+              width: '90%',
+              overflowY: 'scroll',
+              scroll: 'auto',
+            },
           },
-          style: {
-            background: 'rgb(235, 235, 235)',
-            height: '310px',
-            padding: '6px',
-            width: '90%',
-            overflowY: 'scroll',
-            scroll: 'auto',
-          },
-        }, [
-          h(ReactMarkdown, {
-            className: 'notice-box',
-            source: body,
-            skipHtml: true,
-          }),
-        ]),
+          [
+            h(ReactMarkdown, {
+              className: 'notice-box',
+              source: body,
+              skipHtml: true,
+            }),
+          ]
+        ),
 
-        h('button.primary', {
-          disabled: disclaimerDisabled,
-          onClick: () => this.handleAccept(),
-          style: {
-            marginTop: '18px',
+        h(
+          'button.primary',
+          {
+            disabled: disclaimerDisabled,
+            onClick: () => this.handleAccept(),
+            style: {
+              marginTop: '18px',
+            },
           },
-        }, 'Accept'),
-      ])
+          'Accept'
+        ),
+      ]
     )
   }
-
 }
 
 const mapStateToProps = state => {
@@ -171,7 +190,8 @@ Notice.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    markNoticeRead: nextUnreadNotice => dispatch(actions.markNoticeRead(nextUnreadNotice)),
+    markNoticeRead: nextUnreadNotice =>
+      dispatch(actions.markNoticeRead(nextUnreadNotice)),
     markAccountsFound: () => dispatch(actions.markAccountsFound()),
   }
 }
@@ -200,4 +220,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Notice)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(Notice)

@@ -24,40 +24,50 @@ class NewAccountCreateForm extends Component {
     const { history, createAccount } = this.props
 
     return h('div.new-account-create-form', [
-
       h('div.new-account-create-form__input-label', {}, [
         this.context.t('accountName'),
       ]),
 
       h('div.new-account-create-form__input-wrapper', {}, [
-        h('input.new-account-create-form__input', {
-          value: newAccountName,
-          placeholder: defaultAccountName,
-          onChange: event => this.setState({ newAccountName: event.target.value }),
-        }, []),
+        h(
+          'input.new-account-create-form__input',
+          {
+            value: newAccountName,
+            placeholder: defaultAccountName,
+            onChange: event =>
+              this.setState({ newAccountName: event.target.value }),
+          },
+          []
+        ),
       ]),
 
       h('div.new-account-create-form__buttons', {}, [
-
-        h(Button, {
-          type: 'default',
-          large: true,
-          className: 'new-account-create-form__button',
-          onClick: () => history.push(DEFAULT_ROUTE),
-        }, [this.context.t('cancel')]),
-
-        h(Button, {
-          type: 'primary',
-          large: true,
-          className:'new-account-create-form__button',
-          onClick: () => {
-            createAccount(newAccountName || defaultAccountName)
-              .then(() => history.push(DEFAULT_ROUTE))
+        h(
+          Button,
+          {
+            type: 'default',
+            large: true,
+            className: 'new-account-create-form__button',
+            onClick: () => history.push(DEFAULT_ROUTE),
           },
-        }, [this.context.t('create')]),
+          [this.context.t('cancel')]
+        ),
 
+        h(
+          Button,
+          {
+            type: 'primary',
+            large: true,
+            className: 'new-account-create-form__button',
+            onClick: () => {
+              createAccount(newAccountName || defaultAccountName).then(() =>
+                history.push(DEFAULT_ROUTE)
+              )
+            },
+          },
+          [this.context.t('create')]
+        ),
       ]),
-
     ])
   }
 }
@@ -73,7 +83,9 @@ NewAccountCreateForm.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const { metamask: { network, selectedAddress, identities = {} } } = state
+  const {
+    metamask: { network, selectedAddress, identities = {} },
+  } = state
   const numberOfExistingAccounts = Object.keys(identities).length
 
   return {
@@ -85,15 +97,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toCoinbase: address => dispatch(actions.buyEth({ network: '1', address, amount: 0 })),
+    toCoinbase: address =>
+      dispatch(actions.buyEth({ network: '1', address, amount: 0 })),
     hideModal: () => dispatch(actions.hideModal()),
     createAccount: newAccountName => {
-      return dispatch(actions.addNewAccount())
-        .then(newAccountAddress => {
-          if (newAccountName) {
-            dispatch(actions.setAccountLabel(newAccountAddress, newAccountName))
-          }
-        })
+      return dispatch(actions.addNewAccount()).then(newAccountAddress => {
+        if (newAccountName) {
+          dispatch(actions.setAccountLabel(newAccountAddress, newAccountName))
+        }
+      })
     },
     showImportPage: () => dispatch(actions.showImportPage()),
     showConnectPage: () => dispatch(actions.showConnectPage()),
@@ -104,5 +116,7 @@ NewAccountCreateForm.contextTypes = {
   t: PropTypes.func,
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(NewAccountCreateForm)
-
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewAccountCreateForm)

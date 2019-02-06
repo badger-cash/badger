@@ -23,13 +23,17 @@ describe('SendContent Component', function () {
     })
 
     it('should render a div with a .send-v2__form class as a child of PageContainerContent', () => {
-      const PageContainerContentChild = wrapper.find(PageContainerContent).children()
+      const PageContainerContentChild = wrapper
+        .find(PageContainerContent)
+        .children()
       PageContainerContentChild.is('div')
       PageContainerContentChild.is('.send-v2__form')
     })
 
     it('should render the correct row components as grandchildren of the PageContainerContent component', () => {
-      const PageContainerContentChild = wrapper.find(PageContainerContent).children()
+      const PageContainerContentChild = wrapper
+        .find(PageContainerContent)
+        .children()
       assert(PageContainerContentChild.childAt(0).is(SendFromRow))
       assert(PageContainerContentChild.childAt(1).is(SendToRow))
       assert(PageContainerContentChild.childAt(2).is(SendAmountRow))
@@ -39,7 +43,9 @@ describe('SendContent Component', function () {
 
     it('should not render the SendHexDataRow if props.showHexData is false', () => {
       wrapper.setProps({ showHexData: false })
-      const PageContainerContentChild = wrapper.find(PageContainerContent).children()
+      const PageContainerContentChild = wrapper
+        .find(PageContainerContent)
+        .children()
       assert(PageContainerContentChild.childAt(0).is(SendFromRow))
       assert(PageContainerContentChild.childAt(1).is(SendToRow))
       assert(PageContainerContentChild.childAt(2).is(SendAmountRow))

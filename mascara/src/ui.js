@@ -29,17 +29,17 @@ swController.once('updatefound', windowReload)
 swController.once('ready', async () => {
   try {
     swController.removeListener('updatefound', windowReload)
-    console.log('swController ready')
+    // console.log('swController ready')
     await timeout(1000)
-    console.log('connecting to app')
+    // console.log('connecting to app')
     await connectApp()
-    console.log('app connected')
+    // console.log('app connected')
   } catch (err) {
-    console.error(err)
+    // console.error(err)
   }
 })
 
-console.log('starting service worker')
+// console.log('starting service worker')
 swController.startWorker()
 
 // Setup listener for when the service worker is read
@@ -50,7 +50,7 @@ function connectApp () {
   })
   return new Promise((resolve, reject) => {
     startPopup({ container, connectionStream }, (err, store) => {
-      console.log('hello from MetaMascara ui!')
+      // console.log('hello from MetaMascara ui!')
       if (err) reject(err)
       store.subscribe(() => {
         const state = store.getState()
@@ -67,7 +67,7 @@ function windowReload () {
 }
 
 function timeout (time) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(resolve, time || 1500)
   })
 }

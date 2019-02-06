@@ -8,11 +8,7 @@ class Root extends Component {
   render () {
     const { store } = this.props
 
-    return (
-      h(Provider, { store }, [
-        h(SelectedApp),
-      ])
-    )
+    return h(Provider, { store }, [h(SelectedApp)])
   }
 }
 

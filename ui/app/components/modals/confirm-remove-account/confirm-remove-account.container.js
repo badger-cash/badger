@@ -13,8 +13,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     hideModal: () => dispatch(hideModal()),
-    removeAccount: (address) => dispatch(removeAccount(address)),
+    removeAccount: address => dispatch(removeAccount(address)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfirmRemoveAccount)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ConfirmRemoveAccount)

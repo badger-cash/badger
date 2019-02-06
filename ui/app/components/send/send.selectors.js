@@ -1,11 +1,7 @@
 const { valuesFor } = require('../../util')
 const abi = require('human-standard-token-abi')
-const {
-  multiplyCurrencies,
-} = require('../../conversion-util')
-const {
-  estimateGasPriceFromRecentBlocks,
-} = require('./send.utils')
+const { multiplyCurrencies } = require('../../conversion-util')
+const { estimateGasPriceFromRecentBlocks } = require('./send.utils')
 
 const selectors = {
   accountsWithSendEtherInfoSelector,
@@ -53,14 +49,13 @@ const selectors = {
 module.exports = selectors
 
 function accountsWithSendEtherInfoSelector (state) {
-  const {
-    accounts,
-    identities,
-  } = state.metamask
+  const { accounts, identities } = state.metamask
 
-  const accountsWithSendEtherInfo = Object.entries(accounts).map(([key, account]) => {
-    return Object.assign({}, account, identities[key])
-  })
+  const accountsWithSendEtherInfo = Object.entries(accounts).map(
+    ([key, account]) => {
+      return Object.assign({}, account, identities[key])
+    }
+  )
 
   return accountsWithSendEtherInfo
 }
@@ -157,7 +152,8 @@ function getSelectedAccount (state) {
 }
 
 function getSelectedAddress (state) {
-  const selectedAddress = state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
+  const selectedAddress =
+    state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
 
   return selectedAddress
 }
@@ -174,8 +170,10 @@ function getSelectedToken (state) {
   const selectedTokenAddress = state.metamask.selectedTokenAddress
   const providerType = state.metamask.provider.type
   const addressAccountTokens = state.metamask.accountTokens[selectedAddress]
-  const accountTokens = addressAccountTokens ? addressAccountTokens[providerType] : []
-  const selectedToken = accountTokens.filter(({ address, string }) => { 
+  const accountTokens = addressAccountTokens
+    ? addressAccountTokens[providerType]
+    : []
+  const selectedToken = accountTokens.filter(({ address, string }) => {
     // TODO: filter for mint baton by properties
     if (string === 'Mint Baton') return false
     return address === selectedTokenAddress
@@ -198,7 +196,8 @@ function getSelectedTokenExchangeRate (state) {
   const selectedToken = getSelectedToken(state) || {}
   const { symbol = '' } = selectedToken
   const pair = `${symbol.toLowerCase()}_eth`
-  const { rate: tokenExchangeRate = 0 } = tokenExchangeRates && tokenExchangeRates[pair] || {}
+  const { rate: tokenExchangeRate = 0 } =
+    (tokenExchangeRates && tokenExchangeRates[pair]) || {}
 
   return tokenExchangeRate
 }
@@ -284,16 +283,20 @@ function getUnapprovedTxs (state) {
 function transactionsSelector (state) {
   const { network, selectedTokenAddress } = state.metamask
   const unapprovedMsgs = valuesFor(state.metamask.unapprovedMsgs)
-  const shapeShiftTxList = (network === '1') ? state.metamask.shapeShiftTxList : undefined
+  const shapeShiftTxList =
+    network === '1' ? state.metamask.shapeShiftTxList : undefined
   const transactions = state.metamask.selectedAddressTxList || []
-  const txsToRender = !shapeShiftTxList ? transactions.concat(unapprovedMsgs) : transactions.concat(unapprovedMsgs, shapeShiftTxList)
+  const txsToRender = !shapeShiftTxList
+    ? transactions.concat(unapprovedMsgs)
+    : transactions.concat(unapprovedMsgs, shapeShiftTxList)
 
   return selectedTokenAddress
     ? txsToRender
-      .filter(({ txParams }) => txParams && txParams.to === selectedTokenAddress)
-      .sort((a, b) => b.time - a.time)
-    : txsToRender
-      .sort((a, b) => b.time - a.time)
+        .filter(
+          ({ txParams }) => txParams && txParams.to === selectedTokenAddress
+        )
+        .sort((a, b) => b.time - a.time)
+    : txsToRender.sort((a, b) => b.time - a.time)
 }
 
 function getQrCodeData (state) {

@@ -51,31 +51,23 @@ export default class TransactionList extends PureComponent {
     const { pendingTransactions = [], completedTransactions = [] } = this.props
     return (
       <div className="transaction-list__transactions">
-        {
-          pendingTransactions.length > 0 && (
-            <div className="transaction-list__pending-transactions">
-              <div className="transaction-list__header">
-                { `${t('queue')} (${pendingTransactions.length})` }
-              </div>
-              {
-                pendingTransactions.map((transaction, index) => (
-                  this.renderTransaction(transaction, index)
-                ))
-              }
+        {pendingTransactions.length > 0 && (
+          <div className="transaction-list__pending-transactions">
+            <div className="transaction-list__header">
+              {`${t('queue')} (${pendingTransactions.length})`}
             </div>
-          )
-        }
-        <div className="transaction-list__completed-transactions">
-          <div className="transaction-list__header">
-            { t('history') }
+            {pendingTransactions.map((transaction, index) =>
+              this.renderTransaction(transaction, index)
+            )}
           </div>
-          {
-            completedTransactions.length > 0
-              ? completedTransactions.map((transaction, index) => (
-                  this.renderTransaction(transaction, index)
-                ))
-              : this.renderEmpty()
-          }
+        )}
+        <div className="transaction-list__completed-transactions">
+          <div className="transaction-list__header">{t('history')}</div>
+          {completedTransactions.length > 0
+            ? completedTransactions.map((transaction, index) =>
+                this.renderTransaction(transaction, index)
+              )
+            : this.renderEmpty()}
         </div>
       </div>
     )
@@ -84,38 +76,33 @@ export default class TransactionList extends PureComponent {
   renderTransaction (transaction, index) {
     const { selectedToken, assetImages } = this.props
 
-    return transaction.key === TRANSACTION_TYPE_SHAPESHIFT
-      ? (
-        <ShapeShiftTransactionListItem
-          { ...transaction }
-          key={`shapeshift${index}`}
-        />
-      ) : (
-        <TransactionListItem
-          transaction={transaction}
-          key={transaction.id}
-          showRetry={this.shouldShowRetry(transaction)}
-          token={selectedToken}
-          assetImages={assetImages}
-        />
-      )
+    return transaction.key === TRANSACTION_TYPE_SHAPESHIFT ? (
+      <ShapeShiftTransactionListItem
+        {...transaction}
+        key={`shapeshift${index}`}
+      />
+    ) : (
+      <TransactionListItem
+        transaction={transaction}
+        key={transaction.id}
+        showRetry={this.shouldShowRetry(transaction)}
+        token={selectedToken}
+        assetImages={assetImages}
+      />
+    )
   }
 
   renderEmpty () {
     return (
       <div className="transaction-list__empty">
         <div className="transaction-list__empty-text">
-          { this.context.t('noTransactions') }
+          {this.context.t('noTransactions')}
         </div>
       </div>
     )
   }
 
   render () {
-    return (
-      <div className="transaction-list">
-        { this.renderTransactions() }
-      </div>
-    )
+    return <div className="transaction-list">{this.renderTransactions()}</div>
   }
 }

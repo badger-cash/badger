@@ -12,8 +12,7 @@ const mascaraServer = createMetamascaraServer()
 // start the server
 const mascaraPort = 9001
 mascaraServer.listen(mascaraPort)
-console.log(`Mascara service listening on port ${mascaraPort}`)
-
+// console.log(`Mascara service listening on port ${mascaraPort}`)
 
 //
 // Dapp Server
@@ -28,4 +27,4 @@ dappServer.use(express.static(path.join(__dirname, '/app/')))
 // start the server
 const dappPort = '9002'
 dappServer.listen(dappPort)
-console.log(`Dapp listening on port ${dappPort}`)
+// console.log(`Dapp listening on port ${dappPort}`)

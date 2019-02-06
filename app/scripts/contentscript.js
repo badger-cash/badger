@@ -7,8 +7,12 @@ const ObjectMultiplex = require('obj-multiplex')
 const extension = require('extensionizer')
 const PortStream = require('extension-port-stream')
 
-const inpageContent = fs.readFileSync(path.join(__dirname, '..', '..', 'dist', 'chrome', 'inpage.js'), 'utf8')
-const inpageSuffix = '//# sourceURL=' + extension.extension.getURL('inpage.js') + '\n'
+const inpageContent = fs.readFileSync(
+  path.join(__dirname, '..', '..', 'dist', 'chrome', 'inpage.js'),
+  'utf8'
+)
+const inpageSuffix =
+  '//# sourceURL=' + extension.extension.getURL('inpage.js') + '\n'
 const inpageBundle = inpageContent + inpageSuffix
 
 // Eventually this streaming injection could be replaced with:
@@ -31,7 +35,9 @@ function setupInjection () {
     // inject in-page script
     var scriptTag = document.createElement('script')
     scriptTag.textContent = inpageBundle
-    scriptTag.onload = function () { this.parentNode.removeChild(this) }
+    scriptTag.onload = function () {
+      this.parentNode.removeChild(this)
+    }
     var container = document.head || document.documentElement
     // append as first child
     container.insertBefore(scriptTag, container.children[0])
@@ -50,41 +56,31 @@ function setupStreams () {
     name: 'badgerwallet_contentscript',
     target: 'badgerwallet_inpage',
   })
-  const pluginPort = extension.runtime.connect({ name: 'badgerwallet_contentscript' })
+  const pluginPort = extension.runtime.connect({
+    name: 'badgerwallet_contentscript',
+  })
   const pluginStream = new PortStream(pluginPort)
 
   // forward communication plugin->inpage
-  pump(
-    pageStream,
-    pluginStream,
-    pageStream,
-    (err) => logStreamDisconnectWarning('Badger Contentscript Forwarding', err)
+  pump(pageStream, pluginStream, pageStream, err =>
+    logStreamDisconnectWarning('Badger Contentscript Forwarding', err)
   )
 
   // setup local multistream channels
   const mux = new ObjectMultiplex()
   mux.setMaxListeners(25)
 
-  pump(
-    mux,
-    pageStream,
-    mux,
-    (err) => logStreamDisconnectWarning('Badger Inpage', err)
+  pump(mux, pageStream, mux, err =>
+    logStreamDisconnectWarning('Badger Inpage', err)
   )
-  pump(
-    mux,
-    pluginStream,
-    mux,
-    (err) => logStreamDisconnectWarning('Badger Background', err)
+  pump(mux, pluginStream, mux, err =>
+    logStreamDisconnectWarning('Badger Background', err)
   )
 
   // connect ping stream
   const pongStream = new PongStream({ objectMode: true })
-  pump(
-    mux,
-    pongStream,
-    mux,
-    (err) => logStreamDisconnectWarning('Badger PingPongStream', err)
+  pump(mux, pongStream, mux, err =>
+    logStreamDisconnectWarning('Badger PingPongStream', err)
   )
 
   // connect phishing warning stream
@@ -95,7 +91,6 @@ function setupStreams () {
   mux.ignoreStream('provider')
   mux.ignoreStream('publicConfig')
 }
-
 
 /**
  * Error handler for page to plugin stream disconnections
@@ -115,8 +110,12 @@ function logStreamDisconnectWarning (remoteLabel, err) {
  * @returns {boolean} {@code true} if Web3 should be injected
  */
 function shouldInjectWeb3 () {
-  return doctypeCheck() && suffixCheck() &&
-    documentElementCheck() && !blacklistedDomainCheck()
+  return (
+    doctypeCheck() &&
+    suffixCheck() &&
+    documentElementCheck() &&
+    !blacklistedDomainCheck()
+  )
 }
 
 /**
@@ -185,7 +184,9 @@ function blacklistedDomainCheck () {
   var currentRegex
   for (let i = 0; i < blacklistedDomains.length; i++) {
     const blacklistedDomain = blacklistedDomains[i].replace('.', '\\.')
-    currentRegex = new RegExp(`(?:https?:\\/\\/)(?:(?!${blacklistedDomain}).)*$`)
+    currentRegex = new RegExp(
+      `(?:https?:\\/\\/)(?:(?!${blacklistedDomain}).)*$`
+    )
     if (!currentRegex.test(currentUrl)) {
       return true
     }
@@ -197,7 +198,7 @@ function blacklistedDomainCheck () {
  * Redirects the current page to a phishing information page
  */
 function redirectToPhishingWarning () {
-  console.log('Badger - routing to Phishing Warning component')
+  // console.log('Badger - routing to Phishing Warning component')
   const extensionURL = extension.runtime.getURL('phishing.html')
   window.location.href = extensionURL
 }

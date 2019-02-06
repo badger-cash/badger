@@ -78,9 +78,7 @@ const accountModalStyle = {
 
 const MODALS = {
   BUY: {
-    contents: [
-      h(BuyOptions, {}, []),
-    ],
+    contents: [h(BuyOptions, {}, [])],
     mobileModalStyle: {
       width: '95%',
       // top: isPopupOrNotification() === 'popup' ? '48vh' : '36.5vh',
@@ -104,10 +102,8 @@ const MODALS = {
   },
 
   DEPOSIT_ETHER: {
-    contents: [
-      h(DepositEtherModal, {}, []),
-    ],
-    onHide: (props) => props.hideWarning(),
+    contents: [h(DepositEtherModal, {}, [])],
+    onHide: props => props.hideWarning(),
     mobileModalStyle: {
       width: '100%',
       height: '100%',
@@ -138,9 +134,7 @@ const MODALS = {
   },
 
   EDIT_ACCOUNT_NAME: {
-    contents: [
-      h(EditAccountNameModal, {}, []),
-    ],
+    contents: [h(EditAccountNameModal, {}, [])],
     mobileModalStyle: {
       width: '95%',
       // top: isPopupOrNotification() === 'popup' ? '48vh' : '36.5vh',
@@ -164,33 +158,28 @@ const MODALS = {
   },
 
   ACCOUNT_DETAILS: {
-    contents: [
-      h(AccountDetailsModal, {}, []),
-    ],
+    contents: [h(AccountDetailsModal, {}, [])],
     ...accountModalStyle,
   },
 
   EXPORT_PRIVATE_KEY: {
-    contents: [
-      h(ExportPrivateKeyModal, {}, []),
-    ],
+    contents: [h(ExportPrivateKeyModal, {}, [])],
     ...accountModalStyle,
   },
 
   SHAPESHIFT_DEPOSIT_TX: {
-    contents: [
-      h(ShapeshiftDepositTxModal),
-    ],
+    contents: [h(ShapeshiftDepositTxModal)],
     ...accountModalStyle,
   },
 
   HIDE_TOKEN_CONFIRMATION: {
-    contents: [
-      h(HideTokenConfirmationModal, {}, []),
-    ],
+    contents: [h(HideTokenConfirmationModal, {}, [])],
     mobileModalStyle: {
       width: '95%',
-      top: getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP ? '52vh' : '36.5vh',
+      top:
+        getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP
+          ? '52vh'
+          : '36.5vh',
     },
     laptopModalStyle: {
       width: '449px',
@@ -199,11 +188,7 @@ const MODALS = {
   },
 
   BETA_UI_NOTIFICATION_MODAL: {
-    contents: [
-      h(Notification, [
-        h(WelcomeBeta),
-      ]),
-    ],
+    contents: [h(Notification, [h(WelcomeBeta)])],
     mobileModalStyle: {
       ...modalContainerMobileStyle,
     },
@@ -224,7 +209,10 @@ const MODALS = {
     ],
     mobileModalStyle: {
       width: '95%',
-      top: getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP ? '52vh' : '36.5vh',
+      top:
+        getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP
+          ? '52vh'
+          : '36.5vh',
     },
     laptopModalStyle: {
       width: '449px',
@@ -259,9 +247,7 @@ const MODALS = {
   },
 
   NEW_ACCOUNT: {
-    contents: [
-      h(NewAccountModal, {}, []),
-    ],
+    contents: [h(NewAccountModal, {}, [])],
     mobileModalStyle: {
       width: '95%',
       // top: isPopupOrNotification() === 'popup' ? '52vh' : '36.5vh',
@@ -283,9 +269,7 @@ const MODALS = {
   },
 
   CUSTOMIZE_GAS: {
-    contents: [
-      h(CustomizeGasModal),
-    ],
+    contents: [h(CustomizeGasModal)],
     mobileModalStyle: {
       width: '100vw',
       height: '100vh',
@@ -307,9 +291,7 @@ const MODALS = {
   },
 
   CONFIRM_CUSTOMIZE_GAS: {
-    contents: [
-      h(ConfirmCustomizeGasModal),
-    ],
+    contents: [h(ConfirmCustomizeGasModal)],
     mobileModalStyle: {
       width: '100vw',
       height: '100vh',
@@ -332,11 +314,7 @@ const MODALS = {
 
   TRANSACTION_CONFIRMED: {
     disableBackdropClick: true,
-    contents: [
-      h(Notification, [
-        h(TransactionConfirmed),
-      ]),
-    ],
+    contents: [h(Notification, [h(TransactionConfirmed)])],
     mobileModalStyle: {
       ...modalContainerMobileStyle,
     },
@@ -386,7 +364,6 @@ function mapDispatchToProps (dispatch) {
     hideWarning: () => {
       dispatch(actions.hideWarning())
     },
-
   }
 }
 
@@ -396,16 +373,21 @@ function Modal () {
   Component.call(this)
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Modal)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Modal)
 
 Modal.prototype.render = function () {
   const modal = MODALS[this.props.modalState.name || 'DEFAULT']
 
   const { contents: children, disableBackdropClick = false } = modal
-  const modalStyle = modal[isMobileView() ? 'mobileModalStyle' : 'laptopModalStyle']
+  const modalStyle =
+    modal[isMobileView() ? 'mobileModalStyle' : 'laptopModalStyle']
   const contentStyle = modal.contentStyle || {}
 
-  return h(FadeModal,
+  return h(
+    FadeModal,
     {
       className: 'modal',
       keyboard: false,
@@ -415,7 +397,7 @@ Modal.prototype.render = function () {
         }
         this.onHide()
       },
-      ref: (ref) => {
+      ref: ref => {
         this.modalRef = ref
       },
       modalStyle,
@@ -423,7 +405,7 @@ Modal.prototype.render = function () {
       backdropStyle: BACKDROPSTYLE,
       closeOnClick: !disableBackdropClick,
     },
-    children,
+    children
   )
 }
 

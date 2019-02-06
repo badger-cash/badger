@@ -5,7 +5,6 @@ import EnsInput from '../../../ens-input'
 import { getToErrorObject } from './send-to-row.utils.js'
 
 export default class SendToRow extends Component {
-
   static propTypes = {
     closeToDropdown: PropTypes.func,
     inError: PropTypes.bool,
@@ -17,11 +16,11 @@ export default class SendToRow extends Component {
     updateSendTo: PropTypes.func,
     updateSendToError: PropTypes.func,
     scanQrCode: PropTypes.func,
-  };
+  }
 
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   handleToChange (to, nickname = '', toError) {
     const { updateSendTo, updateSendToError } = this.props
@@ -58,7 +57,9 @@ export default class SendToRow extends Component {
           inError={inError}
           name={'address'}
           network={network}
-          onChange={({ toAddress, nickname, toError }) => this.handleToChange(toAddress, nickname, toError)}
+          onChange={({ toAddress, nickname, toError }) =>
+            this.handleToChange(toAddress, nickname, toError)
+          }
           openDropdown={() => openToDropdown()}
           placeholder={this.context.t('recipientAddress')}
           to={to}
@@ -66,5 +67,4 @@ export default class SendToRow extends Component {
       </SendRowWrapper>
     )
   }
-
 }

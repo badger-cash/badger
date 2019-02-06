@@ -3,12 +3,7 @@ import ConfirmTransactionSwitch from './confirm-transaction-switch.component'
 
 const mapStateToProps = state => {
   const {
-    confirmTransaction: {
-      txData,
-      methodData,
-      fetchingData,
-      toSmartContract,
-    },
+    confirmTransaction: { txData, methodData, fetchingData, toSmartContract },
   } = state
 
   return {

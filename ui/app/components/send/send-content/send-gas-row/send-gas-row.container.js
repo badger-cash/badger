@@ -1,14 +1,20 @@
 import { connect } from 'react-redux'
 import {
-    getConversionRate,
-    getCurrentCurrency,
-    getGasTotal,
+  getConversionRate,
+  getCurrentCurrency,
+  getGasTotal,
 } from '../../send.selectors.js'
-import { getGasLoadingError, gasFeeIsInError } from './send-gas-row.selectors.js'
+import {
+  getGasLoadingError,
+  gasFeeIsInError,
+} from './send-gas-row.selectors.js'
 import { showModal } from '../../../../actions'
 import SendGasRow from './send-gas-row.component'
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendGasRow)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendGasRow)
 
 function mapStateToProps (state) {
   return {

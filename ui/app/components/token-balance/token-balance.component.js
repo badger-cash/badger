@@ -15,7 +15,7 @@ export default class TokenBalance extends PureComponent {
 
     return (
       <div className={classnames('hide-text-overflow', className)}>
-        { string + (withSymbol ? ` ${symbol}` : '') }
+        {string + (withSymbol ? ` ${symbol}` : '')}
       </div>
     )
   }

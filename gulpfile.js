@@ -486,9 +486,10 @@ gulp.task('dist', gulp.series('build', 'zip'))
 
 function zipTask (target) {
   return () => {
-    return gulp.src(`dist/${target}/**`)
-    .pipe(zip(`badgerwallet-${target}-${manifest.version}.zip`))
-    .pipe(gulp.dest('builds'))
+    return gulp
+      .src(`dist/${target}/**`)
+      .pipe(zip(`badgerwallet-${target}-${manifest.version}.zip`))
+      .pipe(gulp.dest('builds'))
   }
 }
 
@@ -564,7 +565,7 @@ function bundleTask (opts) {
     buildStream.on('error', err => {
       beep()
       if (opts.watch) {
-        console.warn(err.stack)
+        // console.warn(err.stack)
       } else {
         throw err
       }

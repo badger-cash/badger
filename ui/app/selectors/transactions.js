@@ -10,7 +10,8 @@ import { selectedTokenAddressSelector } from './tokens'
 
 export const shapeShiftTxListSelector = state => state.metamask.shapeShiftTxList
 export const unapprovedMsgsSelector = state => state.metamask.unapprovedMsgs
-export const selectedAddressTxListSelector = state => state.metamask.selectedAddressTxList
+export const selectedAddressTxListSelector = state =>
+  state.metamask.selectedAddressTxList
 
 const pendingStatusHash = {
   [UNAPPROVED_STATUS]: true,
@@ -23,37 +24,49 @@ export const transactionsSelector = createSelector(
   unapprovedMsgsSelector,
   shapeShiftTxListSelector,
   selectedAddressTxListSelector,
-  (selectedTokenAddress, unapprovedMsgs = {}, shapeShiftTxList = [], transactions = []) => {
+  (
+    selectedTokenAddress,
+    unapprovedMsgs = {},
+    shapeShiftTxList = [],
+    transactions = []
+  ) => {
     const unapprovedMsgsList = valuesFor(unapprovedMsgs)
-    const txsToRender = transactions.concat(unapprovedMsgsList, shapeShiftTxList)
+    const txsToRender = transactions.concat(
+      unapprovedMsgsList,
+      shapeShiftTxList
+    )
 
     return selectedTokenAddress
       ? txsToRender
-        .filter(({ txParams }) => txParams && txParams.sendTokenData && txParams.sendTokenData.tokenId === selectedTokenAddress)
-        .sort((a, b) => b.time - a.time)
+          .filter(
+            ({ txParams }) =>
+              txParams &&
+              txParams.sendTokenData &&
+              txParams.sendTokenData.tokenId === selectedTokenAddress
+          )
+          .sort((a, b) => b.time - a.time)
       : txsToRender
-        .filter(({ txParams }) => txParams && !txParams.sendTokenData)
-        .sort((a, b) => b.time - a.time)
+          .filter(({ txParams }) => txParams && !txParams.sendTokenData)
+          .sort((a, b) => b.time - a.time)
   }
 )
 
 export const pendingTransactionsSelector = createSelector(
   transactionsSelector,
-  (transactions = []) => (
+  (transactions = []) =>
     transactions.filter(transaction => transaction.status in pendingStatusHash)
-  )
 )
 
 export const submittedPendingTransactionsSelector = createSelector(
   transactionsSelector,
-  (transactions = []) => (
+  (transactions = []) =>
     transactions.filter(transaction => transaction.status === SUBMITTED_STATUS)
-  )
 )
 
 export const completedTransactionsSelector = createSelector(
   transactionsSelector,
-  (transactions = []) => (
-    transactions.filter(transaction => !(transaction.status in pendingStatusHash))
-  )
+  (transactions = []) =>
+    transactions.filter(
+      transaction => !(transaction.status in pendingStatusHash)
+    )
 )

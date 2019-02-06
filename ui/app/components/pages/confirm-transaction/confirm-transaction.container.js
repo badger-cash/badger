@@ -10,7 +10,10 @@ import { getTotalUnapprovedCount } from '../../../selectors'
 import { unconfirmedTransactionsListSelector } from '../../../selectors/confirm-transaction'
 
 const mapStateToProps = state => {
-  const { metamask: { send }, confirmTransaction } = state
+  const {
+    metamask: { send },
+    confirmTransaction,
+  } = state
 
   return {
     totalUnapprovedCount: getTotalUnapprovedCount(state),
@@ -22,12 +25,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setTransactionToConfirm: transactionId => dispatch(setTransactionToConfirm(transactionId)),
+    setTransactionToConfirm: transactionId =>
+      dispatch(setTransactionToConfirm(transactionId)),
     clearConfirmTransaction: () => dispatch(clearConfirmTransaction()),
   }
 }
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(ConfirmTransaction)

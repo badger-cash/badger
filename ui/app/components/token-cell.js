@@ -29,6 +29,16 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const formatTokenAmount = (amount) => {
+  try {
+    const value = parseFloat(amount)
+    const formatted = value.toLocaleString()
+    return formatted
+  } catch (e) {
+    return amount
+  }
+}
+
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
@@ -45,7 +55,6 @@ function TokenCell () {
 
 TokenCell.prototype.render = function () {
   const { tokenMenuOpen } = this.state
-  const props = this.props
   const {
     address,
     symbol,
@@ -62,10 +71,13 @@ TokenCell.prototype.render = function () {
     protocolData,
     // userAddress,
     image,
-  } = props
+  } = this.props
+
   let currentTokenToFiatRate
   let currentTokenInFiat
   let formattedFiat = ''
+
+  const formattedTokenAmount = formatTokenAmount(string)
 
   if (contractExchangeRates[address]) {
     currentTokenToFiatRate = multiplyCurrencies(
@@ -115,7 +127,7 @@ TokenCell.prototype.render = function () {
 
       h('div.token-list-item__balance-ellipsis', null, [
         h('div.token-list-item__balance-wrapper', null, [
-          h('div.token-list-item__token-balance', `${string || 0}`),
+          h('div.token-list-item__token-balance', `${formattedTokenAmount || '0'}`),
           h('div.token-list-item__token-symbol', symbol),
           h(
             'div.token-list-item__fiat-amount',

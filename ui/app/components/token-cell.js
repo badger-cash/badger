@@ -3,7 +3,6 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
 const Identicon = require('./identicon')
-const prefixForNetwork = require('../../lib/etherscan-prefix-for-network')
 const selectors = require('../selectors')
 const actions = require('../actions')
 const { conversionUtil, multiplyCurrencies } = require('../conversion-util')
@@ -29,6 +28,16 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const formatTokenAmount = (amount) => {
+  try {
+    const value = parseFloat(amount)
+    const formatted = value.toLocaleString()
+    return formatted
+  } catch (e) {
+    return amount
+  }
+}
+
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
@@ -45,7 +54,6 @@ function TokenCell () {
 
 TokenCell.prototype.render = function () {
   const { tokenMenuOpen } = this.state
-  const props = this.props
   const {
     address,
     symbol,
@@ -62,10 +70,13 @@ TokenCell.prototype.render = function () {
     protocolData,
     // userAddress,
     image,
-  } = props
+  } = this.props
+
   let currentTokenToFiatRate
   let currentTokenInFiat
   let formattedFiat = ''
+
+  const formattedTokenAmount = formatTokenAmount(string)
 
   if (contractExchangeRates[address]) {
     currentTokenToFiatRate = multiplyCurrencies(
@@ -115,7 +126,7 @@ TokenCell.prototype.render = function () {
 
       h('div.token-list-item__balance-ellipsis', null, [
         h('div.token-list-item__balance-wrapper', null, [
-          h('div.token-list-item__token-balance', `${string || 0}`),
+          h('div.token-list-item__token-balance', `${formattedTokenAmount || '0'}`),
           h('div.token-list-item__token-symbol', symbol),
           h(
             'div.token-list-item__fiat-amount',
@@ -153,33 +164,4 @@ TokenCell.prototype.render = function () {
       // }, 'SEND'),
     ]
   )
-}
-
-// TokenCell.prototype.send = function (address, event) {
-//   event.preventDefault()
-//   event.stopPropagation()
-//   const url = tokenFactoryFor(address)
-//   if (url) {
-//     navigateTo(url)
-//   }
-// }
-
-TokenCell.prototype.view = function (address, userAddress, network, event) {
-  const url = etherscanLinkFor(address, userAddress, network)
-  if (url) {
-    navigateTo(url)
-  }
-}
-
-function navigateTo (url) {
-  global.platform.openWindow({ url })
-}
-
-function etherscanLinkFor (tokenAddress, address, network) {
-  const prefix = prefixForNetwork(network)
-  return `https://${prefix}etherscan.io/token/${tokenAddress}?a=${address}`
-}
-
-function tokenFactoryFor (tokenAddress) {
-  return `https://tokenfactory.surge.sh/#/token/${tokenAddress}`
 }

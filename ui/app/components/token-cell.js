@@ -133,7 +133,7 @@ TokenCell.prototype.render = function () {
             {
               style: {},
             },
-            protocol === 'wormhole' ? 'Wormhole' : 'Simple Ledger'
+            protocol === 'slp' ? 'Simple Ledger' : 'UNKNOWN PROTOCOL'
           ),
           showFiat &&
             h(

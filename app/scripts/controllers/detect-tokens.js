@@ -1,4 +1,4 @@
-const Web4Bch = require('web4bch')
+const Web4Bch = require('web3bch')
 const contracts = require('eth-contract-metadata')
 const { warn } = require('loglevel')
 const { MAINNET } = require('./network/enums')

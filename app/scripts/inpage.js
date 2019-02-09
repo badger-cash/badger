@@ -1,6 +1,6 @@
 /*global Web4Bch*/
 cleanContextForImports()
-require('web4bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js')
+require('web3bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js')
 const log = require('loglevel')
 const LocalMessageDuplexStream = require('post-message-stream')
 const setupDappAutoReload = require('./lib/auto-reload.js')

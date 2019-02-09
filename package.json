@@ -222,7 +222,7 @@
     "valid-url": "^1.0.9",
     "vreme": "^3.0.2",
     "web3-stream-provider": "^3.0.1",
-    "web4bch": "^0.1.0",
+    "web3bch": "^0.1.1",
     "webrtc-adapter": "^6.4.4",
     "wormhole-sdk": "^1.2.3",
     "xtend": "^4.0.1"

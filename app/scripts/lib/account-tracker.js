@@ -54,6 +54,7 @@ class AccountTracker {
         slp: [],
         wormhole: [],
       },
+      historicalTransactions: {},
     }
     this.store = new ObservableStore(initState)
 
@@ -168,6 +169,9 @@ class AccountTracker {
 
     // only populate if the entry is still present
     if (!accounts[address]) return
+
+    // query historical transactions
+    this._updateHistoricalTransactions(address)
 
     // query balance
     let balance = await this._updateAccountTokens(address)
@@ -544,6 +548,36 @@ class AccountTracker {
       // log.debug("AccountTracker::_getTokenBalance no wh tokens", error)
     }
     return balances
+  }
+
+  async _updateHistoricalTransactions (address) {
+    const mutableHistoricalTransactions = this.store.getState().historicalTransactions
+    const historicalTransactions = Object.assign({}, mutableHistoricalTransactions)
+    if (!historicalTransactions[address]) historicalTransactions[address] = []
+
+    const addressTransactions = await axios.get(`https://rest.bitcoin.com/v2/address/transactions/${address}?page=0`)
+
+    addressTransactions.data.txs.forEach(tx => {
+      const historicalTx = {
+        hash: tx.txid,
+        txParams: {
+          from: 'fromaddr',
+          to: address,
+          amount: tx.valueOut.toString(),
+        },
+        id: tx.txid,
+        time: new Date(tx.time).getTime(),
+        status: parseInt(tx.confirmations) ? 'confirmed' : 'submitted',
+        metamaskNetworkId: 'mainnet',
+        loadingDefaults: false,
+      }
+      if (historicalTransactions[address].filter(htx => htx.hash === historicalTx.hash).length === 0) {
+        historicalTransactions[address].push(historicalTx)
+      }
+    })
+
+    mutableHistoricalTransactions[address] = historicalTransactions[address]
+    this.store.updateState({ historicalTransactions })
   }
 }
 

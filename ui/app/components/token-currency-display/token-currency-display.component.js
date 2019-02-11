@@ -4,10 +4,13 @@ import CurrencyDisplay from '../currency-display/currency-display.component'
 import { getTokenData } from '../../helpers/transactions.util'
 import { calcTokenAmount } from '../../token-util'
 
+import { formatTokenAmount } from '../../helpers/formatter-numbers.util'
+
 export default class TokenCurrencyDisplay extends PureComponent {
   static propTypes = {
     transactionData: PropTypes.string,
     token: PropTypes.object,
+    amount: PropTypes.number,
   }
 
   state = {
@@ -33,7 +36,7 @@ export default class TokenCurrencyDisplay extends PureComponent {
     // const tokenData = getTokenData(data)
     const { amount } = this.props
 
-    const displayValue = `${amount} ${symbol}`
+    const displayValue = `${formatTokenAmount(amount)} ${symbol}`
 
     // if (tokenData.params && tokenData.params.length === 2) {
     //   const tokenValue = tokenData.params[1].value

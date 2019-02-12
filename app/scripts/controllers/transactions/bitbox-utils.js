@@ -85,17 +85,15 @@ class BitboxUtils {
     return new Promise(async (resolve, reject) => {
       try {
         let byteCount
-        let opreturn
         const from = txParams.from
         const to = txParams.to
         const satoshisToSend = parseInt(txParams.value)
         if (
-          typeof txParams.opreturn !== 'undefined' &&
-          typeof txParams.opreturn === 'object'
+          typeof txParams.opReturn !== 'undefined' &&
+          typeof txParams.opReturn === 'object'
         ) {
           // if there is an op return set a higher tx fee
           // TODO: calculate the fee more intelligently
-          opreturn = txParams.opreturn
           byteCount = BITBOX.BitcoinCash.getByteCount(
             { P2PKH: spendableUtxos.length },
             { P2PKH: 4 }
@@ -129,14 +127,14 @@ class BitboxUtils {
         transactionBuilder.addOutput(to, satoshisToSend)
 
         // Op Return
-        // TODO: Allow dev to pass in "position" property for vout of opreturn
+        // TODO: Allow dev to pass in "position" property for vout of opReturn
         if (
-          typeof txParams.opreturn !== 'undefined' &&
-          typeof txParams.opreturn === 'object'
+          typeof txParams.opReturn !== 'undefined' &&
+          typeof txParams.opReturn === 'object'
         ) {
-          // TODO loop over txParams.opreturn.data, detect if ascii or hex, encode usnig BITBOX.Script
+          // TODO loop over txParams.opReturn.data, detect if ascii or hex, encode usnig BITBOX.Script
           const formatted = []
-          txParams.opreturn.data.forEach(data => {
+          txParams.opReturn.data.forEach(data => {
             if (typeof data === 'string' && data.substring(0, 2) === '0x') {
               formatted.push(Buffer.from(data, 'hex'))
             } else {
@@ -144,6 +142,7 @@ class BitboxUtils {
             }
           })
           const encoded = BITBOX.Script.encode(formatted)
+          console.log(BITBOX.Script.nullData.output.encode(encoded))
           transactionBuilder.addOutput(
             BITBOX.Script.nullData.output.encode(encoded),
             0

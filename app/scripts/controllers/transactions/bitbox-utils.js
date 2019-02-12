@@ -84,14 +84,33 @@ class BitboxUtils {
   static signAndPublishBchTransaction (txParams, keyPair, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
+        let byteCount
+        let opreturn
         const from = txParams.from
         const to = txParams.to
         const satoshisToSend = parseInt(txParams.value)
+        if (
+          typeof txParams.opreturn !== 'undefined' &&
+          typeof txParams.opreturn === 'object'
+        ) {
+          // if there is an op return set a higher tx fee
+          opreturn = txParams.opreturn
+          byteCount = BITBOX.BitcoinCash.getByteCount(
+            { P2PKH: spendableUtxos.length },
+            { P2PKH: 4 }
+          )
+        } else {
+          byteCount = BITBOX.BitcoinCash.getByteCount(
+            { P2PKH: spendableUtxos.length },
+            { P2PKH: 2 }
+          )
+        }
 
         if (!spendableUtxos || spendableUtxos.length === 0) {
           throw new Error('Insufficient funds')
         }
 
+        // TODO: support testnet
         const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
 
         let totalUtxoAmount = 0
@@ -103,15 +122,25 @@ class BitboxUtils {
           totalUtxoAmount += utxo.satoshis
         })
 
-        const byteCount = BITBOX.BitcoinCash.getByteCount(
-          { P2PKH: spendableUtxos.length },
-          { P2PKH: 2 }
-        )
-
         const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
 
         // Destination output
         transactionBuilder.addOutput(to, satoshisToSend)
+
+        // Op Return
+        // TODO: Allow dev to pass in "position" property for vout of opreturn
+        if (
+          typeof txParams.opreturn !== 'undefined' &&
+          typeof txParams.opreturn === 'object'
+        ) {
+          // TODO loop over txParams.opreturn.data, detect if ascii or hex, encode usnig BITBOX.Script
+          transactionBuilder.addOutput(
+            BITBOX.Script.nullData.output.encode(
+              Buffer.from(opreturn, 'ascii')
+            ),
+            0
+          )
+        }
 
         // Return remaining balance output
         if (satoshisRemaining >= 546) {

@@ -1,3 +1,4 @@
+
 const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
@@ -8,6 +9,8 @@ const actions = require('../actions')
 const { conversionUtil, multiplyCurrencies } = require('../conversion-util')
 
 const TokenMenuDropdown = require('./dropdowns/token-menu-dropdown.js')
+
+import { formatTokenAmount } from '../helpers/formatter-numbers.util'
 
 function mapStateToProps (state) {
   return {
@@ -25,16 +28,6 @@ function mapDispatchToProps (dispatch) {
   return {
     setSelectedToken: address => dispatch(actions.setSelectedToken(address)),
     hideSidebar: () => dispatch(actions.hideSidebar()),
-  }
-}
-
-const formatTokenAmount = (amount) => {
-  try {
-    const value = parseFloat(amount)
-    const formatted = value.toLocaleString()
-    return formatted
-  } catch (e) {
-    return amount
   }
 }
 

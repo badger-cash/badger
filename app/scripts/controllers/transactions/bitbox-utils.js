@@ -94,6 +94,7 @@ class BitboxUtils {
           typeof txParams.opreturn === 'object'
         ) {
           // if there is an op return set a higher tx fee
+          // TODO: calculate the fee more intelligently
           opreturn = txParams.opreturn
           byteCount = BITBOX.BitcoinCash.getByteCount(
             { P2PKH: spendableUtxos.length },

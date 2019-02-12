@@ -135,10 +135,17 @@ class BitboxUtils {
           typeof txParams.opreturn === 'object'
         ) {
           // TODO loop over txParams.opreturn.data, detect if ascii or hex, encode usnig BITBOX.Script
+          const formatted = []
+          txParams.opreturn.data.forEach(data => {
+            if (typeof data === 'string' && data.substring(0, 2) === '0x') {
+              formatted.push(Buffer.from(data, 'hex'))
+            } else {
+              formatted.push(data)
+            }
+          })
+          const encoded = BITBOX.Script.encode(formatted)
           transactionBuilder.addOutput(
-            BITBOX.Script.nullData.output.encode(
-              Buffer.from(opreturn, 'ascii')
-            ),
+            BITBOX.Script.nullData.output.encode(encoded),
             0
           )
         }

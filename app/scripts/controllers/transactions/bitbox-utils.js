@@ -58,6 +58,18 @@ class BitboxUtils {
     })
   }
 
+  static async encodeOpReturn (dataArray) {
+    const script = [BITBOX.Script.opcodes.OP_RETURN]
+    dataArray.forEach(data => {
+      if (typeof data === 'string' && data.substring(0, 2) === '0x') {
+        script.push(Buffer.from(data.substring(2), 'hex'))
+      } else {
+        script.push(Buffer.from(data))
+      }
+    })
+    return BITBOX.Script.encode(script)
+  }
+
   static async publishTx (hex) {
     return new Promise((resolve, reject) => {
       BITBOX.RawTransactions.sendRawTransaction(hex).then(
@@ -132,18 +144,9 @@ class BitboxUtils {
           typeof txParams.opReturn !== 'undefined' &&
           typeof txParams.opReturn === 'object'
         ) {
-          // TODO loop over txParams.opReturn.data, detect if ascii or hex, encode usnig BITBOX.Script
-          const formatted = [BITBOX.Script.opcodes.OP_RETURN]
-          txParams.opReturn.data.forEach(data => {
-            if (typeof data === 'string' && data.substring(0, 2) === '0x') {
-              formatted.push(Buffer.from(data.substring(2), 'hex'))
-            } else {
-              formatted.push(Buffer.from(data))
-            }
-          })
-          const encoded = BITBOX.Script.encode(formatted)
+          const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
           transactionBuilder.addOutput(
-            encoded,
+            encodedOpReturn,
             0
           )
         }

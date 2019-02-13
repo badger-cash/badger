@@ -133,14 +133,6 @@ export default class AppHeader extends PureComponent {
             />
           </div>
           <div className="app-header__account-menu-container">
-            <div className="app-header__network-component-wrapper">
-              <NetworkIndicator
-                network={network}
-                provider={provider}
-                onClick={event => this.handleNetworkIndicatorClick(event)}
-                disabled={this.isConfirming()}
-              />
-            </div>
             {this.renderAccountMenu()}
           </div>
         </div>

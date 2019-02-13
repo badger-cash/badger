@@ -58,6 +58,18 @@ class BitboxUtils {
     })
   }
 
+  static encodeOpReturn (dataArray) {
+    const script = [BITBOX.Script.opcodes.OP_RETURN]
+    dataArray.forEach(data => {
+      if (typeof data === 'string' && data.substring(0, 2) === '0x') {
+        script.push(Buffer.from(data.substring(2), 'hex'))
+      } else {
+        script.push(Buffer.from(data))
+      }
+    })
+    return BITBOX.Script.encode(script)
+  }
+
   static async publishTx (hex) {
     return new Promise((resolve, reject) => {
       BITBOX.RawTransactions.sendRawTransaction(hex).then(
@@ -88,10 +100,20 @@ class BitboxUtils {
         const to = txParams.to
         const satoshisToSend = parseInt(txParams.value)
 
+        // Calculate fee
+        let byteCount = BITBOX.BitcoinCash.getByteCount(
+          { P2PKH: spendableUtxos.length },
+          { P2PKH: 2 }
+        )
+        if (txParams.opReturn) {
+          byteCount += this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
+        }
+
         if (!spendableUtxos || spendableUtxos.length === 0) {
           throw new Error('Insufficient funds')
         }
 
+        // TODO: support testnet
         const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
 
         let totalUtxoAmount = 0
@@ -103,15 +125,20 @@ class BitboxUtils {
           totalUtxoAmount += utxo.satoshis
         })
 
-        const byteCount = BITBOX.BitcoinCash.getByteCount(
-          { P2PKH: spendableUtxos.length },
-          { P2PKH: 2 }
-        )
-
         const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
 
         // Destination output
         transactionBuilder.addOutput(to, satoshisToSend)
+
+        // Op Return
+        // TODO: Allow dev to pass in "position" property for vout of opReturn
+        if (txParams.opReturn) {
+          const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
+          transactionBuilder.addOutput(
+            encodedOpReturn,
+            0
+          )
+        }
 
         // Return remaining balance output
         if (satoshisRemaining >= 546) {

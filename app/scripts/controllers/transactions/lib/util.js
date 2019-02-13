@@ -120,7 +120,7 @@ function validateOpReturn (opReturn) {
 
   // Max length
   const encodedScript = bitboxUtils.encodeOpReturn(opReturn.data)
-  if (encodedScript.length > 223) throw new Error('OP Return too large')
+  if (encodedScript.byteLength > 223) throw new Error('OP Return too large')
 }
 
   /**

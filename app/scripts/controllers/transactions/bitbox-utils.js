@@ -96,25 +96,17 @@ class BitboxUtils {
   static signAndPublishBchTransaction (txParams, keyPair, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
-        let byteCount
         const from = txParams.from
         const to = txParams.to
         const satoshisToSend = parseInt(txParams.value)
-        if (
-          typeof txParams.opReturn !== 'undefined' &&
-          typeof txParams.opReturn === 'object'
-        ) {
-          // if there is an op return set a higher tx fee
-          // TODO: calculate the fee more intelligently
-          byteCount = BITBOX.BitcoinCash.getByteCount(
-            { P2PKH: spendableUtxos.length },
-            { P2PKH: 4 }
-          )
-        } else {
-          byteCount = BITBOX.BitcoinCash.getByteCount(
-            { P2PKH: spendableUtxos.length },
-            { P2PKH: 2 }
-          )
+
+        // Calculate fee
+        let byteCount = BITBOX.BitcoinCash.getByteCount(
+          { P2PKH: spendableUtxos.length },
+          { P2PKH: 2 }
+        )
+        if (txParams.opReturn) {
+          byteCount += this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
         }
 
         if (!spendableUtxos || spendableUtxos.length === 0) {
@@ -140,10 +132,7 @@ class BitboxUtils {
 
         // Op Return
         // TODO: Allow dev to pass in "position" property for vout of opReturn
-        if (
-          typeof txParams.opReturn !== 'undefined' &&
-          typeof txParams.opReturn === 'object'
-        ) {
+        if (txParams.opReturn) {
           const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
           transactionBuilder.addOutput(
             encodedOpReturn,

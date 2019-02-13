@@ -58,7 +58,7 @@ class BitboxUtils {
     })
   }
 
-  static async encodeOpReturn (dataArray) {
+  static encodeOpReturn (dataArray) {
     const script = [BITBOX.Script.opcodes.OP_RETURN]
     dataArray.forEach(data => {
       if (typeof data === 'string' && data.substring(0, 2) === '0x') {

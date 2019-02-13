@@ -4,7 +4,7 @@
 
 const BigNumber = require('bignumber.js')
 const bchaddr = require('bchaddrjs-slp')
-const bitboxUtils = require('./bitbox-utils')
+const bitboxUtils = require('../bitbox-utils')
 
 module.exports = {
   normalizeTxParams,

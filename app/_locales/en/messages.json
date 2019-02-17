@@ -966,7 +966,7 @@
     "description": "displays token symbol"
   },
   "orderOneHere": {
-    "message": "Order a Trezor or Ledger and keep your funds in cold storage"
+    "message": "Order a Trezor and keep your funds in cold storage"
   },
   "outgoing": {
     "message": "Outgoing"
@@ -1047,8 +1047,7 @@
     "message": "Sign Message"
   },
   "signNotice": {
-    "message":
-      "Only sign requests from \nsites you fully trust."
+    "message": "Only sign requests from \nsites you fully trust."
   },
   "sigRequest": {
     "message": "CashID Request"

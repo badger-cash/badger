@@ -45,7 +45,8 @@ const GWEI_BN = new BN('1000000000')
 const percentile = require('percentile')
 const seedPhraseVerifier = require('./lib/seed-phrase-verifier')
 const log = require('loglevel')
-const TrezorKeyring = require('eth-trezor-keyring')
+const TrezorKeyring = require('bch-trezor-keyring')
+// const TrezorKeyring = require('eth-trezor-keyring')
 const LedgerBridgeKeyring = require('eth-ledger-bridge-keyring')
 const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
@@ -650,6 +651,8 @@ module.exports = class MetamaskController extends EventEmitter {
         )
     }
     let keyring = await this.keyringController.getKeyringsByType(keyringName)[0]
+    console.log('HELLO WORLD', keyring)
+    console.log('KEYRING', keyring)
     if (!keyring) {
       keyring = await this.keyringController.addNewKeyring(keyringName)
     }

@@ -45,7 +45,7 @@ class ConnectScreen extends Component {
   renderButtons () {
     return h('div', {}, [
       h('div.hw-connect__btn-wrapper', {}, [
-        this.renderConnectToLedgerButton(),
+        // this.renderConnectToLedgerButton(),
         this.renderConnectToTrezorButton(),
       ]),
       h(
@@ -92,7 +92,7 @@ class ConnectScreen extends Component {
 
   getAffiliateLinks () {
     const links = {
-      trezor: `<a class='hw-connect__get-hw__link' href='https://shop.trezor.io/?a=metamask' target='_blank'>Trezor</a>`,
+      trezor: `<a class='hw-connect__get-hw__link' href='https://shop.trezor.io/?a=badger' target='_blank'>Trezor</a>`,
       ledger: `<a class='hw-connect__get-hw__link' href='https://www.ledger.com/products/ledger-nano-s?r=17c4991a03fa&tracker=MY_TRACKER' target='_blank'>Ledger</a>`,
     }
 
@@ -118,7 +118,9 @@ class ConnectScreen extends Component {
   }
 
   scrollToTutorial = e => {
-    if (this.referenceNode) { this.referenceNode.scrollIntoView({ behavior: 'smooth' }) }
+    if (this.referenceNode) {
+      this.referenceNode.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   renderLearnMore () {
@@ -184,17 +186,17 @@ class ConnectScreen extends Component {
     return h('div.hw-connect__footer', {}, [
       h('h3.hw-connect__footer__title', {}, this.context.t(`readyToConnect`)),
       this.renderButtons(),
-      h('p.hw-connect__footer__msg', {}, [
-        this.context.t(`havingTroubleConnecting`),
-        h(
-          'a.hw-connect__footer__link',
-          {
-            href: 'https://support.metamask.io/',
-            target: '_blank',
-          },
-          this.context.t('getHelp')
-        ),
-      ]),
+      // h('p.hw-connect__footer__msg', {}, [
+      //   this.context.t(`havingTroubleConnecting`),
+      //   h(
+      //     'a.hw-connect__footer__link',
+      //     {
+      //       href: 'https://support.metamask.io/',
+      //       target: '_blank',
+      //     },
+      //     this.context.t('getHelp')
+      //   ),
+      // ]),
     ])
   }
 

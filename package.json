@@ -1,6 +1,6 @@
 {
   "name": "badger",
-  "version": "0.1.3",
+  "version": "0.2.1",
   "license": "MIT",
   "homepage": "https://badger.bitcoin.com",
   "repository": {
@@ -339,7 +339,7 @@
     "watchify": "^3.11.0"
   },
   "engines": {
-    "node": "8.11.3",
+    "node": "10.5.1",
     "npm": "^6.1.0"
   }
 }

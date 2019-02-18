@@ -52,9 +52,6 @@ const ethUtil = require('ethereumjs-util')
 // const sigUtil = require('eth-sig-util')
 const axios = require('axios')
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
-
 module.exports = class MetamaskController extends EventEmitter {
   /**
    * @constructor

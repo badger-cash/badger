@@ -385,6 +385,7 @@ export default class ConfirmTransactionBase extends Component {
         fromAddress={fromAddress}
         toName={toName}
         toAddress={toAddress}
+        txParams={txParams}
         showEdit={onEdit && !isTxReprice && !txParams.sendTokenData}
         action={action || name || this.context.t('unknownFunction')}
         title={

@@ -15,9 +15,6 @@ const BigNumber = require('bignumber.js')
 const axios = require('axios')
 // const pify = require('pify')
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
-
 const bitboxUtils = require('../controllers/transactions/bitbox-utils')
 const slpUtils = require('../controllers/transactions/slp-utils')
 

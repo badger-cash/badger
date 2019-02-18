@@ -52,9 +52,6 @@ const ethUtil = require('ethereumjs-util')
 // const sigUtil = require('eth-sig-util')
 const axios = require('axios')
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
-
 module.exports = class MetamaskController extends EventEmitter {
   /**
    * @constructor
@@ -1578,9 +1575,9 @@ module.exports = class MetamaskController extends EventEmitter {
 
   // getBchBalance (address) {
   //   return new Promise((resolve, reject) => {
-  //     BITBOX.Address.utxo(address).then(
+  //     SLP.Address.utxo(address).then(
   //       result => {
-  //         const balance = result.length > 0 ? result[0].satoshis : 0
+  //         const balance = result.length > 0 ? result.utxos[0].satoshis : 0
   //         resolve(balance)
   //       },
   //       err => {

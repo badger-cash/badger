@@ -1,5 +1,5 @@
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const SLPSDK = require('slp-sdk/lib/SLP').default
+const SLP = new SLPSDK()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
 const WH = require('wormhole-sdk/lib/Wormhole').default
@@ -10,12 +10,12 @@ const Wormhole = new WH({
 class BitboxUtils {
   static async getLargestUtxo (address) {
     return new Promise((resolve, reject) => {
-      BITBOX.Address.utxo(address).then(
+      SLP.Address.utxo(address).then(
         result => {
           try {
-            const utxo = result.sort((a, b) => {
+            const utxo = result.utxos.sort((a, b) => {
               return a.satoshis - b.satoshis
-            })[result.length - 1]
+            })[result.utxos.length - 1]
             resolve(utxo)
           } catch (ex) {
             reject(ex)
@@ -30,9 +30,9 @@ class BitboxUtils {
 
   static async getAllUtxo (address) {
     return new Promise((resolve, reject) => {
-      BITBOX.Address.utxo(address).then(
+      SLP.Address.utxo(address).then(
         result => {
-          resolve(result)
+          resolve(result.utxos)
         },
         err => {
           reject(err)
@@ -43,7 +43,7 @@ class BitboxUtils {
 
   static async getTransactionDetails (txid) {
     return new Promise((resolve, reject) => {
-      BITBOX.Transaction.details(txid).then(
+      SLP.Transaction.details(txid).then(
         result => {
           if (result) {
             resolve(result)
@@ -59,7 +59,7 @@ class BitboxUtils {
   }
 
   static encodeOpReturn (dataArray) {
-    const script = [BITBOX.Script.opcodes.OP_RETURN]
+    const script = [SLP.Script.opcodes.OP_RETURN]
     dataArray.forEach(data => {
       if (typeof data === 'string' && data.substring(0, 2) === '0x') {
         script.push(Buffer.from(data.substring(2), 'hex'))
@@ -67,20 +67,20 @@ class BitboxUtils {
         script.push(Buffer.from(data))
       }
     })
-    return BITBOX.Script.encode(script)
+    return SLP.Script.encode(script)
   }
 
   static async publishTx (hex) {
     return new Promise((resolve, reject) => {
-      BITBOX.RawTransactions.sendRawTransaction(hex).then(
+      SLP.RawTransactions.sendRawTransaction(hex).then(
+        // TODO: pass back result instead of result[0] after we update REST to return string instead of array
         result => {
           try {
-            // console.log('txid: ', result)
-            if (result.length !== 64) {
+            if (result[0].length !== 64) {
               // TODO: Validate result is a txid
               reject('Transaction failed: ' + result)
             } else {
-              resolve(result)
+              resolve(result[0])
             }
           } catch (ex) {
             reject(ex)
@@ -101,12 +101,13 @@ class BitboxUtils {
         const satoshisToSend = parseInt(txParams.value)
 
         // Calculate fee
-        let byteCount = BITBOX.BitcoinCash.getByteCount(
+        let byteCount = SLP.BitcoinCash.getByteCount(
           { P2PKH: spendableUtxos.length },
           { P2PKH: 2 }
         )
         if (txParams.opReturn) {
-          byteCount += this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
+          byteCount +=
+            this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
         }
 
         if (!spendableUtxos || spendableUtxos.length === 0) {
@@ -114,7 +115,7 @@ class BitboxUtils {
         }
 
         // TODO: support testnet
-        const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
 
         let totalUtxoAmount = 0
         spendableUtxos.forEach(utxo => {
@@ -134,10 +135,7 @@ class BitboxUtils {
         // TODO: Allow dev to pass in "position" property for vout of opReturn
         if (txParams.opReturn) {
           const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
-          transactionBuilder.addOutput(
-            encodedOpReturn,
-            0
-          )
+          transactionBuilder.addOutput(encodedOpReturn, 0)
         }
 
         // Return remaining balance output
@@ -205,7 +203,7 @@ class BitboxUtils {
 
         const tokenReceiverAddressArray = [to, from]
 
-        const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
 
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {

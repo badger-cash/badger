@@ -15,8 +15,8 @@ const EthBalance = require('./eth-balance')
 const addressSummary = util.addressSummary
 const nameForAddress = require('../../lib/contract-namer')
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const SLPSDK = require('slp-sdk/lib/SLP').default
+const SLP = new SLPSDK()
 
 module.exports = PendingTx
 inherits(PendingTx, Component)
@@ -47,79 +47,110 @@ PendingTx.prototype.render = function () {
   const isValidAddress = !txParams.to || util.isValidAddress(txParams.to)
 
   // Calculate fee @ 1 sat/byte
-  const txFeeBn = BITBOX.BitcoinCash.getByteCount({ P2PKH: 1 }, { P2PKH: 2 })
+  const txFeeBn = SLP.BitcoinCash.getByteCount({ P2PKH: 1 }, { P2PKH: 2 })
 
-  const valueBn = BITBOX.BitcoinCash.toSatoshi(txParams.value) // new BN(txParams.value)
+  const valueBn = SLP.BitcoinCash.toSatoshi(txParams.value) // new BN(txParams.value)
   const maxCost = txFeeBn + valueBn // txFeeBn.add(valueBn)
 
   const balanceBn = balance // new BN(balance)
   const insufficientBalance = balanceBn < maxCost // balanceBn.lt(maxCost)
-  const buyDisabled = insufficientBalance || !this.state.valid || !isValidAddress || this.state.submitting
+  const buyDisabled =
+    insufficientBalance ||
+    !this.state.valid ||
+    !isValidAddress ||
+    this.state.submitting
   const showRejectAll = props.unconfTxListLength > 1
 
   this.inputs = []
 
-  return (
-
-    h('div', {
+  return h(
+    'div',
+    {
       key: txMeta.id,
-    }, [
-
-      h('form#pending-tx-form', {
-        onSubmit: this.onSubmit.bind(this),
-
-      }, [
-
-        // tx info
-        h('div', [
-
-          h('.flex-row.flex-center', {
-            style: {
-              maxWidth: '100%',
-            },
-          }, [
-
-            h(MiniAccountPanel, {
-              imageSeed: address,
-              picOrder: 'right',
-            }, [
-              h('span.font-small', {
+    },
+    [
+      h(
+        'form#pending-tx-form',
+        {
+          onSubmit: this.onSubmit.bind(this),
+        },
+        [
+          // tx info
+          h('div', [
+            h(
+              '.flex-row.flex-center',
+              {
                 style: {
-                  fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
+                  maxWidth: '100%',
                 },
-              }, identity.name),
-
-              h(Copyable, {
-                value: ethUtil.toChecksumAddress(address),
-              }, [
-                h('span.font-small', {
-                  style: {
-                    fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+              },
+              [
+                h(
+                  MiniAccountPanel,
+                  {
+                    imageSeed: address,
+                    picOrder: 'right',
                   },
-                }, addressSummary(address, 6, 4, false)),
-              ]),
+                  [
+                    h(
+                      'span.font-small',
+                      {
+                        style: {
+                          fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
+                        },
+                      },
+                      identity.name
+                    ),
 
-              h('span.font-small', {
-                style: {
-                  fontFamily: 'Montserrat Light, Montserrat, sans-serif',
-                },
-              }, [
-                h(EthBalance, {
-                  value: balance,
-                  conversionRate,
-                  currentCurrency,
-                  inline: true,
-                  labelColor: '#F7861C',
-                }),
-              ]),
-            ]),
+                    h(
+                      Copyable,
+                      {
+                        value: ethUtil.toChecksumAddress(address),
+                      },
+                      [
+                        h(
+                          'span.font-small',
+                          {
+                            style: {
+                              fontFamily:
+                                'Montserrat Light, Montserrat, sans-serif',
+                            },
+                          },
+                          addressSummary(address, 6, 4, false)
+                        ),
+                      ]
+                    ),
 
-            forwardCarrat(),
+                    h(
+                      'span.font-small',
+                      {
+                        style: {
+                          fontFamily:
+                            'Montserrat Light, Montserrat, sans-serif',
+                        },
+                      },
+                      [
+                        h(EthBalance, {
+                          value: balance,
+                          conversionRate,
+                          currentCurrency,
+                          inline: true,
+                          labelColor: '#F7861C',
+                        }),
+                      ]
+                    ),
+                  ]
+                ),
 
-            this.miniAccountPanelForRecipient(),
-          ]),
+                forwardCarrat(),
 
-          h('style', `
+                this.miniAccountPanelForRecipient(),
+              ]
+            ),
+
+            h(
+              'style',
+              `
             .table-box {
               margin: 7px 0px 0px 0px;
               width: 100%;
@@ -136,123 +167,176 @@ PendingTx.prototype.render = function () {
             .table-box .row .value {
               font-family: Montserrat Regular;
             }
-          `),
+          `
+            ),
 
-          h('.table-box', [
-
-            // Ether Value
-            // Currently not customizable, but easily modified
-            // in the way that gas and gasLimit currently are.
-            h('.row', [
-              h('.cell.label', 'Amount'),
-              h(EthBalance, { value: valueBn, currentCurrency, conversionRate }),
-            ]),
-
-            // Max Transaction Fee (calculated)
-            h('.cell.row', [
-              h('.cell.label', 'Transaction Fee'),
-              h(EthBalance, { value: txFeeBn.toString(), currentCurrency, conversionRate }),
-            ]),
-
-            h('.cell.row', {
-              style: {
-                fontFamily: 'Montserrat Regular',
-                background: 'white',
-                padding: '10px 25px',
-              },
-            }, [
-              h('.cell.label', 'Total'),
-              h('.cell.value', {
-                style: {
-                  display: 'flex',
-                  alignItems: 'center',
-                },
-              }, [
+            h('.table-box', [
+              // Ether Value
+              // Currently not customizable, but easily modified
+              // in the way that gas and gasLimit currently are.
+              h('.row', [
+                h('.cell.label', 'Amount'),
                 h(EthBalance, {
-                  value: maxCost.toString(),
+                  value: valueBn,
                   currentCurrency,
                   conversionRate,
-                  inline: true,
-                  labelColor: 'black',
-                  fontSize: '16px',
                 }),
               ]),
-            ]),
-          ]), // End of Table
 
-        ]),
+              // Max Transaction Fee (calculated)
+              h('.cell.row', [
+                h('.cell.label', 'Transaction Fee'),
+                h(EthBalance, {
+                  value: txFeeBn.toString(),
+                  currentCurrency,
+                  conversionRate,
+                }),
+              ]),
 
-        h('style', `
+              h(
+                '.cell.row',
+                {
+                  style: {
+                    fontFamily: 'Montserrat Regular',
+                    background: 'white',
+                    padding: '10px 25px',
+                  },
+                },
+                [
+                  h('.cell.label', 'Total'),
+                  h(
+                    '.cell.value',
+                    {
+                      style: {
+                        display: 'flex',
+                        alignItems: 'center',
+                      },
+                    },
+                    [
+                      h(EthBalance, {
+                        value: maxCost.toString(),
+                        currentCurrency,
+                        conversionRate,
+                        inline: true,
+                        labelColor: 'black',
+                        fontSize: '16px',
+                      }),
+                    ]
+                  ),
+                ]
+              ),
+            ]), // End of Table
+          ]),
+
+          h(
+            'style',
+            `
           .conf-buttons button {
             margin-left: 10px;
             text-transform: uppercase;
           }
-        `),
-        h('.cell.row', {
-          style: {
-            textAlign: 'center',
-          },
-        }, [
-          txMeta.simulationFails ?
-            h('.error', {
+        `
+          ),
+          h(
+            '.cell.row',
+            {
               style: {
-                fontSize: '0.9em',
+                textAlign: 'center',
               },
-            }, 'Transaction Error. Exception thrown in contract code.')
-          : null,
+            },
+            [
+              txMeta.simulationFails
+                ? h(
+                    '.error',
+                    {
+                      style: {
+                        fontSize: '0.9em',
+                      },
+                    },
+                    'Transaction Error. Exception thrown in contract code.'
+                  )
+                : null,
 
-          !isValidAddress ?
-            h('.error', {
+              !isValidAddress
+                ? h(
+                    '.error',
+                    {
+                      style: {
+                        fontSize: '0.9em',
+                      },
+                    },
+                    'Recipient address is invalid. Sending this transaction will result in a loss of ETH.'
+                  )
+                : null,
+
+              insufficientBalance
+                ? h(
+                    'span.error',
+                    {
+                      style: {
+                        fontSize: '0.9em',
+                      },
+                    },
+                    'Insufficient balance for transaction'
+                  )
+                : null,
+            ]
+          ),
+
+          // send + cancel
+          h(
+            '.flex-row.flex-space-around.conf-buttons',
+            {
               style: {
-                fontSize: '0.9em',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                margin: '14px 25px',
               },
-            }, 'Recipient address is invalid. Sending this transaction will result in a loss of ETH.')
-          : null,
+            },
+            [
+              // Accept Button or Buy Button
+              insufficientBalance
+                ? h('button.btn-green', { onClick: props.buyEth }, 'Buy BCH')
+                : h('input.confirm.btn-green', {
+                    type: 'submit',
+                    value: 'SUBMIT',
+                    style: { marginLeft: '10px' },
+                    disabled: buyDisabled,
+                  }),
 
-          insufficientBalance ?
-            h('span.error', {
-              style: {
-                fontSize: '0.9em',
-              },
-            }, 'Insufficient balance for transaction')
-          : null,
-        ]),
-
-
-        // send + cancel
-        h('.flex-row.flex-space-around.conf-buttons', {
-          style: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: '14px 25px',
-          },
-        }, [
-          // Accept Button or Buy Button
-          insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy BCH') :
-            h('input.confirm.btn-green', {
-              type: 'submit',
-              value: 'SUBMIT',
-              style: { marginLeft: '10px' },
-              disabled: buyDisabled,
-            }),
-
-          h('button.cancel.btn-red', {
-            onClick: props.cancelTransaction,
-          }, 'Reject'),
-        ]),
-        showRejectAll ? h('.flex-row.flex-space-around.conf-buttons', {
-          style: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: '14px 25px',
-          },
-        }, [
-          h('button.cancel.btn-red', {
-            onClick: props.cancelAllTransactions,
-          }, 'Reject All'),
-        ]) : null,
-      ]),
-    ])
+              h(
+                'button.cancel.btn-red',
+                {
+                  onClick: props.cancelTransaction,
+                },
+                'Reject'
+              ),
+            ]
+          ),
+          showRejectAll
+            ? h(
+                '.flex-row.flex-space-around.conf-buttons',
+                {
+                  style: {
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    margin: '14px 25px',
+                  },
+                },
+                [
+                  h(
+                    'button.cancel.btn-red',
+                    {
+                      onClick: props.cancelAllTransactions,
+                    },
+                    'Reject All'
+                  ),
+                ]
+              )
+            : null,
+        ]
+      ),
+    ]
   )
 }
 
@@ -264,40 +348,60 @@ PendingTx.prototype.miniAccountPanelForRecipient = function () {
 
   // If it's not a contract deploy, send to the account
   if (!isContractDeploy) {
-    return h(MiniAccountPanel, {
-      imageSeed: txParams.to,
-      picOrder: 'left',
-    }, [
-
-      h('span.font-small', {
-        style: {
-          fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
-        },
-      }, nameForAddress(txParams.to, props.identities)),
-
-      h(Copyable, {
-        value: ethUtil.toChecksumAddress(txParams.to),
-      }, [
-        h('span.font-small', {
-          style: {
-            fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+    return h(
+      MiniAccountPanel,
+      {
+        imageSeed: txParams.to,
+        picOrder: 'left',
+      },
+      [
+        h(
+          'span.font-small',
+          {
+            style: {
+              fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
+            },
           },
-        }, addressSummary(txParams.to, 6, 4, false)),
-      ]),
+          nameForAddress(txParams.to, props.identities)
+        ),
 
-    ])
+        h(
+          Copyable,
+          {
+            value: ethUtil.toChecksumAddress(txParams.to),
+          },
+          [
+            h(
+              'span.font-small',
+              {
+                style: {
+                  fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+                },
+              },
+              addressSummary(txParams.to, 6, 4, false)
+            ),
+          ]
+        ),
+      ]
+    )
   } else {
-    return h(MiniAccountPanel, {
-      picOrder: 'left',
-    }, [
-
-      h('span.font-small', {
-        style: {
-          fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
-        },
-      }, 'New Contract'),
-
-    ])
+    return h(
+      MiniAccountPanel,
+      {
+        picOrder: 'left',
+      },
+      [
+        h(
+          'span.font-small',
+          {
+            style: {
+              fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
+            },
+          },
+          'New Contract'
+        ),
+      ]
+    )
   }
 }
 
@@ -324,7 +428,11 @@ PendingTx.prototype.getFormEl = function () {
   const form = document.querySelector('form#pending-tx-form')
   // Stub out form for unit tests:
   if (!form) {
-    return { checkValidity () { return true } }
+    return {
+      checkValidity () {
+        return true
+      },
+    }
   }
   return form
 }
@@ -340,20 +448,22 @@ PendingTx.prototype.gatherTxMeta = function () {
   return txData
 }
 
-PendingTx.prototype.bnMultiplyByFraction = function (targetBN, numerator, denominator) {
+PendingTx.prototype.bnMultiplyByFraction = function (
+  targetBN,
+  numerator,
+  denominator
+) {
   const numBN = new BN(numerator)
   const denomBN = new BN(denominator)
   return targetBN.mul(numBN).div(denomBN)
 }
 
 function forwardCarrat () {
-  return (
-    h('img', {
-      src: 'images/forward-carrat.svg',
-      style: {
-        padding: '5px 6px 0px 10px',
-        height: '37px',
-      },
-    })
-  )
+  return h('img', {
+    src: 'images/forward-carrat.svg',
+    style: {
+      padding: '5px 6px 0px 10px',
+      height: '37px',
+    },
+  })
 }

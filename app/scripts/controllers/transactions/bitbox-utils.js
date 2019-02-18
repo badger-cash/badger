@@ -103,7 +103,7 @@ class BitboxUtils {
         const satoshisToSend = parseInt(txParams.value)
 
         // Calculate fee
-        let byteCount = BITBOX.BitcoinCash.getByteCount(
+        let byteCount = SLP.BitcoinCash.getByteCount(
           { P2PKH: spendableUtxos.length },
           { P2PKH: 2 }
         )
@@ -117,7 +117,7 @@ class BitboxUtils {
         }
 
         // TODO: support testnet
-        const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
 
         let totalUtxoAmount = 0
         spendableUtxos.forEach(utxo => {

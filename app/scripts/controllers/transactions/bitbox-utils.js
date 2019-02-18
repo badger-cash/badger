@@ -205,7 +205,7 @@ class BitboxUtils {
 
         const tokenReceiverAddressArray = [to, from]
 
-        const transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash')
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
 
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {

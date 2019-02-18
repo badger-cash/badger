@@ -1,5 +1,7 @@
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
 const BITBOX = new BITBOXSDK()
+const SLPSDK = require('slp-sdk/lib/SLP').default
+const SLP = new SLPSDK()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
 const WH = require('wormhole-sdk/lib/Wormhole').default
@@ -43,7 +45,7 @@ class BitboxUtils {
 
   static async getTransactionDetails (txid) {
     return new Promise((resolve, reject) => {
-      BITBOX.Transaction.details(txid).then(
+      SLP.Transaction.details(txid).then(
         result => {
           if (result) {
             resolve(result)
@@ -106,7 +108,8 @@ class BitboxUtils {
           { P2PKH: 2 }
         )
         if (txParams.opReturn) {
-          byteCount += this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
+          byteCount +=
+            this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
         }
 
         if (!spendableUtxos || spendableUtxos.length === 0) {
@@ -134,10 +137,7 @@ class BitboxUtils {
         // TODO: Allow dev to pass in "position" property for vout of opReturn
         if (txParams.opReturn) {
           const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
-          transactionBuilder.addOutput(
-            encodedOpReturn,
-            0
-          )
+          transactionBuilder.addOutput(encodedOpReturn, 0)
         }
 
         // Return remaining balance output

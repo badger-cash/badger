@@ -1,5 +1,3 @@
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
 const SLPSDK = require('slp-sdk/lib/SLP').default
 const SLP = new SLPSDK()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
@@ -12,12 +10,12 @@ const Wormhole = new WH({
 class BitboxUtils {
   static async getLargestUtxo (address) {
     return new Promise((resolve, reject) => {
-      BITBOX.Address.utxo(address).then(
+      SLP.Address.utxo(address).then(
         result => {
           try {
-            const utxo = result.sort((a, b) => {
+            const utxo = result.utxos.sort((a, b) => {
               return a.satoshis - b.satoshis
-            })[result.length - 1]
+            })[result.utxos.length - 1]
             resolve(utxo)
           } catch (ex) {
             reject(ex)
@@ -32,9 +30,9 @@ class BitboxUtils {
 
   static async getAllUtxo (address) {
     return new Promise((resolve, reject) => {
-      BITBOX.Address.utxo(address).then(
+      SLP.Address.utxo(address).then(
         result => {
-          resolve(result)
+          resolve(result.utxos)
         },
         err => {
           reject(err)
@@ -61,7 +59,7 @@ class BitboxUtils {
   }
 
   static encodeOpReturn (dataArray) {
-    const script = [BITBOX.Script.opcodes.OP_RETURN]
+    const script = [SLP.Script.opcodes.OP_RETURN]
     dataArray.forEach(data => {
       if (typeof data === 'string' && data.substring(0, 2) === '0x') {
         script.push(Buffer.from(data.substring(2), 'hex'))
@@ -69,7 +67,7 @@ class BitboxUtils {
         script.push(Buffer.from(data))
       }
     })
-    return BITBOX.Script.encode(script)
+    return SLP.Script.encode(script)
   }
 
   static async publishTx (hex) {

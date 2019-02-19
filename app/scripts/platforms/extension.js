@@ -47,10 +47,6 @@ class ExtensionPlatform {
   }
 
   showTransactionNotification (txMeta) {
-    this._showConfirmedTransaction(txMeta)
-  }
-
-  _showConfirmedTransaction (txMeta) {
     this._subscribeToNotificationClicked()
 
     const notifications = new Notifications()

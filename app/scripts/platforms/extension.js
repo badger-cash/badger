@@ -1,4 +1,5 @@
 const extension = require('extensionizer')
+const Notifications = require('../controllers/transactions/notifications')
 
 class ExtensionPlatform {
   //
@@ -46,30 +47,22 @@ class ExtensionPlatform {
   }
 
   showTransactionNotification (txMeta) {
-    const status = txMeta.status
-    if (status === 'confirmed') {
-      this._showConfirmedTransaction(txMeta)
-    } else if (status === 'failed') {
-      this._showFailedTransaction(txMeta)
-    }
+    this._showConfirmedTransaction(txMeta)
   }
 
   _showConfirmedTransaction (txMeta) {
     this._subscribeToNotificationClicked()
 
+    const notifications = new Notifications()
+    const notification = notifications.getNotification(txMeta)
     // TODO: set tx url by network
     // const url = explorerLink(txMeta.hash, parseInt(txMeta.metamaskNetworkId))
-    const url = `https://explorer.bitcoin.com/bch/tx/${txMeta.hash}`
 
-    const title = 'Confirmed transaction'
-    const message = `Transaction confirmed! View on Explorer`
-    this._showNotification(title, message, url)
-  }
-
-  _showFailedTransaction (txMeta) {
-    const title = 'Failed transaction'
-    const message = `Transaction failed! ${txMeta.err.message}`
-    this._showNotification(title, message)
+    this._showNotification(
+      notification.title,
+      notification.message,
+      notification.url
+    )
   }
 
   _showNotification (title, message, url) {

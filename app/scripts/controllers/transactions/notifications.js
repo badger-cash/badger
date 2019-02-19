@@ -1,6 +1,5 @@
 class Notifications {
   getNotification (txMeta) {
-    console.log('GETNOTIFICATION', txMeta)
     const notification = {}
     if (txMeta.status === 'failed') {
       notification.title = 'Failed transaction'

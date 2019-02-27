@@ -23,6 +23,7 @@ export default class TransactionListItem extends PureComponent {
     token: PropTypes.object,
     assetImages: PropTypes.object,
     tokenData: PropTypes.object,
+    selectedAddress: PropTypes.string,
   }
 
   state = {
@@ -67,7 +68,7 @@ export default class TransactionListItem extends PureComponent {
     // )
   }
 
-  renderPrimaryCurrency () {
+  renderPrimaryCurrency (currencyPrefix) {
     const {
       token,
       transaction: { txParams: { data } = {} } = {},
@@ -86,14 +87,14 @@ export default class TransactionListItem extends PureComponent {
         className="transaction-list-item__amount transaction-list-item__amount--primary"
         token={token}
         transactionData={data}
-        prefix="-"
+        prefix={currencyPrefix}
         amount={txParams.value}
       />
     ) : (
       <CurrencyDisplay
         className="transaction-list-item__amount transaction-list-item__amount--primary"
         value={value}
-        prefix="-"
+        prefix={currencyPrefix}
         numberOfDecimals={8}
         currency={BCH}
         fromDenomination="SAT"
@@ -101,13 +102,13 @@ export default class TransactionListItem extends PureComponent {
     )
   }
 
-  renderSecondaryCurrency () {
+  renderSecondaryCurrency (currencyPrefix) {
     const { token, value, transaction: { txParams } = {} } = this.props
 
     return txParams.sendTokenData ? null : (
       <CurrencyDisplay
         className="transaction-list-item__amount transaction-list-item__amount--secondary"
-        prefix="-"
+        prefix={currencyPrefix}
         value={value}
         fromDenomination="SAT"
       />
@@ -122,15 +123,32 @@ export default class TransactionListItem extends PureComponent {
       nonceAndDate,
       assetImages,
       tokenData,
+      selectedAddress,
     } = this.props
     const { txParams = {} } = transaction
     const { showTransactionDetails } = this.state
+    const fromAddress = txParams.from
     const toAddress = tokenData
       ? (tokenData.params &&
           tokenData.params[0] &&
           tokenData.params[0].value) ||
         txParams.to
       : txParams.to
+
+    // Determine sent or received
+    let currencyPrefix = ''
+    let actionPrefix = ''
+    if (fromAddress === toAddress) {
+      // Send to self
+    } else if (selectedAddress === fromAddress) {
+      // Sent tx
+      currencyPrefix = '-'
+      actionPrefix = 'Sent'
+    } else if (selectedAddress === toAddress) {
+      // Received tx
+      currencyPrefix = '+'
+      actionPrefix = 'Received'
+    }
 
     return (
       <div className="transaction-list-item">
@@ -144,6 +162,7 @@ export default class TransactionListItem extends PureComponent {
           <TransactionAction
             transaction={transaction}
             methodData={methodData}
+            actionPrefix={actionPrefix}
             className="transaction-list-item__action"
           />
           {/* <div className="transaction-list-item__nonce" title={nonceAndDate}>
@@ -159,8 +178,8 @@ export default class TransactionListItem extends PureComponent {
             }
             transaction={transaction}
           />
-          {this.renderPrimaryCurrency()}
-          {this.renderSecondaryCurrency()}
+          {this.renderPrimaryCurrency(currencyPrefix)}
+          {this.renderSecondaryCurrency(currencyPrefix)}
         </div>
         {showTransactionDetails && (
           <div className="transaction-list-item__details-container">

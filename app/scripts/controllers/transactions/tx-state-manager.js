@@ -120,14 +120,19 @@ class TransactionStateManager extends EventEmitter {
     @returns {object} the txMeta
   */
   addTx (txMeta) {
-    this.once(`${txMeta.id}:signed`, function (txId) {
-      this.removeAllListeners(`${txMeta.id}:rejected`)
-    })
-    this.once(`${txMeta.id}:rejected`, function (txId) {
-      this.removeAllListeners(`${txMeta.id}:signed`)
-    })
+    // Monitor incomplete transactions
+    if (txMeta.status !== 'confirmed') {
+      this.once(`${txMeta.id}:signed`, function (txId) {
+        this.removeAllListeners(`${txMeta.id}:rejected`)
+      })
+      this.once(`${txMeta.id}:rejected`, function (txId) {
+        this.removeAllListeners(`${txMeta.id}:signed`)
+      })
+    }
+
     // initialize history
     txMeta.history = []
+    
     // capture initial snapshot of txMeta for history
     const snapshot = txStateHistoryHelper.snapshotFromTxMeta(txMeta)
     txMeta.history.push(snapshot)
@@ -141,7 +146,7 @@ class TransactionStateManager extends EventEmitter {
     // and then if it is removes only confirmed
     // or rejected tx's.
     // not tx's that are pending or unapproved
-    if (txCount > txHistoryLimit - 1) {
+    if (this.txHistoryLimit && txCount > txHistoryLimit - 1) {
       const index = transactions.findIndex(metaTx => {
         return getFinalStates().includes(metaTx.status)
       })

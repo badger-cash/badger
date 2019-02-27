@@ -586,7 +586,7 @@ class AccountTracker {
       let value = 0
       if (toAddress && fromAddress !== toAddress) {
         value = tx.out.reduce((accumulator, currentValue) => {
-          if (currentValue.e && currentValue.e.a === toAddress && currentValue.e.v) {
+          if (currentValue.e && `bitcoincash:${currentValue.e.a}` === toAddress && currentValue.e.v) {
             accumulator += currentValue.e.v
           }
           return accumulator

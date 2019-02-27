@@ -194,10 +194,19 @@ class BitboxUtils {
 
         const tokenChangeAmount = tokenBalance.minus(tokenSendAmount)
 
-        const sendOpReturn = slpjs.slp.buildSendOpReturn({
-          tokenIdHex: txParams.sendTokenData.tokenId,
-          outputQtyArray: [tokenSendAmount, tokenChangeAmount],
-        })
+        let sendOpReturn
+
+        if (tokenChangeAmount.isGreaterThan(0)) {
+          sendOpReturn = slpjs.slp.buildSendOpReturn({
+            tokenIdHex: txParams.sendTokenData.tokenId,
+            outputQtyArray: [ tokenSendAmount, tokenChangeAmount ],
+          })
+        } else {
+          sendOpReturn = slpjs.slp.buildSendOpReturn({
+            tokenIdHex: txParams.sendTokenData.tokenId,
+            outputQtyArray: [ tokenSendAmount ],
+          })
+        }
 
         const inputUtxos = spendableUtxos.concat(spendableTokenUtxos)
 
@@ -227,7 +236,9 @@ class BitboxUtils {
         transactionBuilder.addOutput(to, 546)
 
         // Return remaining token balance output
-        transactionBuilder.addOutput(from, 546)
+        if (tokenChangeAmount.isGreaterThan(0)) {
+          transactionBuilder.addOutput(from, 546)
+        }
 
         // Return remaining bch balance output
         transactionBuilder.addOutput(from, satoshisRemaining + 546)

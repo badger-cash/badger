@@ -568,9 +568,14 @@ class TransactionController extends EventEmitter {
     const historicalTransactions = Object.assign({}, this.gethistoricalTransactions())
     if (!historicalTransactions) return
 
+    const txHistory = this.txStateManager.getFilteredTxList({
+      metamaskNetworkId: this.getNetwork(),
+    })
+
     Object.keys(historicalTransactions)
       .forEach(address => {
-        historicalTransactions[address].forEach(tx => {
+        for (let tx of historicalTransactions[address]) {
+          if (txHistory.some(txh => txh.hash === tx.hash)) continue
           const txMeta = Object.assign(
             this.txStateManager.generateTxMeta(tx),
             {
@@ -578,8 +583,8 @@ class TransactionController extends EventEmitter {
             },
             tx,
           )
-          this.addTx(txMeta)
-        })
+          this.txStateManager.addTx(txMeta)
+        }
       })
   }
 

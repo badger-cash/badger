@@ -84,6 +84,16 @@ class Info extends Component {
             [h('span.settings__info-link', this.context.t('emailUs'))]
           ),
         ]),
+        h('div.settings__info-link-item', [
+          h(
+            'a',
+            {
+              target: '_blank',
+              href: 'https://t.me/joinchat/IoTQ_hGflnfwd3YJSF8cRQ',
+            },
+            [h('span.settings__info-link', 'Join our telegram')]
+          ),
+        ]),
       ]
     )
   }

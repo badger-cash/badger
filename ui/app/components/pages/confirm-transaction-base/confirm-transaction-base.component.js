@@ -132,16 +132,20 @@ export default class ConfirmTransactionBase extends Component {
 
     let insufficientTokens = !!txParams.sendTokenData
     if (txParams.sendTokenData) {
-      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
-        token => token.address === txParams.sendTokenData.tokenId
-      )
-      insufficientTokens = tokenToSend
-        ? !isTokenBalanceSufficient({
-            tokenBalance: tokenToSend.string,
-            amount,
-            decimals: tokenToSend.decimals,
-          })
-        : true
+      if (accountTokens && accountTokens[txParams.from] && accountTokens[txParams.from]['mainnet']) {
+        const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
+          token => token.address === txParams.sendTokenData.tokenId
+        )
+        insufficientTokens = tokenToSend
+          ? !isTokenBalanceSufficient({
+              tokenBalance: tokenToSend.string,
+              amount,
+              decimals: tokenToSend.decimals,
+            })
+          : true
+      } else {
+        insufficientTokens = true
+      }
     }
 
     if (insufficientTokens) {
@@ -360,12 +364,20 @@ export default class ConfirmTransactionBase extends Component {
 
     // Send Token Settings
     if (txParams.sendTokenData) {
-      const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
-        token => token.address === txParams.sendTokenData.tokenId
-      )
+      let tokenToSend = null
+
+      // Set token if metadata exists
+      try {
+        tokenToSend = accountTokens[txParams.from]['mainnet'].find(
+          token => token.address === txParams.sendTokenData.tokenId
+        )
+      } catch (err) {
+        // Token not found
+      }
+
       title = tokenToSend
         ? `${txParams.value} ${tokenToSend.symbol}`
-        : 'UNKNOWN TOKEN'
+        : 'Unknown Token'
       subtitle = tokenToSend
         ? txParams.sendTokenData.tokenProtocol === 'slp'
           ? 'Simple Ledger Protocol'
@@ -376,7 +388,7 @@ export default class ConfirmTransactionBase extends Component {
       // Update sendTokenData symbol
       txParams.sendTokenData.tokenSymbol = tokenToSend
         ? tokenToSend.symbol
-        : 'UNKNOWN TOKEN'
+        : 'Unknown Token'
     }
 
     return (

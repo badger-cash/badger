@@ -78,7 +78,7 @@ export default class TransactionList extends PureComponent {
     return (
       <TransactionListItem
         transaction={transaction}
-        key={transaction.id}
+        key={`${selectedAddress}${transaction.id}`}
         showRetry={this.shouldShowRetry(transaction)}
         token={selectedToken}
         assetImages={assetImages}

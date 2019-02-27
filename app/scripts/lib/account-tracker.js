@@ -600,7 +600,7 @@ class AccountTracker {
           to: toAddress,
           value: new BigNumber(value).toString(),
         },
-        time: tx.blk && tx.blk.t ? tx.blk.t : new Date(tx.time).getTime(),
+        time: tx.blk && tx.blk.t ? new Date(tx.blk.t).getTime() : new Date().getTime(),
         status: 'confirmed',
         // TODO: Track pending transactions
         // status: tx.blk && tx.blk.i ? 'confirmed' : 'submitted',

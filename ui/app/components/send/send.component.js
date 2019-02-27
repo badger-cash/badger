@@ -193,7 +193,7 @@ export default class SendTransactionScreen extends PersistentForm {
   }
 
   render () {
-    const { history, showHexData } = this.props
+    const { history, showHexData, selectedToken } = this.props
 
     return (
       <div className="page-container">
@@ -202,6 +202,7 @@ export default class SendTransactionScreen extends PersistentForm {
           updateGas={updateData => this.updateGas(updateData)}
           scanQrCode={_ => this.props.scanQrCode()}
           showHexData={showHexData}
+          selectedToken={selectedToken}
         />
         <SendFooter history={history} />
       </div>

@@ -552,19 +552,58 @@ class AccountTracker {
     const historicalTransactions = Object.assign({}, mutableHistoricalTransactions)
     if (!historicalTransactions[address]) historicalTransactions[address] = []
 
-    const addressTransactions = await axios.get(`https://rest.bitcoin.com/v2/address/transactions/${address}?page=0`)
+    const addressTransactions = await this.getHistoricalBchTransactions(address)
 
-    addressTransactions.data.txs.forEach(tx => {
+    addressTransactions.forEach(tx => {
+      // Determine from address
+      const fromAddresses = tx.in
+        .filter(input => input.e && input.e.a)
+        .map(input => `bitcoincash:${input.e.a}`)
+        .reduce((accumulator, currentValue) => {
+          if (!accumulator.find(element => element === currentValue)) {
+            accumulator.push(currentValue)
+          }
+          return accumulator
+        }, [])
+      const fromAddress = fromAddresses.length === 1 ? fromAddresses[0] : null
+
+      // Determine to address
+      const toAddresses = tx.out
+        .filter(output => output.e && output.e.a)
+        .map(output => `bitcoincash:${output.e.a}`)
+        .reduce((accumulator, currentValue) => {
+          if (!accumulator.find(element => element === currentValue)) {
+            accumulator.push(currentValue)
+          }
+          return accumulator
+        }, [])
+      let toAddress = toAddresses.length === 1 ? toAddresses[0] : null
+      if (toAddresses.length === 2 && toAddresses.find(element => element === fromAddress)) {
+        toAddress = toAddresses.filter(element => element !== fromAddress)[0]
+      }
+
+      // Determine value
+      let value = 0
+      if (toAddress && fromAddress !== toAddress) {
+        value = tx.out.reduce((accumulator, currentValue) => {
+          if (currentValue.e && currentValue.e.a === toAddress && currentValue.e.v) {
+            accumulator += currentValue.e.v
+          }
+          return accumulator
+        }, 0)
+      }
+
       const historicalTx = {
-        hash: tx.txid,
+        hash: tx.tx.h,
         txParams: {
-          from: 'fromaddr',
-          to: address,
-          amount: tx.valueOut.toString(),
+          from: fromAddress,
+          to: toAddress,
+          value: new BigNumber(value).toString(),
         },
-        id: tx.txid,
-        time: new Date(tx.time).getTime(),
-        status: parseInt(tx.confirmations) ? 'confirmed' : 'submitted',
+        time: tx.blk && tx.blk.t ? tx.blk.t : new Date(tx.time).getTime(),
+        status: 'confirmed',
+        // TODO: Track pending transactions
+        // status: tx.blk && tx.blk.i ? 'confirmed' : 'submitted',
         metamaskNetworkId: 'mainnet',
         loadingDefaults: false,
       }
@@ -575,6 +614,51 @@ class AccountTracker {
 
     mutableHistoricalTransactions[address] = historicalTransactions[address]
     this.store.updateState({ historicalTransactions })
+  }
+
+  async getHistoricalBchTransactions (address) {
+    const query = {
+      'v': 3,
+      'q': {
+        'find':
+        {
+          '$query':
+          {
+            '$or':
+            [
+              {
+                'in.e.a': address.slice(12),
+              },
+              {
+                'out.e.a': address.slice(12),
+              },
+            ],
+            'out.h1':
+            {
+              '$ne': '534c5000',
+            },
+          },
+          '$orderby':
+          {
+            'blk.i': -1,
+          },
+        },
+        'limit': 50,
+      },
+    }
+    const s = JSON.stringify(query)
+    const b64 = Buffer.from(s).toString('base64')
+    const url = `https://bitdb.bitcoin.com/q/${b64}`
+    const result = await axios.get(url)
+    let transactions = []
+    if (result.data && result.data.c) {
+      transactions = transactions.concat(result.data.c)
+    }
+    if (result.data && result.data.u) {
+      transactions = transactions.concat(result.data.u)
+    }
+
+    return transactions
   }
 }
 

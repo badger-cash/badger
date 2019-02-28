@@ -92,7 +92,10 @@ class TransactionController extends EventEmitter {
     this.txStateManager.store.subscribe(() => this._updateMemstore())
     this.networkStore.subscribe(() => this._updateMemstore())
     this.preferencesStore.subscribe(() => this._updateMemstore())
-    this.accountTrackerStore.subscribe(() => this._updateMemstore())
+    this.accountTrackerStore.subscribe(() => {
+      this._updateHistoricalTransactions()
+      this._updateMemstore()
+    })
   }
 
   /** @returns {number} the chainId*/
@@ -196,6 +199,7 @@ class TransactionController extends EventEmitter {
       type: TRANSACTION_TYPE_STANDARD,
     })
     this.addTx(txMeta)
+
     this.emit('newUnapprovedTx', txMeta)
 
     try {
@@ -472,6 +476,9 @@ class TransactionController extends EventEmitter {
     /** @returns the token metadata cache */
     this.getTokenMetadataCache = () =>
       this.accountTrackerStore.getState().tokenCache
+    /** @returns historicalTransactions */
+    this.gethistoricalTransactions = () =>
+      this.accountTrackerStore.getState().historicalTransactions
     /** Returns an array of transactions whos status is unapproved */
     this.getUnapprovedTxCount = () =>
       Object.keys(this.txStateManager.getUnapprovedTxList()).length
@@ -555,14 +562,45 @@ class TransactionController extends EventEmitter {
   }
 
   /**
+    Updates tx history with historicalTransactions from account-tracker
+  */
+  _updateHistoricalTransactions () {
+    const historicalTransactions = Object.assign({}, this.gethistoricalTransactions())
+    if (!historicalTransactions) return
+
+    const txHistory = this.txStateManager.getFilteredTxList({
+      metamaskNetworkId: this.getNetwork(),
+    })
+
+    Object.keys(historicalTransactions)
+      .forEach(address => {
+        for (let tx of historicalTransactions[address]) {
+          if (txHistory.some(txh => txh.hash === tx.hash
+            && txh.txParams.from === tx.txParams.from
+            && txh.txParams.to === tx.txParams.to
+          )) {
+            continue
+          }
+          const txMeta = Object.assign(
+            this.txStateManager.generateTxMeta(tx),
+            {
+              type: TRANSACTION_TYPE_STANDARD,
+            },
+            tx,
+          )
+          this.txStateManager.addTx(txMeta)
+        }
+      })
+  }
+
+  /**
     Updates the memStore in transaction controller
   */
   _updateMemstore () {
     const unapprovedTxs = this.txStateManager.getUnapprovedTxList()
     const selectedAddressTxList = this.txStateManager.getFilteredTxList({
-      from: this.getSelectedAddress(),
       metamaskNetworkId: this.getNetwork(),
-    })
+    }).filter(tx => tx.txParams.from === this.getSelectedAddress() || tx.txParams.to === this.getSelectedAddress())
     this.memStore.updateState({ unapprovedTxs, selectedAddressTxList })
   }
 }

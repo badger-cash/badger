@@ -8,7 +8,7 @@ import debounce from 'lodash.debounce'
 import { markNoticeRead } from '../../../../ui/app/actions'
 import Identicon from '../../../../ui/app/components/identicon'
 import Breadcrumbs from './breadcrumbs'
-import { INITIALIZE_BACKUP_PHRASE_ROUTE } from '../../../../ui/app/routes'
+import { DEFAULT_ROUTE } from '../../../../ui/app/routes'
 import LoadingScreen from './loading-screen'
 
 class NoticeScreen extends Component {
@@ -40,7 +40,7 @@ class NoticeScreen extends Component {
 
   componentDidMount () {
     if (this.props.noActiveNotices) {
-      this.props.history.push(INITIALIZE_BACKUP_PHRASE_ROUTE)
+      this.props.history.push(DEFAULT_ROUTE)
     }
 
     this.onScroll()
@@ -51,7 +51,7 @@ class NoticeScreen extends Component {
     markNoticeRead(nextUnreadNotice)
       .then(hasActiveNotices => {
         if (!hasActiveNotices) {
-          history.push(INITIALIZE_BACKUP_PHRASE_ROUTE)
+          history.push(DEFAULT_ROUTE)
         } else {
           this.setState({ atBottom: false })
           this.onScroll()

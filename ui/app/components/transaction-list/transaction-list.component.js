@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import TransactionListItem from '../transaction-list-item'
-import ShapeShiftTransactionListItem from '../shift-list-item'
-import { TRANSACTION_TYPE_SHAPESHIFT } from '../../constants/transactions'
 
 export default class TransactionList extends PureComponent {
   static contextTypes = {
@@ -22,6 +20,7 @@ export default class TransactionList extends PureComponent {
     selectedToken: PropTypes.object,
     updateNetworkNonce: PropTypes.func,
     assetImages: PropTypes.object,
+    selectedAddress: PropTypes.string,
   }
 
   componentDidMount () {
@@ -74,20 +73,16 @@ export default class TransactionList extends PureComponent {
   }
 
   renderTransaction (transaction, index) {
-    const { selectedToken, assetImages } = this.props
+    const { selectedToken, assetImages, selectedAddress } = this.props
 
-    return transaction.key === TRANSACTION_TYPE_SHAPESHIFT ? (
-      <ShapeShiftTransactionListItem
-        {...transaction}
-        key={`shapeshift${index}`}
-      />
-    ) : (
+    return (
       <TransactionListItem
         transaction={transaction}
-        key={transaction.id}
+        key={`${selectedAddress}${transaction.id}`}
         showRetry={this.shouldShowRetry(transaction)}
         token={selectedToken}
         assetImages={assetImages}
+        selectedAddress={selectedAddress}
       />
     )
   }

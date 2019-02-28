@@ -166,7 +166,7 @@ module.exports = class MetamaskController extends EventEmitter {
       networkStore: this.networkController.networkStore,
       preferencesStore: this.preferencesController.store,
       accountTracker: this.accountTracker,
-      txHistoryLimit: 40,
+      txHistoryLimit: 0,
       getNetwork: this.networkController.getNetworkState.bind(this),
       signTransaction: this.keyringController.signTransaction.bind(
         this.keyringController

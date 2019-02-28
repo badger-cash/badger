@@ -467,7 +467,7 @@
     "message": "Hide Token?"
   },
   "history": {
-    "message": "Send History"
+    "message": "Transaction History"
   },
   "howToDeposit": {
     "message": "How would you like to deposit Bitcoin Cash?"
@@ -676,10 +676,10 @@
     "message": "No Conversion Rate Available"
   },
   "noTransactionHistory": {
-    "message": "No sent transaction history."
+    "message": "No transaction history."
   },
   "noTransactions": {
-    "message": "You have no sent transactions"
+    "message": "You have no transactions"
   },
   "notFound": {
     "message": "Not Found"
@@ -1047,8 +1047,7 @@
     "message": "Sign Message"
   },
   "signNotice": {
-    "message":
-      "Only sign requests from \nsites you fully trust."
+    "message": "Only sign requests from \nsites you fully trust."
   },
   "sigRequest": {
     "message": "CashID Request"

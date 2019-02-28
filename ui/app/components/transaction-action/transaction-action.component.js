@@ -11,6 +11,7 @@ export default class TransactionAction extends PureComponent {
     className: PropTypes.string,
     transaction: PropTypes.object,
     methodData: PropTypes.object,
+    actionPrefix: PropTypes.string,
   }
 
   state = {
@@ -27,7 +28,7 @@ export default class TransactionAction extends PureComponent {
 
   async getTransactionAction () {
     const { transactionAction } = this.state
-    const { transaction, methodData } = this.props
+    const { transaction, methodData, actionPrefix } = this.props
     const { data, done } = methodData
 
     if (!done || transactionAction) {
@@ -37,8 +38,12 @@ export default class TransactionAction extends PureComponent {
     const actionKey = await getTransactionActionKey(transaction, data)
     let action = actionKey && this.context.tOrDefault(actionKey)
 
+    if (actionKey === 'sentBitcoinCash') {
+      action = `${actionPrefix} Bitcoin Cash`
+    }
+
     if (transaction && transaction.txParams && transaction.txParams.sendTokenData) {
-      action = `Sent ${transaction.txParams.sendTokenData.tokenSymbol}`
+      action = `${actionPrefix} ${transaction.txParams.sendTokenData.tokenSymbol}`
     }
 
     this.setState({ transactionAction: action })

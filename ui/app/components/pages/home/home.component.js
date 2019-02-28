@@ -45,17 +45,11 @@ export default class Home extends PureComponent {
       noActiveNotices,
       lostAccounts,
       forgottenPassword,
-      seedWords,
     } = this.props
 
     // notices
     if (!noActiveNotices || (lostAccounts && lostAccounts.length > 0)) {
       return <Redirect to={{ pathname: NOTICE_ROUTE }} />
-    }
-
-    // seed words
-    if (seedWords) {
-      return <Redirect to={{ pathname: INITIALIZE_BACKUP_PHRASE_ROUTE }} />
     }
 
     if (forgottenPassword) {

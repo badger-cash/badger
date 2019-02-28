@@ -676,10 +676,10 @@
     "message": "No Conversion Rate Available"
   },
   "noTransactionHistory": {
-    "message": "No sent transaction history."
+    "message": "No transaction history."
   },
   "noTransactions": {
-    "message": "You have no sent transactions"
+    "message": "You have no transactions"
   },
   "notFound": {
     "message": "Not Found"

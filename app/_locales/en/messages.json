@@ -467,7 +467,7 @@
     "message": "Hide Token?"
   },
   "history": {
-    "message": "Send History"
+    "message": "Transaction History"
   },
   "howToDeposit": {
     "message": "How would you like to deposit Bitcoin Cash?"
@@ -1047,8 +1047,7 @@
     "message": "Sign Message"
   },
   "signNotice": {
-    "message":
-      "Only sign requests from \nsites you fully trust."
+    "message": "Only sign requests from \nsites you fully trust."
   },
   "sigRequest": {
     "message": "CashID Request"

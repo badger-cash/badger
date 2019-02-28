@@ -118,7 +118,7 @@ export default class QrScanner extends Component {
       content.split('bitcoincash:').length > 1 ||
       content.split('simpleledger:').length > 1
     ) {
-      // Cash Address format
+      // Cash and SimpleLedger Address format
       type = 'address'
       values = { address: content }
     } else if (

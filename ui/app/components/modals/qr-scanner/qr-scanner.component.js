@@ -115,8 +115,8 @@ export default class QrScanner extends Component {
 
     // Bitcoin Cash address links - fox ex. ethereum:0x.....1111
     if (
-      content.split('bitcoincash:').length > 1 ||
-      content.split('simpleledger:').length > 1
+      (content.split('bitcoincash:').length > 1 && content.length === 54) ||
+      (content.split('simpleledger:').length > 1 && content.length === 55)
     ) {
       // Cash and SimpleLedger Address format
       type = 'address'

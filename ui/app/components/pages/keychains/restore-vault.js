@@ -8,8 +8,8 @@ import {
 } from '../../../actions'
 import { DEFAULT_ROUTE } from '../../../routes'
 import TextField from '../../text-field'
-const SLPSDK = require('slp-sdk/lib/SLP').default
-const SLP = new SLPSDK()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 class RestoreVaultPage extends Component {
   static contextTypes = {
@@ -38,9 +38,9 @@ class RestoreVaultPage extends Component {
   }
 
   validateSeedPhrase = (seedPhrase, lang = 'english') => {
-    const validated = SLP.Mnemonic.validate(
+    const validated = BITBOX.Mnemonic.validate(
       seedPhrase,
-      SLP.Mnemonic.wordLists()[lang]
+      BITBOX.Mnemonic.wordLists()[lang]
     )
     return validated
   }

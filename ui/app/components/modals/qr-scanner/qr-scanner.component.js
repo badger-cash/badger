@@ -114,12 +114,18 @@ export default class QrScanner extends Component {
     // For ex. EIP-681 (https://eips.ethereum.org/EIPS/eip-681)
 
     // Bitcoin Cash address links - fox ex. ethereum:0x.....1111
-    if (content.split('ethereum:').length > 1) {
+    if (
+      (content.split('bitcoincash:').length > 1 && content.length === 54) ||
+      (content.split('simpleledger:').length > 1 && content.length === 55)
+    ) {
+      // Cash and SimpleLedger Address format
       type = 'address'
-      values = { address: content.split('ethereum:')[1] }
-
-      // Regular ethereum addresses - fox ex. 0x.....1111
-    } else if (content.substring(0, 2).toLowerCase() === '0x') {
+      values = { address: content }
+    } else if (
+      (content.substring(0, 1).toLowerCase() === 'q' &&
+        content.length === 42) ||
+      (content.substring(0, 1).toLowerCase() === 'p' || content.length === 42)
+    ) {
       type = 'address'
       values = { address: content }
     }

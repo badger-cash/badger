@@ -15,8 +15,8 @@ const EthBalance = require('./eth-balance')
 const addressSummary = util.addressSummary
 const nameForAddress = require('../../lib/contract-namer')
 
-const SLPSDK = require('slp-sdk/lib/SLP').default
-const SLP = new SLPSDK()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 module.exports = PendingTx
 inherits(PendingTx, Component)
@@ -47,9 +47,9 @@ PendingTx.prototype.render = function () {
   const isValidAddress = !txParams.to || util.isValidAddress(txParams.to)
 
   // Calculate fee @ 1 sat/byte
-  const txFeeBn = SLP.BitcoinCash.getByteCount({ P2PKH: 1 }, { P2PKH: 2 })
+  const txFeeBn = BITBOX.BitcoinCash.getByteCount({ P2PKH: 1 }, { P2PKH: 2 })
 
-  const valueBn = SLP.BitcoinCash.toSatoshi(txParams.value) // new BN(txParams.value)
+  const valueBn = BITBOX.BitcoinCash.toSatoshi(txParams.value) // new BN(txParams.value)
   const maxCost = txFeeBn + valueBn // txFeeBn.add(valueBn)
 
   const balanceBn = balance // new BN(balance)

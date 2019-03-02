@@ -1,3 +1,5 @@
-Please take a moment to back up your seed phrase again
+Please take a moment to back up your seed words
 
-Badger has become aware of a previous issue where a very small number of users were shown the wrong seed phrase to back up. The only way to protect yourself from this issue, is to back up your seed phrase again now.
+Backing up your seed words will allow you to recover all of your funds.
+
+You can access your seed words with the "Reveal Seed Words" button in the Badger Settings.

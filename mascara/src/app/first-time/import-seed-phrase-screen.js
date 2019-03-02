@@ -9,8 +9,8 @@ import {
 import { INITIALIZE_NOTICE_ROUTE } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
 
-const SLPSDK = require('slp-sdk/lib/SLP').default
-const SLP = new SLPSDK()
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
+const BITBOX = new BITBOXSDK()
 
 class ImportSeedPhraseScreen extends Component {
   static contextTypes = {
@@ -39,9 +39,9 @@ class ImportSeedPhraseScreen extends Component {
   }
 
   validateSeedPhrase = (seedPhrase, lang = 'english') => {
-    const validated = SLP.Mnemonic.validate(
+    const validated = BITBOX.Mnemonic.validate(
       seedPhrase,
-      SLP.Mnemonic.wordLists()[lang]
+      BITBOX.Mnemonic.wordLists()[lang]
     )
     return validated
   }

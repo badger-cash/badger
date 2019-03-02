@@ -575,7 +575,12 @@ class TransactionController extends EventEmitter {
     Object.keys(historicalTransactions)
       .forEach(address => {
         for (let tx of historicalTransactions[address]) {
-          if (txHistory.some(txh => txh.hash === tx.hash)) continue
+          if (txHistory.some(txh => txh.hash === tx.hash
+            && txh.txParams.from === tx.txParams.from
+            && txh.txParams.to === tx.txParams.to
+          )) {
+            continue
+          }
           const txMeta = Object.assign(
             this.txStateManager.generateTxMeta(tx),
             {

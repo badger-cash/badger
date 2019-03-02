@@ -565,7 +565,10 @@ class AccountTracker {
           }
           return accumulator
         }, [])
-      const fromAddress = fromAddresses.length === 1 ? fromAddresses[0] : null
+      let fromAddress = fromAddresses.length === 1 ? fromAddresses[0] : null
+      if (!fromAddress && fromAddresses.includes(address)) {
+        fromAddress = address
+      }
 
       // Determine to address
       const toAddresses = tx.out
@@ -578,8 +581,10 @@ class AccountTracker {
           return accumulator
         }, [])
       let toAddress = toAddresses.length === 1 ? toAddresses[0] : null
-      if (toAddresses.length === 2 && toAddresses.find(element => element === fromAddress)) {
+      if (!toAddress && toAddresses.length === 2 && toAddresses.find(element => element === fromAddress)) {
         toAddress = toAddresses.filter(element => element !== fromAddress)[0]
+      } else if (!toAddress && toAddresses.includes(address)) {
+        toAddress = address
       }
 
       // Determine value

@@ -108,12 +108,6 @@ export default class QrScanner extends Component {
   parseContent (content) {
     let type = 'unknown'
     let values = {}
-
-    // Here we could add more cases
-    // To parse other type of links
-    // For ex. EIP-681 (https://eips.ethereum.org/EIPS/eip-681)
-
-    // Bitcoin Cash address links - fox ex. ethereum:0x.....1111
     if (
       (content.split('bitcoincash:').length > 1 && content.length === 54) ||
       (content.split('simpleledger:').length > 1 && content.length === 55)

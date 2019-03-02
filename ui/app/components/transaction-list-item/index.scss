@@ -118,3 +118,11 @@
     width: 100%;
   }
 }
+
+.transaction-list-item.received {
+  background: #e6ffe6;
+}
+
+.transaction-list-item.sent {
+  background: #ffcccc;
+}

@@ -151,7 +151,7 @@ export default class TransactionListItem extends PureComponent {
     }
 
     return (
-      <div className="transaction-list-item">
+      <div className={`transaction-list-item ${actionPrefix.toLowerCase()}`}>
         <div className="transaction-list-item__grid" onClick={this.handleClick}>
           <Identicon
             className="transaction-list-item__identicon"
@@ -165,10 +165,10 @@ export default class TransactionListItem extends PureComponent {
             actionPrefix={actionPrefix}
             className="transaction-list-item__action"
           />
-          {/* <div className="transaction-list-item__nonce" title={nonceAndDate}>
+          <div className="transaction-list-item__nonce" title={nonceAndDate}>
             {nonceAndDate}
-          </div> */}
-          <TransactionStatus
+          </div>
+          {/* <TransactionStatus
             className="transaction-list-item__status"
             statusKey={transaction.status}
             title={
@@ -177,7 +177,7 @@ export default class TransactionListItem extends PureComponent {
                 : transaction.err && transaction.err.message
             }
             transaction={transaction}
-          />
+          /> */}
           {this.renderPrimaryCurrency(currencyPrefix)}
           {this.renderSecondaryCurrency(currencyPrefix)}
         </div>

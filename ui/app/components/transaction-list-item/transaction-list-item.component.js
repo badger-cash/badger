@@ -6,6 +6,7 @@ import TransactionAction from '../transaction-action'
 import CurrencyDisplay from '../currency-display'
 import TokenCurrencyDisplay from '../token-currency-display'
 import TransactionListItemDetails from '../transaction-list-item-details'
+const recipientWhitelist = require('../../../../app/scripts/controllers/transactions/lib/recipient-whitelist')
 import { CONFIRM_TRANSACTION_ROUTE } from '../../routes'
 import { UNAPPROVED_STATUS } from '../../constants/transactions'
 import { BCH } from '../../constants/common'
@@ -138,16 +139,29 @@ export default class TransactionListItem extends PureComponent {
     // Determine sent or received
     let currencyPrefix = ''
     let actionPrefix = ''
+    let img = assetImages[toAddress]
     if (fromAddress === toAddress) {
       // Send to self
     } else if (selectedAddress === fromAddress) {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
+      if (
+        recipientWhitelist.whitelist.satoshidice.includes(
+          toAddress.split(':')[1]
+        )
+      ) {
+        actionPrefix = 'Sent to SatoshiDice'
+        img = 'images/satoshidice.png'
+      }
     } else if (selectedAddress === toAddress) {
       // Received tx
       currencyPrefix = '+'
       actionPrefix = 'Received'
+      if (transaction.txParams.from === null) {
+        actionPrefix = 'SatoshiDice Win'
+        img = 'images/satoshidice.png'
+      }
     }
 
     return (
@@ -157,7 +171,7 @@ export default class TransactionListItem extends PureComponent {
             className="transaction-list-item__identicon"
             address={toAddress}
             diameter={34}
-            image={assetImages[toAddress]}
+            image={img}
           />
           <TransactionAction
             transaction={transaction}

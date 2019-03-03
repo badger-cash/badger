@@ -119,10 +119,11 @@
   }
 }
 
-.transaction-list-item.received {
-  background: #e6ffe6;
+.transaction-list-item.received,
+.transaction-list-item.win {
+  background: #f6fff4;
 }
 
 .transaction-list-item.sent {
-  background: #ffcccc;
+  background: #fff4f4;
 }

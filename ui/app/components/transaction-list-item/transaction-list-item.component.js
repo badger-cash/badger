@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Identicon from '../identicon'
-import TransactionStatus from '../transaction-status'
+// import TransactionStatus from '../transaction-status'
 import TransactionAction from '../transaction-action'
 import CurrencyDisplay from '../currency-display'
 import TokenCurrencyDisplay from '../token-currency-display'
@@ -146,12 +146,13 @@ export default class TransactionListItem extends PureComponent {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
-      if (
-        recipientWhitelist.whitelist.satoshidice.includes(
-          toAddress.split(':')[1]
-        )
-      ) {
+      if (recipientWhitelist.satoshidice.includes(toAddress.split(':')[1])) {
         actionPrefix = 'Sent to SatoshiDice'
+        img = 'images/satoshidice.png'
+      } else if (
+        recipientWhitelist.satoshistack.includes(toAddress.split(':')[1])
+      ) {
+        actionPrefix = 'Sent to SatoshiStack'
         img = 'images/satoshidice.png'
       }
     } else if (selectedAddress === toAddress) {

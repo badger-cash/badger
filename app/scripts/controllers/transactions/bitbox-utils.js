@@ -76,7 +76,9 @@ class BitboxUtils {
         // TODO: pass back result instead of result[0] after we update REST to return string instead of array
         result => {
           try {
-            if (result[0].length !== 64) {
+            if (result[0].error) {
+              reject('Transaction failed: ' + result[0].error)
+            } else if (result[0].length !== 64) {
               // TODO: Validate result is a txid
               reject('Transaction failed: ' + result)
             } else {

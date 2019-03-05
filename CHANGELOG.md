@@ -2,6 +2,9 @@
 
 ## Current Develop Branch
 
+## 0.3.1
+-Improve error messages
+
 ## 0.3.0
 -Show recent BCH send and receive transaction history
 -Add telegram link to info page

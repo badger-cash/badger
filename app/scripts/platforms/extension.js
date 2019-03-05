@@ -68,7 +68,7 @@ class ExtensionPlatform {
 
   _showFailedTransaction (txMeta) {
     const title = 'Failed transaction'
-    const message = `Transaction failed! ${txMeta.err.message}`
+    const message = `Transaction failed: ${txMeta.err.message}`
     this._showNotification(title, message)
   }
 

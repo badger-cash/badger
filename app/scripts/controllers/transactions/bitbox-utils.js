@@ -78,7 +78,7 @@ class BitboxUtils {
           try {
             if (result[0].length !== 64) {
               // TODO: Validate result is a txid
-              reject('Transaction failed: ' + result)
+              reject(result)
             } else {
               resolve(result[0])
             }
@@ -87,7 +87,11 @@ class BitboxUtils {
           }
         },
         err => {
-          reject(err)
+          if (err.error) {
+            reject(err.error)
+          } else {
+            reject(err)
+          }
         }
       )
     })

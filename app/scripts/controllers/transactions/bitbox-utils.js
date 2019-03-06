@@ -1,4 +1,4 @@
-const SLPSDK = require('slp-sdk/lib/SLP').default
+const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')

@@ -176,9 +176,6 @@ CurrencyDisplay.prototype.render = function () {
     primaryCurrency = selectedToken.symbol
     convertedValueToRender = '0.00'
   }
-  var n = parseInt(valueToRender.replace(/\D/g, ''), 10)
-
-  console.log('VALUETORENDER', n.toLocaleString())
 
   return h(
     'div',

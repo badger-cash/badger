@@ -3,7 +3,6 @@ const formatTokenAmount = amount => {
   try {
     const value = parseFloat(amount)
     const formatted = value.toLocaleString()
-    console.log('FORAMTTED', formatted)
     return formatted
   } catch (e) {
     return amount

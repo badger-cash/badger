@@ -559,12 +559,6 @@ class AccountTracker {
     const addressTransactions = await this.getHistoricalBchTransactions(address)
 
     addressTransactions.forEach(tx => {
-      // if (tx.in.length === 2) {
-      //   tx.in.forEach(t => {
-      //     console.log('ADDRESSTRANSACTIONS', t.e.a)
-      //   })
-      // }
-      // Determine from address
       const fromAddresses = tx.in
         .filter(input => input.e && input.e.a)
         .map(input => `bitcoincash:${input.e.a}`)
@@ -574,7 +568,6 @@ class AccountTracker {
           }
           return accumulator
         }, [])
-      console.log('FROMADDRESSES', fromAddresses)
       let fromAddress = fromAddresses.length === 1 ? fromAddresses[0] : null
       if (!fromAddress && fromAddresses.includes(address)) {
         fromAddress = address
@@ -619,7 +612,8 @@ class AccountTracker {
       const historicalTx = {
         hash: tx.tx.h,
         txParams: {
-          from: fromAddresses,
+          // from: fromAddresses,
+          from: fromAddress,
           to: toAddress,
           value: new BigNumber(value).toString(),
         },

@@ -10,6 +10,8 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
     isValidBchAddress(to)
   } catch (error) {
     toError = INVALID_RECIPIENT_ADDRESS_ERROR
+  } else if (toError === 'invalid') {
+    toError = INVALID_RECIPIENT_ADDRESS_ERROR
   }
   if (toError !== null) {
     try {

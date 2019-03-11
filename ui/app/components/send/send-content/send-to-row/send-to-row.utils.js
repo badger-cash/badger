@@ -9,6 +9,8 @@ function getToErrorObject (to, toError = null) {
     toError = REQUIRED_ERROR
   } else if (!isValidAddress(to) && !toError) {
     toError = INVALID_RECIPIENT_ADDRESS_ERROR
+  } else if (toError === 'invalid') {
+    toError = INVALID_RECIPIENT_ADDRESS_ERROR
   }
 
   return { to: toError }

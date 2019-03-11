@@ -12,6 +12,8 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
     toError = INVALID_RECIPIENT_ADDRESS_ERROR
   } else if (!toError && selectedToken && selectedToken.protocol === 'slp' && !isValidSlpAddress(to)) {
     toError = INVALID_RECIPIENT_ADDRESS_ERROR
+  } else if (toError === 'invalid') {
+    toError = INVALID_RECIPIENT_ADDRESS_ERROR
   }
 
   return { to: toError }

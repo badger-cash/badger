@@ -20,6 +20,7 @@ export default class SendToRow extends Component {
     updateSendTo: PropTypes.func,
     updateSendToError: PropTypes.func,
     scanQrCode: PropTypes.func,
+    tokenContract: PropTypes.object,
     selectedToken: PropTypes.object,
   }
 
@@ -27,31 +28,35 @@ export default class SendToRow extends Component {
     t: PropTypes.func,
   }
 
-  //
+  // immediate validation
   componentDidMount () {
     this.handleToChange('', '', '')
   }
 
-  validateAddress (string) {
-    if (cashAccountRegex.test(string)) {
-      return true
-    }
-    if (cashAddrRegex.test(string)) {
-      return true
-    }
-    if (slpRegex.test(string)) {
+  validateSLP (string) {
+    return slpRegex.test(string)
+  }
+
+  validateBCH (string) {
+    if (cashAccountRegex.test(string) || cashAddrRegex.test(string)) {
       return true
     }
     return false
   }
 
   handleToChange (to, nickname = '', toError) {
-    const { updateSendTo, updateSendToError, selectedToken } = this.props
-    const toErrorObject = getToErrorObject(to, toError, selectedToken)
-    
-    const valid = this.validateAddress(to)
+
+    const { updateSendTo, updateSendToError, selectedToken, tokenContract } = this.props
+    let toErrorObject = getToErrorObject(to, toError)
+    let valid
+
+    if (selectedToken !== null && tokenContract !== null) {
+      valid = this.validateSLP(to)
+    } else {
+      valid = this.validateBCH(to)
+    }
     if (!valid) {
-      toErrorObject = getToErrorObject(to, 'invalid address')
+      toErrorObject = getToErrorObject(to, 'invalid')
     }
     
     updateSendTo(to, nickname)

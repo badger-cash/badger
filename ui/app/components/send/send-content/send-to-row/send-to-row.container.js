@@ -3,6 +3,8 @@ import {
   getCurrentNetwork,
   getSendTo,
   getSendToAccounts,
+  getSelectedToken,
+  getSelectedTokenContract,
 } from '../../send.selectors.js'
 import { getToDropdownOpen, sendToIsInError } from './send-to-row.selectors.js'
 import { updateSendTo } from '../../../../actions'
@@ -25,6 +27,8 @@ function mapStateToProps (state) {
     to: getSendTo(state),
     toAccounts: getSendToAccounts(state),
     toDropdownOpen: getToDropdownOpen(state),
+    selectedToken: getSelectedToken(state),
+    tokenContract: getSelectedTokenContract(state),
   }
 }
 

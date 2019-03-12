@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PageContainerFooter from '../../page-container/page-container-footer'
 import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
+import axios from 'axios'
+import CashAccount from '../../../../../app/scripts/lib/cashaccount'
 
 export default class SendFooter extends Component {
   static propTypes = {
@@ -28,12 +30,16 @@ export default class SendFooter extends Component {
     t: PropTypes.func,
   }
 
+  state = {
+    err: false,
+  }
+
   onCancel () {
     this.props.clearSend()
     this.props.history.push(DEFAULT_ROUTE)
   }
 
-  onSubmit (event) {
+  async onSubmit (event) {
     event.preventDefault()
     const {
       addToAddressBookIfNew,
@@ -43,13 +49,32 @@ export default class SendFooter extends Component {
       from: { address: from },
       selectedToken,
       sign,
-      to,
       unapprovedTxs,
       // updateTx,
       update,
-      toAccounts,
       history,
     } = this.props
+    let { to, toAccounts } = this.props
+
+    if (CashAccount.isCashAccount(to)) {
+      toAccounts.name = to
+      const addr = await CashAccount.getAddressByCashAccount(to)
+
+      if (addr === undefined) {
+        return this.setState({ err: 'not a valid cash account' })
+      } else {
+        this.setState({ err: '' })
+
+        to = addr.information.payment[0].address
+        toAccounts.address = to
+
+        const type = addr.information.payment[0].type
+
+        if (type === 'Payment Code') {
+          this.setState({ err: 'Payment type not supported yet' })
+        }
+      }
+    }
 
     // Should not be needed because submit should be disabled if there are errors.
     // const noErrors = !amountError && toError === null
@@ -69,11 +94,16 @@ export default class SendFooter extends Component {
           from,
           selectedToken,
           to,
-          unapprovedTxs,
+          unapprovedTxs
         })
       : sign({ data, selectedToken, to, amount, from })
 
-    Promise.resolve(promise).then(() => history.push(CONFIRM_TRANSACTION_ROUTE))
+    if (this.state.err === '') {
+      Promise.resolve(promise).then(() => {
+        this.setState({ err: '' })
+        history.push(CONFIRM_TRANSACTION_ROUTE)
+      })
+    }
   }
 
   formShouldBeDisabled () {
@@ -83,12 +113,28 @@ export default class SendFooter extends Component {
   }
 
   render () {
+    const { err } = this.state
+
     return (
       <PageContainerFooter
-        onCancel={() => this.onCancel()}
+        onCancel ={() => this.onCancel()}
         onSubmit={e => this.onSubmit(e)}
         disabled={this.formShouldBeDisabled()}
-      />
+      >
+        {err !== '' && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '-28px',
+              fontSize: '12px',
+              lineHeight: '12px',
+              color: '#f00',
+            }}
+          >
+            {err}
+          </div>
+        )}
+      </PageContainerFooter>
     )
   }
 }

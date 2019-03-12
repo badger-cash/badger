@@ -73,14 +73,12 @@ class BitboxUtils {
   static async publishTx (hex) {
     return new Promise((resolve, reject) => {
       SLP.RawTransactions.sendRawTransaction(hex).then(
-        // TODO: pass back result instead of result[0] after we update REST to return string instead of array
         result => {
           try {
             if (result.length !== 64) {
-              // TODO: Validate result is a txid
               reject(result)
             } else {
-              resolve(result[0])
+              resolve(result)
             }
           } catch (ex) {
             reject(ex)

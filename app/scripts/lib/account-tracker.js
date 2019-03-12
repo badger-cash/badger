@@ -621,7 +621,7 @@ class AccountTracker {
         },
         time:
           tx.blk && tx.blk.t
-            ? new Date(tx.blk.t).getTime()
+            ? tx.blk.t * 1000
             : new Date().getTime(),
         status: 'confirmed',
         // TODO: Track pending transactions

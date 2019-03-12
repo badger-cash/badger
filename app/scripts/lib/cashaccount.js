@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios')
 
 class CashAccount {
   /**
@@ -10,21 +10,27 @@ class CashAccount {
    * @memberof CashAccount
    */
   static async getAddressByCashAccount(string) {
-    let split = string.split('#');
-    let name = split[0];
-    let number = split[1];
+    const split = string.split('#')
 
-    let data = await axios
-      .get(`http://api.cashaccount.info/account/${number}/${name}`)
+    const name = split[0]
+
+    const number = split[1]
+    const csplit = number.split('.')
+    const url = `https://api.cashaccount.info/account/${csplit[0]}/${name}/${
+      csplit.length === 2 ? csplit[1] : ''
+    }`
+
+    const data = await axios
+      .get(url)
       .then(x => {
-        return x.data;
+        return x.data
       })
       .catch(err => {
-        console.log(err.response);
-      });
+        console.log(err.response)
+      })
 
-    console.log('data cashacount', data);
-    return data;
+    // console.log('data cashacount', data)
+    return data
   }
 
   /**
@@ -35,11 +41,11 @@ class CashAccount {
    * @returns {boolean}
    * @memberof CashAccount
    */
-  static isCashAccount(string) {
-    const cashAccountRegex = /^([a-zA-Z0-9_]+)(#([0-9]+)(([0-9]+))).([0-9]+)?$/i;
+  static isCashAccount (string) {
+    const cashAccountRegex = /^([a-zA-Z0-9_]+)(#([0-9]+)(([0-9]+))).([0-9]+)?$/i
 
-    return cashAccountRegex.test(string);
+    return cashAccountRegex.test(string)
   }
 }
 
-module.exports = CashAccount;
+module.exports = CashAccount

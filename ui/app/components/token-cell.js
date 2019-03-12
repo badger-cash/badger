@@ -92,6 +92,11 @@ TokenCell.prototype.render = function () {
   const showFiat =
     Boolean(currentTokenInFiat) && currentCurrency.toUpperCase() !== symbol
 
+  let formattedSymbol = symbol.slice(0, 13)
+  if (symbol.length > 13) {
+    formattedSymbol += '...'
+  }
+
   return h(
     'div.token-list-item',
     {
@@ -120,7 +125,7 @@ TokenCell.prototype.render = function () {
       h('div.token-list-item__balance-ellipsis', null, [
         h('div.token-list-item__balance-wrapper', null, [
           h('div.token-list-item__token-balance', `${formattedTokenAmount || '0'}`),
-          h('div.token-list-item__token-symbol', symbol),
+          h('div.token-list-item__token-symbol', formattedSymbol),
           h(
             'div.token-list-item__fiat-amount',
             {

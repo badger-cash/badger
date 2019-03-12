@@ -15,6 +15,8 @@ import {
   INSUFFICIENT_TOKENS_ERROR_KEY,
 } from '../../../constants/error-keys'
 
+import localStorage from 'store';
+
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -282,6 +284,8 @@ export default class ConfirmTransactionBase extends Component {
       clearConfirmTransaction,
     } = this.props
 
+    localStorage.remove('cashAccount')
+
     if (onCancel) {
       onCancel(txData)
     } else {
@@ -301,6 +305,8 @@ export default class ConfirmTransactionBase extends Component {
       onSubmit,
     } = this.props
     const { submitting } = this.state
+
+    localStorage.remove('cashAccount')
 
     if (submitting) {
       return

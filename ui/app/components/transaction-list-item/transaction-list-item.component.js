@@ -136,6 +136,16 @@ export default class TransactionListItem extends PureComponent {
         txParams.to
       : txParams.to
 
+    const toAddresses = txParams.toAddresses ? txParams.toAddresses : []
+    if (toAddress) {
+      toAddresses.push(toAddress)
+    }
+
+    const fromAddresses = txParams.fromAddresses ? txParams.fromAddresses : []
+    if (fromAddress) {
+      fromAddresses.push(toAddress)
+    }
+
     // Determine sent or received
     let currencyPrefix = ''
     let actionPrefix = ''
@@ -146,11 +156,11 @@ export default class TransactionListItem extends PureComponent {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
-      if (recipientWhitelist.satoshidice.includes(toAddress.split(':')[1])) {
+      if (toAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
         actionPrefix = 'Sent to SatoshiDice'
         img = 'images/satoshidice.png'
       } else if (
-        recipientWhitelist.satoshistack.includes(toAddress.split(':')[1])
+        toAddresses.some(address => recipientWhitelist.satoshistack.includes(address.split(':')[1]))
       ) {
         actionPrefix = 'Sent to SatoshiStack'
         img = 'images/satoshidice.png'
@@ -159,7 +169,7 @@ export default class TransactionListItem extends PureComponent {
       // Received tx
       currencyPrefix = '+'
       actionPrefix = 'Received'
-      if (transaction.txParams.from === null) {
+      if (fromAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
         actionPrefix = 'SatoshiDice Win'
         img = 'images/satoshidice.png'
       }

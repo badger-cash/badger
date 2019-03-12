@@ -76,7 +76,7 @@ class BitboxUtils {
         // TODO: pass back result instead of result[0] after we update REST to return string instead of array
         result => {
           try {
-            if (result[0].length !== 64) {
+            if (result.length !== 64) {
               // TODO: Validate result is a txid
               reject(result)
             } else {
@@ -134,7 +134,9 @@ class BitboxUtils {
 
         // Verify sufficient fee
         if (satoshisRemaining < 0) {
-          throw new Error('Not enough Bitcoin Cash for fee. Deposit a small amount and try again.')
+          throw new Error(
+            'Not enough Bitcoin Cash for fee. Deposit a small amount and try again.'
+          )
         }
 
         // Destination output
@@ -192,7 +194,9 @@ class BitboxUtils {
         const tokenSendAmount = scaledTokenSendAmount.times(10 ** tokenDecimals)
 
         if (tokenSendAmount.lt(1)) {
-          throw new Error('Amount below minimum for this token. Increase the send amount and try again.')
+          throw new Error(
+            'Amount below minimum for this token. Increase the send amount and try again.'
+          )
         }
 
         let tokenBalance = new BigNumber(0)
@@ -235,7 +239,9 @@ class BitboxUtils {
 
         // Verify sufficient fee
         if (satoshisRemaining < 0) {
-          throw new Error('Not enough Bitcoin Cash for fee. Deposit a small amount and try again.')
+          throw new Error(
+            'Not enough Bitcoin Cash for fee. Deposit a small amount and try again.'
+          )
         }
 
         // SLP data output

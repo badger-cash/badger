@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PageContainerFooter from '../../page-container/page-container-footer'
 import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
-import axios from 'axios'
 import CashAccount from '../../../../../app/scripts/lib/cashaccount'
+import localStorage from 'store';
 
 export default class SendFooter extends Component {
   static propTypes = {
@@ -63,6 +63,7 @@ export default class SendFooter extends Component {
       if (addr === undefined) {
         return this.setState({ err: 'not a valid cash account' })
       } else {
+        localStorage.set('cashAccount', addr.information)
         this.setState({ err: '' })
 
         to = addr.information.payment[0].address

@@ -615,6 +615,8 @@ class AccountTracker {
           // from: fromAddresses,
           from: fromAddress,
           to: toAddress,
+          fromAddresses: fromAddresses,
+          toAddresses: toAddresses,
           value: new BigNumber(value).toString(),
         },
         time:

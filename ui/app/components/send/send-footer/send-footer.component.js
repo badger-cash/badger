@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import PageContainerFooter from '../../page-container/page-container-footer'
 import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
 import CashAccount from '../../../../../app/scripts/lib/cashaccount'
-import localStorage from 'store';
+import localStorage from 'store'
 
 export default class SendFooter extends Component {
   static propTypes = {
@@ -31,7 +31,7 @@ export default class SendFooter extends Component {
   }
 
   state = {
-    err: false,
+    err: '',
   }
 
   onCancel () {
@@ -95,7 +95,7 @@ export default class SendFooter extends Component {
           from,
           selectedToken,
           to,
-          unapprovedTxs
+          unapprovedTxs,
         })
       : sign({ data, selectedToken, to, amount, from })
 
@@ -108,7 +108,7 @@ export default class SendFooter extends Component {
   }
 
   formShouldBeDisabled () {
-    const { inError, selectedToken, tokenBalance, to } = this.props
+    const { inError, selectedToken, to } = this.props
     const missingTokenBalance = selectedToken && !selectedToken.string
     return inError || missingTokenBalance || !to
   }

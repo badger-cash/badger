@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Identicon from '../identicon'
-import TransactionStatus from '../transaction-status'
+// import TransactionStatus from '../transaction-status'
 import TransactionAction from '../transaction-action'
 import CurrencyDisplay from '../currency-display'
 import TokenCurrencyDisplay from '../token-currency-display'
 import TransactionListItemDetails from '../transaction-list-item-details'
+const recipientWhitelist = require('../../../../app/scripts/controllers/transactions/lib/recipient-whitelist')
 import { CONFIRM_TRANSACTION_ROUTE } from '../../routes'
 import { UNAPPROVED_STATUS } from '../../constants/transactions'
 import { BCH } from '../../constants/common'
@@ -135,29 +136,56 @@ export default class TransactionListItem extends PureComponent {
         txParams.to
       : txParams.to
 
+    const toAddresses = txParams.toAddresses ? txParams.toAddresses : []
+    if (toAddress) {
+      toAddresses.push(toAddress)
+    }
+
+    const fromAddresses = txParams.fromAddresses ? txParams.fromAddresses : []
+    if (fromAddress) {
+      fromAddresses.push(toAddress)
+    }
+
     // Determine sent or received
     let currencyPrefix = ''
     let actionPrefix = ''
+    let img = assetImages[toAddress]
     if (fromAddress === toAddress) {
       // Send to self
     } else if (selectedAddress === fromAddress) {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
+      if (toAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
+        actionPrefix = 'Sent to SatoshiDice'
+        img = 'images/satoshidice.png'
+      } else if (
+        toAddresses.some(address => recipientWhitelist.satoshistack.includes(address.split(':')[1]))
+      ) {
+        actionPrefix = 'Sent to SatoshiStack'
+        img = 'images/satoshidice.png'
+      }
     } else if (selectedAddress === toAddress) {
       // Received tx
       currencyPrefix = '+'
       actionPrefix = 'Received'
+      if (fromAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
+        actionPrefix = 'SatoshiDice Win'
+        img = 'images/satoshidice.png'
+      } else if (fromAddresses.some(address => recipientWhitelist.satoshistack.includes(address.split(':')[1]))) {
+        actionPrefix = 'SatoshiStack Win'
+        img = 'images/satoshidice.png'
+      }
     }
 
     return (
-      <div className="transaction-list-item">
+      <div className={`transaction-list-item ${actionPrefix.toLowerCase()}`}>
         <div className="transaction-list-item__grid" onClick={this.handleClick}>
           <Identicon
             className="transaction-list-item__identicon"
             address={toAddress}
             diameter={34}
-            image={assetImages[toAddress]}
+            image={img}
           />
           <TransactionAction
             transaction={transaction}
@@ -165,10 +193,10 @@ export default class TransactionListItem extends PureComponent {
             actionPrefix={actionPrefix}
             className="transaction-list-item__action"
           />
-          {/* <div className="transaction-list-item__nonce" title={nonceAndDate}>
+          <div className="transaction-list-item__nonce" title={nonceAndDate}>
             {nonceAndDate}
-          </div> */}
-          <TransactionStatus
+          </div>
+          {/* <TransactionStatus
             className="transaction-list-item__status"
             statusKey={transaction.status}
             title={
@@ -177,7 +205,7 @@ export default class TransactionListItem extends PureComponent {
                 : transaction.err && transaction.err.message
             }
             transaction={transaction}
-          />
+          /> */}
           {this.renderPrimaryCurrency(currencyPrefix)}
           {this.renderSecondaryCurrency(currencyPrefix)}
         </div>

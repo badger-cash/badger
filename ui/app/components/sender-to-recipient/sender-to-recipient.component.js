@@ -10,6 +10,7 @@ const variantHash = {
   [DEFAULT_VARIANT]: 'sender-to-recipient--default',
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
 }
+const bchaddr = require('bchaddrjs-slp')
 
 export default class SenderToRecipient extends PureComponent {
   static propTypes = {
@@ -21,6 +22,7 @@ export default class SenderToRecipient extends PureComponent {
     variant: PropTypes.oneOf([DEFAULT_VARIANT, CARDS_VARIANT]),
     addressOnly: PropTypes.bool,
     assetImage: PropTypes.string,
+    subtitle: PropTypes.string,
   }
 
   static defaultProps = {
@@ -87,7 +89,17 @@ export default class SenderToRecipient extends PureComponent {
 
   renderRecipientWithAddress () {
     const { t } = this.context
-    const { recipientName, recipientAddress, addressOnly } = this.props
+    const { subtitle, addressOnly } = this.props
+    let { recipientAddress, recipientName } = this.props
+
+    if (subtitle === 'Simple Ledger Protocol') {
+      recipientAddress = bchaddr.toSlpAddress(recipientAddress)
+      recipientName = `${recipientAddress.substring(
+        0,
+        6
+      )}...${recipientAddress.substr(-4)}`
+    }
+
 
     return (
       <div

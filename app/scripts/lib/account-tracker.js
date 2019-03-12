@@ -445,9 +445,9 @@ class AccountTracker {
           const addTokenData = {
             address: key,
             symbol: tokenMetadata.ticker
-              ? tokenMetadata.ticker.slice(0, 12)
+              ? tokenMetadata.ticker.slice(0, 24)
               : tokenMetadata.name
-                ? tokenMetadata.name.slice(0, 12)
+                ? tokenMetadata.name.slice(0, 24)
                 : 'N/A',
             decimals: tokenMetadata.decimals,
             string: tokenMetadata.decimals
@@ -548,14 +548,17 @@ class AccountTracker {
   }
 
   async _updateHistoricalTransactions (address) {
-    const mutableHistoricalTransactions = this.store.getState().historicalTransactions
-    const historicalTransactions = Object.assign({}, mutableHistoricalTransactions)
+    const mutableHistoricalTransactions = this.store.getState()
+      .historicalTransactions
+    const historicalTransactions = Object.assign(
+      {},
+      mutableHistoricalTransactions
+    )
     if (!historicalTransactions[address]) historicalTransactions[address] = []
 
     const addressTransactions = await this.getHistoricalBchTransactions(address)
 
     addressTransactions.forEach(tx => {
-      // Determine from address
       const fromAddresses = tx.in
         .filter(input => input.e && input.e.a)
         .map(input => `bitcoincash:${input.e.a}`)
@@ -581,7 +584,11 @@ class AccountTracker {
           return accumulator
         }, [])
       let toAddress = toAddresses.length === 1 ? toAddresses[0] : null
-      if (!toAddress && toAddresses.length === 2 && toAddresses.find(element => element === fromAddress)) {
+      if (
+        !toAddress &&
+        toAddresses.length === 2 &&
+        toAddresses.find(element => element === fromAddress)
+      ) {
         toAddress = toAddresses.filter(element => element !== fromAddress)[0]
       } else if (!toAddress && toAddresses.includes(address)) {
         toAddress = address
@@ -591,7 +598,11 @@ class AccountTracker {
       let value = 0
       if (toAddress && fromAddress !== toAddress) {
         value = tx.out.reduce((accumulator, currentValue) => {
-          if (currentValue.e && `bitcoincash:${currentValue.e.a}` === toAddress && currentValue.e.v) {
+          if (
+            currentValue.e &&
+            `bitcoincash:${currentValue.e.a}` === toAddress &&
+            currentValue.e.v
+          ) {
             accumulator += currentValue.e.v
           }
           return accumulator
@@ -601,18 +612,28 @@ class AccountTracker {
       const historicalTx = {
         hash: tx.tx.h,
         txParams: {
+          // from: fromAddresses,
           from: fromAddress,
           to: toAddress,
+          fromAddresses: fromAddresses,
+          toAddresses: toAddresses,
           value: new BigNumber(value).toString(),
         },
-        time: tx.blk && tx.blk.t ? new Date(tx.blk.t).getTime() : new Date().getTime(),
+        time:
+          tx.blk && tx.blk.t
+            ? tx.blk.t * 1000
+            : new Date().getTime(),
         status: 'confirmed',
         // TODO: Track pending transactions
         // status: tx.blk && tx.blk.i ? 'confirmed' : 'submitted',
         metamaskNetworkId: 'mainnet',
         loadingDefaults: false,
       }
-      if (historicalTransactions[address].filter(htx => htx.hash === historicalTx.hash).length === 0) {
+      if (
+        historicalTransactions[address].filter(
+          htx => htx.hash === historicalTx.hash
+        ).length === 0
+      ) {
         historicalTransactions[address].push(historicalTx)
       }
     })
@@ -623,14 +644,11 @@ class AccountTracker {
 
   async getHistoricalBchTransactions (address) {
     const query = {
-      'v': 3,
-      'q': {
-        'find':
-        {
-          '$query':
-          {
-            '$or':
-            [
+      v: 3,
+      q: {
+        find: {
+          $query: {
+            $or: [
               {
                 'in.e.a': address.slice(12),
               },
@@ -638,17 +656,15 @@ class AccountTracker {
                 'out.e.a': address.slice(12),
               },
             ],
-            'out.h1':
-            {
-              '$ne': '534c5000',
+            'out.h1': {
+              $ne: '534c5000',
             },
           },
-          '$orderby':
-          {
+          $orderby: {
             'blk.i': -1,
           },
         },
-        'limit': 50,
+        limit: 50,
       },
     }
     const s = JSON.stringify(query)

@@ -88,6 +88,7 @@ export default class ConfirmPageContainer extends Component {
             recipientName={toName}
             recipientAddress={toAddress}
             assetImage={renderAssetImage ? assetImage : undefined}
+            subtitle={subtitle}
           />
         </ConfirmPageContainerHeader>
         {contentComponent || (

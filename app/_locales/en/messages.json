@@ -962,7 +962,7 @@
     "message": "Only send BCH to a Bitcoin Cash address."
   },
   "onlySendTokensToAccountAddress": {
-    "message": "Only send $1 to a Bitcoin Cash address.",
+    "message": "Only send $1 to a Simple Ledger address.",
     "description": "displays token symbol"
   },
   "orderOneHere": {

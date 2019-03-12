@@ -565,32 +565,38 @@ class TransactionController extends EventEmitter {
     Updates tx history with historicalTransactions from account-tracker
   */
   _updateHistoricalTransactions () {
-    const historicalTransactions = Object.assign({}, this.gethistoricalTransactions())
+    const historicalTransactions = Object.assign(
+      {},
+      this.gethistoricalTransactions()
+    )
     if (!historicalTransactions) return
 
     const txHistory = this.txStateManager.getFilteredTxList({
       metamaskNetworkId: this.getNetwork(),
     })
 
-    Object.keys(historicalTransactions)
-      .forEach(address => {
-        for (let tx of historicalTransactions[address]) {
-          if (txHistory.some(txh => txh.hash === tx.hash
-            && txh.txParams.from === tx.txParams.from
-            && txh.txParams.to === tx.txParams.to
-          )) {
-            continue
-          }
-          const txMeta = Object.assign(
-            this.txStateManager.generateTxMeta(tx),
-            {
-              type: TRANSACTION_TYPE_STANDARD,
-            },
-            tx,
+    Object.keys(historicalTransactions).forEach(address => {
+      for (const tx of historicalTransactions[address]) {
+        if (
+          txHistory.some(
+            txh =>
+              txh.hash === tx.hash &&
+              txh.txParams.from === tx.txParams.from &&
+              txh.txParams.to === tx.txParams.to
           )
-          this.txStateManager.addTx(txMeta)
+        ) {
+          continue
         }
-      })
+        const txMeta = Object.assign(
+          this.txStateManager.generateTxMeta(tx),
+          {
+            type: TRANSACTION_TYPE_STANDARD,
+          },
+          tx
+        )
+        this.txStateManager.addTx(txMeta)
+      }
+    })
   }
 
   /**
@@ -598,9 +604,15 @@ class TransactionController extends EventEmitter {
   */
   _updateMemstore () {
     const unapprovedTxs = this.txStateManager.getUnapprovedTxList()
-    const selectedAddressTxList = this.txStateManager.getFilteredTxList({
-      metamaskNetworkId: this.getNetwork(),
-    }).filter(tx => tx.txParams.from === this.getSelectedAddress() || tx.txParams.to === this.getSelectedAddress())
+    const selectedAddressTxList = this.txStateManager
+      .getFilteredTxList({
+        metamaskNetworkId: this.getNetwork(),
+      })
+      .filter(
+        tx =>
+          tx.txParams.from === this.getSelectedAddress() ||
+          tx.txParams.to === this.getSelectedAddress()
+      )
     this.memStore.updateState({ unapprovedTxs, selectedAddressTxList })
   }
 }

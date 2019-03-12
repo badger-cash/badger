@@ -39,24 +39,31 @@ export default class TransactionAction extends PureComponent {
     let action = actionKey && this.context.tOrDefault(actionKey)
 
     if (actionKey === 'sentBitcoinCash') {
-      action = `${actionPrefix} Bitcoin Cash`
+      action = `${actionPrefix}`
     }
 
-    if (transaction && transaction.txParams && transaction.txParams.sendTokenData) {
-      action = `${actionPrefix} ${transaction.txParams.sendTokenData.tokenSymbol}`
+    if (
+      transaction &&
+      transaction.txParams &&
+      transaction.txParams.sendTokenData
+    ) {
+      action = `${actionPrefix} ${
+        transaction.txParams.sendTokenData.tokenSymbol
+      }`
     }
 
     this.setState({ transactionAction: action })
   }
 
   render () {
-    const { className, methodData: { done } } = this.props
+    const {
+      className,
+      methodData: { done },
+    } = this.props
     const { transactionAction } = this.state
 
     return (
-      <div className={className}>
-        { (done && transactionAction) || '--' }
-      </div>
+      <div className={className}>{(done && transactionAction) || '--'}</div>
     )
   }
 }

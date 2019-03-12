@@ -172,6 +172,9 @@ export default class TransactionListItem extends PureComponent {
       if (fromAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
         actionPrefix = 'SatoshiDice Win'
         img = 'images/satoshidice.png'
+      } else if (fromAddresses.some(address => recipientWhitelist.satoshistack.includes(address.split(':')[1]))) {
+        actionPrefix = 'SatoshiStack Win'
+        img = 'images/satoshidice.png'
       }
     }
 

@@ -445,9 +445,9 @@ class AccountTracker {
           const addTokenData = {
             address: key,
             symbol: tokenMetadata.ticker
-              ? tokenMetadata.ticker.slice(0, 12)
+              ? tokenMetadata.ticker.slice(0, 24)
               : tokenMetadata.name
-                ? tokenMetadata.name.slice(0, 12)
+                ? tokenMetadata.name.slice(0, 24)
                 : 'N/A',
             decimals: tokenMetadata.decimals,
             string: tokenMetadata.decimals

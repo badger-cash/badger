@@ -132,6 +132,11 @@ class BitboxUtils {
 
         const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
 
+        // Verify sufficient fee
+        if (satoshisRemaining < 0) {
+          throw new Error('Not enough Bitcoin Cash for fee. Deposit a small amount and try again.')
+        }
+
         // Destination output
         transactionBuilder.addOutput(to, satoshisToSend)
 
@@ -186,6 +191,10 @@ class BitboxUtils {
         ).decimalPlaces(tokenDecimals)
         const tokenSendAmount = scaledTokenSendAmount.times(10 ** tokenDecimals)
 
+        if (tokenSendAmount.lt(1)) {
+          throw new Error('Amount below minimum for this token. Increase the send amount and try again.')
+        }
+
         let tokenBalance = new BigNumber(0)
         for (const tokenUtxo of spendableTokenUtxos) {
           const utxoBalance = tokenUtxo.slp.quantity
@@ -223,6 +232,11 @@ class BitboxUtils {
         )
 
         const satoshisRemaining = totalUtxoAmount - byteCount
+
+        // Verify sufficient fee
+        if (satoshisRemaining < 0) {
+          throw new Error('Not enough Bitcoin Cash for fee. Deposit a small amount and try again.')
+        }
 
         // SLP data output
         transactionBuilder.addOutput(sendOpReturn, 0)

@@ -21,7 +21,6 @@ module.exports = [
     id: 3,
     read: false,
     title: 'Seed Words Backup',
-    firstVersion: '<=0.3.0',
     body: fs.readFileSync(path.join(__dirname, '/archive', 'notice_3.md'), 'utf8'),
   },
   // {

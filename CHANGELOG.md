@@ -2,6 +2,10 @@
 
 ## Current Develop Branch
 
+## 0.4.1
+
+Remove PrivKey WIF export text uppercase CSS
+
 ## 0.4.0
 
 - Clean up UI

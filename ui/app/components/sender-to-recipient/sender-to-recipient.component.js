@@ -23,6 +23,7 @@ export default class SenderToRecipient extends PureComponent {
     addressOnly: PropTypes.bool,
     assetImage: PropTypes.string,
     subtitle: PropTypes.string,
+    symbol: PropTypes.string,
   }
 
   static defaultProps = {
@@ -51,7 +52,6 @@ export default class SenderToRecipient extends PureComponent {
   renderSenderAddress () {
     const { t } = this.context
     const { senderName, senderAddress, addressOnly } = this.props
-
     return (
       <Tooltip
         position="bottom"
@@ -90,16 +90,15 @@ export default class SenderToRecipient extends PureComponent {
   renderRecipientWithAddress () {
     const { t } = this.context
     const { subtitle, addressOnly } = this.props
-    let { recipientAddress, recipientName } = this.props
+    let { recipientAddress, recipientName, symbol } = this.props
 
-    if (subtitle === 'Simple Ledger Protocol') {
+    if (symbol !== 'BCH') {
       recipientAddress = bchaddr.toSlpAddress(recipientAddress)
       recipientName = `${recipientAddress.substring(
         0,
         6
       )}...${recipientAddress.substr(-4)}`
     }
-
 
     return (
       <div

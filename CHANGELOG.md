@@ -2,6 +2,10 @@
 
 ## Current Develop Branch
 
+## 0.4.3
+
+- Display slp addr in tx details
+
 ## 0.4.2
 
 Token icons for

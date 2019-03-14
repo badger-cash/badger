@@ -2,6 +2,15 @@
 
 ## Current Develop Branch
 
+## 0.4.2
+
+Token icons for
+
+- SPICE
+- NAKAMOTO
+- SLP Torch
+- WNT
+
 ## 0.4.1
 
 Remove PrivKey WIF export text uppercase CSS

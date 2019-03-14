@@ -2,7 +2,7 @@ const ObservableStore = require('obs-store')
 const extend = require('xtend')
 const log = require('loglevel')
 
-const SLPSDK = require('slp-sdk/lib/SLP').default
+const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
 
 // every ten minutes

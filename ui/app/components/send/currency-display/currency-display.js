@@ -10,6 +10,7 @@ const currencyFormatter = require('currency-formatter')
 const currencies = require('currency-formatter/currencies')
 const ethUtil = require('ethereumjs-util')
 const PropTypes = require('prop-types')
+// import { formatTokenAmount } from '../../../helpers/formatter-numbers.util'
 
 CurrencyDisplay.contextTypes = {
   t: PropTypes.func,
@@ -125,7 +126,9 @@ CurrencyDisplay.prototype.getConvertedValueToRender = function (
 }
 
 CurrencyDisplay.prototype.handleChange = function (newVal) {
-  this.setState({ valueToRender: removeLeadingZeroes(newVal) })
+  this.setState({
+    valueToRender: removeLeadingZeroes(newVal),
+  })
   this.props.onChange(this.getAmount(newVal))
 }
 

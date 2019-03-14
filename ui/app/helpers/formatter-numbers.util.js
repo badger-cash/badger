@@ -1,5 +1,5 @@
 // Amount comes in as a string
-const formatTokenAmount = (amount) => {
+const formatTokenAmount = amount => {
   try {
     const value = parseFloat(amount)
     const formatted = value.toLocaleString()
@@ -9,6 +9,4 @@ const formatTokenAmount = (amount) => {
   }
 }
 
-export {
-  formatTokenAmount,
-}
+export { formatTokenAmount }

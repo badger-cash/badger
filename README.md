@@ -6,6 +6,7 @@
 - Brave: Install from chrome store
 
 ## API Documentation
+
 https://developer.bitcoin.com/badger/docs/getting-started
 
 ## Intro

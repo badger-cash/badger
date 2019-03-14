@@ -118,3 +118,12 @@
     width: 100%;
   }
 }
+
+.transaction-list-item.received,
+.transaction-list-item.win {
+  background: #f6fff4;
+}
+
+.transaction-list-item.sent {
+  background: #fff4f4;
+}

@@ -33,10 +33,22 @@ IdenticonComponent.prototype.render = function () {
     width: diameter,
     borderRadius: diameter / 2,
   }
-  if (image) {
+  const icons = [
+    '49be89bbbe018bcfaebcb41cac8340bc555f022b47b922599e510b143603f4b6',
+    '56ff58fd263736172f0b707c014ea8272d633cc0986b2ffb70e7e209bcc4adad',
+    '4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf',
+  ]
+  let tmpImg
+  if (icons.includes(address)) {
+    tmpImg = `./images/${address}.png`
+  } else {
+    tmpImg = image
+  }
+
+  if (tmpImg) {
     return h('img', {
       className: `${className} identicon`,
-      src: image,
+      src: tmpImg,
       style: {
         ...style,
       },
@@ -57,6 +69,7 @@ IdenticonComponent.prototype.render = function () {
   } else {
     return h('img.balance-icon', {
       className,
+      // src: '../../../../node_modules/bch-token-icons/svg/icon/bch.svg',
       src: './images/bch_logo.svg',
       style: {
         ...style,

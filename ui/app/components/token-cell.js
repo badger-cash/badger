@@ -1,4 +1,3 @@
-
 const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
@@ -124,7 +123,10 @@ TokenCell.prototype.render = function () {
 
       h('div.token-list-item__balance-ellipsis', null, [
         h('div.token-list-item__balance-wrapper', null, [
-          h('div.token-list-item__token-balance', `${formattedTokenAmount || '0'}`),
+          h(
+            'div.token-list-item__token-balance',
+            `${formattedTokenAmount || '0'}`
+          ),
           h('div.token-list-item__token-symbol', formattedSymbol),
           h(
             'div.token-list-item__fiat-amount',

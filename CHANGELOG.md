@@ -7,7 +7,6 @@
 Token icons for
 
 - SPICE
-- NAKAMOTO
 - SLP Torch
 - WNT
 

@@ -37,7 +37,6 @@ IdenticonComponent.prototype.render = function () {
     '49be89bbbe018bcfaebcb41cac8340bc555f022b47b922599e510b143603f4b6',
     '56ff58fd263736172f0b707c014ea8272d633cc0986b2ffb70e7e209bcc4adad',
     '4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf',
-    'df808a41672a0a0ae6475b44f272a107bc9961b90f29dc918d71301f24fe92fb',
   ]
   let tmpImg
   if (icons.includes(address)) {

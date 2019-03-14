@@ -51,7 +51,12 @@ export default class SenderToRecipient extends PureComponent {
 
   renderSenderAddress () {
     const { t } = this.context
-    const { senderName, senderAddress, addressOnly } = this.props
+    const { senderName, senderAddress, addressOnly, symbol } = this.props
+
+    let sa = senderAddress
+    if (symbol !== 'BCH') {
+      sa = bchaddr.toSlpAddress(senderAddress)
+    }
     return (
       <Tooltip
         position="bottom"
@@ -65,7 +70,7 @@ export default class SenderToRecipient extends PureComponent {
         onHidden={() => this.setState({ senderAddressCopied: false })}
       >
         <div className="sender-to-recipient__name">
-          {addressOnly ? `${t('from')}: ${senderAddress}` : senderName}
+          {addressOnly ? `${t('from')}: ${sa}` : senderName}
         </div>
       </Tooltip>
     )

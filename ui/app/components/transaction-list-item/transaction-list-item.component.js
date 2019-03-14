@@ -156,7 +156,13 @@ export default class TransactionListItem extends PureComponent {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
-      if (toAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
+      if (toAddress.split(':')[1] === 'pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g') {
+        actionPrefix = 'Sent to eatBCH VE'
+        img = 'images/addresses/pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g.png'
+      } else if (toAddress.split(':')[1] === 'qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950') {
+        actionPrefix = 'Sent to eatBCH SS'
+        img = 'images/addresses/qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950.png'
+      } else if (toAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
         actionPrefix = 'Sent to SatoshiDice'
         img = 'images/satoshidice.png'
       } else if (

@@ -805,7 +805,7 @@ class AccountTracker {
                 'in.e.a': address.slice(12),
               },
               {
-                'out.e.a': address.slice(12),
+                'slp.detail.outputs.address': SLP.Address.toSlpAddress(address),
               },
             ],
             'slp.valid': true,
@@ -814,7 +814,15 @@ class AccountTracker {
             'blk.i': -1,
           },
         },
-        limit: 50,
+        project: {
+          '_id': 0,
+          'tx.h': 1,
+          'in.i': 1,
+          'in.e': 1,
+          'slp.detail.outputs': 1,
+          'blk': 1,
+        },
+        limit: 500,
       },
     }
     const s = JSON.stringify(query)

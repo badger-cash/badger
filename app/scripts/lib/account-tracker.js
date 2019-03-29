@@ -819,7 +819,7 @@ class AccountTracker {
           'tx.h': 1,
           'in.i': 1,
           'in.e': 1,
-          'slp.detail.outputs': 1,
+          'slp.detail': 1,
           'blk': 1,
         },
         limit: 500,

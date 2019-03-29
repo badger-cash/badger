@@ -805,7 +805,7 @@ class AccountTracker {
                 'in.e.a': address.slice(12),
               },
               {
-                'slp.detail.outputs.address': SLP.Address.toSlpAddress(address),
+                'slp.detail.outputs.address': SLP.Address.toSLPAddress(address),
               },
             ],
             'slp.valid': true,

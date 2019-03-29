@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import TransactionListItem from '../transaction-list-item'
+import Button from '../button/button.component'
 
 export default class TransactionList extends PureComponent {
   static contextTypes = {
@@ -47,7 +48,7 @@ export default class TransactionList extends PureComponent {
 
   renderTransactions () {
     const { t } = this.context
-    const { pendingTransactions = [], completedTransactions = [] } = this.props
+    const { pendingTransactions = [], completedTransactions = [], selectedAddress } = this.props
     return (
       <div className="transaction-list__transactions">
         {pendingTransactions.length > 0 && (
@@ -67,6 +68,19 @@ export default class TransactionList extends PureComponent {
                 this.renderTransaction(transaction, index)
               )
             : this.renderEmpty()}
+        </div>
+        <div>
+          <Button
+            type="default"
+            style={{ margin: '5px auto', width: '70%' }}
+            onClick={ () => {
+              const url = `https://explorer.bitcoin.com/bch/address/${selectedAddress}`
+              global.platform.openWindow({ url })
+            }}
+          >
+            View history on explorer
+          </Button>
+           
         </div>
       </div>
     )

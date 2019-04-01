@@ -45,11 +45,11 @@ export const transactionsSelector = createSelector(
               txParams.sendTokenData.tokenId === selectedTokenAddress
           )
           .sort((a, b) => b.time - a.time)
-          .slice(-20)
+          .slice(0, 20)
       : txsToRender
           .filter(({ txParams }) => txParams && !txParams.sendTokenData)
           .sort((a, b) => b.time - a.time)
-          .slice(-20)
+          .slice(0, 20)
   }
 )
 

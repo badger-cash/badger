@@ -296,8 +296,8 @@ function transactionsSelector (state) {
           ({ txParams }) => txParams && txParams.to === selectedTokenAddress
         )
         .sort((a, b) => b.time - a.time)
-        .slice(-20)
-    : txsToRender.sort((a, b) => b.time - a.time).slice(-20)
+        .slice(0, 20)
+    : txsToRender.sort((a, b) => b.time - a.time).slice(0, 20)
 }
 
 function getQrCodeData (state) {

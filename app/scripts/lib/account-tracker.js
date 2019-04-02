@@ -570,7 +570,9 @@ class AccountTracker {
       {},
       mutableHistoricalBchTransactions
     )
-    if (!historicalBchTransactions[address]) historicalBchTransactions[address] = []
+    if (!historicalBchTransactions[address]) {
+      historicalBchTransactions[address] = []
+    }
 
     const addressTransactions = await this.getHistoricalBchTransactions(address)
 
@@ -634,10 +636,7 @@ class AccountTracker {
           toAddresses: toAddresses,
           value: new BigNumber(value).toString(),
         },
-        time:
-          tx.blk && tx.blk.t
-            ? tx.blk.t * 1000
-            : new Date().getTime(),
+        time: tx.blk && tx.blk.t ? tx.blk.t * 1000 : new Date().getTime(),
         status: 'confirmed',
         // TODO: Track pending transactions
         // status: tx.blk && tx.blk.i ? 'confirmed' : 'submitted',
@@ -653,7 +652,8 @@ class AccountTracker {
       }
     })
 
-    mutableHistoricalBchTransactions[address] = historicalBchTransactions[address]
+    mutableHistoricalBchTransactions[address] =
+      historicalBchTransactions[address]
     this.store.updateState({ historicalBchTransactions })
   }
 
@@ -713,7 +713,9 @@ class AccountTracker {
       {},
       mutableHistoricalSlpTransactions
     )
-    if (!historicalSlpTransactions[address]) historicalSlpTransactions[address] = []
+    if (!historicalSlpTransactions[address]) {
+      historicalSlpTransactions[address] = []
+    }
 
     const addressTransactions = await this.getHistoricalSlpTransactions(address)
 
@@ -781,10 +783,7 @@ class AccountTracker {
             tokenId: tx.slp.detail.tokenIdHex,
           },
         },
-        time:
-          tx.blk && tx.blk.t
-            ? tx.blk.t * 1000
-            : new Date().getTime(),
+        time: tx.blk && tx.blk.t ? tx.blk.t * 1000 : new Date().getTime(),
         status: 'confirmed',
         metamaskNetworkId: 'mainnet',
         loadingDefaults: false,
@@ -798,7 +797,8 @@ class AccountTracker {
       }
     })
 
-    mutableHistoricalSlpTransactions[address] = historicalSlpTransactions[address]
+    mutableHistoricalSlpTransactions[address] =
+      historicalSlpTransactions[address]
     this.store.updateState({ historicalSlpTransactions })
   }
 
@@ -824,27 +824,27 @@ class AccountTracker {
           },
         },
         project: {
-          '_id': 0,
+          _id: 0,
           'tx.h': 1,
           'in.i': 1,
           'in.e': 1,
           'slp.detail': 1,
-          'blk': 1,
+          blk: 1,
         },
         limit: 500,
       },
     }
     const s = JSON.stringify(query)
-    const b64 = Buffer.from(s).toString('base64')
-    const url = `https://slpdb.bitcoin.com/q/${b64}`
-    const result = await axios.get(url)
-    let transactions = []
-    if (result.data && result.data.c) {
-      transactions = transactions.concat(result.data.c)
-    }
-    if (result.data && result.data.u) {
-      transactions = transactions.concat(result.data.u)
-    }
+    const transactions = []
+    // const b64 = Buffer.from(s).toString('base64')
+    // const url = `https://slpdb.bitcoin.com/q/${b64}`
+    // const result = await axios.get(url)
+    // if (result.data && result.data.c) {
+    //   transactions = transactions.concat(result.data.c)
+    // }
+    // if (result.data && result.data.u) {
+    //   transactions = transactions.concat(result.data.u)
+    // }
 
     return transactions
   }

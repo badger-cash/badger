@@ -572,7 +572,9 @@ class AccountTracker {
     )
     if (!historicalBchTransactions[address]) historicalBchTransactions[address] = []
 
-    const addressTransactions = await this.getHistoricalBchTransactions(address)
+    const latestConfirmedTx = historicalBchTransactions[address].sort((a, b) => b.block - a.block)[0]
+    const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
+    const addressTransactions = await this.getHistoricalBchTransactions(address, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
@@ -638,6 +640,7 @@ class AccountTracker {
           tx.blk && tx.blk.t
             ? tx.blk.t * 1000
             : new Date().getTime(),
+        block: tx.blk && tx.blk.i ? tx.blk.i : 0,
         status: 'confirmed',
         // TODO: Track pending transactions
         // status: tx.blk && tx.blk.i ? 'confirmed' : 'submitted',
@@ -657,7 +660,7 @@ class AccountTracker {
     this.store.updateState({ historicalBchTransactions })
   }
 
-  async getHistoricalBchTransactions (address) {
+  async getHistoricalBchTransactions (address, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -673,6 +676,11 @@ class AccountTracker {
             ],
             'out.h1': {
               $ne: '534c5000',
+            },
+            'blk.i': {
+              $not: {
+                $lte: latestBlock,
+              },
             },
           },
           $orderby: {
@@ -715,7 +723,9 @@ class AccountTracker {
     )
     if (!historicalSlpTransactions[address]) historicalSlpTransactions[address] = []
 
-    const addressTransactions = await this.getHistoricalSlpTransactions(address)
+    const latestConfirmedTx = historicalSlpTransactions[address].sort((a, b) => b.block - a.block)[0]
+    const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
+    const addressTransactions = await this.getHistoricalSlpTransactions(address, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
@@ -785,6 +795,7 @@ class AccountTracker {
           tx.blk && tx.blk.t
             ? tx.blk.t * 1000
             : new Date().getTime(),
+        block: tx.blk && tx.blk.i ? tx.blk.i : 0,
         status: 'confirmed',
         metamaskNetworkId: 'mainnet',
         loadingDefaults: false,
@@ -802,7 +813,7 @@ class AccountTracker {
     this.store.updateState({ historicalSlpTransactions })
   }
 
-  async getHistoricalSlpTransactions (address) {
+  async getHistoricalSlpTransactions (address, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -818,6 +829,11 @@ class AccountTracker {
               },
             ],
             'slp.valid': true,
+            'blk.i': {
+              $not: {
+                $lte: latestBlock,
+              },
+            },
           },
           $orderby: {
             'blk.i': -1,

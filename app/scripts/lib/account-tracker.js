@@ -679,6 +679,15 @@ class AccountTracker {
             'blk.i': -1,
           },
         },
+        project: {
+          _id: 0,
+          'tx.h': 1,
+          'in.i': 1,
+          'in.e': 1,
+          'out.i': 1,
+          'out.e': 1,
+          blk: 1,
+        },
         limit: 50,
       },
     }

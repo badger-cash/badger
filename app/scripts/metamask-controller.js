@@ -513,8 +513,6 @@ module.exports = class MetamaskController extends EventEmitter {
   async createNewVaultAndRestore (password, seed) {
     const releaseLock = await this.createVaultMutex.acquire()
     try {
-      let accounts, lastBalance
-
       const keyringController = this.keyringController
 
       // clear known identities
@@ -525,32 +523,13 @@ module.exports = class MetamaskController extends EventEmitter {
         seed
       )
 
-      accounts = await keyringController.getAccounts()
-
-      try {
-        lastBalance = await this.getBalance(accounts[accounts.length - 1])
-      } catch (err) {
-        log.error('ImportAccount::Error', err)
-        lastBalance = 0
-      }
+      const accounts = await keyringController.getAccounts()
 
       const primaryKeyring = keyringController.getKeyringsByType(
         'HD Key Tree'
       )[0]
       if (!primaryKeyring) {
         throw new Error('MetamaskController - No HD Key Tree found')
-      }
-
-      // seek out the first zero balance
-      while (parseFloat(lastBalance) !== 0) {
-        try {
-          await keyringController.addNewAccount(primaryKeyring)
-          accounts = await keyringController.getAccounts()
-          lastBalance = await this.getBalance(accounts[accounts.length - 1])
-        } catch (err) {
-          log.error('ImportAccount::Error', err)
-          lastBalance = 0
-        }
       }
 
       // set new identities

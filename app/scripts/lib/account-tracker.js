@@ -696,7 +696,7 @@ class AccountTracker {
           'out.e': 1,
           blk: 1,
         },
-        limit: 50,
+        limit: 20,
       },
     }
     const s = JSON.stringify(query)

@@ -5,6 +5,12 @@
 ## 0.4.3
 
 - Display slp addr in tx details
+## 0.5.0
+
+Add Simple Ledger token transaction history
+Performance Improvements
+Display recent transactions and link to explorer for full transaction history
+Add Cash token icon
 
 ## 0.4.2
 

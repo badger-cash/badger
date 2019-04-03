@@ -79,7 +79,6 @@ export default class TransactionListItem extends PureComponent {
 
     const sendTokenData = txParams.sendTokenData
     if (sendTokenData && token) {
-      token.symbol = sendTokenData.tokenSymbol
       token.decimals = 0
     }
 
@@ -104,7 +103,7 @@ export default class TransactionListItem extends PureComponent {
   }
 
   renderSecondaryCurrency (currencyPrefix) {
-    const { token, value, transaction: { txParams } = {} } = this.props
+    const { value, transaction: { txParams } = {} } = this.props
 
     return txParams.sendTokenData ? null : (
       <CurrencyDisplay
@@ -125,6 +124,7 @@ export default class TransactionListItem extends PureComponent {
       assetImages,
       tokenData,
       selectedAddress,
+      token,
     } = this.props
     const { txParams = {} } = transaction
     const { showTransactionDetails } = this.state
@@ -135,6 +135,7 @@ export default class TransactionListItem extends PureComponent {
           tokenData.params[0].value) ||
         txParams.to
       : txParams.to
+    const tokenSymbol = token && token.symbol ? token.symbol : ''
 
     const toAddresses = txParams.toAddresses ? txParams.toAddresses : []
     if (toAddress) {
@@ -156,10 +157,10 @@ export default class TransactionListItem extends PureComponent {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
-      if (toAddress.split(':')[1] === 'pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g') {
+      if (toAddress && toAddress.split(':')[1] === 'pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g') {
         actionPrefix = 'Sent to eatBCH VE'
         img = 'images/addresses/pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g.png'
-      } else if (toAddress.split(':')[1] === 'qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950') {
+      } else if (toAddress && toAddress.split(':')[1] === 'qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950') {
         actionPrefix = 'Sent to eatBCH SS'
         img = 'images/addresses/qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950.png'
       } else if (toAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
@@ -197,6 +198,7 @@ export default class TransactionListItem extends PureComponent {
             transaction={transaction}
             methodData={methodData}
             actionPrefix={actionPrefix}
+            tokenSymbol={tokenSymbol}
             className="transaction-list-item__action"
           />
           <div className="transaction-list-item__nonce" title={nonceAndDate}>

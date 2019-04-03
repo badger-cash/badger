@@ -12,6 +12,7 @@ export default class TransactionAction extends PureComponent {
     transaction: PropTypes.object,
     methodData: PropTypes.object,
     actionPrefix: PropTypes.string,
+    tokenSymbol: PropTypes.string,
   }
 
   state = {
@@ -28,7 +29,7 @@ export default class TransactionAction extends PureComponent {
 
   async getTransactionAction () {
     const { transactionAction } = this.state
-    const { transaction, methodData, actionPrefix } = this.props
+    const { transaction, methodData, actionPrefix, tokenSymbol } = this.props
     const { data, done } = methodData
 
     if (!done || transactionAction) {
@@ -48,7 +49,7 @@ export default class TransactionAction extends PureComponent {
       transaction.txParams.sendTokenData
     ) {
       action = `${actionPrefix} ${
-        transaction.txParams.sendTokenData.tokenSymbol
+        tokenSymbol
       }`
     }
 

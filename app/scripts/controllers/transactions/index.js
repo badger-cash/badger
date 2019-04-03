@@ -477,8 +477,22 @@ class TransactionController extends EventEmitter {
     this.getTokenMetadataCache = () =>
       this.accountTrackerStore.getState().tokenCache
     /** @returns historicalTransactions */
-    this.gethistoricalTransactions = () =>
-      this.accountTrackerStore.getState().historicalTransactions
+    this.gethistoricalTransactions = () => {
+      const historsicalTransactions = Object.assign(
+        {},
+        this.accountTrackerStore.getState().historicalBchTransactions || {}
+      )
+      const historicalSlpTransactions = this.accountTrackerStore.getState().historicalSlpTransactions || {}
+
+      Object.keys(historicalSlpTransactions).forEach(address => {
+        if (!historsicalTransactions[address]) {
+          historsicalTransactions[address] = []
+        }
+        historsicalTransactions[address] = historsicalTransactions[address].concat(historicalSlpTransactions[address])
+      })
+
+      return historsicalTransactions
+    }
     /** Returns an array of transactions whos status is unapproved */
     this.getUnapprovedTxCount = () =>
       Object.keys(this.txStateManager.getUnapprovedTxList()).length

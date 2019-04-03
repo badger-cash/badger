@@ -72,7 +72,7 @@ export default class TransactionList extends PureComponent {
         <div>
           <Button
             type="default"
-            style={{ margin: '5px auto', width: '70%' }}
+            style={{ margin: '15px auto', width: '70%' }}
             onClick={ () => {
               const url = `https://explorer.bitcoin.com/bch/address/${selectedAddress}`
               global.platform.openWindow({ url })

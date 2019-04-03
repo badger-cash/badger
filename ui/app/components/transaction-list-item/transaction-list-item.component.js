@@ -79,7 +79,6 @@ export default class TransactionListItem extends PureComponent {
 
     const sendTokenData = txParams.sendTokenData
     if (sendTokenData && token) {
-      token.symbol = sendTokenData.tokenSymbol
       token.decimals = 0
     }
 
@@ -104,7 +103,7 @@ export default class TransactionListItem extends PureComponent {
   }
 
   renderSecondaryCurrency (currencyPrefix) {
-    const { token, value, transaction: { txParams } = {} } = this.props
+    const { value, transaction: { txParams } = {} } = this.props
 
     return txParams.sendTokenData ? null : (
       <CurrencyDisplay
@@ -125,6 +124,7 @@ export default class TransactionListItem extends PureComponent {
       assetImages,
       tokenData,
       selectedAddress,
+      token,
     } = this.props
     const { txParams = {} } = transaction
     const { showTransactionDetails } = this.state
@@ -135,6 +135,7 @@ export default class TransactionListItem extends PureComponent {
           tokenData.params[0].value) ||
         txParams.to
       : txParams.to
+    const tokenSymbol = token && token.symbol ? token.symbol : ''
 
     const toAddresses = txParams.toAddresses ? txParams.toAddresses : []
     if (toAddress) {
@@ -197,6 +198,7 @@ export default class TransactionListItem extends PureComponent {
             transaction={transaction}
             methodData={methodData}
             actionPrefix={actionPrefix}
+            tokenSymbol={tokenSymbol}
             className="transaction-list-item__action"
           />
           <div className="transaction-list-item__nonce" title={nonceAndDate}>

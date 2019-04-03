@@ -23,7 +23,9 @@ const Wormhole = new WH({
   restURL: `https://rest.bitcoin.com/v1/`,
 })
 const whcTokens = require('../../whc-tokens.json')
-const slpjs = require('slpjs')
+
+const SLPSDK = require('slp-sdk')
+const SLP = new SLPSDK()
 
 class AccountTracker {
   /**
@@ -51,7 +53,8 @@ class AccountTracker {
         slp: [],
         wormhole: [],
       },
-      historicalTransactions: {},
+      historicalBchTransactions: {},
+      historicalSlpTransactions: {},
     }
     this.store = new ObservableStore(initState)
 
@@ -548,15 +551,30 @@ class AccountTracker {
   }
 
   async _updateHistoricalTransactions (address) {
-    const mutableHistoricalTransactions = this.store.getState()
-      .historicalTransactions
-    const historicalTransactions = Object.assign(
-      {},
-      mutableHistoricalTransactions
-    )
-    if (!historicalTransactions[address]) historicalTransactions[address] = []
+    try {
+      await this._updateHistoricalBchTransactions(address)
+    } catch (err) {
+      console.error('Could not update BCH transactions', err)
+    }
+    try {
+      await this._updateHistoricalSlpTransactions(address)
+    } catch (err) {
+      console.error('Could not update SLP transactions', err)
+    }
+  }
 
-    const addressTransactions = await this.getHistoricalBchTransactions(address)
+  async _updateHistoricalBchTransactions (address) {
+    const mutableHistoricalBchTransactions = this.store.getState()
+      .historicalBchTransactions
+    const historicalBchTransactions = Object.assign(
+      {},
+      mutableHistoricalBchTransactions
+    )
+    if (!historicalBchTransactions[address]) historicalBchTransactions[address] = []
+
+    const latestConfirmedTx = historicalBchTransactions[address].sort((a, b) => b.block - a.block)[0]
+    const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
+    const addressTransactions = await this.getHistoricalBchTransactions(address, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
@@ -612,7 +630,6 @@ class AccountTracker {
       const historicalTx = {
         hash: tx.tx.h,
         txParams: {
-          // from: fromAddresses,
           from: fromAddress,
           to: toAddress,
           fromAddresses: fromAddresses,
@@ -623,6 +640,7 @@ class AccountTracker {
           tx.blk && tx.blk.t
             ? tx.blk.t * 1000
             : new Date().getTime(),
+        block: tx.blk && tx.blk.i ? tx.blk.i : 0,
         status: 'confirmed',
         // TODO: Track pending transactions
         // status: tx.blk && tx.blk.i ? 'confirmed' : 'submitted',
@@ -630,19 +648,19 @@ class AccountTracker {
         loadingDefaults: false,
       }
       if (
-        historicalTransactions[address].filter(
+        historicalBchTransactions[address].filter(
           htx => htx.hash === historicalTx.hash
         ).length === 0
       ) {
-        historicalTransactions[address].push(historicalTx)
+        historicalBchTransactions[address].push(historicalTx)
       }
     })
 
-    mutableHistoricalTransactions[address] = historicalTransactions[address]
-    this.store.updateState({ historicalTransactions })
+    mutableHistoricalBchTransactions[address] = historicalBchTransactions[address]
+    this.store.updateState({ historicalBchTransactions })
   }
 
-  async getHistoricalBchTransactions (address) {
+  async getHistoricalBchTransactions (address, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -659,17 +677,182 @@ class AccountTracker {
             'out.h1': {
               $ne: '534c5000',
             },
+            'blk.i': {
+              $not: {
+                $lte: latestBlock,
+              },
+            },
           },
           $orderby: {
             'blk.i': -1,
           },
         },
-        limit: 50,
+        project: {
+          _id: 0,
+          'tx.h': 1,
+          'in.i': 1,
+          'in.e': 1,
+          'out.i': 1,
+          'out.e': 1,
+          blk: 1,
+        },
+        limit: 20,
       },
     }
     const s = JSON.stringify(query)
     const b64 = Buffer.from(s).toString('base64')
     const url = `https://bitdb.bitcoin.com/q/${b64}`
+    const result = await axios.get(url)
+    let transactions = []
+    if (result.data && result.data.c) {
+      transactions = transactions.concat(result.data.c)
+    }
+    if (result.data && result.data.u) {
+      transactions = transactions.concat(result.data.u)
+    }
+
+    return transactions
+  }
+
+  async _updateHistoricalSlpTransactions (address) {
+    const mutableHistoricalSlpTransactions = this.store.getState()
+      .historicalSlpTransactions
+    const historicalSlpTransactions = Object.assign(
+      {},
+      mutableHistoricalSlpTransactions
+    )
+    if (!historicalSlpTransactions[address]) historicalSlpTransactions[address] = []
+
+    const latestConfirmedTx = historicalSlpTransactions[address].sort((a, b) => b.block - a.block)[0]
+    const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
+    const addressTransactions = await this.getHistoricalSlpTransactions(address, latestBlock)
+
+    addressTransactions.forEach(tx => {
+      const fromAddresses = tx.in
+        .filter(input => input.e && input.e.a)
+        .map(input => `bitcoincash:${input.e.a}`)
+        .reduce((accumulator, currentValue) => {
+          if (!accumulator.find(element => element === currentValue)) {
+            accumulator.push(currentValue)
+          }
+          return accumulator
+        }, [])
+      let fromAddress = fromAddresses.length === 1 ? fromAddresses[0] : null
+      if (!fromAddress && fromAddresses.includes(address)) {
+        fromAddress = address
+      }
+
+      // Determine to address
+      const toAddresses = tx.slp.detail.outputs
+        .filter(output => output.address)
+        .map(output => SLP.Address.toCashAddress(output.address))
+        .reduce((accumulator, currentValue) => {
+          if (!accumulator.find(element => element === currentValue)) {
+            accumulator.push(currentValue)
+          }
+          return accumulator
+        }, [])
+      let toAddress = toAddresses.length === 1 ? toAddresses[0] : null
+      if (
+        !toAddress &&
+        toAddresses.length === 2 &&
+        toAddresses.find(element => element === fromAddress)
+      ) {
+        toAddress = toAddresses.filter(element => element !== fromAddress)[0]
+      } else if (!toAddress && toAddresses.includes(address)) {
+        toAddress = address
+      }
+
+      // Determine value
+      let value = new BigNumber(0)
+      if (toAddress && fromAddress !== toAddress) {
+        value = tx.slp.detail.outputs.reduce((accumulator, currentValue) => {
+          if (
+            currentValue.address &&
+            SLP.Address.toCashAddress(currentValue.address) === toAddress &&
+            currentValue.amount
+          ) {
+            accumulator = accumulator.plus(new BigNumber(currentValue.amount))
+          }
+          return accumulator
+        }, new BigNumber(0))
+      }
+
+      const historicalTx = {
+        hash: tx.tx.h,
+        txParams: {
+          from: fromAddress,
+          to: toAddress,
+          fromAddresses: fromAddresses,
+          toAddresses: toAddresses,
+          value: value.toString(),
+          sendTokenData: {
+            tokenProtocol: 'slp',
+            tokenId: tx.slp.detail.tokenIdHex,
+          },
+        },
+        time:
+          tx.blk && tx.blk.t
+            ? tx.blk.t * 1000
+            : new Date().getTime(),
+        block: tx.blk && tx.blk.i ? tx.blk.i : 0,
+        status: 'confirmed',
+        metamaskNetworkId: 'mainnet',
+        loadingDefaults: false,
+      }
+      if (
+        historicalSlpTransactions[address].filter(
+          htx => htx.hash === historicalTx.hash
+        ).length === 0
+      ) {
+        historicalSlpTransactions[address].push(historicalTx)
+      }
+    })
+
+    mutableHistoricalSlpTransactions[address] = historicalSlpTransactions[address]
+    this.store.updateState({ historicalSlpTransactions })
+  }
+
+  async getHistoricalSlpTransactions (address, latestBlock) {
+    const query = {
+      v: 3,
+      q: {
+        find: {
+          db: ['c', 'u'],
+          $query: {
+            $or: [
+              {
+                'in.e.a': address.slice(12),
+              },
+              {
+                'slp.detail.outputs.address': SLP.Address.toSLPAddress(address),
+              },
+            ],
+            'slp.valid': true,
+            'blk.i': {
+              $not: {
+                $lte: latestBlock,
+              },
+            },
+          },
+          $orderby: {
+            'blk.i': -1,
+          },
+        },
+        project: {
+          '_id': 0,
+          'tx.h': 1,
+          'in.i': 1,
+          'in.e': 1,
+          'slp.detail': 1,
+          'blk': 1,
+        },
+        limit: 500,
+      },
+    }
+    const s = JSON.stringify(query)
+    const b64 = Buffer.from(s).toString('base64')
+    const url = `https://slpdb.bitcoin.com/q/${b64}`
     const result = await axios.get(url)
     let transactions = []
     if (result.data && result.data.c) {

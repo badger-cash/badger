@@ -2,6 +2,13 @@
 
 ## Current Develop Branch
 
+## 0.5.0
+
+Add Simple Ledger token transaction history
+Performance Improvements
+Display recent transactions and link to explorer for full transaction history
+Add Cash token icon
+
 ## 0.4.2
 
 Token icons for

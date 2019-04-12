@@ -488,13 +488,15 @@ module.exports = class MetamaskController extends EventEmitter {
     const releaseLock = await this.createVaultMutex.acquire()
     try {
       let vault
-      const accounts = await this.keyringController.getAccounts()
+      let accounts = await this.keyringController.getAccounts()
+      let slpAccounts = await this.keyringController.getSlpAccounts()
       if (accounts.length > 0) {
         vault = await this.keyringController.fullUpdate()
       } else {
         vault = await this.keyringController.createNewVaultAndKeychain(password)
-        const accounts = await this.keyringController.getAccounts()
-        this.preferencesController.setAddresses(accounts)
+        accounts = await this.keyringController.getAccounts()
+        slpAccounts = await this.keyringController.getSlpAccounts()
+        this.preferencesController.setAddresses(accounts, slpAccounts)
         this.selectFirstIdentity()
       }
       releaseLock()
@@ -524,6 +526,7 @@ module.exports = class MetamaskController extends EventEmitter {
       )
 
       const accounts = await keyringController.getAccounts()
+      const slpAccounts = await keyringController.getSlpAccounts()
 
       const primaryKeyring = keyringController.getKeyringsByType(
         'HD Key Tree'
@@ -533,7 +536,7 @@ module.exports = class MetamaskController extends EventEmitter {
       }
 
       // set new identities
-      this.preferencesController.setAddresses(accounts)
+      this.preferencesController.setAddresses(accounts, slpAccounts)
       this.selectFirstIdentity()
       releaseLock()
       return vault
@@ -577,6 +580,7 @@ module.exports = class MetamaskController extends EventEmitter {
   async submitPassword (password) {
     await this.keyringController.submitPassword(password)
     const accounts = await this.keyringController.getAccounts()
+    const slpAccounts = await this.keyringController.getSlpAccounts()
 
     // verify keyrings
     const nonSimpleKeyrings = this.keyringController.keyrings.filter(
@@ -586,7 +590,7 @@ module.exports = class MetamaskController extends EventEmitter {
       await this.diagnostics.reportMultipleKeyrings(nonSimpleKeyrings)
     }
 
-    await this.preferencesController.syncAddresses(accounts)
+    await this.preferencesController.syncAddresses(accounts, slpAccounts)
     return this.keyringController.fullUpdate()
   }
 
@@ -742,10 +746,11 @@ module.exports = class MetamaskController extends EventEmitter {
     const oldAccounts = await keyringController.getAccounts()
     const keyState = await keyringController.addNewAccount(primaryKeyring)
     const newAccounts = await keyringController.getAccounts()
+    const slpAccounts = await keyringController.getSlpAccounts()
 
     await this.verifySeedPhrase()
 
-    this.preferencesController.setAddresses(newAccounts)
+    this.preferencesController.setAddresses(newAccounts, slpAccounts)
     newAccounts.forEach(address => {
       if (!oldAccounts.includes(address)) {
         this.preferencesController.setSelectedAddress(address)
@@ -1352,13 +1357,14 @@ module.exports = class MetamaskController extends EventEmitter {
       (acc, { accounts }) => acc.concat(accounts),
       []
     )
+    const slpAddresses = await this.keyringController.getSlpAccounts()
 
     if (!addresses.length) {
       return
     }
 
     // Ensure preferences + identities controller know about all addresses
-    this.preferencesController.addAddresses(addresses)
+    this.preferencesController.addAddresses(addresses, slpAddresses)
     this.accountTracker.syncWithAddresses(addresses)
 
     const wasLocked = !isUnlocked

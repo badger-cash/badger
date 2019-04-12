@@ -342,12 +342,22 @@ class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction')
     const keyPair = await this.exportKeyPair(txParams.from)
 
+    const slpAddress = this.getSlpAddressForAccount(txParams.from)
+    const slpKeyPair = await this.exportKeyPair(slpAddress)
+
     const accountUtxoCache = Object.assign({}, this.getAccountUtxoCache())
     const utxoCache = accountUtxoCache[txParams.from]
+    const slpUtxoCache = accountUtxoCache[slpAddress]
     let spendableUtxos = []
 
     if (utxoCache && utxoCache.length) {
-      spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)
+      // Filter spendable utxos and map keypair to utxo
+      spendableUtxos = utxoCache.filter(utxo =>
+        utxo.spendable === true
+      ).map(utxo => {
+        utxo.keyPair = keyPair
+        return utxo
+      })
     }
 
     let txHash
@@ -361,21 +371,26 @@ class TransactionController extends EventEmitter {
       )
 
       if (tokenProtocol === 'slp') {
-        const spendableTokenUtxos = utxoCache.filter(utxo => {
+        // Filter SLP tokens and map keypair to each utxo
+        const allTokenUtxos = utxoCache.concat(slpUtxoCache)
+        const spendableTokenUtxos = allTokenUtxos.filter(utxo => {
           return (
             utxo.slp &&
             utxo.slp.baton === false &&
             utxo.validSlpTx === true &&
             utxo.slp.token === tokenId
           )
+        }).map(utxo => {
+          utxo.keyPair = utxo.address === txParams.from ? keyPair : slpKeyPair
+          return utxo
         })
 
         txHash = await bitboxUtils.signAndPublishSlpTransaction(
           txParams,
-          keyPair,
           spendableUtxos,
           tokenMetadata,
-          spendableTokenUtxos
+          spendableTokenUtxos,
+          slpAddress
         )
       } else if (tokenProtocol === 'wormhole') {
         const propertyId = tokenId.slice(42)
@@ -470,6 +485,10 @@ class TransactionController extends EventEmitter {
     /** @returns the user selected address */
     this.getSelectedAddress = () =>
       this.preferencesStore.getState().selectedAddress
+    this.getSlpAddressForAccount = (address) => {
+      const selectedIdentity = this.preferencesStore.getState().identities[address]
+      return selectedIdentity.slpAddress
+    }
     /** @returns the utxo cache for accounts */
     this.getAccountUtxoCache = () =>
       this.accountTrackerStore.getState().accountUtxoCache

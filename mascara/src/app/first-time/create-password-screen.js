@@ -82,7 +82,6 @@ class CreatePasswordScreen extends Component {
 
   byPassPassword = () => {
     const { createAccount, history } = this.props
-    alert('her')
     createAccount('').then(() => history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE))
   }
 
@@ -208,6 +207,10 @@ class CreatePasswordScreen extends Component {
 
             {skipPassword && (
               <div className="proceed">
+                <p>
+                  Without encryption, there is one less layer of security if you
+                  choose to proceed.
+                </p>
                 <button
                   className="first-time-flow__button"
                   onClick={this.byPassPassword}

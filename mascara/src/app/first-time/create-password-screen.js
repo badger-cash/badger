@@ -13,6 +13,7 @@ import {
   INITIALIZE_NOTICE_ROUTE,
 } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
+import Toggle from '../../../../ui/app/components/toggle/toggle.component'
 
 class CreatePasswordScreen extends Component {
   static contextTypes = {
@@ -29,6 +30,7 @@ class CreatePasswordScreen extends Component {
   }
 
   state = {
+    skipPassword: true,
     password: '',
     confirmPassword: '',
     passwordError: null,
@@ -78,6 +80,12 @@ class CreatePasswordScreen extends Component {
     )
   }
 
+  byPassPassword = () => {
+    const { createAccount, history } = this.props
+    alert('her')
+    createAccount('').then(() => history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE))
+  }
+
   handlePasswordChange (password) {
     const { confirmPassword } = this.state
     let confirmPasswordError = null
@@ -105,9 +113,19 @@ class CreatePasswordScreen extends Component {
     this.setState({ confirmPassword, confirmPasswordError })
   }
 
+  toggleState = () => {
+    this.setState({ skipPassword: !this.state.skipPassword })
+  }
+
   render () {
     const { history, isMascara } = this.props
-    const { passwordError, confirmPasswordError } = this.state
+    const {
+      passwordError,
+      confirmPasswordError,
+      password,
+      confirmPassword,
+      skipPassword,
+    } = this.state
     const { t } = this.context
 
     return (
@@ -135,54 +153,84 @@ class CreatePasswordScreen extends Component {
               </div>
             </div>
           )}
+
+          <div className="password">
+            <h2> Do you want to protect this wallet with a Password?</h2>
+            <div className="encrypt">
+              <p>Encrypt</p>
+              <Toggle toggleState={this.toggleState} />
+            </div>
+          </div>
+
           <form className="create-password">
-            <div className="create-password__title">Create Password</div>
-            <TextField
-              id="create-password"
-              label={t('newPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.password}
-              onChange={event => this.handlePasswordChange(event.target.value)}
-              error={passwordError}
-              autoFocus
-              autoComplete="new-password"
-              margin="normal"
-              fullWidth
-              largeLabel
-            />
-            <TextField
-              id="confirm-password"
-              label={t('confirmPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.confirmPassword}
-              onChange={event =>
-                this.handleConfirmPasswordChange(event.target.value)
-              }
-              error={confirmPasswordError}
-              autoComplete="confirm-password"
-              margin="normal"
-              fullWidth
-              largeLabel
-            />
-            <button
-              className="first-time-flow__button"
-              disabled={!this.isValid()}
-              onClick={this.createAccount}
-            >
-              Create
-            </button>
-            <a
-              href=""
-              className="first-time-flow__link create-password__import-link"
-              onClick={e => {
-                e.preventDefault()
-                history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE)
-              }}
-            >
-              Import with seed phrase
-            </a>
+            {!skipPassword && (
+              <div>
+                <TextField
+                  id="create-password"
+                  label={t('newPassword')}
+                  type="password"
+                  className="first-time-flow__input"
+                  value={password}
+                  onChange={event =>
+                    this.handlePasswordChange(event.target.value)
+                  }
+                  error={passwordError}
+                  autoFocus
+                  autoComplete="new-password"
+                  margin="normal"
+                  fullWidth
+                  largeLabel
+                />
+                <TextField
+                  id="confirm-password"
+                  label={t('confirmPassword')}
+                  type="password"
+                  className="first-time-flow__input"
+                  value={confirmPassword}
+                  onChange={event =>
+                    this.handleConfirmPasswordChange(event.target.value)
+                  }
+                  error={confirmPasswordError}
+                  autoComplete="confirm-password"
+                  margin="normal"
+                  fullWidth
+                  largeLabel
+                />
+                <button
+                  className="first-time-flow__button"
+                  disabled={!this.isValid()}
+                  onClick={this.createAccount}
+                >
+                  Create
+                </button>
+              </div>
+            )}
+
+            {skipPassword && (
+              <div className="proceed">
+                <button
+                  className="first-time-flow__button"
+                  onClick={this.byPassPassword}
+                >
+                  Proceed
+                </button>
+              </div>
+            )}
+
+            <div className="info">
+              Advanced
+              <hr />
+              <a
+                href=""
+                className="first-time-flow__link create-password__import-link"
+                onClick={e => {
+                  e.preventDefault()
+                  history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE)
+                }}
+              >
+                Import with seed phrase
+              </a>
+            </div>
             {/* }
             <a
               href=""

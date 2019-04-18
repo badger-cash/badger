@@ -646,6 +646,10 @@ class TransactionController extends EventEmitter {
           tx.txParams.from === this.getSelectedAddress() ||
           tx.txParams.to === this.getSelectedAddress()
       )
+      .reduce((txSet, tx) => {
+        const txExists = txSet.find((item) => item.hash === tx.hash)
+        return txExists ? txSet : [...txSet, tx]
+      }, [])
     this.memStore.updateState({ unapprovedTxs, selectedAddressTxList })
   }
 }

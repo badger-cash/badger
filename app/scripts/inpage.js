@@ -1,6 +1,6 @@
 /*global Web4Bch*/
 cleanContextForImports()
-require('web3bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js')
+require('web4bch') // TODO: use minified: require('web4bch/dist/web4bch.min.js')
 const log = require('loglevel')
 const LocalMessageDuplexStream = require('post-message-stream')
 const setupDappAutoReload = require('./lib/auto-reload.js')
@@ -87,6 +87,7 @@ global.web3 = new Proxy(web3, {
 // set web4bch defaultAccount
 inpageProvider.publicConfigStore.subscribe(function (state) {
   web4bch.eth.defaultAccount = state.selectedAddress
+  web4bch.bch.defaultSlpAccount = state.selectedSlpAddress
 })
 
 // need to make sure we aren't affected by overlapping namespaces

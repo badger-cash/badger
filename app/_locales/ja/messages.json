@@ -624,17 +624,17 @@
     "message": "トークンを送信"
   },
   "onlySendToEtherAddress": {
-    "message": "BCH はイーサリウムアカウントのみに送信できます。"
+    "message": "BCH はビットコインキャッシュアカウントのみに送信できます。"
   },
   "onlySendTokensToAccountAddress": {
-    "message": "$1 はイーサリアムアカウントのみに送信できます。",
+    "message": "$1 はビットコインキャッシュアカウントのみに送信できます。",
     "description": "displays token symbol"
   },
   "searchTokens": {
     "message": "トークンの検索"
   },
   "sendTokensAnywhere": {
-    "message": "イーサリアムアカウントを持っている人にトークンを送る"
+    "message": "ビットコインキャッシュアカウントを持っている人にトークンを送る"
   },
   "settings": {
     "message": "設定"

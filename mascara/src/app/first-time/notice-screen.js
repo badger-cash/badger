@@ -28,11 +28,11 @@ class NoticeScreen extends Component {
     history: PropTypes.object,
     isLoading: PropTypes.bool,
     noActiveNotices: PropTypes.bool,
-  };
+  }
 
   static defaultProps = {
     nextUnreadNotice: {},
-  };
+  }
 
   state = {
     atBottom: false,
@@ -48,25 +48,28 @@ class NoticeScreen extends Component {
 
   acceptTerms = () => {
     const { markNoticeRead, nextUnreadNotice, history } = this.props
-    markNoticeRead(nextUnreadNotice)
-      .then(hasActiveNotices => {
-        if (!hasActiveNotices) {
-          history.push(DEFAULT_ROUTE)
-        } else {
-          this.setState({ atBottom: false })
-          this.onScroll()
-        }
-      })
+    markNoticeRead(nextUnreadNotice).then(hasActiveNotices => {
+      history.push(DEFAULT_ROUTE)
+      // skip seed notice page
+      // if (!hasActiveNotices) {
+      //   alert('case 1')
+      //   history.push(DEFAULT_ROUTE)
+      // } else {
+      //   alert('case 2')
+      //   this.setState({ atBottom: false })
+      //   this.onScroll()
+      // }
+    })
   }
 
   onScroll = debounce(() => {
     if (this.state.atBottom) return
 
     const target = document.querySelector('.tou__body')
-    const {scrollTop, offsetHeight, scrollHeight} = target
+    const { scrollTop, offsetHeight, scrollHeight } = target
     const atBottom = scrollTop + offsetHeight >= scrollHeight
 
-    this.setState({atBottom: atBottom})
+    this.setState({ atBottom: atBottom })
   }, 25)
 
   render () {
@@ -77,37 +80,28 @@ class NoticeScreen extends Component {
     } = this.props
     const { atBottom } = this.state
 
-    return (
-      isLoading
-        ? <LoadingScreen />
-        : (
-          <div className="first-time-flow">
-            <div className="first-view-main-wrapper">
-              <div className="first-view-main">
-                <div
-                  className="tou"
-                  onScroll={this.onScroll}
-                >
-                  <Identicon address={address} diameter={70} />
-                  <div className="tou__title">{title}</div>
-                  <Markdown
-                    className="tou__body markdown"
-                    source={body}
-                    skipHtml
-                  />
-                  <button
-                    className="first-time-flow__button"
-                    onClick={atBottom && this.acceptTerms}
-                    disabled={!atBottom}
-                  >
-                    Accept
-                  </button>
-                  <Breadcrumbs total={3} currentIndex={2} />
-                </div>
-              </div>
+    return isLoading ? (
+      <LoadingScreen />
+    ) : (
+      <div className="first-time-flow">
+        <div className="first-view-main-wrapper">
+          <div className="first-view-main">
+            <div className="tou" onScroll={this.onScroll}>
+              <Identicon address={address} diameter={70} />
+              <div className="tou__title">{title}</div>
+              <Markdown className="tou__body markdown" source={body} skipHtml />
+              <button
+                className="first-time-flow__button"
+                onClick={atBottom && this.acceptTerms}
+                disabled={!atBottom}
+              >
+                Accept
+              </button>
+              <Breadcrumbs total={2} currentIndex={2} />
             </div>
           </div>
-        )
+        </div>
+      </div>
     )
   }
 }

@@ -2,8 +2,11 @@
 
 ## Current Develop Branch
 
-## 0.5.1
+## 0.6.0
 
+Migrate SLP tokens to 245 derivation path.
+Display 245 slp address
+Continue to check for token balances on 145
 Adding token icons for $HONKS and $Nazgûl
 
 ## 0.5.0

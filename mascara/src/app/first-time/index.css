@@ -92,9 +92,11 @@
 
 .info {
   font-size: 19px;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
-.create-password,
+
 .unique-image,
 .tou,
 .backup-phrase,
@@ -105,13 +107,16 @@
   margin: 60px 0 30px 0;
   position: relative;
 }
+.create-password{
+  padding: 1rem;
+  width: 100%;
+}
 
 .import-account {
   max-width: initial;
 }
 
 @media only screen and (max-width: 575px) {
-  .create-password,
   .unique-image,
   .tou,
   .backup-phrase,
@@ -206,7 +211,7 @@
   .import-account__secret-phrase {
     width: initial !important;
     height: initial !important;
-    min-height: 190px;
+    min-height: 140px;
   }
 
   .backup-phrase__confirm-seed-options {
@@ -222,12 +227,16 @@
 .unique-image__title,
 .tou__title,
 .backup-phrase__title,
-.import-account__title,
 .buy-ether__title {
   color: #1B344D;
   font-size: 40px;
   line-height: 51px;
   margin-bottom: 24px;
+}
+
+.create-password__title,
+.import-account__title{
+  font-size: 30px;
 }
 
 .import-account__title {
@@ -423,12 +432,13 @@
 
 .backup-phrase__back-button,
 .import-account__back-button {
-  margin-bottom: 18px;
-  color: #22232c;
-  font-size: 16px;
-  line-height: 21px;
-  position: absolute;
-  top: -25px;
+  margin-bottom: 3px;
+  color: #ffffff;
+  font-size: 19px;
+  line-height: 14px;
+  background: #f79132;
+  padding: 0.5rem;
+  width: 75px;
 }
 
 .backup-phrase__back-button {
@@ -719,6 +729,7 @@ button.first-time-flow__button[disabled] {
 button.first-time-flow__button:hover {
   transform: scale(1);
   background-color: rgba(247, 134, 28, 0.9);
+  opacity: 0.9;
 }
 
 .first-time-flow__button--tertiary {
@@ -916,4 +927,25 @@ button.first-time-flow__button--tertiary:hover {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+}
+
+.password h2{
+  margin: 2rem 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.encrypt{
+  margin: 0 1rem;
+  display:flex;
+  align-items:center;
+}
+.encrypt p{
+  margin-right:1rem;
+  font-weight:bold;
+}
+
+.proceed{
+  margin: 5rem auto 4rem;
+  text-align: center;
 }

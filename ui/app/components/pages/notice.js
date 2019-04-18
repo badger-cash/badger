@@ -25,11 +25,15 @@ class Notice extends Component {
   }
 
   componentDidMount () {
+    // skip seed notice page
+    this.handleAccept()
     // eslint-disable-next-line react/no-find-dom-node
     var node = findDOMNode(this)
     linker.setupListener(node)
     if (document.getElementsByClassName('notice-box')[0].clientHeight < 310) {
-      this.setState({ disclaimerDisabled: false })
+      this.setState({
+        disclaimerDisabled: false,
+      })
     }
   }
 

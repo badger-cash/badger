@@ -234,7 +234,6 @@ class PreferencesController {
    * @returns {Promise<string>} selectedAddress the selected address.
    */
   syncAddresses (addresses, slpAddresses) {
-    console.log('prefs, syncAddresses, addresses, slp addrs', addresses, slpAddresses)
     const { identities, lostIdentities } = this.store.getState()
 
     const newlyLost = {}

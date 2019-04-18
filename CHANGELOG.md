@@ -2,6 +2,10 @@
 
 ## Current Develop Branch
 
+## 0.5.1
+
+Adding token icons for $HONKS and $Nazgûl
+
 ## 0.5.0
 
 Add Simple Ledger token transaction history

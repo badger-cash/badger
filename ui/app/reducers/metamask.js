@@ -16,6 +16,7 @@ function reduceMetamask (state, action) {
   var metamaskState = extend(
     {
       isInitialized: false,
+      isUnencrypted: false,
       isUnlocked: false,
       isAccountMenuOpen: false,
       isMascara: window.platform instanceof MetamascaraPlatform,
@@ -91,6 +92,11 @@ function reduceMetamask (state, action) {
     case actions.LOCK_METAMASK:
       return extend(metamaskState, {
         isUnlocked: false,
+      })
+
+    case actions.MARK_UNENCRYPTED:
+      return extend(metamaskState, {
+        isUnencrypted: true,
       })
 
     case actions.SET_RPC_LIST:

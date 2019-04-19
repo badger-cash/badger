@@ -169,6 +169,14 @@ class PreferencesController {
       return tokens
     }, {})
     this.store.updateState({ identities, accountTokens })
+
+    // If the selected account is no longer valid,
+    // select an arbitrary other account:
+    let selected = this.getSelectedAddress()
+    if (!addresses.includes(selected)) {
+      selected = addresses[0]
+      this.setSelectedAddress(selected)
+    }
   }
 
   /**
@@ -234,7 +242,6 @@ class PreferencesController {
    * @returns {Promise<string>} selectedAddress the selected address.
    */
   syncAddresses (addresses, slpAddresses) {
-    console.log('prefs, syncAddresses, addresses, slp addrs', addresses, slpAddresses)
     const { identities, lostIdentities } = this.store.getState()
 
     const newlyLost = {}
@@ -248,7 +255,7 @@ class PreferencesController {
     // Identities are no longer present.
     if (Object.keys(newlyLost).length > 0) {
       // Notify our servers:
-      if (this.diagnostics) this.diagnostics.reportOrphans(newlyLost)
+      // if (this.diagnostics) this.diagnostics.reportOrphans(newlyLost)
 
       // store lost accounts
       for (const key in newlyLost) {

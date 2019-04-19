@@ -605,7 +605,7 @@ module.exports = class MetamaskController extends EventEmitter {
       await this.diagnostics.reportMultipleKeyrings(nonSimpleKeyrings)
     }
 
-    await this.preferencesController.syncAddresses(accounts, slpAccounts)
+    await this.preferencesController.setAddresses(accounts, slpAccounts)
     return this.keyringController.fullUpdate()
   }
 

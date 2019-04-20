@@ -173,7 +173,7 @@ class PreferencesController {
     // If the selected account is no longer valid,
     // select an arbitrary other account:
     let selected = this.getSelectedAddress()
-    if (!addresses.includes(selected)) {
+    if (addresses.length && !addresses.includes(selected)) {
       selected = addresses[0]
       this.setSelectedAddress(selected)
     }

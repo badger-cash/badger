@@ -533,7 +533,7 @@ module.exports = class MetamaskController extends EventEmitter {
       const keyringController = this.keyringController
 
       // clear known identities
-      this.preferencesController.setAddresses([])
+      this.preferencesController.setAddresses([], [])
       // create new vault
       const vault = await keyringController.createNewVaultAndRestore(
         password,
@@ -891,7 +891,8 @@ module.exports = class MetamaskController extends EventEmitter {
     const accounts = await keyring.getAccounts()
     // update accounts in preferences controller
     const allAccounts = await this.keyringController.getAccounts()
-    this.preferencesController.setAddresses(allAccounts)
+    const allSlpAccounts = await this.keyringController.getSlpAccounts()
+    this.preferencesController.setAddresses(allAccounts, allSlpAccounts)
     // set new account as selected
     await this.preferencesController.setSelectedAddress(accounts[0])
   }

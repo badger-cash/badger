@@ -115,6 +115,9 @@ var actions = {
   LOCK_METAMASK: 'LOCK_METAMASK',
   tryUnlockMetamask: tryUnlockMetamask,
   lockMetamask: lockMetamask,
+  MARK_UNENCRYPTED: 'MARK_UNENCRYPTED',
+  checkUnencrypted: checkUnencrypted,
+
   unlockInProgress: unlockInProgress,
   // error handling
   displayWarning: displayWarning,
@@ -489,6 +492,19 @@ function verifyPassword (password) {
       resolve(true)
     })
   })
+}
+
+function checkUnencrypted () {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      background.submitPassword('', error => {
+        if (!error) {
+          dispatch(markUnencrypted())
+        }
+        resolve()
+      })
+    })
+  }
 }
 
 function verifySeedPhrase () {
@@ -1492,6 +1508,12 @@ function unlockMetamask (account) {
   return {
     type: actions.UNLOCK_METAMASK,
     value: account,
+  }
+}
+
+function markUnencrypted () {
+  return {
+    type: actions.MARK_UNENCRYPTED,
   }
 }
 

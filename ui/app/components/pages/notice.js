@@ -26,7 +26,8 @@ class Notice extends Component {
 
   componentDidMount () {
     // skip seed notice page
-    this.handleAccept()
+    // this.handleAccept()
+
     // eslint-disable-next-line react/no-find-dom-node
     var node = findDOMNode(this)
     linker.setupListener(node)

@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => {
     showNetworkDropdown: () => dispatch(actions.showNetworkDropdown()),
     hideNetworkDropdown: () => dispatch(actions.hideNetworkDropdown()),
     toggleAccountMenu: () => dispatch(actions.toggleAccountMenu()),
+    checkUnencrypted: () => dispatch(actions.checkUnencrypted()),
   }
 }
 

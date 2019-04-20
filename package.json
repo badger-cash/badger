@@ -93,7 +93,7 @@
     "axios": "^0.18.0",
     "babel-runtime": "^6.23.0",
     "bch-hd-keyring": "^1.0.8",
-    "bch-keyring-controller": "^1.0.8",
+    "bch-keyring-controller": "^1.0.9",
     "bch-json-rpc-middleware": "^5.0.6",
     "bch-token-icons": "0.0.3",
     "bchaddrjs-slp": "^0.2.5",

@@ -51,6 +51,8 @@ const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 // const sigUtil = require('eth-sig-util')
 const axios = require('axios')
+const CreateSlpSdk = require('slp-sdk')
+const SlpSdk = new CreateSlpSdk()
 
 module.exports = class MetamaskController extends EventEmitter {
   /**
@@ -268,6 +270,16 @@ module.exports = class MetamaskController extends EventEmitter {
           return []
         }
       },
+      getSlpAccounts: async () => {
+        const isUnlocked = this.keyringController.memStore.getState().isUnlocked
+        const selectedAddress = this.preferencesController.getSelectedSlpAddress()
+        // only show address if account is unlocked
+        if (isUnlocked && selectedAddress) {
+          return [selectedAddress]
+        } else {
+          return []
+        }
+      },
       // tx signing
       processTransaction: this.newUnapprovedTransaction.bind(this),
       // msg signing
@@ -299,6 +311,9 @@ module.exports = class MetamaskController extends EventEmitter {
       const result = {
         selectedAddress: memState.isUnlocked
           ? memState.selectedAddress
+          : undefined,
+        selectedSlpAddress: memState.isUnlocked
+          ? SlpSdk.Address.toSLPAddress(memState.selectedSlpAddress)
           : undefined,
         networkVersion: memState.network,
       }

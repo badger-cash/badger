@@ -1,10 +1,5 @@
 const mergeMiddleware = require('json-rpc-engine/src/mergeMiddleware')
-const createBlockCacheMiddleware = require('eth-json-rpc-middleware/block-cache')
-const createInflightMiddleware = require('eth-json-rpc-middleware/inflight-cache')
-const createBlockTrackerInspectorMiddleware = require('eth-json-rpc-middleware/block-tracker-inspector')
-const providerFromMiddleware = require('eth-json-rpc-middleware/providerFromMiddleware')
-const createInfuraMiddleware = require('eth-json-rpc-infura')
-const BlockTracker = require('eth-block-tracker')
+const createInflightMiddleware = require('bch-json-rpc-middleware/inflight-cache')
 
 module.exports = createInfuraClient
 

@@ -173,12 +173,13 @@ export default class UnlockPage extends Component {
                 markPasswordForgotten()
                 history.push(RESTORE_VAULT_ROUTE)
 
-                if (
-                  getEnvironmentType(window.location.href) ===
-                  ENVIRONMENT_TYPE_POPUP
-                ) {
-                  global.platform.openExtensionInBrowser()
-                }
+                // force extension to remain open
+                // if (
+                //   getEnvironmentType(window.location.href) ===
+                //   ENVIRONMENT_TYPE_POPUP
+                // ) {
+                //   global.platform.openExtensionInBrowser()
+                // }
               }}
             >
               {t('importUsingSeed')}

@@ -398,6 +398,9 @@ module.exports = class MetamaskController extends EventEmitter {
       // vault management
       submitPassword: nodeify(this.submitPassword, this),
 
+
+      checkVaultEncrypted: nodeify(this.submitPassword, this),
+
       // network management
       setProviderType: nodeify(
         networkController.setProviderType,

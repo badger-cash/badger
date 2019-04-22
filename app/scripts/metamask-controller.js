@@ -384,7 +384,10 @@ module.exports = class MetamaskController extends EventEmitter {
       clearSeedWordCache: this.clearSeedWordCache.bind(this),
       resetAccount: nodeify(this.resetAccount, this),
       removeAccount: nodeify(this.removeAccount, this),
-      importAccountWithStrategy: nodeify(this.importAccountWithStrategy, this),
+      importAccountWithStrategy: nodeify(
+        this.importAccountWithStrategy,
+        this
+      ),
 
       // hardware wallets
       connectHardware: nodeify(this.connectHardware, this),
@@ -398,8 +401,7 @@ module.exports = class MetamaskController extends EventEmitter {
       // vault management
       submitPassword: nodeify(this.submitPassword, this),
 
-
-      checkVaultEncrypted: nodeify(this.submitPassword, this),
+      checkVaultEncrypted: nodeify(this.checkVaultEncrypted, this),
 
       // network management
       setProviderType: nodeify(
@@ -413,7 +415,10 @@ module.exports = class MetamaskController extends EventEmitter {
         preferencesController.setSelectedAddress,
         preferencesController
       ),
-      addToken: nodeify(preferencesController.addToken, preferencesController),
+      addToken: nodeify(
+        preferencesController.addToken,
+        preferencesController
+      ),
       removeToken: nodeify(
         preferencesController.removeToken,
         preferencesController
@@ -443,8 +448,14 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // KeyringController
       setLocked: nodeify(keyringController.setLocked, keyringController),
-      createNewVaultAndKeychain: nodeify(this.createNewVaultAndKeychain, this),
-      createNewVaultAndRestore: nodeify(this.createNewVaultAndRestore, this),
+      createNewVaultAndKeychain: nodeify(
+        this.createNewVaultAndKeychain,
+        this
+      ),
+      createNewVaultAndRestore: nodeify(
+        this.createNewVaultAndRestore,
+        this
+      ),
       addNewKeyring: nodeify(
         keyringController.addNewKeyring,
         keyringController
@@ -455,14 +466,23 @@ module.exports = class MetamaskController extends EventEmitter {
       ),
 
       // txController
-      cancelTransaction: nodeify(txController.cancelTransaction, txController),
-      updateTransaction: nodeify(txController.updateTransaction, txController),
+      cancelTransaction: nodeify(
+        txController.cancelTransaction,
+        txController
+      ),
+      updateTransaction: nodeify(
+        txController.updateTransaction,
+        txController
+      ),
       updateAndApproveTransaction: nodeify(
         txController.updateAndApproveTransaction,
         txController
       ),
       retryTransaction: nodeify(this.retryTransaction, this),
-      getFilteredTxList: nodeify(txController.getFilteredTxList, txController),
+      getFilteredTxList: nodeify(
+        txController.getFilteredTxList,
+        txController
+      ),
       isNonceTaken: nodeify(txController.isNonceTaken, txController),
       estimateGas: nodeify(this.estimateGas, this),
 
@@ -479,8 +499,12 @@ module.exports = class MetamaskController extends EventEmitter {
       cancelTypedMessage: this.cancelTypedMessage.bind(this),
 
       // notices
-      checkNotices: noticeController.updateNoticesList.bind(noticeController),
-      markNoticeRead: noticeController.markNoticeRead.bind(noticeController),
+      checkNotices: noticeController.updateNoticesList.bind(
+        noticeController
+      ),
+      markNoticeRead: noticeController.markNoticeRead.bind(
+        noticeController
+      ),
     }
   }
 

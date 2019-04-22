@@ -4,10 +4,12 @@
 
 ## 0.6.0
 
-Migrate SLP tokens to 245 derivation path.
-Display 245 slp address
+Default SLP address and change tokens to 245 derivation path
 Continue to check for token balances on 145
+Send SLP tokens to SLP address only
+Passwords optional at account creation
 Adding token icons for $HONKS and $Nazgûl
+Fix reset account issue
 
 ## 0.5.0
 

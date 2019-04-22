@@ -12,6 +12,8 @@ import TextField from '../../../../ui/app/components/text-field'
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
 const BITBOX = new BITBOXSDK()
 
+import Toggle from '../../../../ui/app/components/toggle/toggle.component'
+
 class ImportSeedPhraseScreen extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -26,6 +28,7 @@ class ImportSeedPhraseScreen extends Component {
   }
 
   state = {
+    skipPassword: true,
     seedPhrase: '',
     password: '',
     confirmPassword: '',
@@ -85,23 +88,30 @@ class ImportSeedPhraseScreen extends Component {
     this.setState({ confirmPassword, confirmPasswordError })
   }
 
-  onClick = () => {
-    const { password, seedPhrase } = this.state
-    const {
-      createNewVaultAndRestore,
-      leaveImportSeedScreenState,
-      history,
-    } = this.props
+  onClick = disabled => {
+    const { password, seedPhrase, skipPassword } = this.state
 
-    leaveImportSeedScreenState()
-    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
-      () => history.push(INITIALIZE_NOTICE_ROUTE)
-    )
+    if (!disabled || skipPassword) {
+      const {
+        createNewVaultAndRestore,
+        leaveImportSeedScreenState,
+        history,
+      } = this.props
+
+      leaveImportSeedScreenState()
+      createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
+        () => history.push(INITIALIZE_NOTICE_ROUTE)
+      )
+    }
   }
 
   hasError () {
     const { passwordError, confirmPasswordError, seedPhraseError } = this.state
     return passwordError || confirmPasswordError || seedPhraseError
+  }
+
+  toggleState = () => {
+    this.setState({ skipPassword: !this.state.skipPassword })
   }
 
   render () {
@@ -112,6 +122,7 @@ class ImportSeedPhraseScreen extends Component {
       seedPhraseError,
       passwordError,
       confirmPasswordError,
+      skipPassword,
     } = this.state
     const { t } = this.context
     const { isLoading } = this.props
@@ -147,44 +158,65 @@ class ImportSeedPhraseScreen extends Component {
               <textarea
                 className="import-account__secret-phrase"
                 onChange={e => this.handleSeedPhraseChange(e.target.value)}
-                value={this.state.seedPhrase}
+                value={seedPhrase}
                 placeholder="Separate each word with a single space"
               />
             </div>
             <span className="error">{seedPhraseError}</span>
-            <TextField
-              id="password"
-              label={t('newPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.password}
-              onChange={event => this.handlePasswordChange(event.target.value)}
-              error={passwordError}
-              autoComplete="new-password"
-              margin="normal"
-              largeLabel
-            />
-            <TextField
-              id="confirm-password"
-              label={t('confirmPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.confirmPassword}
-              onChange={event =>
-                this.handleConfirmPasswordChange(event.target.value)
-              }
-              error={confirmPasswordError}
-              autoComplete="confirm-password"
-              margin="normal"
-              largeLabel
-            />
-            <button
-              className="first-time-flow__button"
-              onClick={() => !disabled && this.onClick()}
-              disabled={disabled}
-            >
-              Import
-            </button>
+
+            <div className="password">
+              <h2> Do you want to protect this wallet with a Password?</h2>
+              <div className="encrypt">
+                <p>Encrypt</p>
+                <Toggle toggleState={this.toggleState} />
+              </div>
+            </div>
+            {!skipPassword && (
+              <div>
+                <TextField
+                  id="password"
+                  label={t('newPassword')}
+                  type="password"
+                  className="first-time-flow__input"
+                  value={password}
+                  onChange={event =>
+                    this.handlePasswordChange(event.target.value)
+                  }
+                  error={passwordError}
+                  autoComplete="new-password"
+                  margin="normal"
+                  largeLabel
+                />
+                <TextField
+                  id="confirm-password"
+                  label={t('confirmPassword')}
+                  type="password"
+                  className="first-time-flow__input"
+                  value={confirmPassword}
+                  onChange={event =>
+                    this.handleConfirmPasswordChange(event.target.value)
+                  }
+                  error={confirmPasswordError}
+                  autoComplete="confirm-password"
+                  margin="normal"
+                  largeLabel
+                />
+              </div>
+            )}
+
+            <div style={{ textAlign: 'center' }}>
+              <button
+                className="first-time-flow__button"
+                onClick={() => this.onClick(disabled)}
+                disabled={
+                  skipPassword && seedPhraseError === null
+                    ? !disabled
+                    : disabled
+                }
+              >
+                Import
+              </button>
+            </div>
           </div>
         </div>
       </div>

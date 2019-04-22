@@ -176,10 +176,10 @@ class BitboxUtils {
 
   static signAndPublishSlpTransaction (
     txParams,
-    keyPair,
     spendableUtxos,
     tokenMetadata,
-    spendableTokenUtxos
+    spendableTokenUtxos,
+    tokenChangeAddress
   ) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -249,7 +249,7 @@ class BitboxUtils {
         transactionBuilder.addOutput(to, 546)
 
         // Return remaining token balance output
-        transactionBuilder.addOutput(from, 546)
+        transactionBuilder.addOutput(tokenChangeAddress, 546)
 
         // Return remaining bch balance output
         transactionBuilder.addOutput(from, satoshisRemaining + 546)
@@ -258,7 +258,7 @@ class BitboxUtils {
         inputUtxos.forEach((utxo, index) => {
           transactionBuilder.sign(
             index,
-            keyPair,
+            utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
             utxo.satoshis

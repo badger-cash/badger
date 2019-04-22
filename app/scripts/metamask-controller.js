@@ -851,8 +851,6 @@ module.exports = class MetamaskController extends EventEmitter {
   async resetAccount () {
     const selectedAddress = this.preferencesController.getSelectedAddress()
     this.txController.wipeTransactions(selectedAddress)
-    this.networkController.resetConnection()
-
     return selectedAddress
   }
 

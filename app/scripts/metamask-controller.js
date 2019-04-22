@@ -609,6 +609,11 @@ module.exports = class MetamaskController extends EventEmitter {
     return this.keyringController.fullUpdate()
   }
 
+  async checkVaultEncrypted (password) {
+    await this.keyringController.submitPassword(password)
+    return this.keyringController.fullUpdate()
+  }
+
   /**
    * @type Identity
    * @property {string} name - The account nickname.

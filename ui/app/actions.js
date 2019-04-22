@@ -497,7 +497,7 @@ function verifyPassword (password) {
 function checkUnencrypted () {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      background.submitPassword('', error => {
+      background.checkVaultEncrypted('', error => {
         if (!error) {
           dispatch(markUnencrypted())
         }

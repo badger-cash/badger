@@ -188,7 +188,7 @@ AccountMenu.prototype.renderAccounts = function () {
     showAccountDetail,
   } = this.props
 
-  const accountOrder = keyrings.reduce(
+  const accountOrder = keyrings.slice(0, 1).reduce(
     (list, keyring) => list.concat(keyring.accounts),
     []
   )

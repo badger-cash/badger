@@ -4,10 +4,6 @@ import SendRowWrapper from '../send-row-wrapper/'
 import EnsInput from '../../../ens-input'
 import { getToErrorObject } from './send-to-row.utils.js'
 
-const cashAccountRegex = /^([a-zA-Z0-9_]+)(#([0-9]+)(([0-9]+))).([0-9]+)?$/i
-const cashAddrRegex = /^((bitcoincash:)?(q|p)[a-z0-9]{38,})$/gi
-const slpRegex = /^((simpleledger:)?(q|p)[a-z0-9]{38,})$/gi
-
 export default class SendToRow extends Component {
   static propTypes = {
     closeToDropdown: PropTypes.func,
@@ -33,32 +29,15 @@ export default class SendToRow extends Component {
     this.handleToChange('', '', '')
   }
 
-  validateSLP (string) {
-    return slpRegex.test(string)
-  }
-
-  validateBCH (string) {
-    if (cashAccountRegex.test(string) || cashAddrRegex.test(string)) {
-      return true
-    }
-    return false
-  }
-
   handleToChange (to, nickname = '', toError) {
+    const {
+      updateSendTo,
+      updateSendToError,
+      selectedToken,
+      tokenContract,
+    } = this.props
+    const toErrorObject = getToErrorObject(to, toError)
 
-    const { updateSendTo, updateSendToError, selectedToken, tokenContract } = this.props
-    let toErrorObject = getToErrorObject(to, toError)
-    let valid
-
-    if (selectedToken !== null && tokenContract !== null) {
-      valid = this.validateSLP(to)
-    } else {
-      valid = this.validateBCH(to)
-    }
-    if (!valid) {
-      toErrorObject = getToErrorObject(to, 'invalid')
-    }
-    
     updateSendTo(to, nickname)
     updateSendToError(toErrorObject)
     if (toErrorObject.to === null) {

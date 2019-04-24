@@ -34,8 +34,10 @@ export default class AppHeader extends PureComponent {
     t: PropTypes.func,
   }
   componentDidMount () {
-    const { checkUnencrypted } = this.props
-    checkUnencrypted()
+    const { checkUnencrypted, isUnlocked } = this.props
+    if (!isUnlocked) {
+      checkUnencrypted()
+    }
   }
 
   handleNetworkIndicatorClick (event) {

@@ -1,3 +1,4 @@
+import CashAccount from '../../../../../../app/scripts/lib/cashaccount'
 const {
   REQUIRED_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,
@@ -6,21 +7,39 @@ const {
 const bchaddr = require('bchaddrjs-slp')
 
 function getToErrorObject (to, toError = null, selectedToken = null) {
-  if (!to) {
+  try {
+    isValidBchAddress(to)
+  } catch (error) {
+    toError = INVALID_RECIPIENT_ADDRESS_ERROR
+  }
+  if (toError !== null) {
+    try {
+      isValidSlpAddress(to)
+    } catch (error) {
+      toError = INVALID_RECIPIENT_ADDRESS_ERROR
+    }
+  }
+
+  if (to === '') {
     toError = REQUIRED_ERROR
-  } else if (!toError && !selectedToken && !isValidBchAddress(to)) {
-    toError = INVALID_RECIPIENT_ADDRESS_ERROR
-  } else if (!toError && selectedToken && selectedToken.protocol === 'slp' && !isValidSlpAddress(to)) {
-    toError = INVALID_RECIPIENT_ADDRESS_ERROR
-  } else if (toError === 'invalid') {
-    toError = INVALID_RECIPIENT_ADDRESS_ERROR
+  }
+
+  if (isValidCashAccount(to)) {
+    toError = null
   }
 
   return { to: toError }
 }
 
+function isValidCashAccount (string) {
+  return CashAccount.isCashAccount(string)
+}
+
 function isValidBchAddress (address) {
-  return bchaddr.isMainnetAddress(address) && bchaddr.isLegacyAddress(address) || bchaddr.isCashAddress(address)
+  return (
+    (bchaddr.isMainnetAddress(address) && bchaddr.isLegacyAddress(address)) ||
+    bchaddr.isCashAddress(address)
+  )
 }
 
 function isValidSlpAddress (address) {

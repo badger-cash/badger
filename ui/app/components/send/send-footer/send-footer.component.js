@@ -108,7 +108,13 @@ export default class SendFooter extends Component {
   }
 
   formShouldBeDisabled () {
+    const { err } = this.state
     const { inError, selectedToken, to } = this.props
+    // clear error msg
+    if (err && to === '') {
+      this.setState({ err: '' })
+    }
+
     const missingTokenBalance = selectedToken && !selectedToken.string
     return inError || missingTokenBalance || !to
   }
@@ -118,7 +124,7 @@ export default class SendFooter extends Component {
 
     return (
       <PageContainerFooter
-        onCancel ={() => this.onCancel()}
+        onCancel={() => this.onCancel()}
         onSubmit={e => this.onSubmit(e)}
         disabled={this.formShouldBeDisabled()}
       >

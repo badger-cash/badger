@@ -174,7 +174,7 @@ CurrencyDisplay.prototype.render = function () {
   const { selectedToken } = this.props
   if (selectedToken) {
     primaryCurrency = selectedToken.symbol
-    convertedValueToRender = '0.00'
+    convertedValueToRender = null
   }
 
   return h(

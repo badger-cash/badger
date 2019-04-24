@@ -1,3 +1,4 @@
+import CashAccount from '../../../../../../app/scripts/lib/cashaccount'
 const {
   REQUIRED_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,
@@ -9,8 +10,6 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
   try {
     isValidBchAddress(to)
   } catch (error) {
-    toError = INVALID_RECIPIENT_ADDRESS_ERROR
-  } else if (toError === 'invalid') {
     toError = INVALID_RECIPIENT_ADDRESS_ERROR
   }
   if (toError !== null) {
@@ -33,8 +32,7 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
 }
 
 function isValidCashAccount (string) {
-  const cashAccountRegex = /^([a-zA-Z0-9_]+)(#([0-9]+)(([0-9]+))).([0-9]+)?$/i
-  return cashAccountRegex.test(string)
+  return CashAccount.isCashAccount(string)
 }
 
 function isValidBchAddress (address) {

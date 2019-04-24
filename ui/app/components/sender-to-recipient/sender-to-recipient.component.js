@@ -13,7 +13,6 @@ const variantHash = {
 const bchaddr = require('bchaddrjs-slp')
 import localStorage from 'store'
 
-
 export default class SenderToRecipient extends PureComponent {
   static propTypes = {
     senderName: PropTypes.string,
@@ -108,14 +107,13 @@ export default class SenderToRecipient extends PureComponent {
       recipientName = `${cashAccount.name}#${cashAccount.number}`
     }
 
-    if (subtitle === 'Simple Ledger Protocol') {
+    if (subtitle === 'Simple Ledger Protocol' && cashAccount === undefined) {
       recipientAddress = bchaddr.toSlpAddress(recipientAddress)
       recipientName = `${recipientAddress.substring(
         0,
         6
       )}...${recipientAddress.substr(-4)}`
     }
-
 
     return (
       <div
@@ -125,7 +123,9 @@ export default class SenderToRecipient extends PureComponent {
           copyToClipboard(recipientAddress)
         }}
       >
-        { cashAccount !== undefined ? this.renderEmoji(cashAccount.emoji) : this.renderRecipientIdenticon()}
+        {cashAccount !== undefined
+          ? this.renderEmoji(cashAccount.emoji)
+          : this.renderRecipientIdenticon()}
         <Tooltip
           position="bottom"
           title={

@@ -5,6 +5,8 @@ import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
 import CashAccount from '../../../../../app/scripts/lib/cashaccount'
 import localStorage from 'store'
 
+const bchaddr = require('bchaddrjs-slp')
+
 export default class SendFooter extends Component {
   static propTypes = {
     addToAddressBookIfNew: PropTypes.func,
@@ -58,18 +60,27 @@ export default class SendFooter extends Component {
 
     if (CashAccount.isCashAccount(to)) {
       toAccounts.name = to
-      const addr = await CashAccount.getAddressByCashAccount(to)
+      // const addr = await CashAccount.getAddressByCashAccount(to)
+      const addr = await CashAccount.getAccountInfo(to)
+      console.log('addr', addr, typeof addr)
 
-      if (addr === undefined) {
+      if (Object.keys(addr).length === 0) {
         return this.setState({ err: 'not a valid cash account' })
       } else {
         localStorage.set('cashAccount', addr.information)
         this.setState({ err: '' })
+        const { payment } = addr.information
+        let type
 
-        to = addr.information.payment[0].address
+        if (payment.length === 2 && selectedToken) {
+          to = bchaddr.toSlpAddress(payment[1].address)
+          type = payment[1].type
+        } else {
+          to = payment[0].address
+          type = payment[0].type
+        }
+
         toAccounts.address = to
-
-        const type = addr.information.payment[0].type
 
         if (type === 'Payment Code') {
           this.setState({ err: 'Payment type not supported yet' })

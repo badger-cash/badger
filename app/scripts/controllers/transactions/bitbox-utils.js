@@ -32,7 +32,15 @@ class BitboxUtils {
     return new Promise((resolve, reject) => {
       SLP.Address.utxo(address).then(
         result => {
-          resolve(result.utxos)
+          if (result && result.utxos && result.utxos.length) {
+            const utxos = result.utxos.map(utxo => {
+              utxo.scriptPubKey = result.scriptPubKey
+              return utxo
+            })
+            resolve(utxos)
+          } else {
+            resolve(result.utxos)
+          }
         },
         err => {
           reject(err)
@@ -346,9 +354,18 @@ class BitboxUtils {
           sendTokenAmount.toString()
         )
 
-        let inputUtxos = spendableUtxos.map(utxo => {
-          utxo.value = utxo.amount
-          return utxo
+        let inputUtxos = spendableUtxos.filter(utxo =>
+            utxo.address === from && utxo.spendable === true
+          ).map(utxo => {
+          const whUtxo = Object.assign({}, utxo)
+          whUtxo.value = whUtxo.amount
+          delete whUtxo.keyPair
+          delete whUtxo.tx
+          delete whUtxo.address
+          delete whUtxo.slp
+          delete whUtxo.confirmations
+          delete whUtxo.height
+          return whUtxo
         })
         if (inputUtxos.length >= 2) {
           inputUtxos = inputUtxos.sort((a, b) => a.satoshis - b.satoshis)

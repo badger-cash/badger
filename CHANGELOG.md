@@ -4,20 +4,20 @@
 
 ## 0.6.0
 
-Default SLP address and change tokens to 245 derivation path
-Continue to check for token balances on 145
-Send SLP tokens to SLP address only
-Passwords optional at account creation
-Adding token icons for $HONKS and $Nazgûl
-Fix reset account issue
-Fix wormhole transactions (soon deprecated, please move WH tokens to another wallet)
+- Default SLP address and change tokens to 245 derivation path
+- Continue to check for token balances on 145
+- Send SLP tokens to SLP address only
+- Passwords optional at account creation
+- Adding token icons for $HONKS and $Nazgûl
+- Fix reset account issue
+- Fix wormhole transactions (soon deprecated, please move WH tokens to another wallet)
 
 ## 0.5.0
 
-Add Simple Ledger token transaction history
-Performance Improvements
-Display recent transactions and link to explorer for full transaction history
-Add Cash token icon
+- Add Simple Ledger token transaction history
+- Performance Improvements
+- Display recent transactions and link to explorer for full transaction history
+- Add Cash token icon
 
 ## 0.4.2
 

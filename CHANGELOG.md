@@ -10,6 +10,7 @@ Send SLP tokens to SLP address only
 Passwords optional at account creation
 Adding token icons for $HONKS and $Nazgûl
 Fix reset account issue
+Fix wormhole transactions (soon deprecated, please move WH tokens to another wallet)
 
 ## 0.5.0
 

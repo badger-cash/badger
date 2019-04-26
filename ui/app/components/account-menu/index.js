@@ -17,6 +17,7 @@ const { formatBalance } = require('../../util')
 const { ENVIRONMENT_TYPE_POPUP } = require('../../../../app/scripts/lib/enums')
 const { getEnvironmentType } = require('../../../../app/scripts/lib/util')
 const Tooltip = require('../tooltip')
+const classNames = require('classnames')
 
 const {
   SETTINGS_ROUTE,
@@ -51,6 +52,7 @@ function mapStateToProps (state) {
     keyrings: state.metamask.keyrings,
     identities: state.metamask.identities,
     accounts: state.metamask.accounts,
+    isUnencrypted: state.metamask.isUnencrypted,
   }
 }
 
@@ -92,7 +94,13 @@ AccountMenu.prototype.render = function () {
     toggleAccountMenu,
     lockMetamask,
     history,
+    isUnencrypted,
   } = this.props
+
+  const logoutClass = classNames({
+    'button.account-menu__logout-button.hidden': isUnencrypted,
+    'button.account-menu__logout-button.test': !isUnencrypted,
+  })
 
   return h(Menu, { className: 'account-menu', isShowing: isAccountMenuOpen }, [
     h(CloseArea, { onClick: toggleAccountMenu }),
@@ -104,7 +112,7 @@ AccountMenu.prototype.render = function () {
       [
         this.context.t('myAccounts'),
         h(
-          'button.account-menu__logout-button',
+          logoutClass,
           {
             onClick: () => {
               lockMetamask()
@@ -163,7 +171,9 @@ AccountMenu.prototype.render = function () {
         toggleAccountMenu()
         history.push(SETTINGS_ROUTE)
       },
-      icon: h('img.account-menu__item-icon', { src: 'images/settings.svg' }),
+      icon: h('img.account-menu__item-icon', {
+        src: 'images/settings.svg',
+      }),
       text: this.context.t('settings'),
     }),
   ])
@@ -178,48 +188,52 @@ AccountMenu.prototype.renderAccounts = function () {
     showAccountDetail,
   } = this.props
 
-  const accountOrder = keyrings.reduce(
+  const accountOrder = keyrings.slice(0, 1).reduce(
     (list, keyring) => list.concat(keyring.accounts),
     []
   )
-  return accountOrder.filter(address => !!identities[address]).map(address => {
-    const identity = identities[address]
-    const isSelected = identity.address === selectedAddress
+  return accountOrder
+    .filter(address => !!identities[address])
+    .map(address => {
+      const identity = identities[address]
+      const isSelected = identity.address === selectedAddress
 
-    const balanceValue = accounts[address] ? accounts[address].balance : ''
-    const formattedBalance = balanceValue ? formatBalance(balanceValue, 8) : '0'
-    const simpleAddress = identity.address.substring(2).toLowerCase()
+      const balanceValue = accounts[address] ? accounts[address].balance : ''
+      const formattedBalance = balanceValue
+        ? formatBalance(balanceValue, 8)
+        : '0'
+      const simpleAddress = identity.address.substring(2).toLowerCase()
 
-    const keyring = keyrings.find(kr => {
-      return (
-        kr.accounts.includes(simpleAddress) ||
-        kr.accounts.includes(identity.address)
+      const keyring = keyrings.find(kr => {
+        return (
+          kr.accounts.includes(simpleAddress) ||
+          kr.accounts.includes(identity.address)
+        )
+      })
+
+      return h(
+        'div.account-menu__account.menu__item--clickable',
+        { onClick: () => showAccountDetail(identity.address) },
+        [
+          h('div.account-menu__check-mark', [
+            isSelected ? h('div.account-menu__check-mark-icon') : null,
+          ]),
+
+          h(Identicon, {
+            address: identity.address,
+            diameter: 24,
+          }),
+
+          h('div.account-menu__account-info', [
+            h('div.account-menu__name', identity.name || ''),
+            h('div.account-menu__balance', formattedBalance),
+          ]),
+
+          this.renderKeyringType(keyring),
+          this.renderRemoveAccount(keyring, identity),
+        ]
       )
     })
-
-    return h(
-      'div.account-menu__account.menu__item--clickable',
-      { onClick: () => showAccountDetail(identity.address) },
-      [
-        h('div.account-menu__check-mark', [
-          isSelected ? h('div.account-menu__check-mark-icon') : null,
-        ]),
-
-        h(Identicon, {
-          address: identity.address,
-          diameter: 24,
-        }),
-
-        h('div.account-menu__account-info', [
-          h('div.account-menu__name', identity.name || ''),
-          h('div.account-menu__balance', formattedBalance),
-        ]),
-
-        this.renderKeyringType(keyring),
-        this.renderRemoveAccount(keyring, identity),
-      ]
-    )
-  })
 }
 
 AccountMenu.prototype.renderRemoveAccount = function (keyring, identity) {

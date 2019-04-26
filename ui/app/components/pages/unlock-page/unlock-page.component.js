@@ -34,11 +34,19 @@ export default class UnlockPage extends Component {
     this.animationEventEmitter = new EventEmitter()
   }
 
-  componentWillMount () {
-    const { isUnlocked, history } = this.props
+  async componentWillMount () {
+    const { isUnlocked, history, tryUnlockMetamask } = this.props
 
     if (isUnlocked) {
       history.push(DEFAULT_ROUTE)
+    }
+
+    try {
+      await tryUnlockMetamask('')
+      this.submitting = false
+      history.push(DEFAULT_ROUTE)
+    } catch ({ message }) {
+      this.submitting = false
     }
   }
 
@@ -49,7 +57,7 @@ export default class UnlockPage extends Component {
     const { password } = this.state
     const { tryUnlockMetamask, history } = this.props
 
-    if (password === '' || this.submitting) {
+    if (this.submitting) {
       return
     }
 
@@ -165,12 +173,13 @@ export default class UnlockPage extends Component {
                 markPasswordForgotten()
                 history.push(RESTORE_VAULT_ROUTE)
 
-                if (
-                  getEnvironmentType(window.location.href) ===
-                  ENVIRONMENT_TYPE_POPUP
-                ) {
-                  global.platform.openExtensionInBrowser()
-                }
+                // force extension to remain open
+                // if (
+                //   getEnvironmentType(window.location.href) ===
+                //   ENVIRONMENT_TYPE_POPUP
+                // ) {
+                //   global.platform.openExtensionInBrowser()
+                // }
               }}
             >
               {t('importUsingSeed')}

@@ -2,9 +2,15 @@
 
 ## Current Develop Branch
 
-## 0.5.1
+## 0.6.0
 
+Default SLP address and change tokens to 245 derivation path
+Continue to check for token balances on 145
+Send SLP tokens to SLP address only
+Passwords optional at account creation
 Adding token icons for $HONKS and $Nazgûl
+Fix reset account issue
+Fix wormhole transactions (soon deprecated, please move WH tokens to another wallet)
 
 ## 0.5.0
 

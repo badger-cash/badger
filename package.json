@@ -1,6 +1,6 @@
 {
   "name": "badger",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "license": "MIT",
   "homepage": "https://badger.bitcoin.com",
   "repository": {
@@ -92,8 +92,9 @@
     "await-semaphore": "^0.1.1",
     "axios": "^0.18.0",
     "babel-runtime": "^6.23.0",
-    "bch-hd-keyring": "^0.3.2",
-    "bch-keyring-controller": "^0.2.2",
+    "bch-hd-keyring": "^1.0.8",
+    "bch-keyring-controller": "^1.0.9",
+    "bch-json-rpc-middleware": "5.0.5",
     "bch-token-icons": "0.0.3",
     "bchaddrjs-slp": "^0.2.5",
     "bignumber.js": "^4.1.0",
@@ -224,7 +225,7 @@
     "valid-url": "^1.0.9",
     "vreme": "^3.0.2",
     "web3-stream-provider": "^3.0.1",
-    "web3bch": "^0.1.1",
+    "web4bch": "^0.1.2",
     "webrtc-adapter": "^6.4.4",
     "wormhole-sdk": "^1.2.3",
     "xtend": "^4.0.1"
@@ -264,7 +265,6 @@
     "eslint-plugin-json": "^1.2.1",
     "eslint-plugin-mocha": "^5.2.0",
     "eslint-plugin-react": "^7.11.1",
-    "eth-json-rpc-middleware": "^2.6.0",
     "file-loader": "^1.1.11",
     "fs-extra": "^6.0.1",
     "fs-promise": "^2.0.3",
@@ -342,5 +342,13 @@
   "engines": {
     "node": "8.11.3",
     "npm": "^6.1.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 80,
+    "arrowParens": "avoid",
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "semi": false
   }
 }

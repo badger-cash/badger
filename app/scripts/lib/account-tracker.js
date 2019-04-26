@@ -204,6 +204,27 @@ class AccountTracker {
           tokens = tokens.concat(slpTokens)
         }
 
+        // Get SLP tokens for 245 SLP address
+        const slpAddress = this._preferences.getSlpAddressForAccount(address)
+        const getSlpTokens245Response = await this._getSlpTokens(
+          slpAddress
+        )
+        const slpTokens245 = getSlpTokens245Response.slpTokens
+        if (slpTokens245) {
+          slpTokens245.forEach(token => {
+            const existingTokenIndex = tokens.findIndex(t => t.address === token.address)
+            if (existingTokenIndex >= 0) {
+              const existingToken = tokens[existingTokenIndex]
+              const firstBalance = new BigNumber(existingToken.string)
+              const secondBalance = new BigNumber(token.string)
+              const finalBalance = firstBalance.plus(secondBalance)
+              tokens[existingTokenIndex].string = finalBalance.toString()
+            } else {
+              tokens.push(token)
+            }
+          })
+        }
+
         balance = bchBalanceSatoshis
       } catch (err) {
         log.error(
@@ -283,8 +304,10 @@ class AccountTracker {
       // concat the chunked arrays
       txDetails = [].concat(...txDetails)
 
+      // Add tx and address property to each utxo
       for (let i = 0; i < uncachedUtxos.length; i++) {
         uncachedUtxos[i].tx = txDetails[i]
+        uncachedUtxos[i].address = address
       }
 
       // Parse the txDetails for txid and run list against slp/validate
@@ -725,12 +748,17 @@ class AccountTracker {
 
     const latestConfirmedTx = historicalSlpTransactions[address].sort((a, b) => b.block - a.block)[0]
     const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
-    const addressTransactions = await this.getHistoricalSlpTransactions(address, latestBlock)
+    const slpAddress = this._preferences.getSlpAddressForAccount(address)
+    const addressTransactions = await this.getHistoricalSlpTransactions(address, slpAddress, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
         .filter(input => input.e && input.e.a)
-        .map(input => `bitcoincash:${input.e.a}`)
+        .map(input => {
+          const addr = `bitcoincash:${input.e.a}`
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -745,7 +773,11 @@ class AccountTracker {
       // Determine to address
       const toAddresses = tx.slp.detail.outputs
         .filter(output => output.address)
-        .map(output => SLP.Address.toCashAddress(output.address))
+        .map(output => {
+          const addr = SLP.Address.toCashAddress(output.address)
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -769,10 +801,12 @@ class AccountTracker {
         value = tx.slp.detail.outputs.reduce((accumulator, currentValue) => {
           if (
             currentValue.address &&
-            SLP.Address.toCashAddress(currentValue.address) === toAddress &&
             currentValue.amount
           ) {
-            accumulator = accumulator.plus(new BigNumber(currentValue.amount))
+            const outputAddress = SLP.Address.toCashAddress(currentValue.address)
+            if (outputAddress === toAddress || (toAddress === address && outputAddress === slpAddress)) {
+              accumulator = accumulator.plus(new BigNumber(currentValue.amount))
+            }
           }
           return accumulator
         }, new BigNumber(0))
@@ -813,7 +847,7 @@ class AccountTracker {
     this.store.updateState({ historicalSlpTransactions })
   }
 
-  async getHistoricalSlpTransactions (address, latestBlock) {
+  async getHistoricalSlpTransactions (address, slpAddress, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -826,6 +860,12 @@ class AccountTracker {
               },
               {
                 'slp.detail.outputs.address': SLP.Address.toSLPAddress(address),
+              },
+              {
+                'in.e.a': slpAddress.slice(12),
+              },
+              {
+                'slp.detail.outputs.address': SLP.Address.toSLPAddress(slpAddress),
               },
             ],
             'slp.valid': true,

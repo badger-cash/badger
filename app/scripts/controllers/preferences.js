@@ -153,13 +153,14 @@ class PreferencesController {
    * @param {string[]} addresses An array of hex addresses
    *
    */
-  setAddresses (addresses) {
+  setAddresses (addresses, slpAddresses) {
     const oldIdentities = this.store.getState().identities
     const oldAccountTokens = this.store.getState().accountTokens
 
     const identities = addresses.reduce((ids, address, index) => {
       const oldId = oldIdentities[address] || {}
-      ids[address] = { name: `Account ${index + 1}`, address, ...oldId }
+      const slpAddress = slpAddresses[index]
+      ids[address] = { name: `Account ${index + 1}`, address, slpAddress, ...oldId }
       return ids
     }, {})
     const accountTokens = addresses.reduce((tokens, address) => {
@@ -168,6 +169,14 @@ class PreferencesController {
       return tokens
     }, {})
     this.store.updateState({ identities, accountTokens })
+
+    // If the selected account is no longer valid,
+    // select an arbitrary other account:
+    let selected = this.getSelectedAddress()
+    if (addresses.length > 0) {
+      selected = addresses[0]
+      this.setSelectedAddress(selected)
+    }
   }
 
   /**
@@ -209,17 +218,18 @@ class PreferencesController {
    * @param {string[]} addresses An array of hex addresses
    *
    */
-  addAddresses (addresses) {
+  addAddresses (addresses, slpAddresses) {
     const identities = this.store.getState().identities
     const accountTokens = this.store.getState().accountTokens
-    addresses.forEach(address => {
+    addresses.forEach((address, index) => {
       // skip if already exists
       if (identities[address]) return
       // add missing identity
       const identityCount = Object.keys(identities).length
 
       accountTokens[address] = {}
-      identities[address] = { name: `Account ${identityCount + 1}`, address }
+      const slpAddress = slpAddresses[index]
+      identities[address] = { name: `Account ${identityCount + 1}`, address, slpAddress }
     })
     this.store.updateState({ identities, accountTokens })
   }
@@ -231,7 +241,7 @@ class PreferencesController {
    * @param {Array<string>} addresses known to the vault.
    * @returns {Promise<string>} selectedAddress the selected address.
    */
-  syncAddresses (addresses) {
+  syncAddresses (addresses, slpAddresses) {
     const { identities, lostIdentities } = this.store.getState()
 
     const newlyLost = {}
@@ -245,7 +255,7 @@ class PreferencesController {
     // Identities are no longer present.
     if (Object.keys(newlyLost).length > 0) {
       // Notify our servers:
-      if (this.diagnostics) this.diagnostics.reportOrphans(newlyLost)
+      // if (this.diagnostics) this.diagnostics.reportOrphans(newlyLost)
 
       // store lost accounts
       for (const key in newlyLost) {
@@ -254,7 +264,7 @@ class PreferencesController {
     }
 
     this.store.updateState({ identities, lostIdentities })
-    this.addAddresses(addresses)
+    this.addAddresses(addresses, slpAddresses)
 
     // If the selected account is no longer valid,
     // select an arbitrary other account:
@@ -285,6 +295,11 @@ class PreferencesController {
     const address = normalizeAddress(_address)
     this._updateTokens(address)
     this.store.updateState({ selectedAddress: address })
+
+    // Update Selected SLP address
+    const slpAddress = this.getSlpAddressForAccount(address)
+    this.store.updateState({ selectedSlpAddress: slpAddress })
+
     const tokens = this.store.getState().tokens
     return Promise.resolve(tokens)
   }
@@ -297,6 +312,16 @@ class PreferencesController {
    */
   getSelectedAddress () {
     return this.store.getState().selectedAddress
+  }
+
+  getSelectedSlpAddress () {
+    const selectedIdentity = this.store.getState().identities[this.store.getState().selectedAddress]
+    return selectedIdentity.slpAddress
+  }
+
+  getSlpAddressForAccount (address) {
+    const selectedIdentity = this.store.getState().identities[address]
+    return selectedIdentity.slpAddress
   }
 
   /**

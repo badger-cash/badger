@@ -25,12 +25,19 @@ export default class AppHeader extends PureComponent {
     showNetworkDropdown: PropTypes.func,
     hideNetworkDropdown: PropTypes.func,
     toggleAccountMenu: PropTypes.func,
+    checkUnencrypted: PropTypes.func,
     selectedAddress: PropTypes.string,
     isUnlocked: PropTypes.bool,
   }
 
   static contextTypes = {
     t: PropTypes.func,
+  }
+  componentDidMount () {
+    const { checkUnencrypted, isUnlocked } = this.props
+    if (!isUnlocked) {
+      checkUnencrypted()
+    }
   }
 
   handleNetworkIndicatorClick (event) {
@@ -103,11 +110,11 @@ export default class AppHeader extends PureComponent {
   }
 
   render () {
-    const { network, provider, history, isUnlocked } = this.props
+    const { history, isUnlocked } = this.props
 
-    if (this.hideAppHeader()) {
-      return null
-    }
+    // if (this.hideAppHeader()) {
+    //   return null
+    // }
 
     return (
       <div

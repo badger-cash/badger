@@ -32,7 +32,15 @@ class BitboxUtils {
     return new Promise((resolve, reject) => {
       SLP.Address.utxo(address).then(
         result => {
-          resolve(result.utxos)
+          if (result && result.utxos && result.utxos.length) {
+            const utxos = result.utxos.map(utxo => {
+              utxo.scriptPubKey = result.scriptPubKey
+              return utxo
+            })
+            resolve(utxos)
+          } else {
+            resolve(result.utxos)
+          }
         },
         err => {
           reject(err)
@@ -102,31 +110,39 @@ class BitboxUtils {
         const to = txParams.to
         const satoshisToSend = parseInt(txParams.value)
 
-        // Calculate fee
-        let byteCount = SLP.BitcoinCash.getByteCount(
-          { P2PKH: spendableUtxos.length },
-          { P2PKH: 2 }
-        )
-        if (txParams.opReturn) {
-          byteCount +=
-            this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
-        }
-
         if (!spendableUtxos || spendableUtxos.length === 0) {
           throw new Error('Insufficient funds')
         }
 
-        // TODO: support testnet
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
-
+        // Calculate fee
+        let byteCount = 0
+        const sortedSpendableUtxos = spendableUtxos.sort((a, b) => {
+          return b.satoshis - a.satoshis
+        })
+        const inputUtxos = []
         let totalUtxoAmount = 0
-        spendableUtxos.forEach(utxo => {
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        for (const utxo of sortedSpendableUtxos) {
           if (utxo.spendable !== true) {
             throw new Error('Cannot spend unspendable utxo')
           }
           transactionBuilder.addInput(utxo.txid, utxo.vout)
           totalUtxoAmount += utxo.satoshis
-        })
+          inputUtxos.push(utxo)
+
+          byteCount = SLP.BitcoinCash.getByteCount(
+            { P2PKH: inputUtxos.length },
+            { P2PKH: 2 }
+          )
+          if (txParams.opReturn) {
+            byteCount +=
+              this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
+          }
+
+          if (totalUtxoAmount >= byteCount) {
+            break
+          }
+        }
 
         const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
 
@@ -153,7 +169,7 @@ class BitboxUtils {
         }
 
         let redeemScript
-        spendableUtxos.forEach((utxo, index) => {
+        inputUtxos.forEach((utxo, index) => {
           transactionBuilder.sign(
             index,
             keyPair,
@@ -176,10 +192,10 @@ class BitboxUtils {
 
   static signAndPublishSlpTransaction (
     txParams,
-    keyPair,
     spendableUtxos,
     tokenMetadata,
-    spendableTokenUtxos
+    spendableTokenUtxos,
+    tokenChangeAddress
   ) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -197,10 +213,24 @@ class BitboxUtils {
           )
         }
 
+        const sortedSpendableTokenUtxos = spendableTokenUtxos.sort((a, b) => {
+          const aQuantity = new BigNumber(a.slp.quantity)
+          const bQuantity = new BigNumber(b.slp.quantity)
+          if (aQuantity.eq(bQuantity)) return 0
+          else if (bQuantity.gt(aQuantity)) return 1
+          else return -1
+        })
+
         let tokenBalance = new BigNumber(0)
-        for (const tokenUtxo of spendableTokenUtxos) {
+        const tokenUtxosToSpend = []
+        for (const tokenUtxo of sortedSpendableTokenUtxos) {
           const utxoBalance = tokenUtxo.slp.quantity
           tokenBalance = tokenBalance.plus(utxoBalance)
+          tokenUtxosToSpend.push(tokenUtxo)
+
+          if (tokenBalance.gte(tokenSendAmount)) {
+            break
+          }
         }
 
         if (!tokenBalance.gte(tokenSendAmount)) {
@@ -209,29 +239,54 @@ class BitboxUtils {
 
         const tokenChangeAmount = tokenBalance.minus(tokenSendAmount)
 
-        const sendOpReturn = slpjs.slp.buildSendOpReturn({
-          tokenIdHex: txParams.sendTokenData.tokenId,
-          outputQtyArray: [tokenSendAmount, tokenChangeAmount],
+        let sendOpReturn
+
+        if (tokenChangeAmount.isGreaterThan(0)) {
+          sendOpReturn = slpjs.slp.buildSendOpReturn({
+            tokenIdHex: txParams.sendTokenData.tokenId,
+            outputQtyArray: [ tokenSendAmount, tokenChangeAmount ],
+          })
+        } else {
+          sendOpReturn = slpjs.slp.buildSendOpReturn({
+            tokenIdHex: txParams.sendTokenData.tokenId,
+            outputQtyArray: [ tokenSendAmount ],
+          })
+        }
+
+        const tokenReceiverAddressArray = [to]
+        if (tokenChangeAmount.isGreaterThan(0)) {
+          tokenReceiverAddressArray.push(tokenChangeAddress)
+        }
+
+        const sortedSpendableUtxos = spendableUtxos.sort((a, b) => {
+          return b.satoshis - a.satoshis
         })
 
-        const inputUtxos = spendableUtxos.concat(spendableTokenUtxos)
+        let byteCount = 0
+        let inputSatoshis = 0
+        const inputUtxos = tokenUtxosToSpend
+        for (const utxo of sortedSpendableUtxos) {
+          inputSatoshis = inputSatoshis + utxo.satoshis
+          inputUtxos.push(utxo)
 
-        const tokenReceiverAddressArray = [to, from]
+          byteCount = slpjs.slp.calculateSendCost(
+            sendOpReturn.length,
+            inputUtxos.length,
+            tokenReceiverAddressArray.length + 1, // +1 to receive remaining BCH
+            from
+          )
+
+          if (inputSatoshis >= byteCount) {
+            break
+          }
+        }
 
         const transactionBuilder = new SLP.TransactionBuilder('mainnet')
-
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {
           transactionBuilder.addInput(utxo.txid, utxo.vout)
           totalUtxoAmount += utxo.satoshis
         })
-
-        const byteCount = slpjs.slp.calculateSendCost(
-          sendOpReturn.length,
-          inputUtxos.length,
-          tokenReceiverAddressArray.length + 1, // +1 to receive remaining BCH
-          from
-        )
 
         const satoshisRemaining = totalUtxoAmount - byteCount
 
@@ -249,7 +304,9 @@ class BitboxUtils {
         transactionBuilder.addOutput(to, 546)
 
         // Return remaining token balance output
-        transactionBuilder.addOutput(from, 546)
+        if (tokenChangeAmount.isGreaterThan(0)) {
+          transactionBuilder.addOutput(tokenChangeAddress, 546)
+        }
 
         // Return remaining bch balance output
         transactionBuilder.addOutput(from, satoshisRemaining + 546)
@@ -258,7 +315,7 @@ class BitboxUtils {
         inputUtxos.forEach((utxo, index) => {
           transactionBuilder.sign(
             index,
-            keyPair,
+            utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
             utxo.satoshis
@@ -297,9 +354,18 @@ class BitboxUtils {
           sendTokenAmount.toString()
         )
 
-        let inputUtxos = spendableUtxos.map(utxo => {
-          utxo.value = utxo.amount
-          return utxo
+        let inputUtxos = spendableUtxos.filter(utxo =>
+            utxo.address === from && utxo.spendable === true
+          ).map(utxo => {
+          const whUtxo = Object.assign({}, utxo)
+          whUtxo.value = whUtxo.amount
+          delete whUtxo.keyPair
+          delete whUtxo.tx
+          delete whUtxo.address
+          delete whUtxo.slp
+          delete whUtxo.confirmations
+          delete whUtxo.height
+          return whUtxo
         })
         if (inputUtxos.length >= 2) {
           inputUtxos = inputUtxos.sort((a, b) => a.satoshis - b.satoshis)

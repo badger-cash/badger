@@ -1,6 +1,8 @@
 # Changelog
 
-## Current Develop Branch
+## 0.6.1
+
+- Fix BCH tx fees
 
 ## 0.6.0
 

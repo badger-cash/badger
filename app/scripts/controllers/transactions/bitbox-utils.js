@@ -139,7 +139,7 @@ class BitboxUtils {
               this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
           }
 
-          if (totalUtxoAmount >= byteCount) {
+          if (totalUtxoAmount >= byteCount + satoshisToSend) {
             break
           }
         }

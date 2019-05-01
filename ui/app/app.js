@@ -22,6 +22,7 @@ import Home from './components/pages/home'
 const Authenticated = require('./components/pages/authenticated')
 const Initialized = require('./components/pages/initialized')
 const Settings = require('./components/pages/settings')
+const RegisterCashaccount = require('./components/pages/register-cashaccount')
 const RestoreVaultPage = require('./components/pages/keychains/restore-vault')
   .default
 const RevealSeedConfirmation = require('./components/pages/keychains/reveal-seed')
@@ -58,6 +59,7 @@ const {
   CONFIRM_TRANSACTION_ROUTE,
   INITIALIZE_ROUTE,
   NOTICE_ROUTE,
+  REGISTER_CASHACCOUNT,
 } = require('./routes')
 
 class App extends Component {
@@ -85,8 +87,16 @@ class App extends Component {
         exact,
         component: RevealSeedConfirmation,
       }),
+      h(Authenticated, {
+        path: REGISTER_CASHACCOUNT,
+        component: RegisterCashaccount,
+      }),
       h(Authenticated, { path: SETTINGS_ROUTE, component: Settings }),
-      h(Authenticated, { path: NOTICE_ROUTE, exact, component: NoticeScreen }),
+      h(Authenticated, {
+        path: NOTICE_ROUTE,
+        exact,
+        component: NoticeScreen,
+      }),
       h(Authenticated, {
         path: `${CONFIRM_TRANSACTION_ROUTE}/:id?`,
         component: ConfirmTransaction,

@@ -25,6 +25,7 @@ const {
   NEW_ACCOUNT_ROUTE,
   IMPORT_ACCOUNT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
+  REGISTER_CASHACCOUNT,
   DEFAULT_ROUTE,
 } = require('../../routes')
 
@@ -135,6 +136,16 @@ AccountMenu.prototype.render = function () {
         src: 'images/plus-btn-white.svg',
       }),
       text: this.context.t('createAccount'),
+    }),
+    h(Item, {
+      onClick: () => {
+        toggleAccountMenu()
+        history.push(REGISTER_CASHACCOUNT)
+      },
+      icon: h('img.account-menu__item-icon', {
+        src: 'images/plus-btn-white.svg',
+      }),
+      text: 'Register Username',
     }),
     // TODO: Import account
     // h(Item, {

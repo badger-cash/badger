@@ -18,11 +18,11 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
 }
 
 function isValidBchAddress (address) {
-  return bchaddr.isMainnetAddress(address) && bchaddr.isLegacyAddress(address) || bchaddr.isCashAddress(address)
+  return bchaddr.isMainnetAddress(address) && bchaddr.isLegacyAddress(address) || bchaddr.isCashAddress(address) || bchaddr.isSlpAddress(address)
 }
 
 function isValidSlpAddress (address) {
-  return bchaddr.isMainnetAddress(address) && bchaddr.isSlpAddress(address)
+  return isValidBchAddress(address)
 }
 
 module.exports = {

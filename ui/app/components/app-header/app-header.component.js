@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { matchPath } from 'react-router-dom'
+import localStorage from 'store'
+import CashAccount from '../../../../app/scripts/lib/cashaccount'
 
 const {
   ENVIRONMENT_TYPE_NOTIFICATION,
@@ -27,17 +29,24 @@ export default class AppHeader extends PureComponent {
     toggleAccountMenu: PropTypes.func,
     checkUnencrypted: PropTypes.func,
     selectedAddress: PropTypes.string,
+    selectedSlpAddress: PropTypes.string,
     isUnlocked: PropTypes.bool,
   }
 
   static contextTypes = {
     t: PropTypes.func,
   }
+  state = {
+    registrations: localStorage.get('cashaccount-registrations'),
+  }
   componentDidMount () {
-    const { checkUnencrypted, isUnlocked } = this.props
-    if (!isUnlocked) {
-      checkUnencrypted()
-    }
+    const { checkUnencrypted } = this.props
+    checkUnencrypted()
+    this.checkCashAccountStatus()
+  }
+
+  checkCashAccountStatus () {
+    const { registrations } = this.state
   }
 
   handleNetworkIndicatorClick (event) {
@@ -109,6 +118,23 @@ export default class AppHeader extends PureComponent {
     }
   }
 
+  renderCashAccount = () => {
+    const { registrations } = this.state
+    if (registrations === undefined) {
+      return
+    } else {
+      for (const each of registrations) {
+      }
+
+      // loop through registrations
+      // parse
+      // match for selectedAddress
+      // display cashaccount info
+
+      return <div className="pending">registration pending</div>
+    }
+  }
+
   render () {
     const { history, isUnlocked } = this.props
 
@@ -139,6 +165,7 @@ export default class AppHeader extends PureComponent {
               width={42}
             />
           </div>
+          <div>{this.renderCashAccount()}</div>
           <div className="app-header__account-menu-container">
             {this.renderAccountMenu()}
           </div>

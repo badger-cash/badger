@@ -4,11 +4,18 @@ import { compose } from 'recompose'
 
 import AppHeader from './app-header.component'
 const actions = require('../../actions')
+const selectors = require('../../selectors')
 
 const mapStateToProps = state => {
   const { appState, metamask } = state
   const { networkDropdownOpen } = appState
-  const { network, provider, selectedAddress, isUnlocked } = metamask
+  const {
+    network,
+    provider,
+    selectedAddress,
+    selectedSlpAddress,
+    isUnlocked,
+  } = metamask
 
   return {
     networkDropdownOpen,
@@ -16,6 +23,7 @@ const mapStateToProps = state => {
     provider,
     selectedAddress,
     isUnlocked,
+    selectedSlpAddress,
   }
 }
 

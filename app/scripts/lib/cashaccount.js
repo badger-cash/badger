@@ -7,6 +7,8 @@ const bitcore = require('bitcore-lib-cash')
 const genesis = 563620
 // #15874 is first tokenaware registration
 
+const baseUrl = 'https://api.cashaccount.info'
+
 class CashAccount {
   /**
    * get the address for user's handle
@@ -23,7 +25,7 @@ class CashAccount {
 
     const number = split[1]
     const csplit = number.split('.')
-    const url = `https://api.cashaccount.info/account/${csplit[0]}/${name}/${
+    const url = `${baseUrl}/account/${csplit[0]}/${name}/${
       csplit.length === 2 ? csplit[1] : ''
     }`
 
@@ -42,41 +44,42 @@ class CashAccount {
 
   // in progress
   /**
-  //  * register a cashAccount
-  //  *
-  //  * @static
-  //  * @param {string} username - ie: jonathan
-  //  * @param {string} bchAddress - ie: bitcoincash:qqqqqqq
-  //  * @param {string} tokenAddress - ie: simpleledger:qqqqqqq
-  //  * @returns {obj} hex and txid
-  //  * @memberof CashAccount
-  //  */
-  // static async registerCashAccount (username, bchAddress, tokenAddress) {
-  //   const url = 'https://api.cashaccount.info/register'
-  //   const payments = [bchAddress]
-  //   if (tokenAddress) {
-  //     payments.push(tokenAddress)
-  //   }
-  //   console.log('payments', payments)
+   * register a cashAccount
+   *
+   * @static
+   * @param {string} username - ie: jonathan
+   * @param {string} bchAddress - ie: bitcoincash:qqqqqqq
+   * @param {string} tokenAddress - ie: simpleledger:qqqqqqq
+   * @returns {obj} hex and txid
+   * @memberof CashAccount
+   */
+  static async registerCashAccount (username, bchAddress, tokenAddress) {
+    const url = `${baseUrl}/register`
+    const payments = [bchAddress]
+    if (tokenAddress) {
+      payments.push(tokenAddress)
+    }
+    // console.log('payments', payments)
 
-  //   const data = {
-  //     name: username,
-  //     payments,
-  //   }
+    const data = {
+      name: username,
+      payments,
+    }
 
-  //   const resp = await axios
-  //     .post(url, data)
-  //     .then(x => {
-  //       console.log('posted', x.data)
-  //       return x.data
-  //     })
-  //     .catch(err => {
-  //       console.log(err.response)
-  //     })
+    const resp = await axios
+      .post(url, data)
+      .then(x => {
+        console.log('posted', x.data)
+        return x.data
+      })
+      .catch(err => {
+        console.log(err.response)
+        return err
+      })
 
-  //   console.log('resp cashacount', resp)
-  //   return resp
-  // }
+    // console.log('resp cashacount', resp)
+    return resp
+  }
 
   static async getAccountInfo (string) {
     const split = string.split('#')
@@ -108,6 +111,19 @@ class CashAccount {
     }
     return object
   }
+
+  static async test (txid) {
+    let data = await this.accountLookupViaBitDBTxid(txid)
+    console.log('data', data)
+    return data
+
+    data = data.c[0]
+
+    const { opreturn, transactionhash, blockhash } = data
+    const payment = await this.parsePaymentInfo(opreturn)
+    return payment
+  }
+
   /**
    * Parse cashaccount OPRETURN
    *
@@ -280,6 +296,30 @@ class CashAccount {
       })
     console.log('bitdb response', response)
     return response.data
+  }
+
+  static async accountLookupViaBitDBTxid (txid) {
+    const query = {
+      v: 3,
+      q: {
+        find: {
+          'tx.h': txid,
+        },
+        limit: 1,
+      },
+      r: {
+        f:
+          '[ .[] | { blockheight: .blk.i?, blockhash: .blk.h?, transactionhash: .tx.h?, opreturn: .out[0].str, name: .out[0].s2, data: .out[0].h3} ]',
+      },
+    }
+    const urlString = this.bufferString(query)
+    const response = await axios
+      .get(`https://bitdb.bch.sx/q/${urlString}`)
+      .catch(e => {
+        console.error('err in getNumberofTxs', e)
+      })
+    console.log('bitdb response', response)
+    return response.data.c
   }
 
   /**

@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '../../button'
 import CashAccount from '../../../../../app/scripts/lib/cashaccount'
-import LocalStorage from 'store'
+import localStorage from 'store'
 
 const selectors = require('../../../selectors')
 const Component = require('react').Component
@@ -10,6 +10,12 @@ const connect = require('react-redux').connect
 const actions = require('../../../actions')
 const { getCurrentViewContext } = require('../../../selectors')
 const { DEFAULT_ROUTE } = require('../../../routes')
+
+// save registration tx to localstorage
+// wait until confirmation
+// parse it for details
+// show pending
+// if confirmed, hide registration from menu
 
 class CashAccountPage extends Component {
   state = {
@@ -33,6 +39,7 @@ class CashAccountPage extends Component {
   createAccount = async () => {
     const { history, selectedAddress, selectedSlpAddress } = this.props
     const { username } = this.state
+    const existingArray = localStorage.get('cashaccount-registrations')
 
     const resp = await CashAccount.registerCashAccount(
       username,
@@ -41,7 +48,10 @@ class CashAccountPage extends Component {
     )
 
     if (resp.hex !== undefined) {
-      LocalStorage.set('cashaccount-registration', resp)
+      const array = existingArray === undefined ? [] : existingArray
+
+      array.push(resp)
+      localStorage.set('cashaccount-registrations', array)
       history.push(DEFAULT_ROUTE)
     } else {
       this.setState({ err: 'Service unable to parse payment data.' })

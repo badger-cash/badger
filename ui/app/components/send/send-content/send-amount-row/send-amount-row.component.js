@@ -11,7 +11,7 @@ export default class SendAmountRow extends Component {
       PropTypes.string,
       PropTypes.number,
     ]),
-    balance: PropTypes.string,
+    balance: PropTypes.any,
     conversionRate: PropTypes.number,
     convertedCurrency: PropTypes.string,
     gasTotal: PropTypes.string,
@@ -100,7 +100,7 @@ export default class SendAmountRow extends Component {
         showError={inError}
         errorType={'amount'}
       >
-        {/* {!inError && gasTotal && <AmountMaxButton />} */}
+        {!inError && <AmountMaxButton />}
         <CurrencyDisplay
           conversionRate={amountConversionRate}
           convertedCurrency={convertedCurrency}

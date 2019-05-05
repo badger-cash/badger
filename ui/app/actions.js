@@ -105,7 +105,6 @@ var actions = {
   // seed recovery actions
   REVEAL_SEED_CONFIRMATION: 'REVEAL_SEED_CONFIRMATION',
   revealSeedConfirmation: revealSeedConfirmation,
-  requestRevealSeed: requestRevealSeed,
   requestRevealSeedWords,
   // unlock screen
   UNLOCK_IN_PROGRESS: 'UNLOCK_IN_PROGRESS',
@@ -458,16 +457,7 @@ function createNewVaultAndKeychain (password) {
           return reject(err)
         }
 
-        // log.debug(`background.placeSeedWords`)
-
-        background.placeSeedWords(err => {
-          if (err) {
-            dispatch(actions.displayWarning(err.message))
-            return reject(err)
-          }
-
-          resolve()
-        })
+        resolve()
       })
     })
       .then(() => forceUpdateMetamaskState(dispatch))
@@ -517,33 +507,6 @@ function verifySeedPhrase () {
       resolve(seedWords)
     })
   })
-}
-
-function requestRevealSeed (password) {
-  return dispatch => {
-    dispatch(actions.showLoadingIndication())
-    // log.debug(`background.submitPassword`)
-    return new Promise((resolve, reject) => {
-      background.submitPassword(password, err => {
-        if (err) {
-          dispatch(actions.displayWarning(err.message))
-          return reject(err)
-        }
-
-        // log.debug(`background.placeSeedWords`)
-        background.placeSeedWords((err, result) => {
-          if (err) {
-            dispatch(actions.displayWarning(err.message))
-            return reject(err)
-          }
-
-          dispatch(actions.showNewVaultSeed(result))
-          dispatch(actions.hideLoadingIndication())
-          resolve()
-        })
-      })
-    })
-  }
 }
 
 function requestRevealSeedWords (password) {

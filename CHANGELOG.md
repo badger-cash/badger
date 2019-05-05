@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.3
+
+- Never store seed words in state
+- Replace any existing seed words with null
+
+## 0.6.2
+
+- Allow send to any address type
+
 ## 0.6.1
 
 - Fix BCH tx fees

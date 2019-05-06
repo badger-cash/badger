@@ -6,6 +6,8 @@ const WH = require('wormhole-sdk/lib/Wormhole').default
 const Wormhole = new WH({
   restURL: `https://rest.bitcoin.com/v1/`,
 })
+var PaymentProtocol = require('bitcore-payment-protocol')
+const axios = require('axios')
 
 class BitboxUtils {
   static async getLargestUtxo (address) {
@@ -184,6 +186,112 @@ class BitboxUtils {
         // TODO: Handle failures: transaction already in blockchain, mempool length, networking
         const txid = await this.publishTx(hex)
         resolve(txid)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  static signAndPublishPaymentRequestTransaction (txParams, keyPair, spendableUtxos) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const from = txParams.from
+        const satoshisToSend = parseInt(txParams.value)
+
+        if (!spendableUtxos || spendableUtxos.length === 0) {
+          throw new Error('Insufficient funds')
+        }
+
+        // Calculate fee
+        let byteCount = 0
+        const sortedSpendableUtxos = spendableUtxos.sort((a, b) => {
+          return b.satoshis - a.satoshis
+        })
+        const inputUtxos = []
+        let totalUtxoAmount = 0
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        for (const utxo of sortedSpendableUtxos) {
+          if (utxo.spendable !== true) {
+            throw new Error('Cannot spend unspendable utxo')
+          }
+          transactionBuilder.addInput(utxo.txid, utxo.vout)
+          totalUtxoAmount += utxo.satoshis
+          inputUtxos.push(utxo)
+
+          byteCount = SLP.BitcoinCash.getByteCount(
+            { P2PKH: inputUtxos.length },
+            { P2PKH: txParams.paymentData.outputs.length + 1 }
+          )
+
+          if (totalUtxoAmount >= byteCount + satoshisToSend) {
+            break
+          }
+        }
+
+        const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
+
+        // Verify sufficient fee
+        if (satoshisRemaining < 0) {
+          throw new Error(
+            'Not enough Bitcoin Cash for fee. Deposit a small amount and try again.'
+          )
+        }
+
+        // Destination outputs
+        for (const output of txParams.paymentData.outputs) {
+          transactionBuilder.addOutput(Buffer.from(JSON.parse(output.script).data), output.amount)
+        }
+
+        // Return remaining balance output
+        if (satoshisRemaining >= 546) {
+          transactionBuilder.addOutput(from, satoshisRemaining)
+        }
+
+        let redeemScript
+        inputUtxos.forEach((utxo, index) => {
+          transactionBuilder.sign(
+            index,
+            keyPair,
+            redeemScript,
+            transactionBuilder.hashTypes.SIGHASH_ALL,
+            utxo.satoshis
+          )
+        })
+
+        const hex = transactionBuilder.build().toHex()
+
+        // send the payment transaction
+        var payment = new PaymentProtocol().makePayment()
+        payment.set('merchant_data', txParams.paymentData.merchantData)
+        payment.set('transactions', [hex]) // as from payment details
+
+        // define the refund outputs
+        var refundOutputs = []
+        var outputs = new PaymentProtocol().makeOutput()
+        outputs.set('amount', 0)
+        // outputs.set('script', script.toBuffer()) // an instance of script
+        outputs.set('script', null) // an instance of script
+        refundOutputs.push(outputs.message)
+
+        payment.set('refund_to', refundOutputs)
+        payment.set('memo', 'Here is a payment')
+
+        // serialize and send
+        var rawbody = payment.serialize()
+
+        const headers = {
+          'Accept': 'application/bitcoincash-paymentrequest, application/bitcoincash-paymentack',
+          'Content-Type': 'application/bitcoincash-payment',
+          'Content-Transfer-Encoding': 'binary',
+        }
+        const response = await axios.post(txParams.paymentUrl, {
+          rawbody,
+        },
+        {
+          headers,
+        })
+        console.log('response', response)
+        resolve(response)
       } catch (err) {
         reject(err)
       }

@@ -7,8 +7,9 @@ const TransactionStateManager = require('./tx-state-manager')
 const PendingTransactionTracker = require('./pending-tx-tracker')
 const txUtils = require('./lib/util')
 const cleanErrorStack = require('../../lib/cleanErrorStack')
+const axios = require('axios')
+const toBuffer = require('blob-to-buffer')
 const log = require('loglevel')
-const recipientBlacklistChecker = require('./lib/recipient-blacklist-checker')
 const {
   TRANSACTION_TYPE_CANCEL,
   TRANSACTION_TYPE_RETRY,
@@ -16,9 +17,8 @@ const {
   TRANSACTION_STATUS_APPROVED,
 } = require('./enums')
 
-const { hexToBn, bnToHex } = require('../../lib/util')
-
 const bitboxUtils = require('./bitbox-utils')
+var PaymentProtocol = require('bitcore-payment-protocol')
 
 /**
   Transaction Controller is an aggregate of sub-controllers and trackers
@@ -126,6 +126,54 @@ class TransactionController extends EventEmitter {
     this.txStateManager.wipeTransactions(address)
   }
 
+  async decodePaymentRequest (requestData) {
+    return new Promise((resolve, reject) => {
+      toBuffer(requestData, function (err, buffer) {
+        if (err) reject(err)
+       
+        try {
+          var body = PaymentProtocol.PaymentRequest.decode(buffer)
+          var request = new PaymentProtocol().makePaymentRequest(body)
+
+          const detailsData = {}
+          // detailsData.version = request.get('payment_details_version')
+          // detailsData.pki_type = request.get('pki_type')
+          // detailsData.pki_data = request.get('pki_data')
+          var serializedDetails = request.get('serialized_payment_details')
+          var signature = request.get('signature')
+
+          // Verify the signature
+          detailsData.verified = request.verify()
+
+          // Get the payment details
+          var decodedDetails = PaymentProtocol.PaymentDetails.decode(serializedDetails)
+          var details = new PaymentProtocol().makePaymentDetails(decodedDetails)
+          // detailsData.network = details.get('network')
+          // detailsData.time = details.get('time')
+          // detailsData.expires = details.get('expires')
+          detailsData.memo = details.get('memo')
+          // detailsData.payment_url = details.get('payment_url')
+          detailsData.merchantData = details.get('merchant_data')
+          detailsData.outputs = details.get('outputs').map(output => {
+            return {
+              amount: output.amount.toNumber(),
+              script: JSON.stringify(new Buffer(output.script.buffer)),
+            }
+          })
+
+          let totalValue = 0
+          for (const output of detailsData.outputs) {
+            totalValue += output.amount
+          }
+          detailsData.totalValue = totalValue
+          resolve(detailsData)
+        } catch (ex) {
+          reject(ex)
+        }
+      })
+    })
+  }
+
   /**
   add a new unapproved transaction to the pipeline
 
@@ -135,7 +183,22 @@ class TransactionController extends EventEmitter {
   */
 
   async newUnapprovedTransaction (txParams, opts = {}) {
-    // log.debug(`MetaMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`)
+    // Check for payment url
+    if (txParams.paymentUrl) {
+      const headers = {
+        'Accept': 'application/bitcoincash-paymentrequest',
+        'Content-Type': 'application/octet-stream',
+      }
+  
+      const paymentResponse = await axios.get(txParams.paymentUrl, {
+        headers,
+        responseType: 'blob',
+      })
+
+      txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
+      txParams.value = txParams.paymentData.totalValue
+    }
+
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)
     initialTxMeta.origin = opts.origin
     this.txStateManager.updateTx(
@@ -191,7 +254,12 @@ class TransactionController extends EventEmitter {
   async addUnapprovedTransaction (txParams) {
     // validate & normalize
     const normalizedTxParams = txUtils.normalizeTxParams(txParams)
-    txUtils.validateTxParams(normalizedTxParams)
+
+    if (txParams.paymentDetails) {
+      // TODO: txUtils.validatePaymentDetails(normalizedTxParams)
+    } else {
+      txUtils.validateTxParams(normalizedTxParams)
+    }
 
     // construct txMeta
     const txMeta = this.txStateManager.generateTxMeta({
@@ -202,20 +270,6 @@ class TransactionController extends EventEmitter {
 
     this.emit('newUnapprovedTx', txMeta)
 
-    try {
-      // check whether recipient account is blacklisted
-      recipientBlacklistChecker.checkAccount(
-        txMeta.metamaskNetworkId,
-        normalizedTxParams.to
-      )
-      // add default tx params
-      // skip gas
-      // txMeta = await this.addTxGasDefaults(txMeta)
-    } catch (error) {
-      // log.warn(error)
-      this.txStateManager.setTxStatusFailed(txMeta.id, error)
-      throw error
-    }
     txMeta.loadingDefaults = false
     // save txMeta
     this.txStateManager.updateTx(txMeta)
@@ -401,6 +455,12 @@ class TransactionController extends EventEmitter {
           propertyId
         )
       }
+    } else if (txParams.paymentData) {
+      txHash = await bitboxUtils.signAndPublishPaymentRequestTransaction(
+        txParams,
+        keyPair,
+        spendableUtxos
+      )
     } else {
       txHash = await bitboxUtils.signAndPublishBchTransaction(
         txParams,

@@ -15,6 +15,7 @@ export default class SendAmountRow extends Component {
     conversionRate: PropTypes.number,
     convertedCurrency: PropTypes.string,
     gasTotal: PropTypes.string,
+    bchFee: PropTypes.number,
     inError: PropTypes.bool,
     primaryCurrency: PropTypes.string,
     selectedToken: PropTypes.object,
@@ -24,6 +25,7 @@ export default class SendAmountRow extends Component {
     updateSendAmount: PropTypes.func,
     updateSendAmountError: PropTypes.func,
     updateGas: PropTypes.func,
+    calculateTxFee: PropTypes.func,
   }
 
   static contextTypes = {
@@ -89,10 +91,16 @@ export default class SendAmountRow extends Component {
       amountConversionRate,
       convertedCurrency,
       gasTotal,
+      bchFee,
       inError,
       primaryCurrency,
       selectedToken,
+      calculateTxFee,
     } = this.props
+    console.log('send amount props', this.props)
+
+    calculateTxFee()
+    console.log('updated  props', this.props)
 
     return (
       <SendRowWrapper

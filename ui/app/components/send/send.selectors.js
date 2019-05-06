@@ -19,6 +19,7 @@ const selectors = {
   getGasPrice,
   getGasPriceFromRecentBlocks,
   getGasTotal,
+  getBchFee,
   getPrimaryCurrency,
   getRecentBlocks,
   getSelectedAccount,
@@ -133,6 +134,10 @@ function getGasPriceFromRecentBlocks (state) {
 
 function getGasTotal (state) {
   return state.metamask.send.gasTotal
+}
+
+function getBchFee (state) {
+  return state.metamask.send.bchFee
 }
 
 function getPrimaryCurrency (state) {

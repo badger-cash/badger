@@ -117,6 +117,7 @@ var actions = {
   lockMetamask: lockMetamask,
   MARK_UNENCRYPTED: 'MARK_UNENCRYPTED',
   checkUnencrypted: checkUnencrypted,
+  calculateTxFee: calculateTxFee,
 
   unlockInProgress: unlockInProgress,
   // error handling
@@ -200,6 +201,7 @@ var actions = {
   CLOSE_FROM_DROPDOWN: 'CLOSE_FROM_DROPDOWN',
   GAS_LOADING_STARTED: 'GAS_LOADING_STARTED',
   GAS_LOADING_FINISHED: 'GAS_LOADING_FINISHED',
+  SET_SATOSHI_FEE: 'SET_SATOSHI_FEE',
   setGasLimit,
   setGasPrice,
   updateGasData,
@@ -500,6 +502,23 @@ function checkUnencrypted () {
       background.checkVaultEncrypted('', error => {
         if (!error) {
           dispatch(markUnencrypted())
+        }
+        resolve()
+      })
+    })
+  }
+}
+
+function calculateTxFee () {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      background.calculateSatoshiFee((error, result) => {
+        console.log('result', result)
+        console.log('error', error)
+
+        if (!error) {
+          console.log('in calculate tx fee no error')
+          dispatch(setSatoshiFee(123))
         }
         resolve()
       })
@@ -1514,6 +1533,13 @@ function unlockMetamask (account) {
 function markUnencrypted () {
   return {
     type: actions.MARK_UNENCRYPTED,
+  }
+}
+
+function setSatoshiFee (fee) {
+  return {
+    type: actions.SET_SATOSHI_FEE,
+    value: fee,
   }
 }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export default class AmountMaxButton extends Component {
   static propTypes = {
-    balance: PropTypes.string,
+    balance: PropTypes.any,
     gasTotal: PropTypes.string,
     maxModeOn: PropTypes.bool,
     selectedToken: PropTypes.object,

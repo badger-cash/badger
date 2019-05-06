@@ -63,6 +63,32 @@ export default class ConfirmPageContainerContent extends Component {
     )
   }
 
+  renderMemo () {
+    const {
+      txParams,
+    } = this.props
+
+    if (!txParams.paymentData || !txParams.paymentData.memo) {
+      return null
+    }
+
+    const memoText = txParams.paymentData.memo
+
+    return (
+      <div className="confirm-page-container-content__details">
+        <br/>
+        <div className={classnames('confirm-detail-row__header-text')}>
+          Memo
+        </div>
+        <div className="confirm-detail-row">
+          <div>
+            {memoText}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   renderTabs () {
     const { detailsComponent, dataComponent } = this.props
 
@@ -109,6 +135,7 @@ export default class ConfirmPageContainerContent extends Component {
             assetImage={assetImage}
           />
         )}
+        {this.renderMemo()}
         {this.renderOpReturn()}
         {/* {this.renderContent()} */}
         {(errorKey || errorMessage) && (

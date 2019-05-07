@@ -486,6 +486,8 @@ module.exports = class MetamaskController extends EventEmitter {
       isNonceTaken: nodeify(txController.isNonceTaken, txController),
       estimateGas: nodeify(this.estimateGas, this),
 
+      calculateSatoshiFee: this.calculateSatoshiFee.bind(this),
+
       // messageManager
       signMessage: nodeify(this.signMessage, this),
       cancelMessage: this.cancelMessage.bind(this),
@@ -639,6 +641,13 @@ module.exports = class MetamaskController extends EventEmitter {
   async checkVaultEncrypted (password) {
     await this.keyringController.submitPassword(password)
     return this.keyringController.fullUpdate()
+  }
+
+  async calculateSatoshiFee () {
+    console.log('in calculate fee satoshi')
+
+    log.info('made in calculate satoshi fee where i want')
+    return 255
   }
 
   /**

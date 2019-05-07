@@ -4,6 +4,7 @@ import {
   getConversionRate,
   getCurrentCurrency,
   getGasTotal,
+  getBchFee,
   getPrimaryCurrency,
   getSelectedToken,
   getSendAmount,
@@ -12,7 +13,11 @@ import {
 } from '../../send.selectors'
 import { sendAmountIsInError } from './send-amount-row.selectors'
 import { getAmountErrorObject, getGasFeeErrorObject } from '../../send.utils'
-import { setMaxModeTo, updateSendAmount } from '../../../../actions'
+import {
+  setMaxModeTo,
+  updateSendAmount,
+  calculateTxFee,
+} from '../../../../actions'
 import { updateSendErrors } from '../../../../ducks/send.duck'
 import SendAmountRow from './send-amount-row.component'
 
@@ -29,6 +34,7 @@ function mapStateToProps (state) {
     conversionRate: getConversionRate(state),
     convertedCurrency: getCurrentCurrency(state),
     gasTotal: getGasTotal(state),
+    bchFee: getBchFee(state),
     inError: sendAmountIsInError(state),
     primaryCurrency: getPrimaryCurrency(state),
     selectedToken: getSelectedToken(state),
@@ -46,5 +52,6 @@ function mapDispatchToProps (dispatch) {
     updateSendAmountError: amountDataObject => {
       dispatch(updateSendErrors(getAmountErrorObject(amountDataObject)))
     },
+    calculateTxFee: () => dispatch(calculateTxFee()),
   }
 }

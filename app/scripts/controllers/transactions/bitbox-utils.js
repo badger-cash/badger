@@ -103,7 +103,7 @@ class BitboxUtils {
     })
   }
 
-  static async test (spendableUtxos) {
+  static async calculateFee (spendableUtxos) {
     if (!spendableUtxos || spendableUtxos.length === 0) {
       throw new Error('Insufficient funds')
     }

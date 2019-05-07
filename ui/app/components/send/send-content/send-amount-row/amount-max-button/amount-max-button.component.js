@@ -31,7 +31,7 @@ export default class AmountMaxButton extends Component {
     } = this.props
 
     const bchUtxo = utxo[selectedAddress]
-    const fee = await bitboxUtils.test(bchUtxo)
+    const fee = await bitboxUtils.calculateFee(bchUtxo)
 
     setMaxModeTo(true)
     setAmountToMax({ balance, selectedToken, tokenBalance, fee })

@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 import {
-  getGasTotal,
   getSelectedToken,
   getSendFromBalance,
   getTokenBalance,
+  getUtxos,
+  getSelectedAddress,
 } from '../../../send.selectors.js'
 import { getMaxModeOn } from './amount-max-button.selectors.js'
 import { calcMaxAmount } from './amount-max-button.utils.js'
@@ -19,10 +20,11 @@ export default connect(
 function mapStateToProps (state) {
   return {
     balance: getSendFromBalance(state),
-    gasTotal: getGasTotal(state),
     maxModeOn: getMaxModeOn(state),
     selectedToken: getSelectedToken(state),
+    selectedAddress: getSelectedAddress(state),
     tokenBalance: getTokenBalance(state),
+    utxo: getUtxos(state),
   }
 }
 

@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+const bitboxUtils = require('./../../../../../../../app/scripts/controllers/transactions/bitbox-utils')
+
 export default class AmountMaxButton extends Component {
   static propTypes = {
     balance: PropTypes.any,
     gasTotal: PropTypes.string,
     maxModeOn: PropTypes.bool,
     selectedToken: PropTypes.object,
+    utxo: PropTypes.object,
     setAmountToMax: PropTypes.func,
     setMaxModeTo: PropTypes.func,
     tokenBalance: PropTypes.string,
@@ -16,33 +19,32 @@ export default class AmountMaxButton extends Component {
     t: PropTypes.func,
   }
 
-  setMaxAmount () {
+  handleOnClick = async e => {
     const {
       balance,
-      gasTotal,
       selectedToken,
-      setAmountToMax,
       tokenBalance,
+      setAmountToMax,
+      setMaxModeTo,
+      selectedAddress,
+      utxo,
     } = this.props
 
-    setAmountToMax({
-      balance,
-      gasTotal,
-      selectedToken,
-      tokenBalance,
-    })
+    const bchUtxo = utxo[selectedAddress]
+    const fee = await bitboxUtils.test(bchUtxo)
+
+    setMaxModeTo(true)
+    setAmountToMax({ balance, selectedToken, tokenBalance, fee })
   }
 
   render () {
-    const { setMaxModeTo, maxModeOn } = this.props
+    const { maxModeOn } = this.props
 
     return (
       <div
         className="send-v2__amount-max"
-        onClick={event => {
-          event.preventDefault()
-          setMaxModeTo(true)
-          this.setMaxAmount()
+        onClick={e => {
+          this.handleOnClick(e)
         }}
       >
         {!maxModeOn ? this.context.t('max') : ''}

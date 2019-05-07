@@ -91,16 +91,11 @@ export default class SendAmountRow extends Component {
       amountConversionRate,
       convertedCurrency,
       gasTotal,
-      bchFee,
       inError,
       primaryCurrency,
       selectedToken,
       calculateTxFee,
     } = this.props
-    console.log('send amount props', this.props)
-
-    calculateTxFee()
-    console.log('updated  props', this.props)
 
     return (
       <SendRowWrapper

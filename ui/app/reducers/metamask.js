@@ -38,7 +38,6 @@ function reduceMetamask(state, action) {
         gasLimit: null,
         gasPrice: null,
         gasTotal: null,
-        bchFee: null,
         tokenBalance: null,
         from: '',
         to: '',
@@ -98,11 +97,6 @@ function reduceMetamask(state, action) {
     case actions.MARK_UNENCRYPTED:
       return extend(metamaskState, {
         isUnencrypted: true,
-      })
-
-    case actions.SET_SATOSHI_FEE:
-      return extend(metamaskState, {
-        send: { bchFee: action.value },
       })
 
     case actions.SET_RPC_LIST:

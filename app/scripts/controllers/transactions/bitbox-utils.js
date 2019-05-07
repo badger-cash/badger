@@ -114,14 +114,10 @@ class BitboxUtils {
       return b.satoshis - a.satoshis
     })
     const inputUtxos = []
-    let totalUtxoAmount = 0
-    const transactionBuilder = new SLP.TransactionBuilder('mainnet')
     for (const utxo of sortedSpendableUtxos) {
       if (utxo.spendable !== true) {
         throw new Error('Cannot spend unspendable utxo')
       }
-      transactionBuilder.addInput(utxo.txid, utxo.vout)
-      totalUtxoAmount += utxo.satoshis
       inputUtxos.push(utxo)
 
       byteCount = SLP.BitcoinCash.getByteCount(

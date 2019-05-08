@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { matchPath } from 'react-router-dom'
 import localStorage from 'store'
-import CashAccount from '../../../../app/scripts/lib/cashaccount'
+
+import CashAccountUtils from '../../../../app/scripts/lib/cashaccountutils'
 
 const {
   ENVIRONMENT_TYPE_NOTIFICATION,
@@ -37,7 +38,8 @@ export default class AppHeader extends PureComponent {
     t: PropTypes.func,
   }
   state = {
-    registrations: localStorage.get('cashaccount-registrations'),
+    registered: false,
+    cashaccount: '',
   }
   componentDidMount () {
     const { checkUnencrypted } = this.props
@@ -45,8 +47,31 @@ export default class AppHeader extends PureComponent {
     this.checkCashAccountStatus()
   }
 
-  checkCashAccountStatus () {
-    const { registrations } = this.state
+  componentDidUpdate (prevProps) {
+    const { selectedAddress } = this.props
+    if (prevProps.selectedAddress !== selectedAddress) {
+      this.checkCashAccountStatus()
+    }
+  }
+  checkCashAccountStatus = async () => {
+    const { selectedAddress } = this.props
+    const existingAccount = await CashAccountUtils.getAccountByAddr(
+      selectedAddress
+    )
+    const registered = await CashAccountUtils.checkRegistrations(
+      selectedAddress
+    )
+
+    if (existingAccount !== undefined) {
+      this.setState({
+        cashaccount: existingAccount,
+        registered: registered,
+      })
+    } else {
+      this.setState({ cashaccount: '', registered: registered })
+    }
+
+    CashAccountUtils.upsertAccounts()
   }
 
   handleNetworkIndicatorClick (event) {
@@ -119,19 +144,21 @@ export default class AppHeader extends PureComponent {
   }
 
   renderCashAccount = () => {
-    const { registrations } = this.state
-    if (registrations === undefined) {
-      return
-    } else {
-      for (const each of registrations) {
-      }
+    const { cashaccount, registered } = this.state
+    const { selectedAddress } = this.props
 
-      // loop through registrations
-      // parse
-      // match for selectedAddress
-      // display cashaccount info
+    const pending = CashAccountUtils.getAccountByAddr(selectedAddress)
 
+    if (cashaccount) {
+      return (
+        <div className="pending">
+          {cashaccount.information.emoji} {cashaccount.identifier}
+        </div>
+      )
+    } else if (cashaccount === '' && registered) {
       return <div className="pending">registration pending</div>
+    } else {
+      return
     }
   }
 

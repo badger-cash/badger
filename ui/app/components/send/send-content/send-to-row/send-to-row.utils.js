@@ -1,4 +1,4 @@
-import CashAccount from '../../../../../../app/scripts/lib/cashaccount'
+import cashaccount from 'cashaccounts'
 const {
   REQUIRED_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,
@@ -32,7 +32,7 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
 }
 
 function isValidCashAccount (string) {
-  return CashAccount.isCashAccount(string)
+  return cashaccount.isCashAccount(string)
 }
 
 function isValidBchAddress (address) {

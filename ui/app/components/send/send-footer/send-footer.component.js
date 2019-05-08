@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PageContainerFooter from '../../page-container/page-container-footer'
 import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
-import CashAccount from '../../../../../app/scripts/lib/cashaccount'
+import cashaccount from 'cashaccounts'
 import localStorage from 'store'
 
 const bchaddr = require('bchaddrjs-slp')
@@ -58,10 +58,10 @@ export default class SendFooter extends Component {
     } = this.props
     let { to, toAccounts } = this.props
 
-    if (CashAccount.isCashAccount(to)) {
+    if (cashaccount.isCashAccount(to)) {
       toAccounts.name = to
-      // const addr = await CashAccount.getAddressByCashAccount(to)
-      const addr = await CashAccount.getAccountInfo(to)
+      // const addr = await cashaccount.getAddressByCashAccount(to)
+      const addr = await cashaccount.getAccountInfo(to)
       console.log('addr', addr, typeof addr)
 
       if (Object.keys(addr).length === 0) {

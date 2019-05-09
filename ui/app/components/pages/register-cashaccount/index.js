@@ -39,21 +39,16 @@ class CashAccountPage extends Component {
 
   checkCashAccountStatus = async () => {
     const { selectedAddress } = this.props
-
+    let registered
     const existingAccount = CashAccountUtils.getAccountByAddr(selectedAddress)
 
-    const registered = await CashAccountUtils.checkRegistrations(
-      selectedAddress
-    )
-
-    if (existingAccount !== undefined) {
-      this.setState({
-        cashaccount: existingAccount,
-        registered: registered,
-      })
-    } else {
-      this.setState({ cashaccount: '', registered: registered })
+    if (existingAccount === undefined) {
+      registered = await CashAccountUtils.checkIsRegistered(selectedAddress)
     }
+    this.setState({
+      cashaccount: existingAccount,
+      registered: registered,
+    })
   }
 
   onChange = e => {
@@ -79,8 +74,9 @@ class CashAccountPage extends Component {
       selectedSlpAddress
     )
 
-    if (resp.hex !== undefined) {
-      CashAccountUtils.saveRegistration(resp)
+    if (resp.txid !== undefined) {
+      await CashAccountUtils.saveRegistration(resp)
+      await CashAccountUtils.upsertAccounts()
       history.push(DEFAULT_ROUTE)
     } else {
       this.setState({ err: 'Service unable to parse payment data.' })
@@ -129,7 +125,7 @@ class CashAccountPage extends Component {
     const { history } = this.props
     const { err, cashaccount, registered } = this.state
 
-    if (registered) {
+    if (registered || cashaccount !== undefined) {
       return <div>{this.renderWarning()}</div>
     } else {
       return (
@@ -167,7 +163,7 @@ class CashAccountPage extends Component {
                 {this.context.t('create')}
               </Button>
             </div>
-          </div>{' '}
+          </div>
         </div>
       )
     }

@@ -38,12 +38,13 @@ export default class AppHeader extends PureComponent {
     t: PropTypes.func,
   }
   state = {
-    registered: false,
+    pending: '',
     cashaccount: '',
   }
-  componentDidMount () {
+  async componentDidMount () {
     const { checkUnencrypted } = this.props
     checkUnencrypted()
+    await CashAccountUtils.upsertAccounts()
     this.checkCashAccountStatus()
   }
 
@@ -53,25 +54,22 @@ export default class AppHeader extends PureComponent {
       this.checkCashAccountStatus()
     }
   }
+
   checkCashAccountStatus = async () => {
     const { selectedAddress } = this.props
     const existingAccount = await CashAccountUtils.getAccountByAddr(
       selectedAddress
     )
-    const registered = await CashAccountUtils.checkRegistrations(
-      selectedAddress
-    )
 
-    if (existingAccount !== undefined) {
-      this.setState({
-        cashaccount: existingAccount,
-        registered: registered,
-      })
-    } else {
-      this.setState({ cashaccount: '', registered: registered })
+    let pending
+
+    if (existingAccount === undefined) {
+      pending = await CashAccountUtils.getRegistrationByAddr(selectedAddress)
     }
-
-    CashAccountUtils.upsertAccounts()
+    this.setState({
+      cashaccount: existingAccount,
+      pending: pending,
+    })
   }
 
   handleNetworkIndicatorClick (event) {
@@ -144,10 +142,7 @@ export default class AppHeader extends PureComponent {
   }
 
   renderCashAccount = () => {
-    const { cashaccount, registered } = this.state
-    const { selectedAddress } = this.props
-
-    const pending = CashAccountUtils.getAccountByAddr(selectedAddress)
+    const { cashaccount, pending } = this.state
 
     if (cashaccount) {
       return (
@@ -155,7 +150,8 @@ export default class AppHeader extends PureComponent {
           {cashaccount.information.emoji} {cashaccount.identifier}
         </div>
       )
-    } else if (cashaccount === '' && registered) {
+    }
+    if (pending) {
       return <div className="pending">registration pending</div>
     } else {
       return

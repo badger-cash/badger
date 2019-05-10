@@ -13,6 +13,7 @@ export const TOKEN_METHOD_TRANSFER_FROM = 'transferfrom'
 
 export const SEND_BITCOINCASH_KEY = 'sentBitcoinCash'
 export const DEPLOY_CONTRACT_ACTION_KEY = 'contractDeployment'
+export const PAYMENT_REQUEST_ACTION_KEY = 'paymentRequest'
 export const APPROVE_ACTION_KEY = 'approve'
 export const SEND_TOKEN_ACTION_KEY = 'sentTokens'
 export const TRANSFER_FROM_ACTION_KEY = 'transferFrom'

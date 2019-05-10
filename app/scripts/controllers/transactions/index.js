@@ -278,6 +278,11 @@ class TransactionController extends EventEmitter {
   */
 
   async addUnapprovedTransaction (txParams) {
+    // Default from address to selected account
+    if (!txParams.from) {
+      txParams.from = this.getSelectedAddress()
+    }
+    
     // validate & normalize
     const normalizedTxParams = txUtils.normalizeTxParams(txParams)
 

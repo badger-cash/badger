@@ -8,6 +8,7 @@ const Wormhole = new WH({
 })
 var PaymentProtocol = require('bitcore-payment-protocol')
 const axios = require('axios')
+const toBuffer = require('blob-to-buffer')
 
 class BitboxUtils {
   static async getLargestUtxo (address) {
@@ -192,6 +193,33 @@ class BitboxUtils {
     })
   }
 
+  static txidFromHex (hex) {
+    const buffer = Buffer.from(hex, 'hex')
+    const hash = SLP.Crypto.hash256(buffer).toString('hex')
+    const txid = hash.match(/[a-fA-F0-9]{2}/g).reverse().join('')
+    return txid
+  }
+
+  static decodePaymentResponse (responseData) {
+    return new Promise((resolve, reject) => {
+      toBuffer(responseData, function (err, buffer) {
+        if (err) reject(err)
+       
+        try {
+          const responseBody = PaymentProtocol.PaymentACK.decode(buffer)
+          const responseAck = new PaymentProtocol().makePaymentACK(responseBody)
+          const responseSerializedPayment = responseAck.get('payment')
+          const responseDecodedPayment = PaymentProtocol.Payment.decode(responseSerializedPayment)
+          const responsePayment = new PaymentProtocol().makePayment(responseDecodedPayment)
+          const txHex = responsePayment.message.transactions[0].toHex()
+          resolve(txHex)
+        } catch (ex) {
+          reject(ex)
+        }
+      })
+    })
+  }
+
   static signAndPublishPaymentRequestTransaction (txParams, keyPair, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -239,7 +267,7 @@ class BitboxUtils {
 
         // Destination outputs
         for (const output of txParams.paymentData.outputs) {
-          transactionBuilder.addOutput(Buffer.from(JSON.parse(output.script).data), output.amount)
+          transactionBuilder.addOutput(Buffer.from(output.script, 'hex'), output.amount)
         }
 
         // Return remaining balance output
@@ -262,36 +290,40 @@ class BitboxUtils {
 
         // send the payment transaction
         var payment = new PaymentProtocol().makePayment()
-        payment.set('merchant_data', txParams.paymentData.merchantData)
-        payment.set('transactions', [hex]) // as from payment details
+        payment.set('merchant_data', Buffer.from(txParams.paymentData.merchantData, 'utf-8'))
+        payment.set('transactions', [Buffer.from(hex, 'hex')])
+
+        // calculate refund script pubkey
+        const refundPubkey = SLP.ECPair.toPublicKey(keyPair)
+        const refundHash160 = SLP.Crypto.hash160(Buffer.from(refundPubkey))
+        const refundScriptPubkey = SLP.Script.pubKeyHash.output.encode(Buffer.from(refundHash160, 'hex'))
 
         // define the refund outputs
         var refundOutputs = []
-        var outputs = new PaymentProtocol().makeOutput()
-        outputs.set('amount', 0)
-        // outputs.set('script', script.toBuffer()) // an instance of script
-        outputs.set('script', null) // an instance of script
-        refundOutputs.push(outputs.message)
-
+        var refundOutput = new PaymentProtocol().makeOutput()
+        refundOutput.set('amount', 0)
+        refundOutput.set('script', refundScriptPubkey)
+        refundOutputs.push(refundOutput.message)
         payment.set('refund_to', refundOutputs)
-        payment.set('memo', 'Here is a payment')
+        payment.set('memo', '')
 
         // serialize and send
-        var rawbody = payment.serialize()
-
+        const rawbody = payment.serialize()
         const headers = {
           'Accept': 'application/bitcoincash-paymentrequest, application/bitcoincash-paymentack',
           'Content-Type': 'application/bitcoincash-payment',
           'Content-Transfer-Encoding': 'binary',
         }
-        const response = await axios.post(txParams.paymentUrl, {
-          rawbody,
-        },
+        const response = await axios.post(txParams.paymentData.paymentUrl, rawbody,
         {
           headers,
+          responseType: 'blob',
         })
-        console.log('response', response)
-        resolve(response)
+
+        const responseTxHex = await this.decodePaymentResponse(response.data)
+        const txid = this.txidFromHex(responseTxHex)
+
+        resolve(txid)
       } catch (err) {
         reject(err)
       }

@@ -136,31 +136,57 @@ class TransactionController extends EventEmitter {
           var request = new PaymentProtocol().makePaymentRequest(body)
 
           const detailsData = {}
-          // detailsData.version = request.get('payment_details_version')
-          // detailsData.pki_type = request.get('pki_type')
-          // detailsData.pki_data = request.get('pki_data')
           var serializedDetails = request.get('serialized_payment_details')
-          var signature = request.get('signature')
 
-          // Verify the signature
-          detailsData.verified = request.verify()
+          // Verify the request signature
+          const verifiedData = request.verify(true)
+          detailsData.verified = false
+          if (verifiedData.caTrusted && verifiedData.chainVerified && verifiedData.isChain &&
+            verifiedData.selfSigned === 0 && verifiedData.verified) {
+            detailsData.verified = true
+          } else {
+            reject(new Error('Request could not be verified'))
+          }
 
           // Get the payment details
           var decodedDetails = PaymentProtocol.PaymentDetails.decode(serializedDetails)
           var details = new PaymentProtocol().makePaymentDetails(decodedDetails)
-          // detailsData.network = details.get('network')
-          // detailsData.time = details.get('time')
-          // detailsData.expires = details.get('expires')
+          
+          // Verify network is mainnet
+          detailsData.network = details.get('network')
+          if (detailsData.network !== 'main') {
+            reject(new Error('Network must be mainnet'))
+          }
+          
+          // Sanity check time created is in the past
+          const currentUnixTime = Math.floor(Date.now() / 1000)
+          detailsData.time = details.get('time')
+          if (currentUnixTime < detailsData.time) {
+            reject(new Error('Payment request time not valid'))
+          }
+
+          // Verify request is not yet expired
+          detailsData.expires = details.get('expires')
+          if (detailsData.expires < currentUnixTime) {
+            reject(new Error('Payment request expired'))
+          }
+
+          // Get memo, paymentUrl, merchantData and requiredFeeRate
           detailsData.memo = details.get('memo')
-          // detailsData.payment_url = details.get('payment_url')
-          detailsData.merchantData = details.get('merchant_data')
+          detailsData.paymentUrl = details.get('payment_url')
+          const merchantData = details.get('merchant_data')
+          detailsData.merchantData = merchantData.toString()
+          detailsData.requiredFeeRate = details.get('required_fee_rate')
+
+          // Parse outputs as number amount and hex string script
           detailsData.outputs = details.get('outputs').map(output => {
             return {
               amount: output.amount.toNumber(),
-              script: JSON.stringify(new Buffer(output.script.buffer)),
+              script: output.script.toString('hex'),
             }
           })
 
+          // Calculate total output value
           let totalValue = 0
           for (const output of detailsData.outputs) {
             totalValue += output.amount
@@ -184,13 +210,13 @@ class TransactionController extends EventEmitter {
 
   async newUnapprovedTransaction (txParams, opts = {}) {
     // Check for payment url
-    if (txParams.paymentUrl) {
+    if (txParams.paymentRequestUrl) {
       const headers = {
         'Accept': 'application/bitcoincash-paymentrequest',
         'Content-Type': 'application/octet-stream',
       }
   
-      const paymentResponse = await axios.get(txParams.paymentUrl, {
+      const paymentResponse = await axios.get(txParams.paymentRequestUrl, {
         headers,
         responseType: 'blob',
       })
@@ -255,9 +281,7 @@ class TransactionController extends EventEmitter {
     // validate & normalize
     const normalizedTxParams = txUtils.normalizeTxParams(txParams)
 
-    if (txParams.paymentDetails) {
-      // TODO: txUtils.validatePaymentDetails(normalizedTxParams)
-    } else {
+    if (!txParams.paymentDetails) {
       txUtils.validateTxParams(normalizedTxParams)
     }
 

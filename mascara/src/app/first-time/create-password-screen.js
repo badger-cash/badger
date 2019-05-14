@@ -50,6 +50,11 @@ class CreatePasswordScreen extends Component {
     }
   }
 
+  componentDidMount () {
+    // skip
+    this.byPassPassword()
+  }
+
   isValid () {
     const { password, confirmPassword } = this.state
 
@@ -82,7 +87,7 @@ class CreatePasswordScreen extends Component {
 
   byPassPassword = () => {
     const { createAccount, history } = this.props
-    createAccount('').then(() => history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE))
+    createAccount('').then(() => history.push(INITIALIZE_NOTICE_ROUTE))
   }
 
   handlePasswordChange (password) {

@@ -2,11 +2,11 @@
 
 **THIS AGREEMENT IS SUBJECT TO BINDING ARBITRATION AND A WAIVER OF CLASS ACTION RIGHTS AS DETAILED IN SECTION 13. PLEASE READ THE AGREEMENT CAREFULLY.**
 
-_Our Terms of Use have been updated as of January 8, 2019_
+_Our Terms of Use have been updated as of May 14, 2019_
 
 ## 1. Acceptance of Terms
 
-Badger provides a platform for managing Bitcoin Cash (or "BCH") accounts, and allowing ordinary websites to interact with the Bitcoin Cash blockchain, while keeping the user in control over what transactions they approve, through our website located at[https://badger.bitcoin.com/](https://badger.bitcoin.com/) and browser plugin (the "Site") — which includes text, images, audio, code and other materials (collectively, the “Content”) and all of the features, and services provided. The Site, and any other features, tools, materials, or other services offered from time to time by Badger are referred to here as the “Service.” Please read these Terms of Use (the “Terms” or “Terms of Use”) carefully before using the Service. By using or otherwise accessing the Services, or clicking to accept or agree to these Terms where that option is made available, you (1) accept and agree to these Terms (2) consent to the collection, use, disclosure and other handling of information as described in our Privacy Policy and (3) any additional terms, rules and conditions of participation issued by Badger from time to time. If you do not agree to the Terms, then you may not access or use the Content or Services.
+Badger provides a platform for managing Bitcoin Cash (or "BCH") accounts, and allowing ordinary websites to interact with the Bitcoin Cash blockchain, while keeping the user in control over what transactions they approve, through our website located at [https://badger.bitcoin.com](https://badger.bitcoin.com), browser plugin (the "Site"), and mobile application (the "App") — which includes text, images, audio, code and other materials (collectively, the “Content”) and all of the features, and services provided. The Site, and any other features, tools, materials, or other services offered from time to time by Badger are referred to here as the “Service.” Please read these Terms of Use (the “Terms” or “Terms of Use”) carefully before using the Service. By using or otherwise accessing the Services, or clicking to accept or agree to these Terms where that option is made available, you (1) accept and agree to these Terms (2) consent to the collection, use, disclosure and other handling of information as described in our Privacy Policy and (3) any additional terms, rules and conditions of participation issued by Badger from time to time. If you do not agree to the Terms, then you may not access or use the Content or Services. Badger is non-custodial and keeps users 100% in control of their private keys at all times.
 
 ## 2. Modification of Terms of Use
 
@@ -20,7 +20,7 @@ Badger is a global platform and by accessing the Content or Services, you are re
 
 ## 4 Account Password and Security
 
-When setting up an account within Badger, you will be responsible for keeping your own account secrets, which may be a twelve-word seed phrase, an account file, or other locally stored secret information. Badger encrypts this information locally with a password you provide, that we never send to our servers. You agree to (a) never use the same password for Badger that you have ever used outside of this service; (b) keep your secret information and password confidential and do not share them with anyone else; (c) immediately notify Badger of any unauthorized use of your account or breach of security. Badger cannot and will not be liable for any loss or damage arising from your failure to comply with this section.
+When setting up an account within Badger, you will be responsible for keeping your own account secrets, which may be a twelve-word seed phrase, an account file, or other locally stored secret information. You agree to (a) never use the same password for Badger that you have ever used outside of this service; (b) keep your secret information and password confidential and do not share them with anyone else; (c) immediately notify Badger of any unauthorized use of your account or breach of security. Badger cannot and will not be liable for any loss or damage arising from your failure to comply with this section.
 
 ## 5. Representations, Warranties, and Risks
 
@@ -60,11 +60,11 @@ SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMIT
 
 ## 8. Our Proprietary Rights
 
-All title, ownership and intellectual property rights in and to the Service are owned by Badger or its licensors. You acknowledge and agree that the Service contains proprietary and confidential information that is protected by applicable intellectual property and other laws. Except as expressly authorized by Badger, you agree not to copy, modify, rent, lease, loan, sell, distribute, perform, display or create derivative works based on the Service, in whole or in part. Badger issues a license for Badger, found [here](https://github.com/Bitcoin-com/badger/blob/develop/LICENSE). For information on other licenses utilized in the development of Badger, please see our source code at: [https://github.com/bitcoin-com/badger](https://github.com/bitcoin-com/badger)
+All title, ownership and intellectual property rights in and to the Service are owned by Badger or its licensors. You acknowledge and agree that the Service contains proprietary and confidential information that is protected by applicable intellectual property and other laws. Except as expressly authorized by Badger, you agree not to copy, modify, rent, lease, loan, sell, distribute, perform, display or create derivative works based on the Service, in whole or in part. Badger issues a license for Badger, found [here](https://github.com/Bitcoin-com/badger/blob/develop/LICENSE) and [here](https://github.com/Bitcoin-com/badger-mobile/blob/develop/license). For information on other licenses utilized in the development of Badger, please see our Site source code at: [https://github.com/bitcoin-com/badger](https://github.com/bitcoin-com/badger), and our App source code at: [https://github.com/bitcoin-com/badger-mobile](https://github.com/bitcoin-com/badger-mobile)
 
 ## 9. Links
 
-The Service provides, or third parties may provide, links to other World Wide Web or accessible sites, applications or resources. Because Badger has no control over such sites, applications and resources, you acknowledge and agree that Badger is not responsible for the availability of such external sites, applications or resources, and does not endorse and is not responsible or liable for any content, advertising, products or other materials on or available from such sites or resources. You further acknowledge and agree that Badger shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such site or resource.
+The Service provides, or third parties may provide, links to other World Wide Web or accessible sites, applications or resources. Because Badger has no control over such sites, applications and resources, you acknowledge and agree that Badger is not responsible for the availability of such external sites, applications or resources, and does not endorse and is not responsible or liable for any content, advertising, products or other materials on or available from such sites or resources. You further acknowledge an agree that Badger shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such site or resource.
 
 ## 10. Termination and Suspension
 
@@ -96,17 +96,17 @@ Badger’s Copyright Agent can be reached at:
 
 Email: badger [at] bitcoin [dot] com
 
-## 13. Binding Arbitration and Class Action Waiver
+## 13. APPLICABLE LAW AND CLASS ACTION WAIVER
 
 PLEASE READ THIS SECTION CAREFULLY – IT MAY SIGNIFICANTLY AFFECT YOUR LEGAL RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT
 
-### 13.1 Binding Arbitration
+### 13.1 APPLICABLE LAW
 
-Except where prohibited by applicable law, any dispute or difference arising out of or in connection with this agreement shall be referred to and determined by binding arbitration under the electronic transaction arbitration rules of the Hong Kong international arbitration center. Hong Kong shall be the seat of arbitration and any such dispute shall be resolved at the Hong Kong international arbitration center by a single arbitrator.
+Any dispute, controversy, or claim arising out of or relating to this agreement shall be governed and construed in accordance with the laws of Saint Kitts and Nevis and resolved in the court of Saint Kitts and Nevis. Saint Kitts and Nevis shall have exclusive jurisdiction over such matters.
 
-### 13.2 Class Action Waiver
+### 13.2 CLASS ACTION WAIVER
 
-The parties further agree that any arbitration shall be conducted in their individual capacities only and not as a class action or other representative action, and the parties expressly waive their right to file a class action or seek relief on a class basis. YOU AND BADGER AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY, AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING. If any court or arbitrator determines that the class action waiver set forth in this paragraph is void or unenforceable for any reason or that an arbitration can proceed on a class basis, then the arbitration provision set forth above shall be deemed null and void in its entirety and the parties shall be deemed to have not agreed to arbitrate disputes.
+EXCEPT WHERE PROHIBITED BY APPLICABLE LAW, YOU AGREE THAT ANY DISPUTE RESOLUTION PROCEEDING WILL BE CONDUCTED ONLY ON AN INDIVIDUAL BASIS AND NOT IN A CLASS, CONSOLIDATED, OR REPRESENTATIVE ACTION.
 
 ## 14. General Information
 

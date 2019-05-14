@@ -23,6 +23,7 @@ const Authenticated = require('./components/pages/authenticated')
 const Initialized = require('./components/pages/initialized')
 const Settings = require('./components/pages/settings')
 const RegisterCashaccount = require('./components/pages/register-cashaccount')
+const ImportCashaccount = require('./components/pages/import-cashaccount')
 const RestoreVaultPage = require('./components/pages/keychains/restore-vault')
   .default
 const RevealSeedConfirmation = require('./components/pages/keychains/reveal-seed')
@@ -60,10 +61,11 @@ const {
   INITIALIZE_ROUTE,
   NOTICE_ROUTE,
   REGISTER_CASHACCOUNT,
+  IMPORT_CASHACCOUNT,
 } = require('./routes')
 
 class App extends Component {
-  componentWillMount () {
+  componentWillMount() {
     const { currentCurrency, setCurrentCurrencyToUSD } = this.props
 
     if (!currentCurrency) {
@@ -71,7 +73,7 @@ class App extends Component {
     }
   }
 
-  renderRoutes () {
+  renderRoutes() {
     const exact = true
 
     return h(Switch, [
@@ -90,6 +92,10 @@ class App extends Component {
       h(Authenticated, {
         path: REGISTER_CASHACCOUNT,
         component: RegisterCashaccount,
+      }),
+      h(Authenticated, {
+        path: IMPORT_CASHACCOUNT,
+        component: ImportCashaccount,
       }),
       h(Authenticated, { path: SETTINGS_ROUTE, component: Settings }),
       h(Authenticated, {
@@ -129,7 +135,7 @@ class App extends Component {
     ])
   }
 
-  render () {
+  render() {
     const {
       isLoading,
       alertMessage,
@@ -207,7 +213,7 @@ class App extends Component {
     )
   }
 
-  toggleMetamaskActive () {
+  toggleMetamaskActive() {
     if (!this.props.isUnlocked) {
       // currently inactive: redirect to password box
       var passwordBox = document.querySelector('input[type=password]')
@@ -219,7 +225,7 @@ class App extends Component {
     }
   }
 
-  getConnectingLabel = function (loadingMessage) {
+  getConnectingLabel = function(loadingMessage) {
     if (loadingMessage) {
       return loadingMessage
     }
@@ -243,7 +249,7 @@ class App extends Component {
     return name
   }
 
-  getNetworkName () {
+  getNetworkName() {
     const { provider } = this.props
     const providerName = provider.type
 
@@ -307,7 +313,7 @@ App.propTypes = {
   t: PropTypes.func,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   const { appState, metamask } = state
   const {
     networkDropdownOpen,
@@ -380,7 +386,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatch,
     hideSidebar: () => dispatch(actions.hideSidebar()),

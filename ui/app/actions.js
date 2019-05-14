@@ -74,6 +74,7 @@ var actions = {
   SHOW_INFO_PAGE: 'SHOW_INFO_PAGE',
   SHOW_IMPORT_PAGE: 'SHOW_IMPORT_PAGE',
   SHOW_REGISTER_CASHACCOUNT_PAGE: 'SHOW_REGISTER_CASHACCOUNT_PAGE',
+  SHOW_IMPORT_CASHACCOUNT_PAGE: 'SHOW_IMPORT_CASHACCOUNT_PAGE',
   SHOW_NEW_ACCOUNT_PAGE: 'SHOW_NEW_ACCOUNT_PAGE',
   SET_NEW_ACCOUNT_FORM: 'SET_NEW_ACCOUNT_FORM',
   unlockMetamask: unlockMetamask,
@@ -84,6 +85,7 @@ var actions = {
   showInitializeMenu: showInitializeMenu,
   showImportPage,
   showRegisterCashaccountPage,
+  showImportCashaccountPage,
   showNewAccountPage,
   setNewAccountForm,
   createNewVaultAndKeychain: createNewVaultAndKeychain,
@@ -1403,6 +1405,11 @@ function showImportPage () {
 function showRegisterCashaccountPage () {
   return {
     type: actions.SHOW_REGISTER_CASHACCOUNT_PAGE,
+  }
+}
+function showImportCashaccountPage () {
+  return {
+    type: actions.SHOW_IMPORT_CASHACCOUNT_PAGE,
   }
 }
 

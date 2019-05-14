@@ -1,5 +1,6 @@
 import localStorage from 'store'
-const cashaccount = require('cashaccounts')
+const CashaccountClass = require('cashaccounts')
+const cashaccount = new CashaccountClass()
 const accounts = localStorage.get('cashaccounts')
 const registrations = localStorage.get('cashaccount-registrations')
 

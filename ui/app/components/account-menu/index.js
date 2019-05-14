@@ -143,7 +143,7 @@ AccountMenu.prototype.render = function () {
         history.push(REGISTER_CASHACCOUNT)
       },
       icon: h('img.account-menu__item-icon', {
-        src: 'images/plus-btn-white.svg',
+        src: 'images/cashaccount.svg',
       }),
       text: 'Register Username',
     }),

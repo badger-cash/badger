@@ -9,9 +9,10 @@ const PropTypes = require('prop-types')
 const connect = require('react-redux').connect
 const actions = require('../../../actions')
 const { getCurrentViewContext } = require('../../../selectors')
-const { DEFAULT_ROUTE } = require('../../../routes')
+const { DEFAULT_ROUTE, IMPORT_CASHACCOUNT } = require('../../../routes')
 
-const cashaccount = require('cashaccounts')
+const CashaccountClass = require('cashaccounts')
+const cashaccount = new CashaccountClass()
 
 class CashAccountPage extends Component {
   static propTypes = {
@@ -68,7 +69,7 @@ class CashAccountPage extends Component {
     const { history, selectedAddress, selectedSlpAddress } = this.props
     const { username } = this.state
 
-    const resp = await cashaccount.registerCashAccount(
+    const resp = await cashaccount.trustedRegistration(
       username,
       selectedAddress,
       selectedSlpAddress
@@ -77,10 +78,29 @@ class CashAccountPage extends Component {
     if (resp.txid !== undefined) {
       await CashAccountUtils.saveRegistration(resp)
       await CashAccountUtils.upsertAccounts()
-      history.push(DEFAULT_ROUTE)
+
+      // history.push(DEFAULT_ROUTE)
     } else {
       this.setState({ err: 'Service unable to parse payment data.' })
     }
+  }
+
+  renderImport = () => {
+    const { history } = this.props
+
+    return (
+      <div className="cashaccount-advanced">
+        Advanced
+        <br />
+        <a
+          onClick={() => {
+            history.push(IMPORT_CASHACCOUNT)
+          }}
+        >
+          Import existing Cash Account
+        </a>
+      </div>
+    )
   }
 
   renderDescription = () => {
@@ -163,6 +183,8 @@ class CashAccountPage extends Component {
                 {this.context.t('create')}
               </Button>
             </div>
+
+            {this.renderImport()}
           </div>
         </div>
       )

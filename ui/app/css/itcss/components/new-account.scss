@@ -586,6 +586,30 @@
   }
 }
 
+.cashaccount-import {
+  margin: 1rem;
+
+  .identity {
+    font-size: 1.35rem;
+    padding: 1.5rem 0;
+    color: #f7941d;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .title {
+    color: #5d5d5d;
+    font-family: Roboto;
+    font-size: 1.3rem;
+    line-height: 21px;
+    margin: 2rem auto;
+  }
+  .notice {
+    font-size: 0.7rem;
+    font-style: italic;
+    margin: 0;
+  }
+}
+
 .cashaccount-advanced {
   margin-top: 3rem;
 

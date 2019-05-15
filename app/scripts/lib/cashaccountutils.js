@@ -21,6 +21,36 @@ class CashAccountUtils {
     }
   }
 
+  // search cashaccounts by handle, and see if payment addresses belong to badger wallet
+  static async getMatchingRegistration (
+    username,
+    selectedAddress,
+    selectedSlpAddress
+  ) {
+    selectedSlpAddress = cashaccount.toSlpAddress(selectedSlpAddress)
+    const results = await cashaccount.trustedSearch(username)
+
+    for (const each of results) {
+      const { payment } = each.information
+
+      // can't import cashaccounts w/o token registration
+      if (payment.length < 2) {
+        return
+      }
+
+      const bchRegistration = payment[0].address
+      const slpRegistration = payment[1].address
+
+      if (
+        selectedAddress === bchRegistration &&
+        selectedSlpAddress === slpRegistration
+      ) {
+        return each
+      }
+    }
+    return
+  }
+
   // get identifier data for confirmed cashaccounts
   static async getIdentity (txid) {
     const parsed = await cashaccount.accountLookupViaTxid(txid)
@@ -53,7 +83,7 @@ class CashAccountUtils {
   static saveRegistration (obj) {
     const array = registrations === undefined ? [] : registrations
     array.push(obj)
-    localStorage.set('cashaccount-registrations', array)
+    return localStorage.set('cashaccount-registrations', array)
   }
 
   // used to limit to one registration per badger account
@@ -135,6 +165,7 @@ class CashAccountUtils {
       const { txid } = x
 
       const account = await cashaccount.registrationLookupViaTxid(txid)
+
       if (account === undefined) {
         return
       }
@@ -146,6 +177,13 @@ class CashAccountUtils {
         return x
       }
     }
+  }
+
+  static upsertLocalStorage (key, value) {
+    const existing = localStorage.get(key)
+    const array = existing === undefined ? [] : existing
+    array.push(value)
+    return localStorage.set(key, array)
   }
 }
 

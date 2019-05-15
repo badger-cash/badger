@@ -12,8 +12,8 @@ import {
 } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const BITBOX = require('bitbox-sdk').default
+const bitbox = new BITBOX()
 
 import Toggle from '../../../../ui/app/components/toggle/toggle.component'
 
@@ -50,9 +50,9 @@ class ImportSeedPhraseScreen extends Component {
   }
 
   validateSeedPhrase = (seedPhrase, lang = 'english') => {
-    const validated = BITBOX.Mnemonic.validate(
+    const validated = bitbox.Mnemonic.validate(
       seedPhrase,
-      BITBOX.Mnemonic.wordLists()[lang]
+      bitbox.Mnemonic.wordLists()[lang]
     )
     return validated
   }

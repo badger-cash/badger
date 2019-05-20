@@ -13,10 +13,13 @@ class CashAccountUtils {
 
     for (const each of registrations) {
       const account = await this.getIdentity(each.txid)
-      account.txid = each.txid
-      const exists = this.checkExistsInStorageByTxid(each.txid)
-      if (!exists) {
-        this.saveAccount(account)
+
+      if (account !== undefined) {
+        account.txid = each.txid
+        const exists = this.checkExistsAlready(each.txid)
+        if (!exists) {
+          this.saveAccount(account)
+        }
       }
     }
   }
@@ -83,7 +86,8 @@ class CashAccountUtils {
   static saveRegistration (obj) {
     const array = registrations === undefined ? [] : registrations
     array.push(obj)
-    return localStorage.set('cashaccount-registrations', array)
+    localStorage.set('cashaccount-registrations', array)
+    return localStorage.get('cashaccount-registrations')
   }
 
   // used to limit to one registration per badger account
@@ -108,7 +112,7 @@ class CashAccountUtils {
     }
   }
 
-  static checkExistsInStorageByTxid (txid) {
+  static checkExistsAlready (txid) {
     if (accounts !== undefined) {
       const match = accounts.find(x => x.txid === txid)
       return match
@@ -167,7 +171,13 @@ class CashAccountUtils {
       const account = await cashaccount.registrationLookupViaTxid(txid)
 
       if (account === undefined) {
-        return
+        const confirmed = await this.getIdentity(txid)
+
+        if (confirmed.information.payment[0].address === bchAddr) {
+          return x
+        } else {
+          return
+        }
       }
 
       const payment = await cashaccount.parsePaymentInfo(account.opreturn)

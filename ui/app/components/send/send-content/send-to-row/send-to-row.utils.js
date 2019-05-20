@@ -1,4 +1,7 @@
-import cashaccount from 'cashaccounts'
+const CashaccountClass = require('cashaccounts')
+const cashaccount = new CashaccountClass()
+
+
 const {
   REQUIRED_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,

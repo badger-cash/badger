@@ -14,12 +14,7 @@ const { DEFAULT_ROUTE, IMPORT_CASHACCOUNT } = require('../../../routes')
 const CashaccountClass = require('cashaccounts')
 const cashaccount = new CashaccountClass()
 
-class CashAccountPage extends Component {
-  static propTypes = {
-    selectedAddress: PropTypes.string,
-    selectedSlpAddress: PropTypes.string,
-  }
-
+class RegisterCashAccount extends Component {
   state = {
     cashaccount: '',
     username: '',
@@ -39,17 +34,23 @@ class CashAccountPage extends Component {
   }
 
   checkCashAccountStatus = async () => {
-    const { selectedAddress } = this.props
-    let registered
-    const existingAccount = CashAccountUtils.getAccountByAddr(selectedAddress)
+    const {
+      selectedAddress,
+      setCashAccount,
+      setCashAccountRegistration,
+    } = this.props
+    const existingAccount = await CashAccountUtils.getAccountByAddr(
+      selectedAddress
+    )
 
-    if (existingAccount === undefined) {
-      registered = await CashAccountUtils.checkIsRegistered(selectedAddress)
-    }
-    this.setState({
-      cashaccount: existingAccount,
-      registered: registered,
-    })
+    const registration = await CashAccountUtils.getRegistrationByAddr(
+      selectedAddress
+    )
+
+    await setCashAccount(existingAccount)
+    await setCashAccountRegistration(
+      registration !== undefined ? [registration] : ''
+    )
   }
 
   onChange = e => {
@@ -66,7 +67,12 @@ class CashAccountPage extends Component {
   }
 
   createAccount = async () => {
-    const { history, selectedAddress, selectedSlpAddress } = this.props
+    const {
+      history,
+      selectedAddress,
+      selectedSlpAddress,
+      setCashAccountRegistration,
+    } = this.props
     const { username } = this.state
 
     const resp = await cashaccount.trustedRegistration(
@@ -76,10 +82,11 @@ class CashAccountPage extends Component {
     )
 
     if (resp.txid !== undefined) {
-      await CashAccountUtils.saveRegistration(resp)
+      const registrations = await CashAccountUtils.saveRegistration(resp)
       await CashAccountUtils.upsertAccounts()
 
-      // history.push(DEFAULT_ROUTE)
+      await setCashAccountRegistration(registrations)
+      history.push(DEFAULT_ROUTE)
     } else {
       this.setState({ err: 'Service unable to parse payment data.' })
     }
@@ -142,10 +149,14 @@ class CashAccountPage extends Component {
   }
 
   render () {
-    const { history } = this.props
-    const { err, cashaccount, registered } = this.state
+    const { history, cashaccount, cashaccountRegistrations } = this.props
+    const { err } = this.state
 
-    if (registered || cashaccount !== undefined) {
+    if (
+      (cashaccountRegistrations !== undefined &&
+        cashaccountRegistrations.length >= 1) ||
+      cashaccount !== undefined
+    ) {
       return <div>{this.renderWarning()}</div>
     } else {
       return (
@@ -192,28 +203,45 @@ class CashAccountPage extends Component {
   }
 }
 
-CashAccountPage.propTypes = {
+RegisterCashAccount.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
+  selectedAddress: PropTypes.string,
+  cashaccount: PropTypes.object,
+  cashaccountRegistrations: PropTypes.any,
   t: PropTypes.func,
 }
 
-CashAccountPage.contextTypes = {
+RegisterCashAccount.contextTypes = {
   t: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
-  displayedForm: getCurrentViewContext(state),
-  selectedAddress: selectors.getSelectedAddress(state),
-  selectedSlpAddress: selectors.getSelectedSlpAddress(state),
-})
+const mapStateToProps = state => {
+  const { metamask } = state
+  const {
+    selectedAddress,
+    selectedSlpAddress,
+    cashaccount,
+    cashaccountRegistrations,
+  } = metamask
+
+  return {
+    selectedAddress,
+    selectedSlpAddress,
+    cashaccount,
+    cashaccountRegistrations,
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   displayForm: form => dispatch(actions.setNewAccountForm(form)),
   hideModal: () => dispatch(actions.hideModal()),
+  setCashAccount: x => dispatch(actions.setCashAccount(x)),
+  setCashAccountRegistration: x =>
+    dispatch(actions.setCashAccountRegistration(x)),
 })
 
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CashAccountPage)
+)(RegisterCashAccount)

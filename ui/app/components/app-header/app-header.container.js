@@ -15,6 +15,8 @@ const mapStateToProps = state => {
     selectedAddress,
     selectedSlpAddress,
     isUnlocked,
+    cashaccount,
+    cashaccountRegistrations,
   } = metamask
 
   return {
@@ -23,6 +25,8 @@ const mapStateToProps = state => {
     provider,
     selectedAddress,
     isUnlocked,
+    cashaccount,
+    cashaccountRegistrations,
     selectedSlpAddress,
   }
 }
@@ -33,6 +37,9 @@ const mapDispatchToProps = dispatch => {
     hideNetworkDropdown: () => dispatch(actions.hideNetworkDropdown()),
     toggleAccountMenu: () => dispatch(actions.toggleAccountMenu()),
     checkUnencrypted: () => dispatch(actions.checkUnencrypted()),
+    setCashAccount: x => dispatch(actions.setCashAccount(x)),
+    setCashAccountRegistration: x =>
+      dispatch(actions.setCashAccountRegistration(x)),
   }
 }
 

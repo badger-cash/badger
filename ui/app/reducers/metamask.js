@@ -24,6 +24,8 @@ function reduceMetamask(state, action) {
         getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP,
       rpcTarget: 'https://rawtestrpc.metamask.io/',
       identities: {},
+      cashaccount: {},
+      cashaccountRegistrations: [],
       unapprovedTxs: {},
       noActiveNotices: true,
       nextUnreadNotice: undefined,
@@ -187,6 +189,16 @@ function reduceMetamask(state, action) {
         currentCurrency: action.value.currentCurrency,
         conversionRate: action.value.conversionRate,
         conversionDate: action.value.conversionDate,
+      })
+
+    case actions.SET_CASHACCOUNT:
+      return extend(metamaskState, {
+        cashaccount: action.value,
+      })
+
+    case actions.SET_CASHACCOUNT_REGISTRATION:
+      return extend(metamaskState, {
+        cashaccountRegistrations: action.value,
       })
 
     case actions.UPDATE_TOKENS:

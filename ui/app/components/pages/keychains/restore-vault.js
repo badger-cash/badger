@@ -8,7 +8,7 @@ import {
 } from '../../../actions'
 import { DEFAULT_ROUTE } from '../../../routes'
 import TextField from '../../text-field'
-const BITBOX = require('bitbox-sdk').default
+const BITBOX = require('bitbox-sdk').BITBOX
 const bitbox = new BITBOX()
 
 import Toggle from '../../../../../ui/app/components/toggle/toggle.component'

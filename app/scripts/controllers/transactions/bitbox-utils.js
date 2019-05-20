@@ -1,6 +1,6 @@
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
-const BITBOX = require('bitbox-sdk').default
+const BITBOX = require('bitbox-sdk').BITBOX
 const bitbox = new BITBOX()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')

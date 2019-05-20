@@ -24,6 +24,8 @@ export default class AppHeader extends PureComponent {
     location: PropTypes.object,
     network: PropTypes.string,
     provider: PropTypes.object,
+    cashaccount: PropTypes.object,
+    cashaccountRegistrations: PropTypes.any,
     networkDropdownOpen: PropTypes.bool,
     showNetworkDropdown: PropTypes.func,
     hideNetworkDropdown: PropTypes.func,
@@ -37,15 +39,13 @@ export default class AppHeader extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   }
-  state = {
-    pending: '',
-    cashaccount: '',
-  }
+
   async componentDidMount () {
     const { checkUnencrypted } = this.props
     checkUnencrypted()
+
     await CashAccountUtils.upsertAccounts()
-    this.checkCashAccountStatus()
+    await this.checkCashAccountStatus()
   }
 
   componentDidUpdate (prevProps) {
@@ -56,20 +56,24 @@ export default class AppHeader extends PureComponent {
   }
 
   checkCashAccountStatus = async () => {
-    const { selectedAddress } = this.props
+    const {
+      selectedAddress,
+      setCashAccount,
+      setCashAccountRegistration,
+    } = this.props
+
     const existingAccount = await CashAccountUtils.getAccountByAddr(
       selectedAddress
     )
 
-    let pending
+    const registration = await CashAccountUtils.getRegistrationByAddr(
+      selectedAddress
+    )
 
-    if (existingAccount === undefined) {
-      pending = await CashAccountUtils.getRegistrationByAddr(selectedAddress)
-    }
-    this.setState({
-      cashaccount: existingAccount,
-      pending: pending,
-    })
+    await setCashAccount(existingAccount)
+    await setCashAccountRegistration(
+      registration !== undefined ? [registration] : ''
+    )
   }
 
   handleNetworkIndicatorClick (event) {
@@ -115,55 +119,13 @@ export default class AppHeader extends PureComponent {
     )
   }
 
-  hideAppHeader () {
-    const { location } = this.props
-
-    const isInitializing = Boolean(
-      matchPath(location.pathname, {
-        path: INITIALIZE_ROUTE,
-        exact: false,
-      })
-    )
-
-    if (isInitializing) {
-      return true
-    }
-
-    if (window.METAMASK_UI_TYPE === ENVIRONMENT_TYPE_NOTIFICATION) {
-      return true
-    }
-
-    if (
-      window.METAMASK_UI_TYPE === ENVIRONMENT_TYPE_POPUP &&
-      this.isConfirming()
-    ) {
-      return true
-    }
-  }
-
-  renderCashAccount = () => {
-    const { cashaccount, pending } = this.state
-
-    if (cashaccount) {
-      return (
-        <div className="pending">
-          {cashaccount.information.emoji} {cashaccount.identifier}
-        </div>
-      )
-    }
-    if (pending) {
-      return <div className="pending">registration pending</div>
-    } else {
-      return
-    }
-  }
-
   render () {
-    const { history, isUnlocked } = this.props
-
-    // if (this.hideAppHeader()) {
-    //   return null
-    // }
+    const {
+      history,
+      isUnlocked,
+      cashaccount,
+      cashaccountRegistrations,
+    } = this.props
 
     return (
       <div
@@ -188,7 +150,20 @@ export default class AppHeader extends PureComponent {
               width={42}
             />
           </div>
-          <div>{this.renderCashAccount()}</div>
+          <div>
+            {cashaccount && cashaccount.information !== undefined ? (
+              <div className="pending">
+                {cashaccount.information.emoji} {cashaccount.identifier}
+              </div>
+            ) : (
+              ''
+            )}
+            {cashaccount === undefined &&
+              cashaccountRegistrations &&
+              cashaccountRegistrations.length >= 1 && (
+                <div className="pending">registration pending</div>
+              )}
+          </div>
           <div className="app-header__account-menu-container">
             {this.renderAccountMenu()}
           </div>

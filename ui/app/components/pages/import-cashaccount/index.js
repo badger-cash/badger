@@ -17,6 +17,8 @@ class ImportCashAccount extends Component {
   static propTypes = {
     selectedAddress: PropTypes.string,
     selectedSlpAddress: PropTypes.string,
+    cashaccount: PropTypes.object,
+    cashaccountRegistrations: PropTypes.any,
   }
 
   state = {
@@ -85,13 +87,13 @@ class ImportCashAccount extends Component {
   }
   restoreCashAccount = async results => {
     const { txid } = results
-
+    const { setCashAccount, history } = this.props
     CashAccountUtils.upsertLocalStorage('cashaccount-registrations', {
       txid: txid,
     })
 
+    setCashAccount(results)
     await CashAccountUtils.upsertAccounts()
-
     history.push(DEFAULT_ROUTE)
   }
 
@@ -174,6 +176,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   displayForm: form => dispatch(actions.setNewAccountForm(form)),
   hideModal: () => dispatch(actions.hideModal()),
+  setCashAccount: x => dispatch(actions.setCashAccount(x)),
 })
 
 module.exports = connect(

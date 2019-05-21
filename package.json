@@ -11,7 +11,7 @@
     "start": "gulp dev:extension",
     "mascara": "gulp dev:mascara & node ./mascara/example/server",
     "build": "gulp dist",
-    "dist": "NODE_ENV=production gulp dist",
+    "dist": "NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production gulp dist",
     "doc": "jsdoc -c development/tools/.jsdoc.json",
     "publish-docs": "gh-pages -d docs/jsdocs",
     "test": "npm run test:unit && npm run test:integration && npm run lint",

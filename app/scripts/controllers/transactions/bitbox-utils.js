@@ -103,6 +103,33 @@ class BitboxUtils {
     })
   }
 
+  static removeUnspendableUtxo (utxo) {
+    const sorted = utxo.sort((a, b) => {
+      return b.satoshis - a.satoshis
+    })
+
+    const spendable = sorted.map(x => {
+      if (x.spendable) {
+        return x
+      }
+    })
+
+    const clean = spendable.filter(val => {
+      return val !== undefined
+    })
+
+    const chunk = this.chunk(clean, 20)
+
+    // limit to 20 utxo to prevent tx failing
+    return chunk[0]
+  }
+
+  static chunk (arr, size) {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    )
+  }
+
   static async calculateFee (spendableUtxos) {
     if (!spendableUtxos || spendableUtxos.length === 0) {
       throw new Error('Insufficient funds')

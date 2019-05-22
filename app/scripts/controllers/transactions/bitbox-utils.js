@@ -1,5 +1,7 @@
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
 const WH = require('wormhole-sdk/lib/Wormhole').default
@@ -121,7 +123,7 @@ class BitboxUtils {
         })
         const inputUtxos = []
         let totalUtxoAmount = 0
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         for (const utxo of sortedSpendableUtxos) {
           if (utxo.spendable !== true) {
             throw new Error('Cannot spend unspendable utxo')
@@ -130,7 +132,7 @@ class BitboxUtils {
           totalUtxoAmount += utxo.satoshis
           inputUtxos.push(utxo)
 
-          byteCount = SLP.BitcoinCash.getByteCount(
+          byteCount = bitbox.BitcoinCash.getByteCount(
             { P2PKH: inputUtxos.length },
             { P2PKH: 2 }
           )
@@ -175,7 +177,8 @@ class BitboxUtils {
             keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.satoshis,
+            transactionBuilder.signatureAlgorithms.SCHNORR
           )
         })
 
@@ -244,12 +247,12 @@ class BitboxUtils {
         if (tokenChangeAmount.isGreaterThan(0)) {
           sendOpReturn = slpjs.slp.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [ tokenSendAmount, tokenChangeAmount ],
+            outputQtyArray: [tokenSendAmount, tokenChangeAmount],
           })
         } else {
           sendOpReturn = slpjs.slp.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [ tokenSendAmount ],
+            outputQtyArray: [tokenSendAmount],
           })
         }
 
@@ -318,7 +321,8 @@ class BitboxUtils {
             utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.satoshis,
+            transactionBuilder.signatureAlgorithms.SCHNORR
           )
         })
 
@@ -354,19 +358,19 @@ class BitboxUtils {
           sendTokenAmount.toString()
         )
 
-        let inputUtxos = spendableUtxos.filter(utxo =>
-            utxo.address === from && utxo.spendable === true
-          ).map(utxo => {
-          const whUtxo = Object.assign({}, utxo)
-          whUtxo.value = whUtxo.amount
-          delete whUtxo.keyPair
-          delete whUtxo.tx
-          delete whUtxo.address
-          delete whUtxo.slp
-          delete whUtxo.confirmations
-          delete whUtxo.height
-          return whUtxo
-        })
+        let inputUtxos = spendableUtxos
+          .filter(utxo => utxo.address === from && utxo.spendable === true)
+          .map(utxo => {
+            const whUtxo = Object.assign({}, utxo)
+            whUtxo.value = whUtxo.amount
+            delete whUtxo.keyPair
+            delete whUtxo.tx
+            delete whUtxo.address
+            delete whUtxo.slp
+            delete whUtxo.confirmations
+            delete whUtxo.height
+            return whUtxo
+          })
         if (inputUtxos.length >= 2) {
           inputUtxos = inputUtxos.sort((a, b) => a.satoshis - b.satoshis)
         }

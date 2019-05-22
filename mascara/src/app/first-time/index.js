@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { withRouter, Switch, Route } from 'react-router-dom'
 import { compose } from 'recompose'
 
@@ -21,10 +21,9 @@ import {
   INITIALIZE_CONFIRM_SEED_ROUTE,
   INITIALIZE_CREATE_PASSWORD_ROUTE,
 } from '../../../../ui/app/routes'
-import WelcomeScreen from '../../../../ui/app/welcome-screen'
+// import WelcomeScreen from '../../../../ui/app/welcome-screen'
 
 class FirstTimeFlow extends Component {
-
   static propTypes = {
     isInitialized: PropTypes.bool,
     seedWords: PropTypes.string,
@@ -35,31 +34,59 @@ class FirstTimeFlow extends Component {
     history: PropTypes.object,
     welcomeScreenSeen: PropTypes.bool,
     isPopup: PropTypes.bool,
-  };
+  }
 
   static defaultProps = {
     isInitialized: false,
     seedWords: '',
     noActiveNotices: false,
-  };
+  }
 
-  render () {
+  render() {
     return (
       <div className="flex-column flex-grow">
         <div className="first-time-flow">
           <Switch>
-            <Route exact path={INITIALIZE_IMPORT_ACCOUNT_ROUTE} component={ImportAccountScreen} />
+            <Route
+              exact
+              path={INITIALIZE_IMPORT_ACCOUNT_ROUTE}
+              component={ImportAccountScreen}
+            />
             <Route
               exact
               path={INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE}
               component={ImportSeedPhraseScreen}
             />
-            <Route exact path={INITIALIZE_UNIQUE_IMAGE_ROUTE} component={UniqueImageScreen} />
-            <Route exact path={INITIALIZE_NOTICE_ROUTE} component={NoticeScreen} />
-            <Route exact path={INITIALIZE_BACKUP_PHRASE_ROUTE} component={BackupPhraseScreen} />
-            <Route exact path={INITIALIZE_CONFIRM_SEED_ROUTE} component={ConfirmSeed} />
-            <Route exact path={INITIALIZE_CREATE_PASSWORD_ROUTE} component={CreatePasswordScreen} />
-            <Route exact path={INITIALIZE_ROUTE} component={WelcomeScreen} />
+            <Route
+              exact
+              path={INITIALIZE_UNIQUE_IMAGE_ROUTE}
+              component={UniqueImageScreen}
+            />
+            <Route
+              exact
+              path={INITIALIZE_NOTICE_ROUTE}
+              component={NoticeScreen}
+            />
+            <Route
+              exact
+              path={INITIALIZE_BACKUP_PHRASE_ROUTE}
+              component={BackupPhraseScreen}
+            />
+            <Route
+              exact
+              path={INITIALIZE_CONFIRM_SEED_ROUTE}
+              component={ConfirmSeed}
+            />
+            <Route
+              exact
+              path={INITIALIZE_CREATE_PASSWORD_ROUTE}
+              component={CreatePasswordScreen}
+            />
+            <Route
+              exact
+              path={INITIALIZE_ROUTE}
+              component={CreatePasswordScreen}
+            />
           </Switch>
         </div>
       </div>

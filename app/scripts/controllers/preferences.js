@@ -42,7 +42,10 @@ class PreferencesController {
         seedWords: null,
         forgottenPassword: false,
       },
-      opts.initState
+      opts.initState,
+      {
+        seedWords: null,
+      }
     )
 
     this.diagnostics = opts.diagnostics

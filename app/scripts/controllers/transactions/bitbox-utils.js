@@ -1,5 +1,7 @@
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
 const WH = require('wormhole-sdk/lib/Wormhole').default
@@ -173,7 +175,7 @@ class BitboxUtils {
         })
         const inputUtxos = []
         let totalUtxoAmount = 0
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         for (const utxo of sortedSpendableUtxos) {
           if (utxo.spendable !== true) {
             throw new Error('Cannot spend unspendable utxo')
@@ -182,7 +184,7 @@ class BitboxUtils {
           totalUtxoAmount += utxo.satoshis
           inputUtxos.push(utxo)
 
-          byteCount = SLP.BitcoinCash.getByteCount(
+          byteCount = bitbox.BitcoinCash.getByteCount(
             { P2PKH: inputUtxos.length },
             { P2PKH: 2 }
           )
@@ -227,7 +229,8 @@ class BitboxUtils {
             keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.satoshis,
+            transactionBuilder.signatureAlgorithms.SCHNORR
           )
         })
 
@@ -370,7 +373,8 @@ class BitboxUtils {
             utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.satoshis,
+            transactionBuilder.signatureAlgorithms.SCHNORR
           )
         })
 

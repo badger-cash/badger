@@ -6,11 +6,14 @@ import {
   createNewVaultAndRestore,
   unMarkPasswordForgotten,
 } from '../../../../ui/app/actions'
-import { INITIALIZE_NOTICE_ROUTE } from '../../../../ui/app/routes'
+import {
+  INITIALIZE_NOTICE_ROUTE,
+  REVEAL_SEED_ROUTE,
+} from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
 
 import Toggle from '../../../../ui/app/components/toggle/toggle.component'
 
@@ -24,6 +27,11 @@ class ImportSeedPhraseScreen extends Component {
     createNewVaultAndRestore: PropTypes.func.isRequired,
     leaveImportSeedScreenState: PropTypes.func,
     history: PropTypes.object,
+    accountUtxoCache: PropTypes.object,
+    historicalBchTransactions: PropTypes.object,
+    historicalSlpTransactions: PropTypes.object,
+    selectedAddress: PropTypes.string,
+    selectedSlpAddress: PropTypes.string,
     isLoading: PropTypes.bool,
   }
 
@@ -42,9 +50,9 @@ class ImportSeedPhraseScreen extends Component {
   }
 
   validateSeedPhrase = (seedPhrase, lang = 'english') => {
-    const validated = BITBOX.Mnemonic.validate(
+    const validated = bitbox.Mnemonic.validate(
       seedPhrase,
-      BITBOX.Mnemonic.wordLists()[lang]
+      bitbox.Mnemonic.wordLists()[lang]
     )
     return validated
   }
@@ -114,6 +122,42 @@ class ImportSeedPhraseScreen extends Component {
     this.setState({ skipPassword: !this.state.skipPassword })
   }
 
+  displayWarning = () => {
+    const {
+      accountUtxoCache,
+      historicalBchTransactions,
+      historicalSlpTransactions,
+      selectedAddress,
+      selectedSlpAddress,
+      history,
+    } = this.props
+
+    const warn =
+      accountUtxoCache[selectedAddress].length > 0 ||
+      accountUtxoCache[selectedSlpAddress].length > 0 ||
+      historicalBchTransactions[selectedAddress].length > 0 ||
+      historicalSlpTransactions[selectedAddress].length > 0
+
+    if (warn) {
+      return (
+        <div className="seed-warning">
+          <h1>Warning!</h1>
+          <p>
+            You will lose your funds if you import a wallet over this account.
+          </p>
+          <p>
+            You can ignore this warning if you have already backed up your seed.
+            Otherwise,&nbsp;
+            <span onClick={() => history.push(REVEAL_SEED_ROUTE)}>
+              click here
+            </span>
+            &nbsp; to reveal your seed.
+          </p>
+        </div>
+      )
+    }
+    return null
+  }
   render () {
     const {
       seedPhrase,
@@ -147,6 +191,7 @@ class ImportSeedPhraseScreen extends Component {
             >
               {`< Back`}
             </a>
+            {this.displayWarning()}
             <div className="import-account__title">
               Import an Account with Seed Phrase
             </div>
@@ -225,7 +270,24 @@ class ImportSeedPhraseScreen extends Component {
 }
 
 export default connect(
-  ({ appState: { warning, isLoading } }) => ({ warning, isLoading }),
+  ({
+    appState: { warning, isLoading },
+    metamask: {
+      accountUtxoCache,
+      historicalBchTransactions,
+      historicalSlpTransactions,
+      selectedAddress,
+      selectedSlpAddress,
+    },
+  }) => ({
+    warning,
+    isLoading,
+    accountUtxoCache,
+    historicalBchTransactions,
+    historicalSlpTransactions,
+    selectedAddress,
+    selectedSlpAddress,
+  }),
   dispatch => ({
     leaveImportSeedScreenState: () => {
       dispatch(unMarkPasswordForgotten())

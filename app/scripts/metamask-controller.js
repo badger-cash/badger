@@ -379,7 +379,6 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
-      placeSeedWords: this.placeSeedWords.bind(this),
       verifySeedPhrase: nodeify(this.verifySeedPhrase, this),
       clearSeedWordCache: this.clearSeedWordCache.bind(this),
       resetAccount: nodeify(this.resetAccount, this),
@@ -781,25 +780,6 @@ module.exports = class MetamaskController extends EventEmitter {
 
     const { identities } = this.preferencesController.store.getState()
     return { ...keyState, identities }
-  }
-
-  /**
-   * Adds the current vault's seed words to the UI's state tree.
-   *
-   * Used when creating a first vault, to allow confirmation.
-   * Also used when revealing the seed words in the confirmation view.
-   *
-   * @param {Function} cb - A callback called on completion.
-   */
-  placeSeedWords (cb) {
-    this.verifySeedPhrase()
-      .then(seedWords => {
-        this.preferencesController.setSeedWords(seedWords)
-        return cb(null, seedWords)
-      })
-      .catch(err => {
-        return cb(err)
-      })
   }
 
   /**

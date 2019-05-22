@@ -31,8 +31,6 @@ var PaymentProtocol = require('bitcore-payment-protocol')
       and emitting confirmed events
     <br>- txGasUtil
       gas calculations and safety buffering
-    <br>- nonceTracker
-      calculating nonces
 
 
   @class
@@ -474,14 +472,6 @@ class TransactionController extends EventEmitter {
           tokenMetadata,
           spendableTokenUtxos,
           slpAddress
-        )
-      } else if (tokenProtocol === 'wormhole') {
-        const propertyId = tokenId.slice(42)
-        txHash = await bitboxUtils.signAndPublishWormholeTransaction(
-          txParams,
-          keyPair,
-          spendableUtxos,
-          propertyId
         )
       }
     } else if (txParams.paymentData) {

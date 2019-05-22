@@ -230,7 +230,6 @@
     "web3-stream-provider": "^3.0.1",
     "web4bch": "^0.1.2",
     "webrtc-adapter": "^6.4.4",
-    "wormhole-sdk": "^1.2.3",
     "xtend": "^4.0.1"
   },
   "devDependencies": {

@@ -106,7 +106,6 @@
     "browser-passworder": "^2.0.3",
     "browserify-derequire": "^0.9.6",
     "browserify-unibabel": "^3.0.0",
-    "cashaccounts": "^0.2.1",
     "classnames": "^2.2.6",
     "clone": "^2.1.2",
     "copy-to-clipboard": "^3.0.8",

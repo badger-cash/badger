@@ -221,8 +221,6 @@ class AccountTracker {
         )
       }
 
-      balance = bchBalanceSatoshis
-
       // Remove current tokens
       this._preferences.removeTokensByAccount(address)
 

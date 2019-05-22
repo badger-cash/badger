@@ -1,0 +1,59 @@
+<!doctypehtml>
+<html>
+<body>
+  <p>BIP 70 Payment Request</p>
+  <p><button
+    class="badger-button"
+    data-payment-request-url="https://your_url"
+    data-paywall-id="paywall"
+    data-success-callback="badgerCallback"
+  >
+    Request BIP 70 Payment
+  </button></p>
+
+  <br/><br/>
+
+  <div id="paywall" style="display:none">
+    Thank you!
+  </div>
+
+  <script>
+    function badgerCallback(txid) {
+      console.log('success: ', txid)
+    }
+
+    var badgerButtons = document.body.getElementsByClassName("badger-button")
+
+    for (var i = 0; i < badgerButtons.length; i++) {
+      var badgerButton = badgerButtons[i]
+      badgerButton.addEventListener('click', function(event) {
+        if (typeof web4bch !== 'undefined') {
+          web4bch = new Web4Bch(web4bch.currentProvider)
+
+          var txParams = {
+            paymentRequestUrl: badgerButton.getAttribute("data-payment-request-url")
+          }
+          web4bch.bch.sendTransaction(txParams, (err, res) => {
+            if (!err) {
+              var paywallId = badgerButton.getAttribute("data-paywall-id")
+              if (paywallId) {
+                var paywall = document.getElementById("paywall")
+                paywall.style.display = "block"
+              }
+
+              var successCallback = badgerButton.getAttribute("data-success-callback")
+              if (successCallback) {
+                window[successCallback](res)
+              }
+            }
+          })
+        } else {
+          window.open('https://badgerwallet.cash')
+        }
+      })
+    }
+
+  </script>
+</body>
+
+</html>

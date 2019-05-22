@@ -9,7 +9,7 @@ const {
 
 module.exports = reduceMetamask
 
-function reduceMetamask (state, action) {
+function reduceMetamask(state, action) {
   let newState
 
   // clone + defaults

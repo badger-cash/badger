@@ -1,5 +1,7 @@
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
 const WH = require('wormhole-sdk/lib/Wormhole').default
@@ -106,6 +108,58 @@ class BitboxUtils {
     })
   }
 
+  static removeUnspendableUtxo (utxo) {
+    const sorted = utxo.sort((a, b) => {
+      return b.satoshis - a.satoshis
+    })
+
+    const spendable = sorted.map(x => {
+      if (x.spendable) {
+        return x
+      }
+    })
+
+    const clean = spendable.filter(val => {
+      return val !== undefined
+    })
+
+    const chunk = this.chunk(clean, 20)
+
+    // limit to 20 utxo to prevent tx failing
+    return chunk[0]
+  }
+
+  static chunk (arr, size) {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    )
+  }
+
+  static async calculateFee (spendableUtxos) {
+    if (!spendableUtxos || spendableUtxos.length === 0) {
+      throw new Error('Insufficient funds')
+    }
+
+    // Calculate fee
+    let byteCount = 0
+    const sortedSpendableUtxos = spendableUtxos.sort((a, b) => {
+      return b.satoshis - a.satoshis
+    })
+    const inputUtxos = []
+    for (const utxo of sortedSpendableUtxos) {
+      if (utxo.spendable !== true) {
+        throw new Error('Cannot spend unspendable utxo')
+      }
+      inputUtxos.push(utxo)
+
+      byteCount = SLP.BitcoinCash.getByteCount(
+        { P2PKH: inputUtxos.length },
+        { P2PKH: 2 }
+      )
+    }
+    return byteCount
+  }
+
   static signAndPublishBchTransaction (txParams, keyPair, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -124,7 +178,7 @@ class BitboxUtils {
         })
         const inputUtxos = []
         let totalUtxoAmount = 0
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         for (const utxo of sortedSpendableUtxos) {
           if (utxo.spendable !== true) {
             throw new Error('Cannot spend unspendable utxo')
@@ -133,7 +187,7 @@ class BitboxUtils {
           totalUtxoAmount += utxo.satoshis
           inputUtxos.push(utxo)
 
-          byteCount = SLP.BitcoinCash.getByteCount(
+          byteCount = bitbox.BitcoinCash.getByteCount(
             { P2PKH: inputUtxos.length },
             { P2PKH: 2 }
           )
@@ -178,7 +232,8 @@ class BitboxUtils {
             keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.satoshis,
+            transactionBuilder.signatureAlgorithms.SCHNORR
           )
         })
 
@@ -384,12 +439,12 @@ class BitboxUtils {
         if (tokenChangeAmount.isGreaterThan(0)) {
           sendOpReturn = slpjs.slp.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [ tokenSendAmount, tokenChangeAmount ],
+            outputQtyArray: [tokenSendAmount, tokenChangeAmount],
           })
         } else {
           sendOpReturn = slpjs.slp.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [ tokenSendAmount ],
+            outputQtyArray: [tokenSendAmount],
           })
         }
 
@@ -458,7 +513,8 @@ class BitboxUtils {
             utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.satoshis,
+            transactionBuilder.signatureAlgorithms.SCHNORR
           )
         })
 
@@ -494,19 +550,19 @@ class BitboxUtils {
           sendTokenAmount.toString()
         )
 
-        let inputUtxos = spendableUtxos.filter(utxo =>
-            utxo.address === from && utxo.spendable === true
-          ).map(utxo => {
-          const whUtxo = Object.assign({}, utxo)
-          whUtxo.value = whUtxo.amount
-          delete whUtxo.keyPair
-          delete whUtxo.tx
-          delete whUtxo.address
-          delete whUtxo.slp
-          delete whUtxo.confirmations
-          delete whUtxo.height
-          return whUtxo
-        })
+        let inputUtxos = spendableUtxos
+          .filter(utxo => utxo.address === from && utxo.spendable === true)
+          .map(utxo => {
+            const whUtxo = Object.assign({}, utxo)
+            whUtxo.value = whUtxo.amount
+            delete whUtxo.keyPair
+            delete whUtxo.tx
+            delete whUtxo.address
+            delete whUtxo.slp
+            delete whUtxo.confirmations
+            delete whUtxo.height
+            return whUtxo
+          })
         if (inputUtxos.length >= 2) {
           inputUtxos = inputUtxos.sort((a, b) => a.satoshis - b.satoshis)
         }

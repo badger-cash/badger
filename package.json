@@ -1,6 +1,6 @@
 {
   "name": "badger",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "license": "MIT",
   "homepage": "https://badger.bitcoin.com",
   "repository": {
@@ -11,7 +11,7 @@
     "start": "gulp dev:extension",
     "mascara": "gulp dev:mascara & node ./mascara/example/server",
     "build": "gulp dist",
-    "dist": "NODE_ENV=production gulp dist",
+    "dist": "NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production gulp dist",
     "doc": "jsdoc -c development/tools/.jsdoc.json",
     "publish-docs": "gh-pages -d docs/jsdocs",
     "test": "npm run test:unit && npm run test:integration && npm run lint",
@@ -99,7 +99,7 @@
     "bchaddrjs-slp": "^0.2.5",
     "bignumber.js": "^4.1.0",
     "bip39": "^2.5.0",
-    "bitbox-sdk": "^2.3.0",
+    "bitbox-sdk": "7.3.0",
     "bitcore-lib": "^8.3.0",
     "bitcore-payment-protocol": "git+https://github.com/vinarmani/bitcore-payment-protocol.git#new_version",
     "blob-to-buffer": "^1.2.8",

@@ -43,6 +43,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { updateNetworkNonce, ...restDispatchProps } = dispatchProps
 
   return {
+    selectedAddress: selectedAddress,
     ...restStateProps,
     ...restDispatchProps,
     ...ownProps,

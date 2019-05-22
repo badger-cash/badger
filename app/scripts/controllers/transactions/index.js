@@ -7,8 +7,9 @@ const TransactionStateManager = require('./tx-state-manager')
 const PendingTransactionTracker = require('./pending-tx-tracker')
 const txUtils = require('./lib/util')
 const cleanErrorStack = require('../../lib/cleanErrorStack')
+const axios = require('axios')
+const toBuffer = require('blob-to-buffer')
 const log = require('loglevel')
-const recipientBlacklistChecker = require('./lib/recipient-blacklist-checker')
 const {
   TRANSACTION_TYPE_CANCEL,
   TRANSACTION_TYPE_RETRY,
@@ -16,9 +17,8 @@ const {
   TRANSACTION_STATUS_APPROVED,
 } = require('./enums')
 
-const { hexToBn, bnToHex } = require('../../lib/util')
-
 const bitboxUtils = require('./bitbox-utils')
+var PaymentProtocol = require('bitcore-payment-protocol')
 
 /**
   Transaction Controller is an aggregate of sub-controllers and trackers
@@ -90,7 +90,10 @@ class TransactionController extends EventEmitter {
     this.txStateManager.store.subscribe(() => this._updateMemstore())
     this.networkStore.subscribe(() => this._updateMemstore())
     this.preferencesStore.subscribe(() => this._updateMemstore())
-    this.accountTrackerStore.subscribe(() => this._updateMemstore())
+    this.accountTrackerStore.subscribe(() => {
+      this._updateHistoricalTransactions()
+      this._updateMemstore()
+    })
   }
 
   /** @returns {number} the chainId*/
@@ -121,6 +124,80 @@ class TransactionController extends EventEmitter {
     this.txStateManager.wipeTransactions(address)
   }
 
+  async decodePaymentRequest (requestData) {
+    return new Promise((resolve, reject) => {
+      toBuffer(requestData, function (err, buffer) {
+        if (err) reject(err)
+       
+        try {
+          var body = PaymentProtocol.PaymentRequest.decode(buffer)
+          var request = new PaymentProtocol().makePaymentRequest(body)
+
+          const detailsData = {}
+          var serializedDetails = request.get('serialized_payment_details')
+
+          // Verify the request signature
+          const verifiedData = request.verify(true)
+          detailsData.verified = false
+          if (verifiedData.caTrusted && verifiedData.chainVerified && verifiedData.isChain &&
+            verifiedData.selfSigned === 0 && verifiedData.verified) {
+            detailsData.verified = true
+          } else {
+            reject(new Error('Request could not be verified'))
+          }
+
+          // Get the payment details
+          var decodedDetails = PaymentProtocol.PaymentDetails.decode(serializedDetails)
+          var details = new PaymentProtocol().makePaymentDetails(decodedDetails)
+          
+          // Verify network is mainnet
+          detailsData.network = details.get('network')
+          if (detailsData.network !== 'main') {
+            reject(new Error('Network must be mainnet'))
+          }
+          
+          // Sanity check time created is in the past
+          const currentUnixTime = Math.floor(Date.now() / 1000)
+          detailsData.time = details.get('time')
+          if (currentUnixTime < detailsData.time) {
+            reject(new Error('Payment request time not valid'))
+          }
+
+          // Verify request is not yet expired
+          detailsData.expires = details.get('expires')
+          if (detailsData.expires < currentUnixTime) {
+            reject(new Error('Payment request expired'))
+          }
+
+          // Get memo, paymentUrl, merchantData and requiredFeeRate
+          detailsData.memo = details.get('memo')
+          detailsData.paymentUrl = details.get('payment_url')
+          const merchantData = details.get('merchant_data')
+          detailsData.merchantData = merchantData.toString()
+          detailsData.requiredFeeRate = details.get('required_fee_rate')
+
+          // Parse outputs as number amount and hex string script
+          detailsData.outputs = details.get('outputs').map(output => {
+            return {
+              amount: output.amount.toNumber(),
+              script: output.script.toString('hex'),
+            }
+          })
+
+          // Calculate total output value
+          let totalValue = 0
+          for (const output of detailsData.outputs) {
+            totalValue += output.amount
+          }
+          detailsData.totalValue = totalValue
+          resolve(detailsData)
+        } catch (ex) {
+          reject(ex)
+        }
+      })
+    })
+  }
+
   /**
   add a new unapproved transaction to the pipeline
 
@@ -130,7 +207,22 @@ class TransactionController extends EventEmitter {
   */
 
   async newUnapprovedTransaction (txParams, opts = {}) {
-    // log.debug(`MetaMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`)
+    // Check for payment url
+    if (txParams.paymentRequestUrl) {
+      const headers = {
+        'Accept': 'application/bitcoincash-paymentrequest',
+        'Content-Type': 'application/octet-stream',
+      }
+  
+      const paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+        headers,
+        responseType: 'blob',
+      })
+
+      txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
+      txParams.value = txParams.paymentData.totalValue
+    }
+
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)
     initialTxMeta.origin = opts.origin
     this.txStateManager.updateTx(
@@ -184,9 +276,17 @@ class TransactionController extends EventEmitter {
   */
 
   async addUnapprovedTransaction (txParams) {
+    // Default from address to selected account
+    if (!txParams.from) {
+      txParams.from = this.getSelectedAddress()
+    }
+    
     // validate & normalize
     const normalizedTxParams = txUtils.normalizeTxParams(txParams)
-    txUtils.validateTxParams(normalizedTxParams)
+
+    if (!txParams.paymentDetails) {
+      txUtils.validateTxParams(normalizedTxParams)
+    }
 
     // construct txMeta
     const txMeta = this.txStateManager.generateTxMeta({
@@ -194,22 +294,9 @@ class TransactionController extends EventEmitter {
       type: TRANSACTION_TYPE_STANDARD,
     })
     this.addTx(txMeta)
+
     this.emit('newUnapprovedTx', txMeta)
 
-    try {
-      // check whether recipient account is blacklisted
-      recipientBlacklistChecker.checkAccount(
-        txMeta.metamaskNetworkId,
-        normalizedTxParams.to
-      )
-      // add default tx params
-      // skip gas
-      // txMeta = await this.addTxGasDefaults(txMeta)
-    } catch (error) {
-      // log.warn(error)
-      this.txStateManager.setTxStatusFailed(txMeta.id, error)
-      throw error
-    }
     txMeta.loadingDefaults = false
     // save txMeta
     this.txStateManager.updateTx(txMeta)
@@ -336,12 +423,22 @@ class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction')
     const keyPair = await this.exportKeyPair(txParams.from)
 
+    const slpAddress = this.getSlpAddressForAccount(txParams.from)
+    const slpKeyPair = await this.exportKeyPair(slpAddress)
+
     const accountUtxoCache = Object.assign({}, this.getAccountUtxoCache())
     const utxoCache = accountUtxoCache[txParams.from]
+    const slpUtxoCache = accountUtxoCache[slpAddress]
     let spendableUtxos = []
 
     if (utxoCache && utxoCache.length) {
-      spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)
+      // Filter spendable utxos and map keypair to utxo
+      spendableUtxos = utxoCache.filter(utxo =>
+        utxo.spendable === true
+      ).map(utxo => {
+        utxo.keyPair = keyPair
+        return utxo
+      })
     }
 
     let txHash
@@ -355,23 +452,34 @@ class TransactionController extends EventEmitter {
       )
 
       if (tokenProtocol === 'slp') {
-        const spendableTokenUtxos = utxoCache.filter(utxo => {
+        // Filter SLP tokens and map keypair to each utxo
+        const allTokenUtxos = utxoCache.concat(slpUtxoCache)
+        const spendableTokenUtxos = allTokenUtxos.filter(utxo => {
           return (
             utxo.slp &&
             utxo.slp.baton === false &&
             utxo.validSlpTx === true &&
             utxo.slp.token === tokenId
           )
+        }).map(utxo => {
+          utxo.keyPair = utxo.address === txParams.from ? keyPair : slpKeyPair
+          return utxo
         })
 
         txHash = await bitboxUtils.signAndPublishSlpTransaction(
           txParams,
-          keyPair,
           spendableUtxos,
           tokenMetadata,
-          spendableTokenUtxos
+          spendableTokenUtxos,
+          slpAddress
         )
       }
+    } else if (txParams.paymentData) {
+      txHash = await bitboxUtils.signAndPublishPaymentRequestTransaction(
+        txParams,
+        keyPair,
+        spendableUtxos
+      )
     } else {
       txHash = await bitboxUtils.signAndPublishBchTransaction(
         txParams,
@@ -456,12 +564,33 @@ class TransactionController extends EventEmitter {
     /** @returns the user selected address */
     this.getSelectedAddress = () =>
       this.preferencesStore.getState().selectedAddress
+    this.getSlpAddressForAccount = (address) => {
+      const selectedIdentity = this.preferencesStore.getState().identities[address]
+      return selectedIdentity.slpAddress
+    }
     /** @returns the utxo cache for accounts */
     this.getAccountUtxoCache = () =>
       this.accountTrackerStore.getState().accountUtxoCache
     /** @returns the token metadata cache */
     this.getTokenMetadataCache = () =>
       this.accountTrackerStore.getState().tokenCache
+    /** @returns historicalTransactions */
+    this.gethistoricalTransactions = () => {
+      const historsicalTransactions = Object.assign(
+        {},
+        this.accountTrackerStore.getState().historicalBchTransactions || {}
+      )
+      const historicalSlpTransactions = this.accountTrackerStore.getState().historicalSlpTransactions || {}
+
+      Object.keys(historicalSlpTransactions).forEach(address => {
+        if (!historsicalTransactions[address]) {
+          historsicalTransactions[address] = []
+        }
+        historsicalTransactions[address] = historsicalTransactions[address].concat(historicalSlpTransactions[address])
+      })
+
+      return historsicalTransactions
+    }
     /** Returns an array of transactions whos status is unapproved */
     this.getUnapprovedTxCount = () =>
       Object.keys(this.txStateManager.getUnapprovedTxList()).length
@@ -545,14 +674,61 @@ class TransactionController extends EventEmitter {
   }
 
   /**
+    Updates tx history with historicalTransactions from account-tracker
+  */
+  _updateHistoricalTransactions () {
+    const historicalTransactions = Object.assign(
+      {},
+      this.gethistoricalTransactions()
+    )
+    if (!historicalTransactions) return
+
+    const txHistory = this.txStateManager.getFilteredTxList({
+      metamaskNetworkId: this.getNetwork(),
+    })
+
+    Object.keys(historicalTransactions).forEach(address => {
+      for (const tx of historicalTransactions[address]) {
+        if (
+          txHistory.some(
+            txh =>
+              txh.hash === tx.hash &&
+              txh.txParams.from === tx.txParams.from &&
+              txh.txParams.to === tx.txParams.to
+          )
+        ) {
+          continue
+        }
+        const txMeta = Object.assign(
+          this.txStateManager.generateTxMeta(tx),
+          {
+            type: TRANSACTION_TYPE_STANDARD,
+          },
+          tx
+        )
+        this.txStateManager.addTx(txMeta)
+      }
+    })
+  }
+
+  /**
     Updates the memStore in transaction controller
   */
   _updateMemstore () {
     const unapprovedTxs = this.txStateManager.getUnapprovedTxList()
-    const selectedAddressTxList = this.txStateManager.getFilteredTxList({
-      from: this.getSelectedAddress(),
-      metamaskNetworkId: this.getNetwork(),
-    })
+    const selectedAddressTxList = this.txStateManager
+      .getFilteredTxList({
+        metamaskNetworkId: this.getNetwork(),
+      })
+      .filter(
+        tx =>
+          tx.txParams.from === this.getSelectedAddress() ||
+          tx.txParams.to === this.getSelectedAddress()
+      )
+      .reduce((txSet, tx) => {
+        const txExists = txSet.find((item) => item.hash === tx.hash)
+        return txExists ? txSet : [...txSet, tx]
+      }, [])
     this.memStore.updateState({ unapprovedTxs, selectedAddressTxList })
   }
 }

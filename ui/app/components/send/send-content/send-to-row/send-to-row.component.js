@@ -16,6 +16,7 @@ export default class SendToRow extends Component {
     updateSendTo: PropTypes.func,
     updateSendToError: PropTypes.func,
     scanQrCode: PropTypes.func,
+    selectedToken: PropTypes.object,
   }
 
   static contextTypes = {
@@ -23,8 +24,8 @@ export default class SendToRow extends Component {
   }
 
   handleToChange (to, nickname = '', toError) {
-    const { updateSendTo, updateSendToError } = this.props
-    const toErrorObject = getToErrorObject(to, toError)
+    const { updateSendTo, updateSendToError, selectedToken } = this.props
+    const toErrorObject = getToErrorObject(to, toError, selectedToken)
     updateSendTo(to, nickname)
     updateSendToError(toErrorObject)
     if (toErrorObject.to === null) {

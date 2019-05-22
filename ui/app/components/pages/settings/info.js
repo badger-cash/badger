@@ -1,6 +1,8 @@
+import React from 'react'
 const { Component } = require('react')
 const PropTypes = require('prop-types')
-const h = require('react-hyperscript')
+const connect = require('react-redux').connect
+const { NOTICE_ROUTE } = require('../../../routes')
 
 class Info extends Component {
   constructor (props) {
@@ -12,98 +14,89 @@ class Info extends Component {
   }
 
   renderLogo () {
-    return h('div.settings__info-logo-wrapper', [
-      h('img.settings__info-logo', { src: 'images/bch_logo.svg' }),
-    ])
+    return (
+      <div className="settings__info-logo-wrapper">
+        <img className="settings__info-logo" src="images/bch_logo.svg" />
+      </div>
+    )
   }
 
   renderInfoLinks () {
-    return h(
-      'div.settings__content-item.settings__content-item--without-height',
-      [
-        h('div.settings__info-link-header', this.context.t('links')),
-        h('div.settings__info-link-item', [
-          h(
-            'a',
-            {
-              href: 'https://www.bitcoin.com/privacy-policy',
-              target: '_blank',
-            },
-            [h('span.settings__info-link', this.context.t('privacyMsg'))]
-          ),
-        ]),
-        // h('div.settings__info-link-item', [
-        //   h(
-        //     'a',
-        //     {
-        //       href: 'https://badgerwallet.cash/terms.html',
-        //       target: '_blank',
-        //     },
-        //     [h('span.settings__info-link', this.context.t('terms'))]
-        //   ),
-        // ]),
-        // h('div.settings__info-link-item', [
-        //   h(
-        //     'a',
-        //     {
-        //       href: 'https://badgerwallet.cash/attributions.html',
-        //       target: '_blank',
-        //     },
-        //     [h('span.settings__info-link', this.context.t('attributions'))]
-        //   ),
-        // ]),
-        h('hr.settings__info-separator'),
-        // TODO: Create support center
-        // h('div.settings__info-link-item', [
-        //   h(
-        //     'a',
-        //     {
-        //       href: 'https://support.metamask.io',
-        //       target: '_blank',
-        //     },
-        //     [h('span.settings__info-link', this.context.t('supportCenter'))]
-        //   ),
-        // ]),
-        h('div.settings__info-link-item', [
-          h(
-            'a',
-            {
-              href: 'https://badger.bitcoin.com/',
-              target: '_blank',
-            },
-            [h('span.settings__info-link', this.context.t('visitWebSite'))]
-          ),
-        ]),
-        h('div.settings__info-link-item', [
-          h(
-            'a',
-            {
-              target: '_blank',
-              href: 'mailto:badger@bitcoin.com?subject=Feedback',
-            },
-            [h('span.settings__info-link', this.context.t('emailUs'))]
-          ),
-        ]),
-      ]
+    return (
+      <div className="settings__content-item settings__content-item--without-height">
+        <div className="settings__info-link-header">
+          {this.context.t('links')}
+        </div>
+        <div className="settings__info-link-item">
+          <a href="https://www.bitcoin.com/privacy-policy" target="_blank">
+            <span className="settings__info-link">
+              {this.context.t('privacyMsg')}
+            </span>
+          </a>
+          <br />
+          <br />
+          <a>
+            <span
+              onClick={() => {
+                this.props.history.push(NOTICE_ROUTE)
+              }}
+              className="settings__info-link"
+            >
+              Terms of Service
+            </span>
+          </a>
+        </div>
+        <hr className="settings__info-separator" />
+        <div className="settings__info-link-item">
+          <a href="https://badger.bitcoin.com/" target="_blank">
+            <span className="settings__info-link">
+              {this.context.t('visitWebSite')}
+            </span>
+          </a>
+        </div>
+        <div className="settings__info-link-item">
+          <a target="_blank" href="mailto:badger@bitcoin.com?subject=Feedback">
+            <span className="settings__info-link">
+              {this.context.t('emailUs')}
+            </span>
+          </a>
+        </div>
+        <div className="settings__info-link-item">
+          <a
+            target="_blank"
+            href="https://t.me/joinchat/IoTQ_hGflnfwd3YJSF8cRQ"
+          >
+            <span className="settings__info-link">Join our telegram</span>
+          </a>
+        </div>
+      </div>
     )
   }
 
   render () {
-    return h('div.settings__content', [
-      h('div.settings__content-row', [
-        h('div.settings__content-item.settings__content-item--without-height', [
-          this.renderLogo(),
-          h('div.settings__info-item', [
-            h('div.settings__info-version-header', 'Badger Version'),
-            h('div.settings__info-version-number', this.state.version),
-          ]),
-          h('div.settings__info-item', [
-            h('div.settings__info-about', this.context.t('builtInCalifornia')),
-          ]),
-        ]),
-        this.renderInfoLinks(),
-      ]),
-    ])
+    return (
+      <div className="settings__content">
+        <div className="settings__content-row">
+          <div className="settings__content-item settings__content-item--without-height">
+            {this.renderLogo()}
+            <div className="settings__info-item">
+              <div className="settings__info-version-header">
+                Badger Version
+              </div>
+              <div className="settings__info-version-number">
+                {this.state.version}
+              </div>
+            </div>
+            <div className="settings__info-item">
+              <div className="settings__info-about">
+                {this.context.t('builtInCalifornia')}
+              </div>
+            </div>
+          </div>
+          {this.renderInfoLinks()}
+        </div>
+      </div>
+    )
   }
 }
 

@@ -467,7 +467,7 @@
     "message": "Hide Token?"
   },
   "history": {
-    "message": "Send History"
+    "message": "Transaction History"
   },
   "howToDeposit": {
     "message": "How would you like to deposit Bitcoin Cash?"
@@ -676,10 +676,10 @@
     "message": "No Conversion Rate Available"
   },
   "noTransactionHistory": {
-    "message": "No sent transaction history."
+    "message": "No transaction history."
   },
   "noTransactions": {
-    "message": "You have no sent transactions"
+    "message": "You have no transactions"
   },
   "notFound": {
     "message": "Not Found"
@@ -732,6 +732,9 @@
   },
   "pasteSeed": {
     "message": "Paste your seed phrase here!"
+  },
+  "paymentRequest": {
+    "message": "Payment Request"
   },
   "pending": {
     "message": "pending"
@@ -962,7 +965,7 @@
     "message": "Only send BCH to a Bitcoin Cash address."
   },
   "onlySendTokensToAccountAddress": {
-    "message": "Only send $1 to a Bitcoin Cash address.",
+    "message": "Only send $1 to a Simple Ledger address.",
     "description": "displays token symbol"
   },
   "orderOneHere": {
@@ -1047,8 +1050,7 @@
     "message": "Sign Message"
   },
   "signNotice": {
-    "message":
-      "Only sign requests from \nsites you fully trust."
+    "message": "Only sign requests from \nsites you fully trust."
   },
   "sigRequest": {
     "message": "CashID Request"

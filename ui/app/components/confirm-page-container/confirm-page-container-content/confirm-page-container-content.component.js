@@ -12,6 +12,7 @@ export default class ConfirmPageContainerContent extends Component {
   static propTypes = {
     action: PropTypes.string,
     dataComponent: PropTypes.node,
+    txParams: PropTypes.object,
     detailsComponent: PropTypes.node,
     errorKey: PropTypes.string,
     errorMessage: PropTypes.string,
@@ -34,6 +35,58 @@ export default class ConfirmPageContainerContent extends Component {
     // } else {
     //   return detailsComponent || dataComponent
     // }
+  }
+
+  renderOpReturn () {
+    const {
+      txParams,
+    } = this.props
+
+    if (!txParams.opReturn || !txParams.opReturn.data) {
+      return null
+    }
+
+    const opReturnText = txParams.opReturn.data.join(' ')
+
+    return (
+      <div className="confirm-page-container-content__details">
+        <br/>
+        <div className={classnames('confirm-detail-row__header-text')}>
+          OP Return
+        </div>
+        <div className="confirm-detail-row">
+          <div>
+            {opReturnText}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderMemo () {
+    const {
+      txParams,
+    } = this.props
+
+    if (!txParams.paymentData || !txParams.paymentData.memo) {
+      return null
+    }
+
+    const memoText = txParams.paymentData.memo
+
+    return (
+      <div className="confirm-page-container-content__details">
+        <br/>
+        <div className={classnames('confirm-detail-row__header-text')}>
+          Memo
+        </div>
+        <div className="confirm-detail-row">
+          <div>
+            {memoText}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   renderTabs () {
@@ -82,7 +135,9 @@ export default class ConfirmPageContainerContent extends Component {
             assetImage={assetImage}
           />
         )}
-        {this.renderContent()}
+        {this.renderMemo()}
+        {this.renderOpReturn()}
+        {/* {this.renderContent()} */}
         {(errorKey || errorMessage) && (
           <div className="confirm-page-container-content__error-container">
             <ConfirmPageContainerError

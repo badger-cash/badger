@@ -4,6 +4,7 @@
 
 const BigNumber = require('bignumber.js')
 const bchaddr = require('bchaddrjs-slp')
+const bitboxUtils = require('../bitbox-utils')
 
 module.exports = {
   normalizeTxParams,
@@ -19,6 +20,13 @@ module.exports = {
   @returns {object} normalized txParams
  */
 function normalizeTxParams (txParams) {
+  // Set op return defaults if missing
+  if (typeof txParams.opReturn !== 'undefined') {
+    if (!txParams.to) txParams.to = txParams.from
+    if (!txParams.value) txParams.value = 546
+  }
+
+  // Set from and to addresses to cash addr
   if (txParams.to) {
     txParams.to = bchaddr.toCashAddress(txParams.to)
   }
@@ -52,6 +60,11 @@ function validateTxParams (txParams) {
   const bnValue = new BigNumber(value)
   if (bnValue.isNaN() || bnValue.isNegative()) {
     throw new Error('Value property invalid')
+  }
+
+  // Validate op return
+  if (typeof txParams.opReturn !== 'undefined') {
+    validateOpReturn(txParams.opReturn)
   }
 
   // TODO: Accept only satoshis
@@ -92,6 +105,22 @@ function isValidAddress (address) {
   } catch (err) {
     return false
   }
+}
+
+function validateOpReturn (opReturn) {
+  // Data property
+  if (!opReturn.data || opReturn.data.length === 0) {
+    throw new Error('Op return data property invalid')
+  }
+
+  // Only strings in data array
+  opReturn.data.forEach(pushData => {
+    if (typeof pushData !== 'string') throw new Error('Only utf and hex strings supported in OP Return')
+  })
+
+  // Max length
+  const encodedScript = bitboxUtils.encodeOpReturn(opReturn.data)
+  if (encodedScript.byteLength > 223) throw new Error('OP Return too large')
 }
 
   /**

@@ -8,8 +8,10 @@ import {
 } from '../../../actions'
 import { DEFAULT_ROUTE } from '../../../routes'
 import TextField from '../../text-field'
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
+
+import Toggle from '../../../../../ui/app/components/toggle/toggle.component'
 
 class RestoreVaultPage extends Component {
   static contextTypes = {
@@ -25,6 +27,7 @@ class RestoreVaultPage extends Component {
   }
 
   state = {
+    skipPassword: true,
     seedPhrase: '',
     password: '',
     confirmPassword: '',
@@ -33,14 +36,18 @@ class RestoreVaultPage extends Component {
     confirmPasswordError: null,
   }
 
+  toggleState = () => {
+    this.setState({ skipPassword: !this.state.skipPassword })
+  }
+
   parseSeedPhrase = seedPhrase => {
     return seedPhrase.match(/\w+/g).join(' ')
   }
 
   validateSeedPhrase = (seedPhrase, lang = 'english') => {
-    const validated = BITBOX.Mnemonic.validate(
+    const validated = bitbox.Mnemonic.validate(
       seedPhrase,
-      BITBOX.Mnemonic.wordLists()[lang]
+      bitbox.Mnemonic.wordLists()[lang]
     )
     return validated
   }
@@ -84,18 +91,21 @@ class RestoreVaultPage extends Component {
     this.setState({ confirmPassword, confirmPasswordError })
   }
 
-  onClick = () => {
-    const { password, seedPhrase } = this.state
-    const {
-      createNewVaultAndRestore,
-      leaveImportSeedScreenState,
-      history,
-    } = this.props
+  onClick = disabled => {
+    const { password, seedPhrase, skipPassword } = this.state
 
-    leaveImportSeedScreenState()
-    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
-      () => history.push(DEFAULT_ROUTE)
-    )
+    if (!disabled || skipPassword) {
+      const {
+        createNewVaultAndRestore,
+        leaveImportSeedScreenState,
+        history,
+      } = this.props
+
+      leaveImportSeedScreenState()
+      createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
+        () => history.push(DEFAULT_ROUTE)
+      )
+    }
   }
 
   hasError () {
@@ -111,6 +121,7 @@ class RestoreVaultPage extends Component {
       seedPhraseError,
       passwordError,
       confirmPasswordError,
+      skipPassword,
     } = this.state
     const { t } = this.context
     const { isLoading } = this.props
@@ -151,36 +162,54 @@ class RestoreVaultPage extends Component {
               />
             </div>
             <span className="error">{seedPhraseError}</span>
-            <TextField
-              id="password"
-              label={t('newPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.password}
-              onChange={event => this.handlePasswordChange(event.target.value)}
-              error={passwordError}
-              autoComplete="new-password"
-              margin="normal"
-              largeLabel
-            />
-            <TextField
-              id="confirm-password"
-              label={t('confirmPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.confirmPassword}
-              onChange={event =>
-                this.handleConfirmPasswordChange(event.target.value)
-              }
-              error={confirmPasswordError}
-              autoComplete="confirm-password"
-              margin="normal"
-              largeLabel
-            />
+
+            <div className="password">
+              <h2> Do you want to protect this wallet with a Password?</h2>
+              <div className="encrypt">
+                <p>Encrypt</p>
+                <Toggle toggleState={this.toggleState} />
+              </div>
+            </div>
+
+            {!skipPassword && (
+              <TextField
+                id="password"
+                label={t('newPassword')}
+                type="password"
+                className="first-time-flow__input"
+                value={this.state.password}
+                onChange={event =>
+                  this.handlePasswordChange(event.target.value)
+                }
+                error={passwordError}
+                autoComplete="new-password"
+                margin="normal"
+                largeLabel
+              />
+            )}
+
+            {!skipPassword && (
+              <TextField
+                id="confirm-password"
+                label={t('confirmPassword')}
+                type="password"
+                className="first-time-flow__input"
+                value={this.state.confirmPassword}
+                onChange={event =>
+                  this.handleConfirmPasswordChange(event.target.value)
+                }
+                error={confirmPasswordError}
+                autoComplete="confirm-password"
+                margin="normal"
+                largeLabel
+              />
+            )}
             <button
               className="first-time-flow__button"
-              onClick={() => !disabled && this.onClick()}
-              disabled={disabled}
+              onClick={() => this.onClick(disabled)}
+              disabled={
+                skipPassword && seedPhraseError === null ? !disabled : disabled
+              }
             >
               {this.context.t('restore')}
             </button>

@@ -19,6 +19,8 @@ const selectors = {
   getGasPrice,
   getGasPriceFromRecentBlocks,
   getGasTotal,
+  getBchFee,
+  getUtxos,
   getPrimaryCurrency,
   getRecentBlocks,
   getSelectedAccount,
@@ -133,6 +135,14 @@ function getGasPriceFromRecentBlocks (state) {
 
 function getGasTotal (state) {
   return state.metamask.send.gasTotal
+}
+
+function getBchFee (state) {
+  return state.metamask.send.bchFee
+}
+
+function getUtxos (state) {
+  return state.metamask.accountUtxoCache
 }
 
 function getPrimaryCurrency (state) {
@@ -296,7 +306,8 @@ function transactionsSelector (state) {
           ({ txParams }) => txParams && txParams.to === selectedTokenAddress
         )
         .sort((a, b) => b.time - a.time)
-    : txsToRender.sort((a, b) => b.time - a.time)
+        .slice(0, 20)
+    : txsToRender.sort((a, b) => b.time - a.time).slice(0, 20)
 }
 
 function getQrCodeData (state) {

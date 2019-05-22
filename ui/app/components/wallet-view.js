@@ -46,6 +46,7 @@ function mapStateToProps (state) {
     tokens: state.metamask.tokens,
     keyrings: state.metamask.keyrings,
     selectedAddress: selectors.getSelectedAddress(state),
+    selectedSlpAddress: selectors.getSelectedSlpAddress(state),
     selectedAccount: selectors.getSelectedAccount(state),
     selectedTokenAddress: state.metamask.selectedTokenAddress,
   }
@@ -111,6 +112,7 @@ WalletView.prototype.render = function () {
   const {
     responsiveDisplayClassname,
     selectedAddress,
+    selectedSlpAddress,
     keyrings,
     showAccountDetailModal,
     sidebarOpen,
@@ -123,7 +125,7 @@ WalletView.prototype.render = function () {
 
   // const checksummedAddress = checksumAddress(selectedAddress)
   const checksummedAddress = selectedAddress
-  const slpAddress = bchaddr.toSlpAddress(selectedAddress)
+  const slpAddress = bchaddr.toSlpAddress(selectedSlpAddress)
 
   if (!selectedAddress) {
     throw new Error('selectedAddress should not be ' + String(selectedAddress))

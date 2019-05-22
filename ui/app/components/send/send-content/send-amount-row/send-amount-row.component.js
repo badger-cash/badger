@@ -11,10 +11,11 @@ export default class SendAmountRow extends Component {
       PropTypes.string,
       PropTypes.number,
     ]),
-    balance: PropTypes.string,
+    balance: PropTypes.any,
     conversionRate: PropTypes.number,
     convertedCurrency: PropTypes.string,
     gasTotal: PropTypes.string,
+    bchFee: PropTypes.number,
     inError: PropTypes.bool,
     primaryCurrency: PropTypes.string,
     selectedToken: PropTypes.object,
@@ -24,6 +25,7 @@ export default class SendAmountRow extends Component {
     updateSendAmount: PropTypes.func,
     updateSendAmountError: PropTypes.func,
     updateGas: PropTypes.func,
+    calculateTxFee: PropTypes.func,
   }
 
   static contextTypes = {
@@ -92,6 +94,7 @@ export default class SendAmountRow extends Component {
       inError,
       primaryCurrency,
       selectedToken,
+      calculateTxFee,
     } = this.props
 
     return (
@@ -100,7 +103,7 @@ export default class SendAmountRow extends Component {
         showError={inError}
         errorType={'amount'}
       >
-        {/* {!inError && gasTotal && <AmountMaxButton />} */}
+        {!inError && <AmountMaxButton />}
         <CurrencyDisplay
           conversionRate={amountConversionRate}
           convertedCurrency={convertedCurrency}

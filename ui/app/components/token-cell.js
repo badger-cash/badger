@@ -9,6 +9,8 @@ const { conversionUtil, multiplyCurrencies } = require('../conversion-util')
 
 const TokenMenuDropdown = require('./dropdowns/token-menu-dropdown.js')
 
+import { formatTokenAmount } from '../helpers/formatter-numbers.util'
+
 function mapStateToProps (state) {
   return {
     network: state.metamask.network,
@@ -25,16 +27,6 @@ function mapDispatchToProps (dispatch) {
   return {
     setSelectedToken: address => dispatch(actions.setSelectedToken(address)),
     hideSidebar: () => dispatch(actions.hideSidebar()),
-  }
-}
-
-const formatTokenAmount = (amount) => {
-  try {
-    const value = parseFloat(amount)
-    const formatted = value.toLocaleString()
-    return formatted
-  } catch (e) {
-    return amount
   }
 }
 
@@ -99,6 +91,11 @@ TokenCell.prototype.render = function () {
   const showFiat =
     Boolean(currentTokenInFiat) && currentCurrency.toUpperCase() !== symbol
 
+  let formattedSymbol = symbol.slice(0, 13)
+  if (symbol.length > 13) {
+    formattedSymbol += '...'
+  }
+
   return h(
     'div.token-list-item',
     {
@@ -126,8 +123,11 @@ TokenCell.prototype.render = function () {
 
       h('div.token-list-item__balance-ellipsis', null, [
         h('div.token-list-item__balance-wrapper', null, [
-          h('div.token-list-item__token-balance', `${formattedTokenAmount || '0'}`),
-          h('div.token-list-item__token-symbol', symbol),
+          h(
+            'div.token-list-item__token-balance',
+            `${formattedTokenAmount || '0'}`
+          ),
+          h('div.token-list-item__token-symbol', formattedSymbol),
           h(
             'div.token-list-item__fiat-amount',
             {

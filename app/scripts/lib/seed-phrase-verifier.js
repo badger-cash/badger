@@ -38,7 +38,8 @@ const seedPhraseVerifier = {
           return reject(new Error('Wrong number of accounts'))
         }
 
-        for (let i = 0; i < restoredAccounts.length; i++) {
+        // Verify first (primary) account restored to previous
+        for (let i = 0; i < 1; i++) {
           if (
             restoredAccounts[i].toLowerCase() !==
             createdAccounts[i].toLowerCase()

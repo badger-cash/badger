@@ -2,8 +2,10 @@
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  src: local('Roboto'), local('Roboto-Regular'), url('/fonts/Roboto/Roboto-Regular.ttf') format('truetype');
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  src: local('Roboto'), local('Roboto-Regular'),
+    url('/fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
 }
 
 .first-time-flow {
@@ -72,6 +74,19 @@
   justify-content: space-between;
 }
 
+.seed-warning {
+  background: #f79132;
+  padding: 1rem;
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin: 0.4rem 0;
+}
+.seed-warning span {
+  color: #2f9ae0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media screen and (min-width: 1281px) {
   .first-view-main {
     width: 62vw;
@@ -92,9 +107,10 @@
 
 .info {
   font-size: 19px;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
-.create-password,
 .unique-image,
 .tou,
 .backup-phrase,
@@ -105,13 +121,16 @@
   margin: 60px 0 30px 0;
   position: relative;
 }
+.create-password {
+  padding: 1rem;
+  width: 100%;
+}
 
 .import-account {
   max-width: initial;
 }
 
 @media only screen and (max-width: 575px) {
-  .create-password,
   .unique-image,
   .tou,
   .backup-phrase,
@@ -206,7 +225,7 @@
   .import-account__secret-phrase {
     width: initial !important;
     height: initial !important;
-    min-height: 190px;
+    min-height: 140px;
   }
 
   .backup-phrase__confirm-seed-options {
@@ -222,12 +241,16 @@
 .unique-image__title,
 .tou__title,
 .backup-phrase__title,
-.import-account__title,
 .buy-ether__title {
-  color: #1B344D;
+  color: #1b344d;
   font-size: 40px;
   line-height: 51px;
   margin-bottom: 24px;
+}
+
+.create-password__title,
+.import-account__title {
+  font-size: 30px;
 }
 
 .import-account__title {
@@ -257,7 +280,7 @@
 .unique-image__body-text,
 .backup-phrase__body-text,
 .buy-ether__body-text {
-  color: #1B344D;
+  color: #1b344d;
   font-size: 16px;
   line-height: 23px;
   font-family: Roboto;
@@ -281,19 +304,16 @@
   }
 }
 
-.unique-image__body-text +
-.unique-image__body-text,
-.backup-phrase__body-text +
-.backup-phrase__body-text,
-.backup-phrase__tips-text +
-.backup-phrase__tips-text {
+.unique-image__body-text + .unique-image__body-text,
+.backup-phrase__body-text + .backup-phrase__body-text,
+.backup-phrase__tips-text + .backup-phrase__tips-text {
   margin-top: 24px;
 }
 
 .tou__body {
   border: 1px solid #979797;
   border-radius: 8px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin: 0 142px 0 0;
   height: 200px;
   overflow-y: auto;
@@ -312,7 +332,7 @@
 }
 
 .backup-phrase__phrase {
-  flex-grow: .5;
+  flex-grow: 0.5;
   min-width: 0;
 }
 
@@ -328,12 +348,12 @@
 .backup-phrase__tips {
   margin-top: 40px;
   width: 285px;
-  flex-grow: .5;
+  flex-grow: 0.5;
   min-width: 0;
 }
 
 .backup-phrase__tips-text {
-  color: #5B5D67;
+  color: #5b5d67;
   font-size: 16px;
   line-height: 23px;
   font-family: Roboto;
@@ -373,16 +393,16 @@
   display: flex;
   justify-content: center;
   width: 349px;
-  border: 1px solid #CDCDCD;
+  border: 1px solid #cdcdcd;
   border-radius: 6px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 20px 0;
   margin-top: 36px;
 }
 
 .backup-phrase__secret-words {
   width: 310px;
-  color: #5B5D67;
+  color: #5b5d67;
   font-family: Roboto;
   font-size: 20px;
   line-height: 26px;
@@ -399,7 +419,7 @@
   bottom: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -411,7 +431,7 @@
   border-radius: 4px;
   background: none;
   box-shadow: none;
-  color: #FFFFFF;
+  color: #ffffff;
   font-family: Roboto;
   font-size: 12px;
   font-weight: bold;
@@ -423,12 +443,13 @@
 
 .backup-phrase__back-button,
 .import-account__back-button {
-  margin-bottom: 18px;
-  color: #22232c;
-  font-size: 16px;
-  line-height: 21px;
-  position: absolute;
-  top: -25px;
+  margin-bottom: 3px;
+  color: #ffffff;
+  font-size: 19px;
+  line-height: 14px;
+  background: #f79132;
+  padding: 0.5rem;
+  width: 75px;
 }
 
 .backup-phrase__back-button {
@@ -443,9 +464,9 @@ button.backup-phrase__reveal-button:hover {
 .import-account__secret-phrase {
   height: 190px;
   width: 495px;
-  border: 1px solid #CDCDCD;
+  border: 1px solid #cdcdcd;
   border-radius: 6px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin: 25px 0 36px;
   padding: 17px;
 }
@@ -456,7 +477,7 @@ button.backup-phrase__reveal-button:hover {
 }
 
 .import-account__secret-phrase::placeholder {
-  color: #9B9B9B;
+  color: #9b9b9b;
   font-weight: 200;
 }
 
@@ -469,11 +490,11 @@ button.backup-phrase__reveal-button:hover {
 }
 
 .backup-phrase__confirm-seed-option {
-  color: #5B5D67;
+  color: #5b5d67;
   font-family: Roboto;
   font-size: 16px;
   line-height: 21px;
-  background-color: #E7E7E7;
+  background-color: #e7e7e7;
   padding: 8px 19px;
   box-shadow: none;
   min-width: 65px;
@@ -481,8 +502,8 @@ button.backup-phrase__reveal-button:hover {
 }
 
 .backup-phrase__confirm-seed-option--selected {
-  background-color: #85D1CC;
-  color: #FFFFFF;
+  background-color: #85d1cc;
+  color: #ffffff;
 }
 
 button.backup-phrase__confirm-seed-option:hover {
@@ -496,17 +517,17 @@ button.backup-phrase__confirm-seed-option:hover {
 }
 
 .import-account__selector-label {
-  color: #1B344D;
+  color: #1b344d;
   font-size: 16px;
 }
 
 .import-account__dropdown {
   width: 325px;
-  border: 1px solid #CDCDCD;
+  border: 1px solid #cdcdcd;
   border-radius: 4px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin-top: 14px;
-  color: #5B5D67;
+  color: #5b5d67;
   font-family: Roboto;
   font-size: 18px;
   line-height: 23px;
@@ -534,14 +555,14 @@ button.backup-phrase__confirm-seed-option:hover {
 .import-account__input-error-message {
   margin-top: 10px;
   width: 422px;
-  color: #FF001F;
+  color: #ff001f;
   font-size: 16px;
   line-height: 21px;
 }
 
 .import-account__input-label {
   margin-bottom: 9px;
-  color: #1B344D;
+  color: #1b344d;
   font-size: 18px;
   line-height: 23px;
 }
@@ -567,9 +588,9 @@ button.backup-phrase__confirm-seed-option:hover {
 .import-account__file-input-label {
   height: 53px;
   width: 148px;
-  border: 1px solid #1B344D;
+  border: 1px solid #1b344d;
   border-radius: 4px;
-  color: #1B344D;
+  color: #1b344d;
   font-family: Roboto;
   font-size: 18px;
   display: flex;
@@ -607,14 +628,14 @@ button.backup-phrase__confirm-seed-option:hover {
 }
 
 .buy-ether__content-headline {
-  color: #1B344D;
+  color: #1b344d;
   font-family: Roboto;
   font-size: 18px;
   line-height: 23px;
 }
 
 .buy-ether__do-it-later {
-  color: #1B344D;
+  color: #1b344d;
   font-size: 16px;
   line-height: 23px;
   cursor: pointer;
@@ -636,7 +657,7 @@ button.backup-phrase__confirm-seed-option:hover {
   flex-flow: row nowrap;
   align-items: center;
   padding: 20px 0;
-  color: #9B9B9B;
+  color: #9b9b9b;
   font-family: Roboto;
   font-size: 14px;
   line-height: 18px;
@@ -644,14 +665,13 @@ button.backup-phrase__confirm-seed-option:hover {
   min-width: 140px;
 }
 
-
 .buy-ether__side-panel-item {
-  border-bottom: 1px solid #CDCDCD;
+  border-bottom: 1px solid #cdcdcd;
 }
 
 .buy-ether__side-panel-item--selected {
   position: relative;
-  color: #1B344D;
+  color: #1b344d;
 }
 
 .buy-ether__side-panel-item-name {
@@ -681,7 +701,7 @@ button.backup-phrase__confirm-seed-option:hover {
 
 .buy-ether__faq-link {
   margin-top: 26px;
-  color: #1B344D !important;
+  color: #1b344d !important;
   font-size: 14px !important;
   line-height: 18px !important;
   font-family: Roboto;
@@ -699,8 +719,8 @@ button.backup-phrase__confirm-seed-option:hover {
 .first-time-flow__button {
   height: 54px;
   width: 198px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.14);
-  color: #FFFFFF;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14);
+  color: #ffffff;
   font-size: 20px;
   font-weight: 500;
   font-family: Roboto;
@@ -713,19 +733,20 @@ button.backup-phrase__confirm-seed-option:hover {
 }
 
 button.first-time-flow__button[disabled] {
-  opacity: .6;
+  opacity: 0.6;
 }
 
 button.first-time-flow__button:hover {
   transform: scale(1);
   background-color: rgba(247, 134, 28, 0.9);
+  opacity: 0.9;
 }
 
 .first-time-flow__button--tertiary {
   height: 54px;
   width: 198px;
   box-shadow: none;
-  color: #1B344D;
+  color: #1b344d;
   font-size: 20px;
   line-height: 26px;
   font-family: Roboto;
@@ -739,7 +760,7 @@ button.first-time-flow__button--tertiary:hover {
 }
 
 .first-time-flow__link {
-  color: #1B344D;
+  color: #1b344d;
   font-size: 18px;
   line-height: 23px;
 }
@@ -776,7 +797,7 @@ button.first-time-flow__button--tertiary:hover {
 }
 
 .loading-screen__message {
-  color: #1B344D;
+  color: #1b344d;
   font-size: 20px;
   line-height: 26px;
   text-align: center;
@@ -801,7 +822,7 @@ button.first-time-flow__button--tertiary:hover {
 .shapeshift-form {
   width: 360px;
   border-radius: 8px;
-  background-color: rgba(0, 0, 0, .05);
+  background-color: rgba(0, 0, 0, 0.05);
   padding: 17px 15px;
 }
 
@@ -835,12 +856,12 @@ button.first-time-flow__button--tertiary:hover {
 }
 
 .shapeshift-form__selector-input {
-  color: #5B5D67;
+  color: #5b5d67;
   font-size: 16px;
   font-weight: 300;
   line-height: 21px;
-  border: 1px solid #D8D8D8;
-  background-color: #FFFFFF;
+  border: 1px solid #d8d8d8;
+  background-color: #ffffff;
   text-align: center;
   width: 100%;
   height: 45px;
@@ -858,8 +879,8 @@ button.first-time-flow__button--tertiary:hover {
 }
 
 .shapeshift-form__address-input {
-  border: 1px solid #D8D8D8;
-  background-color: #FFFFFF;
+  border: 1px solid #d8d8d8;
+  background-color: #ffffff;
   font-size: 16px;
   font-weight: 300;
   line-height: 21px;
@@ -868,11 +889,11 @@ button.first-time-flow__button--tertiary:hover {
 }
 
 .shapeshift-form__address-input-wrapper--error .shapeshift-form__address-input {
-  border-color: #FF001F;
+  border-color: #ff001f;
 }
 
 .shapeshift-form__address-input-error-message {
-  color: #FF001F;
+  color: #ff001f;
   font-family: Roboto;
   font-size: 12px;
   height: 24px;
@@ -882,7 +903,7 @@ button.first-time-flow__button--tertiary:hover {
 .shapeshift-form__metadata {
   display: flex;
   flex-flow: row wrap;
-  color: #9B9B9B;
+  color: #9b9b9b;
   font-family: Roboto;
   font-size: 10px;
   line-height: 16px;
@@ -916,4 +937,25 @@ button.first-time-flow__button--tertiary:hover {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+}
+
+.password h2 {
+  margin: 2rem 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.encrypt {
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+.encrypt p {
+  margin-right: 1rem;
+  font-weight: bold;
+}
+
+.proceed {
+  margin: 5rem auto 4rem;
+  text-align: center;
 }

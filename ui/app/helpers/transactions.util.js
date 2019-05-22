@@ -8,7 +8,7 @@ import {
   TOKEN_METHOD_APPROVE,
   TOKEN_METHOD_TRANSFER_FROM,
   SEND_BITCOINCASH_KEY,
-  DEPLOY_CONTRACT_ACTION_KEY,
+  PAYMENT_REQUEST_ACTION_KEY,
   APPROVE_ACTION_KEY,
   SEND_TOKEN_ACTION_KEY,
   TRANSFER_FROM_ACTION_KEY,
@@ -51,7 +51,7 @@ export async function getTransactionActionKey (transaction, methodData) {
   }
 
   if (isConfirmDeployContract(transaction)) {
-    return DEPLOY_CONTRACT_ACTION_KEY
+    return PAYMENT_REQUEST_ACTION_KEY
   }
 
   if (data) {

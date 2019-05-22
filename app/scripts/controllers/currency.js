@@ -2,8 +2,8 @@ const ObservableStore = require('obs-store')
 const extend = require('xtend')
 const log = require('loglevel')
 
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const SLPSDK = require('slp-sdk')
+const SLP = new SLPSDK()
 
 // every ten minutes
 const POLLING_INTERVAL = 600000
@@ -112,7 +112,7 @@ class CurrencyController {
     let currentCurrency
     try {
       currentCurrency = this.getCurrentCurrency()
-      const rate = await BITBOX.Price.current(currentCurrency.toLowerCase())
+      const rate = await SLP.Price.current(currentCurrency.toLowerCase())
       this.setConversionRate(Number(rate))
       this.setConversionDate(Number(new Date()))
     } catch (err) {

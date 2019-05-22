@@ -51,9 +51,8 @@ const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 // const sigUtil = require('eth-sig-util')
 const axios = require('axios')
-
-const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk').default
-const BITBOX = new BITBOXSDK()
+const CreateSlpSdk = require('slp-sdk')
+const SlpSdk = new CreateSlpSdk()
 
 module.exports = class MetamaskController extends EventEmitter {
   /**
@@ -169,7 +168,7 @@ module.exports = class MetamaskController extends EventEmitter {
       networkStore: this.networkController.networkStore,
       preferencesStore: this.preferencesController.store,
       accountTracker: this.accountTracker,
-      txHistoryLimit: 40,
+      txHistoryLimit: 0,
       getNetwork: this.networkController.getNetworkState.bind(this),
       signTransaction: this.keyringController.signTransaction.bind(
         this.keyringController
@@ -271,6 +270,16 @@ module.exports = class MetamaskController extends EventEmitter {
           return []
         }
       },
+      getSlpAccounts: async () => {
+        const isUnlocked = this.keyringController.memStore.getState().isUnlocked
+        const selectedAddress = this.preferencesController.getSelectedSlpAddress()
+        // only show address if account is unlocked
+        if (isUnlocked && selectedAddress) {
+          return [selectedAddress]
+        } else {
+          return []
+        }
+      },
       // tx signing
       processTransaction: this.newUnapprovedTransaction.bind(this),
       // msg signing
@@ -302,6 +311,9 @@ module.exports = class MetamaskController extends EventEmitter {
       const result = {
         selectedAddress: memState.isUnlocked
           ? memState.selectedAddress
+          : undefined,
+        selectedSlpAddress: memState.isUnlocked
+          ? SlpSdk.Address.toSLPAddress(memState.selectedSlpAddress)
           : undefined,
         networkVersion: memState.network,
       }
@@ -367,7 +379,6 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
-      placeSeedWords: this.placeSeedWords.bind(this),
       verifySeedPhrase: nodeify(this.verifySeedPhrase, this),
       clearSeedWordCache: this.clearSeedWordCache.bind(this),
       resetAccount: nodeify(this.resetAccount, this),
@@ -385,6 +396,8 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // vault management
       submitPassword: nodeify(this.submitPassword, this),
+
+      checkVaultEncrypted: nodeify(this.checkVaultEncrypted, this),
 
       // network management
       setProviderType: nodeify(
@@ -491,13 +504,15 @@ module.exports = class MetamaskController extends EventEmitter {
     const releaseLock = await this.createVaultMutex.acquire()
     try {
       let vault
-      const accounts = await this.keyringController.getAccounts()
+      let accounts = await this.keyringController.getAccounts()
+      let slpAccounts = await this.keyringController.getSlpAccounts()
       if (accounts.length > 0) {
         vault = await this.keyringController.fullUpdate()
       } else {
         vault = await this.keyringController.createNewVaultAndKeychain(password)
-        const accounts = await this.keyringController.getAccounts()
-        this.preferencesController.setAddresses(accounts)
+        accounts = await this.keyringController.getAccounts()
+        slpAccounts = await this.keyringController.getSlpAccounts()
+        this.preferencesController.setAddresses(accounts, slpAccounts)
         this.selectFirstIdentity()
       }
       releaseLock()
@@ -516,26 +531,18 @@ module.exports = class MetamaskController extends EventEmitter {
   async createNewVaultAndRestore (password, seed) {
     const releaseLock = await this.createVaultMutex.acquire()
     try {
-      let accounts, lastBalance
-
       const keyringController = this.keyringController
 
       // clear known identities
-      this.preferencesController.setAddresses([])
+      this.preferencesController.setAddresses([], [])
       // create new vault
       const vault = await keyringController.createNewVaultAndRestore(
         password,
         seed
       )
 
-      accounts = await keyringController.getAccounts()
-
-      try {
-        lastBalance = await this.getBalance(accounts[accounts.length - 1])
-      } catch (err) {
-        log.error('ImportAccount::Error', err)
-        lastBalance = 0
-      }
+      const accounts = await keyringController.getAccounts()
+      const slpAccounts = await keyringController.getSlpAccounts()
 
       const primaryKeyring = keyringController.getKeyringsByType(
         'HD Key Tree'
@@ -544,20 +551,8 @@ module.exports = class MetamaskController extends EventEmitter {
         throw new Error('MetamaskController - No HD Key Tree found')
       }
 
-      // seek out the first zero balance
-      while (parseFloat(lastBalance) !== 0) {
-        try {
-          await keyringController.addNewAccount(primaryKeyring)
-          accounts = await keyringController.getAccounts()
-          lastBalance = await this.getBalance(accounts[accounts.length - 1])
-        } catch (err) {
-          log.error('ImportAccount::Error', err)
-          lastBalance = 0
-        }
-      }
-
       // set new identities
-      this.preferencesController.setAddresses(accounts)
+      this.preferencesController.setAddresses(accounts, slpAccounts)
       this.selectFirstIdentity()
       releaseLock()
       return vault
@@ -601,6 +596,7 @@ module.exports = class MetamaskController extends EventEmitter {
   async submitPassword (password) {
     await this.keyringController.submitPassword(password)
     const accounts = await this.keyringController.getAccounts()
+    const slpAccounts = await this.keyringController.getSlpAccounts()
 
     // verify keyrings
     const nonSimpleKeyrings = this.keyringController.keyrings.filter(
@@ -610,7 +606,12 @@ module.exports = class MetamaskController extends EventEmitter {
       await this.diagnostics.reportMultipleKeyrings(nonSimpleKeyrings)
     }
 
-    await this.preferencesController.syncAddresses(accounts)
+    await this.preferencesController.setAddresses(accounts, slpAccounts)
+    return this.keyringController.fullUpdate()
+  }
+
+  async checkVaultEncrypted (password) {
+    await this.keyringController.submitPassword(password)
     return this.keyringController.fullUpdate()
   }
 
@@ -766,10 +767,11 @@ module.exports = class MetamaskController extends EventEmitter {
     const oldAccounts = await keyringController.getAccounts()
     const keyState = await keyringController.addNewAccount(primaryKeyring)
     const newAccounts = await keyringController.getAccounts()
+    const slpAccounts = await keyringController.getSlpAccounts()
 
     await this.verifySeedPhrase()
 
-    this.preferencesController.setAddresses(newAccounts)
+    this.preferencesController.setAddresses(newAccounts, slpAccounts)
     newAccounts.forEach(address => {
       if (!oldAccounts.includes(address)) {
         this.preferencesController.setSelectedAddress(address)
@@ -778,25 +780,6 @@ module.exports = class MetamaskController extends EventEmitter {
 
     const { identities } = this.preferencesController.store.getState()
     return { ...keyState, identities }
-  }
-
-  /**
-   * Adds the current vault's seed words to the UI's state tree.
-   *
-   * Used when creating a first vault, to allow confirmation.
-   * Also used when revealing the seed words in the confirmation view.
-   *
-   * @param {Function} cb - A callback called on completion.
-   */
-  placeSeedWords (cb) {
-    this.verifySeedPhrase()
-      .then(seedWords => {
-        this.preferencesController.setSeedWords(seedWords)
-        return cb(null, seedWords)
-      })
-      .catch(err => {
-        return cb(err)
-      })
   }
 
   /**
@@ -855,8 +838,6 @@ module.exports = class MetamaskController extends EventEmitter {
   async resetAccount () {
     const selectedAddress = this.preferencesController.getSelectedAddress()
     this.txController.wipeTransactions(selectedAddress)
-    this.networkController.resetConnection()
-
     return selectedAddress
   }
 
@@ -895,7 +876,8 @@ module.exports = class MetamaskController extends EventEmitter {
     const accounts = await keyring.getAccounts()
     // update accounts in preferences controller
     const allAccounts = await this.keyringController.getAccounts()
-    this.preferencesController.setAddresses(allAccounts)
+    const allSlpAccounts = await this.keyringController.getSlpAccounts()
+    this.preferencesController.setAddresses(allAccounts, allSlpAccounts)
     // set new account as selected
     await this.preferencesController.setSelectedAddress(accounts[0])
   }
@@ -1376,13 +1358,14 @@ module.exports = class MetamaskController extends EventEmitter {
       (acc, { accounts }) => acc.concat(accounts),
       []
     )
+    const slpAddresses = await this.keyringController.getSlpAccounts()
 
     if (!addresses.length) {
       return
     }
 
     // Ensure preferences + identities controller know about all addresses
-    this.preferencesController.addAddresses(addresses)
+    this.preferencesController.addAddresses(addresses, slpAddresses)
     this.accountTracker.syncWithAddresses(addresses)
 
     const wasLocked = !isUnlocked
@@ -1578,9 +1561,9 @@ module.exports = class MetamaskController extends EventEmitter {
 
   // getBchBalance (address) {
   //   return new Promise((resolve, reject) => {
-  //     BITBOX.Address.utxo(address).then(
+  //     SLP.Address.utxo(address).then(
   //       result => {
-  //         const balance = result.length > 0 ? result[0].satoshis : 0
+  //         const balance = result.length > 0 ? result.utxos[0].satoshis : 0
   //         resolve(balance)
   //       },
   //       err => {

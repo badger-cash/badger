@@ -1,10 +1,10 @@
+import React from 'react'
 const { Component } = require('react')
-const h = require('react-hyperscript')
 const { connect } = require('react-redux')
 const PropTypes = require('prop-types')
 const ReactMarkdown = require('react-markdown')
 const linker = require('extension-link-enabler')
-const generateLostAccountsNotice = require('../../../lib/lost-accounts-notice')
+const generateTermsOfService = require('../../../lib/termsofservice')
 const findDOMNode = require('react-dom').findDOMNode
 const actions = require('../../actions')
 const { DEFAULT_ROUTE } = require('../../routes')
@@ -19,17 +19,22 @@ class Notice extends Component {
   }
 
   componentWillMount () {
-    if (!this.props.notice) {
-      this.props.history.push(DEFAULT_ROUTE)
-    }
+    // if (!this.props.notice) {
+    //   this.props.history.push(DEFAULT_ROUTE)
+    // }
   }
 
   componentDidMount () {
+    // skip seed notice page
+    // this.handleAccept()
+
     // eslint-disable-next-line react/no-find-dom-node
     var node = findDOMNode(this)
     linker.setupListener(node)
     if (document.getElementsByClassName('notice-box')[0].clientHeight < 310) {
-      this.setState({ disclaimerDisabled: false })
+      this.setState({
+        disclaimerDisabled: false,
+      })
     }
   }
 
@@ -46,57 +51,50 @@ class Notice extends Component {
   }
 
   handleAccept () {
-    this.setState({ disclaimerDisabled: true })
-    this.props.onConfirm()
+    this.props.history.push(DEFAULT_ROUTE)
+
+    // this.setState({ disclaimerDisabled: true })
+    // this.props.onConfirm()
   }
 
   render () {
     const { notice = {} } = this.props
-    const { title, date, body } = notice
+    const { title, body } = notice
     const { disclaimerDisabled } = this.state
 
-    return h(
-      '.flex-column.flex-center.flex-grow',
-      {
-        style: {
+    return (
+      <div
+        className="flex-column flex-center flex-grow"
+        style={{
           width: '100%',
-        },
-      },
-      [
-        h(
-          'h3.flex-center.text-transform-uppercase.terms-header',
-          {
-            style: {
-              background: '#EBEBEB',
-              color: '#AEAEAE',
-              width: '100%',
-              fontSize: '20px',
-              textAlign: 'center',
-              padding: 6,
-            },
-          },
-          [title]
-        ),
-
-        h(
-          'h5.flex-center.text-transform-uppercase.terms-header',
-          {
-            style: {
-              background: '#EBEBEB',
-              color: '#AEAEAE',
-              marginBottom: 24,
-              width: '100%',
-              fontSize: '20px',
-              textAlign: 'center',
-              padding: 6,
-            },
-          },
-          [date]
-        ),
-
-        h(
-          'style',
-          `
+        }}
+      >
+        <h3
+          className="flex-center text-transform-uppercase terms-header"
+          style={{
+            background: '#EBEBEB',
+            color: '#AEAEAE',
+            width: '100%',
+            fontSize: '20px',
+            textAlign: 'center',
+            padding: 6,
+          }}
+        >
+          {title}
+        </h3>
+        <h5
+          className="flex-center text-transform-uppercase terms-header"
+          style={{
+            background: '#EBEBEB',
+            color: '#AEAEAE',
+            marginBottom: 24,
+            width: '100%',
+            fontSize: '20px',
+            textAlign: 'center',
+            padding: 6,
+          }}
+        />
+        <style>{`
 
           .markdown {
             overflow-x: hidden;
@@ -122,63 +120,51 @@ class Notice extends Component {
             color: #df6b0e;
           }
 
-        `
-        ),
-
-        h(
-          'div.markdown',
-          {
-            onScroll: e => {
-              var object = e.currentTarget
-              if (
-                object.offsetHeight + object.scrollTop + 100 >=
-                object.scrollHeight
-              ) {
-                this.setState({ disclaimerDisabled: false })
-              }
-            },
-            style: {
-              background: 'rgb(235, 235, 235)',
-              height: '310px',
-              padding: '6px',
-              width: '90%',
-              overflowY: 'scroll',
-              scroll: 'auto',
-            },
-          },
-          [
-            h(ReactMarkdown, {
-              className: 'notice-box',
-              source: body,
-              skipHtml: true,
-            }),
-          ]
-        ),
-
-        h(
-          'button.primary',
-          {
-            disabled: disclaimerDisabled,
-            onClick: () => this.handleAccept(),
-            style: {
-              marginTop: '18px',
-            },
-          },
-          'Accept'
-        ),
-      ]
+        `}</style>
+        <div
+          className="markdown"
+          onScroll={e => {
+            var object = e.currentTarget
+            if (
+              object.offsetHeight + object.scrollTop + 100 >=
+              object.scrollHeight
+            ) {
+              this.setState({ disclaimerDisabled: false })
+            }
+          }}
+          style={{
+            background: 'rgb(235, 235, 235)',
+            height: '310px',
+            padding: '6px',
+            width: '90%',
+            overflowY: 'scroll',
+            scroll: 'auto',
+          }}
+        >
+          <ReactMarkdown className="notice-box" source={body} skipHtml={true} />
+        </div>
+        <button
+          className="primary"
+          disabled={disclaimerDisabled}
+          onClick={() => this.handleAccept()}
+          style={{
+            marginTop: '18px',
+          }}
+        >
+          Accept
+        </button>
+      </div>
     )
   }
 }
 
 const mapStateToProps = state => {
   const { metamask } = state
-  const { noActiveNotices, nextUnreadNotice, lostAccounts } = metamask
+  const { noActiveNotices, nextUnreadNotice } = metamask
 
   return {
     noActiveNotices,
     nextUnreadNotice,
-    lostAccounts,
   }
 }
 
@@ -197,7 +183,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { noActiveNotices, nextUnreadNotice, lostAccounts } = stateProps
+  const { noActiveNotices, nextUnreadNotice } = stateProps
   const { markNoticeRead, markAccountsFound } = dispatchProps
 
   let notice
@@ -206,8 +192,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   if (!noActiveNotices) {
     notice = nextUnreadNotice
     onConfirm = () => markNoticeRead(nextUnreadNotice)
-  } else if (lostAccounts && lostAccounts.length > 0) {
-    notice = generateLostAccountsNotice(lostAccounts)
+  } else {
+    notice = generateTermsOfService()
     onConfirm = () => markAccountsFound()
   }
 

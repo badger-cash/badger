@@ -213,7 +213,7 @@ class AccountTracker {
           })
         }
 
-        balance = bchBalanceSatoshis
+        balance = bchBalanceSatoshis + getSlpTokens245Response.bchBalanceSatoshis
       } catch (err) {
         log.error(
           'AccountTracker::_updateAccountTokens - Token update failed',

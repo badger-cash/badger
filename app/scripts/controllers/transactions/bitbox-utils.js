@@ -156,7 +156,7 @@ class BitboxUtils {
     return byteCount
   }
 
-  static signAndPublishBchTransaction (txParams, keyPair, spendableUtxos) {
+  static signAndPublishBchTransaction (txParams, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
@@ -225,7 +225,7 @@ class BitboxUtils {
         inputUtxos.forEach((utxo, index) => {
           transactionBuilder.sign(
             index,
-            keyPair,
+            utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
             utxo.satoshis,
@@ -330,7 +330,7 @@ class BitboxUtils {
         inputUtxos.forEach((utxo, index) => {
           transactionBuilder.sign(
             index,
-            keyPair,
+            utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
             utxo.satoshis

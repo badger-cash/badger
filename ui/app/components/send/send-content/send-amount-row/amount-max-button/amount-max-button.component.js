@@ -32,10 +32,10 @@ export default class AmountMaxButton extends Component {
 
     const bchUtxo = utxo[selectedAddress]
     const cleanUtxo = await bitboxUtils.removeUnspendableUtxo(bchUtxo)
-    const fee = await bitboxUtils.calculateFee(cleanUtxo)
+    const maxSendSatoshis = await bitboxUtils.calculateMaxSendSatoshis(cleanUtxo)
 
     setMaxModeTo(true)
-    setAmountToMax({ balance, selectedToken, tokenBalance, fee })
+    setAmountToMax({ balance, selectedToken, tokenBalance, maxSendSatoshis })
   }
 
   render () {

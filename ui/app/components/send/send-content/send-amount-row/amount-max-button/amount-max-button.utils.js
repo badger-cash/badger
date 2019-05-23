@@ -4,15 +4,14 @@ const {
 } = require('../../../../../conversion-util')
 const ethUtil = require('ethereumjs-util')
 
-function calcMaxAmount ({ balance, selectedToken, tokenBalance, fee }) {
+function calcMaxAmount ({ balance, selectedToken, tokenBalance, maxSendSatoshis }) {
   const { decimals } = selectedToken || {}
   const multiplier = Math.pow(10, Number(decimals || 0))
 
   if (selectedToken) {
     return selectedToken.string
   } else {
-    balance = balance - fee
-    return balance.toString()
+    return maxSendSatoshis.toString()
   }
 
   // return selectedToken

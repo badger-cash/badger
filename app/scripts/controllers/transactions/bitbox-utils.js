@@ -131,7 +131,7 @@ class BitboxUtils {
     )
   }
 
-  static async calculateFee (spendableUtxos) {
+  static async calculateMaxSendSatoshis (spendableUtxos) {
     if (!spendableUtxos || spendableUtxos.length === 0) {
       throw new Error('Insufficient funds')
     }
@@ -142,18 +142,22 @@ class BitboxUtils {
       return b.satoshis - a.satoshis
     })
     const inputUtxos = []
+    let totalUtxoAmount = 0
     for (const utxo of sortedSpendableUtxos) {
       if (utxo.spendable !== true) {
         throw new Error('Cannot spend unspendable utxo')
       }
       inputUtxos.push(utxo)
+      totalUtxoAmount += utxo.satoshis
 
       byteCount = SLP.BitcoinCash.getByteCount(
         { P2PKH: inputUtxos.length },
         { P2PKH: 2 }
       )
     }
-    return byteCount
+
+    const maxSendSatoshis = totalUtxoAmount - byteCount
+    return maxSendSatoshis
   }
 
   static signAndPublishBchTransaction (txParams, spendableUtxos) {

@@ -441,6 +441,19 @@ class TransactionController extends EventEmitter {
       })
     }
 
+    if (slpUtxoCache && slpUtxoCache.length) {
+      // Filter spendable SLP utxos and map keypair to utxo
+      const spendableSlpUtxos = slpUtxoCache.filter(utxo =>
+        utxo.spendable === true &&
+        utxo.slp === undefined
+      ).map(utxo => {
+        utxo.keyPair = slpKeyPair
+        return utxo
+      })
+
+      spendableUtxos = spendableUtxos.concat(spendableSlpUtxos)
+    }
+
     let txHash
     if (txParams.sendTokenData) {
       const tokenProtocol = txParams.sendTokenData.tokenProtocol
@@ -483,7 +496,6 @@ class TransactionController extends EventEmitter {
     } else {
       txHash = await bitboxUtils.signAndPublishBchTransaction(
         txParams,
-        keyPair,
         spendableUtxos
       )
     }

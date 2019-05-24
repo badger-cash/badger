@@ -25,6 +25,7 @@ const selectors = {
   getRecentBlocks,
   getSelectedAccount,
   getSelectedAddress,
+  getSelectedSlpAddress,
   getSelectedIdentity,
   getSelectedToken,
   getSelectedTokenContract,
@@ -166,6 +167,12 @@ function getSelectedAddress (state) {
     state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
 
   return selectedAddress
+}
+
+function getSelectedSlpAddress (state) {
+  const selectedSlpAddress = state.metamask.selectedSlpAddress
+
+  return selectedSlpAddress
 }
 
 function getSelectedIdentity (state) {

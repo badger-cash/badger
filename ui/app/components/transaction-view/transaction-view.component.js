@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Media from 'react-media'
 import MenuBar from '../menu-bar'
@@ -7,7 +7,7 @@ import TransactionList from '../transaction-list'
 import { REVEAL_SEED_ROUTE } from '../../../../ui/app/routes'
 import localStorage from 'store'
 
-export default class TransactionView extends PureComponent {
+export default class TransactionView extends Component {
   static contextTypes = {
     t: PropTypes.func,
   }
@@ -31,6 +31,13 @@ export default class TransactionView extends PureComponent {
       history,
     } = this.props
 
+    if (
+      accountUtxoCache[selectedAddress] === undefined ||
+      historicalBchTransactions[selectedAddress] === undefined
+    ) {
+      return null
+    }
+
     const warn =
       accountUtxoCache[selectedAddress].length > 0 ||
       accountUtxoCache[selectedSlpAddress].length > 0 ||
@@ -47,7 +54,6 @@ export default class TransactionView extends PureComponent {
         </div>
       )
     }
-    return null
   }
 
   render () {

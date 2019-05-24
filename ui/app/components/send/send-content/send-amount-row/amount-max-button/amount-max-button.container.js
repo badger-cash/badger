@@ -5,6 +5,7 @@ import {
   getTokenBalance,
   getUtxos,
   getSelectedAddress,
+  getSelectedSlpAddress,
 } from '../../../send.selectors.js'
 import { getMaxModeOn } from './amount-max-button.selectors.js'
 import { calcMaxAmount } from './amount-max-button.utils.js'
@@ -23,6 +24,7 @@ function mapStateToProps (state) {
     maxModeOn: getMaxModeOn(state),
     selectedToken: getSelectedToken(state),
     selectedAddress: getSelectedAddress(state),
+    selectedSlpAddress: getSelectedSlpAddress(state),
     tokenBalance: getTokenBalance(state),
     utxo: getUtxos(state),
   }

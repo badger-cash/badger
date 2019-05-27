@@ -4,7 +4,13 @@ const h = require('react-hyperscript')
 const copyToClipboard = require('copy-to-clipboard')
 const { exportAsFile } = require('../../util')
 
+const localStorage = require('store')
+
 class ExportTextContainer extends Component {
+  markAsBackedUp = () => {
+    localStorage.set('seedwordsBackedUp', true)
+  }
+
   render () {
     const { text = '', filename = '' } = this.props
     const { t } = this.context
@@ -17,7 +23,10 @@ class ExportTextContainer extends Component {
         h(
           '.export-text-container__button.export-text-container__button--copy',
           {
-            onClick: () => copyToClipboard(text),
+            onClick: () => {
+              this.markAsBackedUp()
+              copyToClipboard(text)
+            },
           },
           [
             h('img', { src: 'images/copy-to-clipboard.svg' }),
@@ -27,7 +36,10 @@ class ExportTextContainer extends Component {
         h(
           '.export-text-container__button',
           {
-            onClick: () => exportAsFile(filename, text),
+            onClick: () => {
+              this.markAsBackedUp()
+              exportAsFile(filename, text)
+            },
           },
           [
             h('img', { src: 'images/download.svg' }),

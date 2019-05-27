@@ -78,8 +78,10 @@
   background: #f79132;
   padding: 1rem;
   color: #ffffff;
-  font-size: 1.1rem;
-  margin: 0.4rem 0;
+  font-size: 0.7rem;
+  margin: 0;
+  cursor: pointer;
+  text-align: center;
 }
 .seed-warning span {
   color: #2f9ae0;

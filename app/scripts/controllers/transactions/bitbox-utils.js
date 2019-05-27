@@ -476,7 +476,7 @@ class BitboxUtils {
           }
         }
 
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {
           transactionBuilder.addInput(utxo.txid, utxo.vout)

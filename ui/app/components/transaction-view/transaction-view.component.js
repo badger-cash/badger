@@ -31,18 +31,27 @@ export default class TransactionView extends Component {
       history,
     } = this.props
 
-    if (
-      accountUtxoCache[selectedAddress] === undefined ||
-      historicalBchTransactions[selectedAddress] === undefined
-    ) {
-      return null
-    }
+    const hasBchUtxos =
+      accountUtxoCache &&
+      accountUtxoCache[selectedAddress] &&
+      accountUtxoCache[selectedAddress].length > 0
 
-    const warn =
-      accountUtxoCache[selectedAddress].length > 0 ||
-      accountUtxoCache[selectedSlpAddress].length > 0 ||
-      historicalBchTransactions[selectedAddress].length > 0 ||
+    const hasSlpUtxos =
+      accountUtxoCache &&
+      accountUtxoCache[selectedSlpAddress] &&
+      accountUtxoCache[selectedSlpAddress].length > 0
+
+    const hasBchTxs =
+      historicalBchTransactions &&
+      historicalBchTransactions[selectedAddress] &&
+      historicalBchTransactions[selectedAddress].length > 0
+
+    const hasSlpTxs =
+      historicalSlpTransactions &&
+      historicalSlpTransactions[selectedAddress] &&
       historicalSlpTransactions[selectedAddress].length > 0
+
+    const warn = hasBchUtxos || hasSlpUtxos || hasBchTxs || hasSlpTxs
 
     if (warn) {
       return (

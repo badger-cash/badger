@@ -168,7 +168,7 @@ class AccountTracker {
 
     // query balance
     let balance = await this._updateAccountTokens(address)
-    if (!balance) {
+    if (balance === null || balance === undefined) {
       balance = accounts[address].balance ? accounts[address].balance : balance
     }
 
@@ -213,6 +213,8 @@ class AccountTracker {
           })
         }
 
+        console.log('bchBalanceSatoshis', bchBalanceSatoshis)
+        console.log('getSlpTokens245Response.bchBalanceSatoshis', getSlpTokens245Response.bchBalanceSatoshis)
         balance = bchBalanceSatoshis + getSlpTokens245Response.bchBalanceSatoshis
       } catch (err) {
         log.error(
@@ -240,6 +242,7 @@ class AccountTracker {
       )
     }
 
+    console.log('balance', balance)
     return balance
   }
 

@@ -19,6 +19,9 @@ const {
 // const abi = require('ethereumjs-abi')
 const ethUtil = require('ethereumjs-util')
 
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
+
 module.exports = {
   addGasBuffer,
   calcGasTotal,
@@ -33,6 +36,8 @@ module.exports = {
   isBalanceSufficient,
   isTokenBalanceSufficient,
   removeLeadingZeroes,
+  removeUnspendableUtxo,
+  calculateMaxSendSatoshis,
 }
 
 function calcGasTotal (gasLimit = '0', gasPrice = '0') {
@@ -353,4 +358,60 @@ function getToAddressForGasUpdate (...addresses) {
 
 function removeLeadingZeroes (str) {
   return str.replace(/^0*(?=\d)/, '')
+}
+
+function removeUnspendableUtxo (utxo) {
+  const sorted = utxo.sort((a, b) => {
+    return b.satoshis - a.satoshis
+  })
+
+  const spendable = sorted.map(x => {
+    if (x.spendable) {
+      return x
+    }
+  })
+
+  const clean = spendable.filter(val => {
+    return val !== undefined
+  })
+
+  const chunk = chunkArray(clean, 20)
+
+  // limit to 20 utxo to prevent tx failing
+  return chunk[0]
+}
+
+function chunkArray (arr, size) {
+  return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  )
+}
+
+function calculateMaxSendSatoshis (spendableUtxos) {
+  if (!spendableUtxos || spendableUtxos.length === 0) {
+    throw new Error('Insufficient funds')
+  }
+
+  // Calculate fee
+  let byteCount = 0
+  const sortedSpendableUtxos = spendableUtxos.sort((a, b) => {
+    return b.satoshis - a.satoshis
+  })
+  const inputUtxos = []
+  let totalUtxoAmount = 0
+  for (const utxo of sortedSpendableUtxos) {
+    if (utxo.spendable !== true) {
+      throw new Error('Cannot spend unspendable utxo')
+    }
+    inputUtxos.push(utxo)
+    totalUtxoAmount += utxo.satoshis
+
+    byteCount = bitbox.BitcoinCash.getByteCount(
+      { P2PKH: inputUtxos.length },
+      { P2PKH: 2 }
+    )
+  }
+
+  const maxSendSatoshis = totalUtxoAmount - byteCount
+  return maxSendSatoshis
 }

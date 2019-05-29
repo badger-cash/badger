@@ -59,7 +59,7 @@ export default class TransactionView extends Component {
           className="seed-warning"
           onClick={() => history.push(REVEAL_SEED_ROUTE)}
         >
-          <p> Wallet is not backed up </p>
+          <p> Please backup your wallet </p>
         </div>
       )
     }

@@ -381,7 +381,7 @@ export default class ConfirmTransactionBase extends Component {
       subtitle = tokenToSend
         ? txParams.sendTokenData.tokenProtocol === 'slp'
           ? 'Simple Ledger Protocol'
-          : 'Wormhole'
+          : 'UNKNOWN PROTOCOL'
         : ''
       hideSubtitle = !tokenToSend
 
@@ -398,7 +398,7 @@ export default class ConfirmTransactionBase extends Component {
         toName={toName}
         toAddress={toAddress}
         txParams={txParams}
-        showEdit={onEdit && !isTxReprice && !txParams.sendTokenData}
+        showEdit={onEdit && !isTxReprice && !txParams.sendTokenData && !txParams.paymentData}
         action={action || name || this.context.t('unknownFunction')}
         title={
           title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`

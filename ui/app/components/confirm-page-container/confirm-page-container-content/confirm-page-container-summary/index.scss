@@ -1,7 +1,6 @@
 .confirm-page-container-summary {
-  padding: 16px 24px 0;
+  padding: 1rem 1.3rem;
   background-color: #f9fafa;
-  height: 133px;
   box-sizing: border-box;
 
   &__action-row {
@@ -35,10 +34,13 @@
   }
 
   &__title-text {
-    font-size: 2.25rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 2.15rem;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   &__subtitle {

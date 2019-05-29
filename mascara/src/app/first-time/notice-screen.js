@@ -42,8 +42,9 @@ class NoticeScreen extends Component {
     if (this.props.noActiveNotices) {
       this.props.history.push(DEFAULT_ROUTE)
     }
-
-    this.onScroll()
+    // skip
+    // this.onScroll()
+    this.acceptTerms()
   }
 
   acceptTerms = () => {

@@ -173,10 +173,10 @@ export default class SenderToRecipient extends PureComponent {
           {this.renderSenderIdenticon()}
           {this.renderSenderAddress()}
         </div>
-        {this.renderArrow()}
+        {recipientAddress ? this.renderArrow() : ""}
         {recipientAddress
           ? this.renderRecipientWithAddress()
-          : this.renderRecipientWithoutAddress()}
+          : ""}
       </div>
     )
   }

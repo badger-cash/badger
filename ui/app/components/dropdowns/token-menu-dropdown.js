@@ -51,9 +51,6 @@ TokenMenuDropdown.prototype.render = function () {
   if (protocol === 'slp') {
     explorerUrl = `https://explorer.bitcoin.com/bch/tx/${address}`
     tokenId = address
-  } else if (protocol === 'wormhole') {
-    explorerUrl = `https://whc.btc.com/props/${protocolData.propertyid}`
-    tokenId = protocolData.propertyid
   }
 
   return h(Menu, { className: 'token-menu-dropdown', isShowing: true }, [

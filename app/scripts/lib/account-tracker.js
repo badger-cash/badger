@@ -18,12 +18,6 @@ const axios = require('axios')
 const bitboxUtils = require('../controllers/transactions/bitbox-utils')
 const slpUtils = require('../controllers/transactions/slp-utils')
 
-const WH = require('wormhole-sdk/lib/Wormhole').default
-const Wormhole = new WH({
-  restURL: `https://rest.bitcoin.com/v1/`,
-})
-const whcTokens = require('../../whc-tokens.json')
-
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
 
@@ -51,7 +45,6 @@ class AccountTracker {
       currentBlockGasLimit: '',
       tokenCache: {
         slp: [],
-        wormhole: [],
       },
       historicalBchTransactions: {},
       historicalSlpTransactions: {},
@@ -175,7 +168,7 @@ class AccountTracker {
 
     // query balance
     let balance = await this._updateAccountTokens(address)
-    if (!balance) {
+    if (balance === null || balance === undefined) {
       balance = accounts[address].balance ? accounts[address].balance : balance
     }
 
@@ -191,11 +184,6 @@ class AccountTracker {
     try {
       let tokens = []
       try {
-        const wormholeTokens = await this._getWormholeTokens(address)
-        if (wormholeTokens) {
-          tokens = tokens.concat(wormholeTokens)
-        }
-
         const { slpTokens, bchBalanceSatoshis } = await this._getSlpTokens(
           address
         )
@@ -225,7 +213,9 @@ class AccountTracker {
           })
         }
 
-        balance = bchBalanceSatoshis
+        console.log('bchBalanceSatoshis', bchBalanceSatoshis)
+        console.log('getSlpTokens245Response.bchBalanceSatoshis', getSlpTokens245Response.bchBalanceSatoshis)
+        balance = bchBalanceSatoshis + getSlpTokens245Response.bchBalanceSatoshis
       } catch (err) {
         log.error(
           'AccountTracker::_updateAccountTokens - Token update failed',
@@ -245,10 +235,14 @@ class AccountTracker {
       tokens.forEach(async token => {
         await this._preferences.addTokenByAccount(address, 'mainnet', token)
       })
-    } catch (error) {
-      // log.error('AccountTracker::_updateAccountTokens', error)
+    } catch (err) {
+      log.error(
+        'AccountTracker::_updateAccountTokens - Token update failed',
+        err
+      )
     }
 
+    console.log('balance', balance)
     return balance
   }
 
@@ -516,61 +510,9 @@ class AccountTracker {
     return { slpTokens, bchBalanceSatoshis }
   }
 
-  async _getWormholeTokens (address) {
-    const rtnTokens = []
-
-    try {
-      const tokens = await this._getTokenBalance(address)
-
-      if (!tokens) return rtnTokens
-
-      for (const token of tokens) {
-        let tokenData
-        whcTokens.forEach(async (whcToken, indx) => {
-          if (token.propertyid === whcToken.propertyid) {
-            tokenData = whcToken
-          }
-        })
-
-        if (!tokenData) {
-          tokenData = await Wormhole.DataRetrieval.property(token.propertyid)
-        }
-
-        const addTokenData = {
-          address: `qqqqqqqqqqqqqqqqqqqqqqqqqqqqqu08dsyxz98whc${
-            tokenData.propertyid
-          }`,
-          symbol: tokenData.name,
-          decimals: tokenData.precision,
-          string: token.balance.toString(), // token balance string
-          protocol: 'wormhole',
-          protocolData: {
-            ...tokenData,
-          },
-        }
-
-        rtnTokens.push(addTokenData)
-      }
-    } catch (error) {
-      // log.error('AccountTracker::_getWormholeTokens', error)
-    }
-
-    return rtnTokens
-  }
-
   async getBchBalance (address) {
     const balance = await this._updateAccountTokens(address)
     return balance
-  }
-
-  async _getTokenBalance (address) {
-    let balances
-    try {
-      balances = await Wormhole.DataRetrieval.balancesForAddress(address)
-    } catch (error) {
-      // log.debug("AccountTracker::_getTokenBalance no wh tokens", error)
-    }
-    return balances
   }
 
   async _updateHistoricalTransactions (address) {

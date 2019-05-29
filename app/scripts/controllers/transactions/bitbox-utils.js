@@ -1,14 +1,16 @@
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
+const BITBOX = require('bitbox-sdk').BITBOX
+const bitbox = new BITBOX()
 const BigNumber = require('slpjs/node_modules/bignumber.js')
 const slpjs = require('slpjs')
-const WH = require('wormhole-sdk/lib/Wormhole').default
-const Wormhole = new WH({
-  restURL: `https://rest.bitcoin.com/v1/`,
-})
+const SLPJS = new slpjs.Slp(SLP)
+var PaymentProtocol = require('bitcore-payment-protocol')
+const axios = require('axios')
+const toBuffer = require('blob-to-buffer')
 
 class BitboxUtils {
-  static async getLargestUtxo (address) {
+  static async getLargestUtxo(address) {
     return new Promise((resolve, reject) => {
       SLP.Address.utxo(address).then(
         result => {
@@ -28,7 +30,7 @@ class BitboxUtils {
     })
   }
 
-  static async getAllUtxo (address) {
+  static async getAllUtxo(address) {
     return new Promise((resolve, reject) => {
       SLP.Address.utxo(address).then(
         result => {
@@ -49,7 +51,7 @@ class BitboxUtils {
     })
   }
 
-  static async getTransactionDetails (txid) {
+  static async getTransactionDetails(txid) {
     return new Promise((resolve, reject) => {
       SLP.Transaction.details(txid).then(
         result => {
@@ -66,7 +68,7 @@ class BitboxUtils {
     })
   }
 
-  static encodeOpReturn (dataArray) {
+  static encodeOpReturn(dataArray) {
     const script = [SLP.Script.opcodes.OP_RETURN]
     dataArray.forEach(data => {
       if (typeof data === 'string' && data.substring(0, 2) === '0x') {
@@ -78,7 +80,7 @@ class BitboxUtils {
     return SLP.Script.encode(script)
   }
 
-  static async publishTx (hex) {
+  static async publishTx(hex) {
     return new Promise((resolve, reject) => {
       SLP.RawTransactions.sendRawTransaction(hex).then(
         result => {
@@ -103,7 +105,7 @@ class BitboxUtils {
     })
   }
 
-  static signAndPublishBchTransaction (txParams, keyPair, spendableUtxos) {
+  static signAndPublishBchTransaction(txParams, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
@@ -121,7 +123,7 @@ class BitboxUtils {
         })
         const inputUtxos = []
         let totalUtxoAmount = 0
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         for (const utxo of sortedSpendableUtxos) {
           if (utxo.spendable !== true) {
             throw new Error('Cannot spend unspendable utxo')
@@ -130,7 +132,7 @@ class BitboxUtils {
           totalUtxoAmount += utxo.satoshis
           inputUtxos.push(utxo)
 
-          byteCount = SLP.BitcoinCash.getByteCount(
+          byteCount = bitbox.BitcoinCash.getByteCount(
             { P2PKH: inputUtxos.length },
             { P2PKH: 2 }
           )
@@ -172,7 +174,7 @@ class BitboxUtils {
         inputUtxos.forEach((utxo, index) => {
           transactionBuilder.sign(
             index,
-            keyPair,
+            utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
             utxo.satoshis
@@ -190,7 +192,167 @@ class BitboxUtils {
     })
   }
 
-  static signAndPublishSlpTransaction (
+  static txidFromHex(hex) {
+    const buffer = Buffer.from(hex, 'hex')
+    const hash = SLP.Crypto.hash256(buffer).toString('hex')
+    const txid = hash
+      .match(/[a-fA-F0-9]{2}/g)
+      .reverse()
+      .join('')
+    return txid
+  }
+
+  static decodePaymentResponse(responseData) {
+    return new Promise((resolve, reject) => {
+      toBuffer(responseData, function(err, buffer) {
+        if (err) reject(err)
+
+        try {
+          const responseBody = PaymentProtocol.PaymentACK.decode(buffer)
+          const responseAck = new PaymentProtocol().makePaymentACK(responseBody)
+          const responseSerializedPayment = responseAck.get('payment')
+          const responseDecodedPayment = PaymentProtocol.Payment.decode(
+            responseSerializedPayment
+          )
+          const responsePayment = new PaymentProtocol().makePayment(
+            responseDecodedPayment
+          )
+          const txHex = responsePayment.message.transactions[0].toHex()
+          resolve(txHex)
+        } catch (ex) {
+          reject(ex)
+        }
+      })
+    })
+  }
+
+  static signAndPublishPaymentRequestTransaction(
+    txParams,
+    keyPair,
+    spendableUtxos
+  ) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const from = txParams.from
+        const satoshisToSend = parseInt(txParams.value)
+
+        if (!spendableUtxos || spendableUtxos.length === 0) {
+          throw new Error('Insufficient funds')
+        }
+
+        // Calculate fee
+        let byteCount = 0
+        const sortedSpendableUtxos = spendableUtxos.sort((a, b) => {
+          return b.satoshis - a.satoshis
+        })
+        const inputUtxos = []
+        let totalUtxoAmount = 0
+        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        for (const utxo of sortedSpendableUtxos) {
+          if (utxo.spendable !== true) {
+            throw new Error('Cannot spend unspendable utxo')
+          }
+          transactionBuilder.addInput(utxo.txid, utxo.vout)
+          totalUtxoAmount += utxo.satoshis
+          inputUtxos.push(utxo)
+
+          byteCount = SLP.BitcoinCash.getByteCount(
+            { P2PKH: inputUtxos.length },
+            { P2PKH: txParams.paymentData.outputs.length + 1 }
+          )
+
+          if (totalUtxoAmount >= byteCount + satoshisToSend) {
+            break
+          }
+        }
+
+        const satoshisRemaining = totalUtxoAmount - byteCount - satoshisToSend
+
+        // Verify sufficient fee
+        if (satoshisRemaining < 0) {
+          throw new Error(
+            'Not enough Bitcoin Cash for fee. Deposit a small amount and try again.'
+          )
+        }
+
+        // Destination outputs
+        for (const output of txParams.paymentData.outputs) {
+          transactionBuilder.addOutput(
+            Buffer.from(output.script, 'hex'),
+            output.amount
+          )
+        }
+
+        // Return remaining balance output
+        if (satoshisRemaining >= 546) {
+          transactionBuilder.addOutput(from, satoshisRemaining)
+        }
+
+        let redeemScript
+        inputUtxos.forEach((utxo, index) => {
+          transactionBuilder.sign(
+            index,
+            utxo.keyPair,
+            redeemScript,
+            transactionBuilder.hashTypes.SIGHASH_ALL,
+            utxo.satoshis
+          )
+        })
+
+        const hex = transactionBuilder.build().toHex()
+
+        // send the payment transaction
+        var payment = new PaymentProtocol().makePayment()
+        payment.set(
+          'merchant_data',
+          Buffer.from(txParams.paymentData.merchantData, 'utf-8')
+        )
+        payment.set('transactions', [Buffer.from(hex, 'hex')])
+
+        // calculate refund script pubkey
+        const refundPubkey = SLP.ECPair.toPublicKey(keyPair)
+        const refundHash160 = SLP.Crypto.hash160(Buffer.from(refundPubkey))
+        const refundScriptPubkey = SLP.Script.pubKeyHash.output.encode(
+          Buffer.from(refundHash160, 'hex')
+        )
+
+        // define the refund outputs
+        var refundOutputs = []
+        var refundOutput = new PaymentProtocol().makeOutput()
+        refundOutput.set('amount', 0)
+        refundOutput.set('script', refundScriptPubkey)
+        refundOutputs.push(refundOutput.message)
+        payment.set('refund_to', refundOutputs)
+        payment.set('memo', '')
+
+        // serialize and send
+        const rawbody = payment.serialize()
+        const headers = {
+          Accept:
+            'application/bitcoincash-paymentrequest, application/bitcoincash-paymentack',
+          'Content-Type': 'application/bitcoincash-payment',
+          'Content-Transfer-Encoding': 'binary',
+        }
+        const response = await axios.post(
+          txParams.paymentData.paymentUrl,
+          rawbody,
+          {
+            headers,
+            responseType: 'blob',
+          }
+        )
+
+        const responseTxHex = await this.decodePaymentResponse(response.data)
+        const txid = this.txidFromHex(responseTxHex)
+
+        resolve(txid)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  static signAndPublishSlpTransaction(
     txParams,
     spendableUtxos,
     tokenMetadata,
@@ -242,14 +404,14 @@ class BitboxUtils {
         let sendOpReturn
 
         if (tokenChangeAmount.isGreaterThan(0)) {
-          sendOpReturn = slpjs.slp.buildSendOpReturn({
+          sendOpReturn = SLPJS.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [ tokenSendAmount, tokenChangeAmount ],
+            outputQtyArray: [tokenSendAmount, tokenChangeAmount],
           })
         } else {
-          sendOpReturn = slpjs.slp.buildSendOpReturn({
+          sendOpReturn = SLPJS.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [ tokenSendAmount ],
+            outputQtyArray: [tokenSendAmount],
           })
         }
 
@@ -269,7 +431,7 @@ class BitboxUtils {
           inputSatoshis = inputSatoshis + utxo.satoshis
           inputUtxos.push(utxo)
 
-          byteCount = slpjs.slp.calculateSendCost(
+          byteCount = SLPJS.calculateSendCost(
             sendOpReturn.length,
             inputUtxos.length,
             tokenReceiverAddressArray.length + 1, // +1 to receive remaining BCH
@@ -281,7 +443,7 @@ class BitboxUtils {
           }
         }
 
-        const transactionBuilder = new SLP.TransactionBuilder('mainnet')
+        const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {
           transactionBuilder.addInput(utxo.txid, utxo.vout)
@@ -324,91 +486,6 @@ class BitboxUtils {
 
         const hex = transactionBuilder.build().toHex()
 
-        const txid = await this.publishTx(hex)
-        resolve(txid)
-      } catch (err) {
-        reject(err)
-      }
-    })
-  }
-
-  static signAndPublishWormholeTransaction (
-    txParams,
-    keyPair,
-    spendableUtxos,
-    propertyId
-  ) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const from = txParams.from
-        const to = txParams.to
-        const sendTokenAmount = txParams.value
-
-        if (!spendableUtxos || spendableUtxos.length === 0) {
-          throw new Error('Insufficient funds')
-        }
-
-        // const propertyId = tokenMetadata.protocolData.propertyId
-        const payload = await Wormhole.PayloadCreation.simpleSend(
-          propertyId,
-          sendTokenAmount.toString()
-        )
-
-        let inputUtxos = spendableUtxos.filter(utxo =>
-            utxo.address === from && utxo.spendable === true
-          ).map(utxo => {
-          const whUtxo = Object.assign({}, utxo)
-          whUtxo.value = whUtxo.amount
-          delete whUtxo.keyPair
-          delete whUtxo.tx
-          delete whUtxo.address
-          delete whUtxo.slp
-          delete whUtxo.confirmations
-          delete whUtxo.height
-          return whUtxo
-        })
-        if (inputUtxos.length >= 2) {
-          inputUtxos = inputUtxos.sort((a, b) => a.satoshis - b.satoshis)
-        }
-        let inputUtxo
-        for (const utxo of inputUtxos) {
-          if (utxo.satoshis > 1000) {
-            inputUtxo = utxo
-            break
-          }
-        }
-
-        if (!inputUtxo) {
-          throw new Error('Insufficient funds to send tokens')
-        }
-
-        const rawTx = await Wormhole.RawTransactions.create([inputUtxo], {})
-        const opReturn = await Wormhole.RawTransactions.opReturn(rawTx, payload)
-        const ref = await Wormhole.RawTransactions.reference(opReturn, to)
-        const changeHex = await Wormhole.RawTransactions.change(
-          ref,
-          [inputUtxo],
-          from,
-          0.00001
-        )
-        const tx = Wormhole.Transaction.fromHex(changeHex)
-        const tb = Wormhole.Transaction.fromTransaction(tx)
-
-        let totalUtxoAmount = 0
-        inputUtxos.forEach(utxo => {
-          if (utxo.spendable !== true) {
-            throw new Error('Cannot spend unspendable utxo')
-          }
-          // transactionBuilder.addInput(utxo.txid, utxo.vout)
-          totalUtxoAmount += utxo.satoshis
-        })
-
-        let redeemScript
-        tb.sign(0, keyPair, redeemScript, 0x01, inputUtxo.satoshis)
-        const builtTx = tb.build()
-        const hex = builtTx.toHex()
-
-        // TODO: Handle failures: transaction already in blockchain, mempool length, networking
         const txid = await this.publishTx(hex)
         resolve(txid)
       } catch (err) {

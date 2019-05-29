@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.7.0
+
+- Instant wallets created for new users
+- Send Max button for BCH and SLP tokens
+- Display and spend BCH from SLP address
+- Warning to backup seed for new accounts
+- Import seed phrase moved to settings page
+- Add latest token icons
+- Deprecate all Wormhole token support
+- Display import warning if current account has a balance or transactions
+- Terms of Service moved to settings page
+- Fix recieve address becomes empty on bad input
+- Improve long token name and amount display
+
 ## 0.6.3
 
 - Never store seed words in state

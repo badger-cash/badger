@@ -1,4 +1,8 @@
-# Terms of Use
+module.exports = function () {
+  return {
+    date: new Date().toDateString(),
+    title: 'Terms of Service',
+    body: `# Terms of Use
 
 **THIS AGREEMENT IS SUBJECT TO BINDING ARBITRATION AND A WAIVER OF CLASS ACTION RIGHTS AS DETAILED IN SECTION 13. PLEASE READ THE AGREEMENT CAREFULLY.**
 
@@ -133,3 +137,7 @@ Users with questions, complaints or claims with respect to the Service may conta
 ## 15 Related Links
 
 **[Privacy](https://www.bitcoin.com/privacy-policy)**
+
+    `,
+  }
+}

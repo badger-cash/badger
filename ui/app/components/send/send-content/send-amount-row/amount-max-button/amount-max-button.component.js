@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
-const bitboxUtils = require('./../../../../../../../app/scripts/controllers/transactions/bitbox-utils')
+import {
+  removeUnspendableUtxo,
+  calculateMaxSendSatoshis,
+} from '../../../send.utils'
 
 export default class AmountMaxButton extends Component {
   static propTypes = {
@@ -35,8 +37,8 @@ export default class AmountMaxButton extends Component {
     if (selectedSlpAddress && utxo[selectedSlpAddress]) {
       bchUtxo = bchUtxo.concat(utxo[selectedSlpAddress])
     }
-    const cleanUtxo = await bitboxUtils.removeUnspendableUtxo(bchUtxo)
-    const maxSendSatoshis = await bitboxUtils.calculateMaxSendSatoshis(cleanUtxo)
+    const cleanUtxo = removeUnspendableUtxo(bchUtxo)
+    const maxSendSatoshis = calculateMaxSendSatoshis(cleanUtxo)
 
     setMaxModeTo(true)
     setAmountToMax({ balance, selectedToken, tokenBalance, maxSendSatoshis })

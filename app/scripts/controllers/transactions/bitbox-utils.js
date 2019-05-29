@@ -233,8 +233,7 @@ class BitboxUtils {
             utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis,
-            transactionBuilder.signatureAlgorithms.SCHNORR
+            utxo.satoshis
           )
         })
 
@@ -537,8 +536,7 @@ class BitboxUtils {
             utxo.keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis,
-            transactionBuilder.signatureAlgorithms.SCHNORR
+            utxo.satoshis
           )
         })
 

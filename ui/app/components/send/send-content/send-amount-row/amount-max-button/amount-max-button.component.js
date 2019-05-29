@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   removeUnspendableUtxo,
   calculateMaxSendSatoshis,
-} from '../../send/send.utils'
+} from '../../../send.utils'
 
 export default class AmountMaxButton extends Component {
   static propTypes = {

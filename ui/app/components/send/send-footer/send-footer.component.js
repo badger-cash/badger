@@ -61,8 +61,6 @@ export default class SendFooter extends Component {
 
     if (cashaccount.isCashAccount(to)) {
       toAccounts.name = to
-      // const addr = await cashaccount.getAddressByCashAccount(to)
-
       try {
         const resp = await cashaccount.trustedLookup(to)
         let type
@@ -76,7 +74,6 @@ export default class SendFooter extends Component {
 
         const isTokenAware = payment.length >= 2
 
-        console.log('isTokenAware', isTokenAware)
         if (selectedToken && !isTokenAware) {
           this.setState({
             err:

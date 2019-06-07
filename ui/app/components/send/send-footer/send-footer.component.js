@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PageContainerFooter from '../../page-container/page-container-footer'
 import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '../../../routes'
-import cashaccount from 'cashaccounts'
 import localStorage from 'store'
+const CashaccountClass = require('cashaccounts')
+const cashaccount = new CashaccountClass()
 
 const bchaddr = require('bchaddrjs-slp')
 
@@ -61,17 +62,29 @@ export default class SendFooter extends Component {
     if (cashaccount.isCashAccount(to)) {
       toAccounts.name = to
       // const addr = await cashaccount.getAddressByCashAccount(to)
-      const addr = await cashaccount.getAccountInfo(to)
-      console.log('addr', addr, typeof addr)
 
-      if (Object.keys(addr).length === 0) {
-        return this.setState({ err: 'not a valid cash account' })
-      } else {
-        localStorage.set('cashAccount', addr.information)
-        this.setState({ err: '' })
-        const { payment } = addr.information
+      try {
+        const resp = await cashaccount.trustedLookup(to)
         let type
 
+        const {
+          information: { payment },
+          information,
+        } = resp
+        localStorage.set('cashAccount', information)
+        this.setState({ err: '' })
+
+        const isTokenAware = payment.length >= 2
+
+        console.log('isTokenAware', isTokenAware)
+        if (selectedToken && !isTokenAware) {
+          this.setState({
+            err:
+              'That account is not token aware and may result in lost tokens.',
+          })
+        }
+
+        // take 2nd payment address if sending Tokens
         if (payment.length === 2 && selectedToken) {
           to = bchaddr.toSlpAddress(payment[1].address)
           type = payment[1].type
@@ -85,6 +98,8 @@ export default class SendFooter extends Component {
         if (type === 'Payment Code') {
           this.setState({ err: 'Payment type not supported yet' })
         }
+      } catch (error) {
+        return this.setState({ err: 'not a valid cash account' })
       }
     }
 

@@ -4,7 +4,11 @@ import PropTypes from 'prop-types'
 import Button from '../../button'
 import CashAccountUtils from '../../../../../app/scripts/lib/cashaccountutils'
 
-const { DEFAULT_ROUTE, IMPORT_CASHACCOUNT } = require('../../../routes')
+const {
+  DEFAULT_ROUTE,
+  IMPORT_CASHACCOUNT,
+  CONFIRM_SEND_ETHER_PATH,
+} = require('../../../routes')
 
 const CashaccountClass = require('cashaccounts')
 const cashaccount = new CashaccountClass()
@@ -18,9 +22,11 @@ class CashAccountRegistration extends Component {
     location: PropTypes.object,
     history: PropTypes.object,
     selectedAddress: PropTypes.string,
+    from: PropTypes.string,
     cashaccount: PropTypes.object,
     cashaccountRegistrations: PropTypes.any,
     t: PropTypes.func,
+    updateSendTo: PropTypes.func,
   }
 
   state = {
@@ -31,7 +37,14 @@ class CashAccountRegistration extends Component {
   }
 
   componentDidMount () {
+    const {
+      from: { address: from },
+      updateSendTo,
+    } = this.props
+
     this.checkCashAccountStatus()
+
+    updateSendTo(from, '')
   }
 
   componentDidUpdate (prevProps) {
@@ -76,28 +89,39 @@ class CashAccountRegistration extends Component {
 
   createAccount = async () => {
     const {
+      amount,
+      editingTransactionId,
+      from: { address: from },
+      selectedToken,
+      sign,
+      unapprovedTxs,
+      update,
+      to,
       history,
+      updateSendTo,
       selectedAddress,
       selectedSlpAddress,
       setCashAccountRegistration,
     } = this.props
+
     const { username } = this.state
 
-    const resp = await cashaccount.trustedRegistration(
+    let rawOpReturn = await cashaccount.createRawOpReturn(
       username,
       selectedAddress,
       selectedSlpAddress
     )
 
-    if (resp.txid !== undefined) {
-      const registrations = await CashAccountUtils.saveRegistration(resp)
-      await CashAccountUtils.upsertAccounts()
+    rawOpReturn = rawOpReturn.split(' ')
 
-      await setCashAccountRegistration(registrations)
-      history.push(DEFAULT_ROUTE)
-    } else {
-      this.setState({ err: 'Service unable to parse payment data.' })
-    }
+    const data = [
+      rawOpReturn[2],
+      rawOpReturn[4],
+      rawOpReturn[6],
+      rawOpReturn[8],
+    ]
+
+    await sign({ data, selectedToken, to, amount, from })
   }
 
   renderImport = () => {

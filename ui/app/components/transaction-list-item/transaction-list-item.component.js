@@ -127,11 +127,6 @@ export default class TransactionListItem extends PureComponent {
       const registration = { txid: transaction.hash }
 
       await CashAccountUtils.saveRegistration(registration)
-
-      const account = await CashAccountUtils.getPendingIdentity(
-        registration.txid
-      )
-
       await CashAccountUtils.upsertAccounts()
 
       setCashAccountRegistration(registration)

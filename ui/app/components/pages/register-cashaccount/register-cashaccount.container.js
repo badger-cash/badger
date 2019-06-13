@@ -5,7 +5,6 @@ const {
   setCashAccount,
   setCashAccountRegistration,
   signTx,
-  updateTransaction,
   updateSendTo,
 } = require('../../../actions')
 
@@ -59,30 +58,13 @@ const mapDispatchToProps = dispatch => {
       const txParams = {
         to: to,
         from: from,
-        value: '400',
+        value: '600',
+        isCashAccountRegistration: true,
         opReturn: {
           data: data,
         },
       }
       return dispatch(signTx(txParams))
-    },
-    update: ({
-      amount,
-      data,
-      editingTransactionId,
-      from,
-      to,
-      unapprovedTxs,
-    }) => {
-      const editingTx = constructUpdatedTx({
-        amount,
-        data,
-        editingTransactionId,
-        from,
-        to,
-        unapprovedTxs,
-      })
-      return dispatch(updateTransaction(editingTx))
     },
   }
 }

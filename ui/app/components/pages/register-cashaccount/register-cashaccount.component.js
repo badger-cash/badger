@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import Button from '../../button'
 import CashAccountUtils from '../../../../../app/scripts/lib/cashaccountutils'
 
+import localStorage from 'store'
+
 const {
   DEFAULT_ROUTE,
   IMPORT_CASHACCOUNT,
-  CONFIRM_SEND_ETHER_PATH,
+  CONFIRM_TRANSACTION_ROUTE,
 } = require('../../../routes')
 
 const CashaccountClass = require('cashaccounts')
@@ -22,7 +24,7 @@ class CashAccountRegistration extends Component {
     location: PropTypes.object,
     history: PropTypes.object,
     selectedAddress: PropTypes.string,
-    from: PropTypes.string,
+    from: PropTypes.any,
     cashaccount: PropTypes.object,
     cashaccountRegistrations: PropTypes.any,
     t: PropTypes.func,
@@ -31,7 +33,7 @@ class CashAccountRegistration extends Component {
 
   state = {
     cashaccount: '',
-    username: '',
+    username: localStorage.get('pendingCashAccount'),
     registered: false,
     err: '',
   }
@@ -90,21 +92,18 @@ class CashAccountRegistration extends Component {
   createAccount = async () => {
     const {
       amount,
-      editingTransactionId,
       from: { address: from },
       selectedToken,
       sign,
-      unapprovedTxs,
-      update,
       to,
       history,
-      updateSendTo,
       selectedAddress,
       selectedSlpAddress,
       setCashAccountRegistration,
     } = this.props
 
     const { username } = this.state
+    localStorage.set('pendingCashAccount', username)
 
     let rawOpReturn = await cashaccount.createRawOpReturn(
       username,
@@ -122,6 +121,7 @@ class CashAccountRegistration extends Component {
     ]
 
     await sign({ data, selectedToken, to, amount, from })
+    history.push(CONFIRM_TRANSACTION_ROUTE)
   }
 
   renderImport = () => {

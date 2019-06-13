@@ -120,6 +120,14 @@ class CashAccountUtils {
     return false
   }
 
+  static checkRegistrationExistsAlready (txid) {
+    if (registrations !== undefined) {
+      const match = registrations.find(x => x.txid === txid)
+      return match
+    }
+    return false
+  }
+
   static checkExistsInStorageByAddr (bchAddr, slpAddr) {
     if (slpAddr) {
       slpAddr = cashaccount.toSlpAddress(slpAddr)

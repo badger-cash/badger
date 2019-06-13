@@ -1168,8 +1168,13 @@ function updateTransaction (txData) {
   }
 }
 
-function updateAndApproveTx (txData) {
-  // log.info('actions: updateAndApproveTx: ' + JSON.stringify(txData))
+function updateAndApproveTx (txData, isCashAccountRegistration = false) {
+  if (isCashAccountRegistration) {
+    // txData.txParams.to = ''
+    // txData.txParams.value
+    txData.isCashAccountRegistration = true
+  }
+
   return (dispatch, getState) => {
     // log.debug(`actions calling background.updateAndApproveTx`)
     dispatch(actions.showLoadingIndication())

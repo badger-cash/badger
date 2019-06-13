@@ -4,6 +4,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   &__label {
     font-size: 0.75rem;

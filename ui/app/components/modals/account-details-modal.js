@@ -65,7 +65,7 @@ AccountDetailsModal.prototype.render = function () {
     return kr.accounts.includes(address)
   })
 
-  let exportPrivateKeyFeatureEnabled = true
+  let exportPrivateKeyFeatureEnabled = false
   // This feature is disabled for hardware wallets
   if (keyring && keyring.type.search('Hardware') !== -1) {
     exportPrivateKeyFeatureEnabled = false
@@ -100,16 +100,16 @@ AccountDetailsModal.prototype.render = function () {
 
     // Holding on redesign for Export Private Key functionality
 
-    exportPrivateKeyFeatureEnabled
-      ? h(
-          Button,
-          {
-            type: 'primary',
-            className: 'account-modal__button',
-            onClick: () => showExportPrivateKeyModal(),
-          },
-          this.context.t('exportPrivateKey')
-        )
-      : null,
+    // exportPrivateKeyFeatureEnabled
+    //   ? h(
+    //       Button,
+    //       {
+    //         type: 'primary',
+    //         className: 'account-modal__button',
+    //         onClick: () => showExportPrivateKeyModal(),
+    //       },
+    //       this.context.t('exportPrivateKey')
+    //     )
+    //   : null,
   ])
 }

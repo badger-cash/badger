@@ -213,8 +213,6 @@ class AccountTracker {
           })
         }
 
-        console.log('bchBalanceSatoshis', bchBalanceSatoshis)
-        console.log('getSlpTokens245Response.bchBalanceSatoshis', getSlpTokens245Response.bchBalanceSatoshis)
         balance = bchBalanceSatoshis + getSlpTokens245Response.bchBalanceSatoshis
       } catch (err) {
         log.error(
@@ -242,7 +240,6 @@ class AccountTracker {
       )
     }
 
-    console.log('balance', balance)
     return balance
   }
 

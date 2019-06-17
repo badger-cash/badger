@@ -10,7 +10,7 @@ const actions = require('../../actions')
 const { DEFAULT_ROUTE } = require('../../routes')
 
 class Notice extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,13 +18,13 @@ class Notice extends Component {
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
     // if (!this.props.notice) {
     //   this.props.history.push(DEFAULT_ROUTE)
     // }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // skip seed notice page
     // this.handleAccept()
 
@@ -38,26 +38,26 @@ class Notice extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!nextProps.notice) {
       this.props.history.push(DEFAULT_ROUTE)
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // eslint-disable-next-line react/no-find-dom-node
     var node = findDOMNode(this)
     linker.teardownListener(node)
   }
 
-  handleAccept () {
+  handleAccept() {
     this.props.history.push(DEFAULT_ROUTE)
 
     // this.setState({ disclaimerDisabled: true })
     // this.props.onConfirm()
   }
 
-  render () {
+  render() {
     const { notice = {} } = this.props
     const { title, body } = notice
     const { disclaimerDisabled } = this.state
@@ -117,7 +117,7 @@ class Notice extends Component {
           }
 
           .markdown a {
-            color: #df6b0e;
+            color: #2d7cc2;
           }
 
         `}</style>

@@ -22,7 +22,7 @@
 .alpha-warning__container {
   display: flex;
   justify-content: center;
-  background: #f7861c;
+  background: #0ac18e;
   flex: 0 0 auto;
 }
 
@@ -75,7 +75,7 @@
 }
 
 .seed-warning {
-  background: #f79132;
+  background: #0ac18e;
   padding: 1rem;
   color: #ffffff;
   font-size: 0.7rem;
@@ -84,7 +84,7 @@
   text-align: center;
 }
 .seed-warning span {
-  color: #2f9ae0;
+  color: #2d7cc2;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -363,12 +363,12 @@
 }
 
 .backup-phrase__tips-text--link {
-  color: #2f9ae0;
+  color: #2d7cc2;
   cursor: pointer;
 }
 
 .backup-phrase__tips-text--link:hover {
-  color: #2f9ae0;
+  color: #2d7cc2;
 }
 
 .backup-phrase__tips-text--strong {
@@ -449,7 +449,7 @@
   color: #ffffff;
   font-size: 19px;
   line-height: 14px;
-  background: #f79132;
+  background: #0ac18e;
   padding: 0.5rem;
   width: 75px;
 }
@@ -731,7 +731,7 @@ button.backup-phrase__confirm-seed-option:hover {
   text-transform: uppercase;
   margin: 35px 0 14px;
   transition: 200ms ease-in-out;
-  background-color: rgba(247, 134, 28, 0.9);
+  background-color: rgba(10, 193, 142, 0.9);
 }
 
 button.first-time-flow__button[disabled] {
@@ -740,7 +740,7 @@ button.first-time-flow__button[disabled] {
 
 button.first-time-flow__button:hover {
   transform: scale(1);
-  background-color: rgba(247, 134, 28, 0.9);
+  background-color: rgba(10, 193, 142, 0.9);
   opacity: 0.9;
 }
 

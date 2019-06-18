@@ -83,7 +83,7 @@ export default class ConfirmTransactionBase extends Component {
     submitError: null,
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const {
       transactionStatus,
       showTransactionConfirmedModal,
@@ -103,7 +103,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  getErrorKey () {
+  getErrorKey() {
     const {
       balance,
       conversionRate,
@@ -132,7 +132,11 @@ export default class ConfirmTransactionBase extends Component {
 
     let insufficientTokens = !!txParams.sendTokenData
     if (txParams.sendTokenData) {
-      if (accountTokens && accountTokens[txParams.from] && accountTokens[txParams.from]['mainnet']) {
+      if (
+        accountTokens &&
+        accountTokens[txParams.from] &&
+        accountTokens[txParams.from]['mainnet']
+      ) {
         const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
           token => token.address === txParams.sendTokenData.tokenId
         )
@@ -167,7 +171,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleEditGas () {
+  handleEditGas() {
     const { onEditGas, showCustomizeGasModal } = this.props
 
     if (onEditGas) {
@@ -177,7 +181,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  renderDetails () {
+  renderDetails() {
     const {
       detailsComponent,
       fiatTransactionFee,
@@ -219,7 +223,7 @@ export default class ConfirmTransactionBase extends Component {
               ethText={ethTotalTextOverride || `\u2666 ${ethTransactionTotal}`}
               headerText="Amount + Gas Fee"
               headerTextClassName="confirm-detail-row__header-text--total"
-              fiatTextColor="#2f9ae0"
+              fiatTextColor="#2d7cc2"
             />
           </div>
         </div>
@@ -227,7 +231,7 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  renderData () {
+  renderData() {
     const { t } = this.context
     const {
       txData: { txParams: { data } = {} } = {},
@@ -268,12 +272,12 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  handleEdit () {
+  handleEdit() {
     const { txData, tokenData, tokenProps, onEdit } = this.props
     onEdit({ txData, tokenData, tokenProps })
   }
 
-  handleCancel () {
+  handleCancel() {
     const {
       onCancel,
       txData,
@@ -292,7 +296,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleSubmit () {
+  handleSubmit() {
     const {
       sendTransaction,
       clearConfirmTransaction,
@@ -325,7 +329,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  render () {
+  render() {
     let {
       isTxReprice,
       fromName,
@@ -398,7 +402,12 @@ export default class ConfirmTransactionBase extends Component {
         toName={toName}
         toAddress={toAddress}
         txParams={txParams}
-        showEdit={onEdit && !isTxReprice && !txParams.sendTokenData && !txParams.paymentData}
+        showEdit={
+          onEdit &&
+          !isTxReprice &&
+          !txParams.sendTokenData &&
+          !txParams.paymentData
+        }
         action={action || name || this.context.t('unknownFunction')}
         title={
           title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`

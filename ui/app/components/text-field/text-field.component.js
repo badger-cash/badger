@@ -24,7 +24,7 @@ const styles = {
   materialFocused: {},
   materialUnderline: {
     '&:after': {
-      borderBottom: '2px solid #f7861c',
+      borderBottom: '2px solid #0AC18E',
     },
   },
   materialError: {},
@@ -50,7 +50,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     '&$inputFocused': {
-      border: '1px solid #2f9ae0',
+      border: '1px solid #2d7cc2',
     },
   },
   largeInputLabel: {
@@ -82,8 +82,8 @@ const TextField = props => {
         className: material
           ? ''
           : largeLabel
-            ? classes.largeInputLabel
-            : classes.inputLabel,
+          ? classes.largeInputLabel
+          : classes.inputLabel,
         FormLabelClasses: {
           root: material ? classes.materialLabel : classes.formLabel,
           focused: material

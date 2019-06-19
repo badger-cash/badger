@@ -11,7 +11,7 @@ const { getEnvironmentType } = require('../../../app/scripts/lib/util')
 const { ENVIRONMENT_TYPE_POPUP } = require('../../../app/scripts/lib/enums')
 
 class InitializeMenuScreen extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.animationEventEmitter = new EventEmitter()
@@ -20,18 +20,18 @@ class InitializeMenuScreen extends Component {
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
     const { isInitialized, isUnlocked, history } = this.props
     if (isInitialized || isUnlocked) {
       history.push(DEFAULT_ROUTE)
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.getElementById('password-box').focus()
   }
 
-  render () {
+  render() {
     const { warning } = this.state
 
     return h('.initialize-screen.flex-column.flex-center', [
@@ -71,7 +71,7 @@ class InitializeMenuScreen extends Component {
               style: {
                 fontSize: '18px',
                 position: 'relative',
-                color: 'rgb(247, 134, 28)',
+                color: 'rgb(10,193,142)',
                 top: '2px',
                 marginLeft: '4px',
               },
@@ -125,7 +125,7 @@ class InitializeMenuScreen extends Component {
             onClick: () => this.showRestoreVault(),
             style: {
               fontSize: '0.8em',
-              color: 'rgb(247, 134, 28)',
+              color: 'rgb(10,193,142)',
               textDecoration: 'underline',
             },
           },
@@ -151,14 +151,14 @@ class InitializeMenuScreen extends Component {
     ])
   }
 
-  createVaultOnEnter (event) {
+  createVaultOnEnter(event) {
     if (event.key === 'Enter') {
       event.preventDefault()
       this.createNewVaultAndKeychain()
     }
   }
 
-  createNewVaultAndKeychain () {
+  createNewVaultAndKeychain() {
     const { history } = this.props
     var passwordBox = document.getElementById('password-box')
     var password = passwordBox.value
@@ -182,7 +182,7 @@ class InitializeMenuScreen extends Component {
       .then(() => history.push(DEFAULT_ROUTE))
   }
 
-  inputChanged (event) {
+  inputChanged(event) {
     // tell mascot to look at page action
     var element = event.target
     var boundingRect = element.getBoundingClientRect()
@@ -193,7 +193,7 @@ class InitializeMenuScreen extends Component {
     })
   }
 
-  showRestoreVault () {
+  showRestoreVault() {
     this.props.markPasswordForgotten()
     if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
       global.platform.openExtensionInBrowser()
@@ -202,7 +202,7 @@ class InitializeMenuScreen extends Component {
     this.props.history.push(RESTORE_VAULT_ROUTE)
   }
 
-  showOldUI () {
+  showOldUI() {
     this.props.dispatch(
       actions.setFeatureFlag('betaUI', false, 'OLD_UI_NOTIFICATION_MODAL')
     )

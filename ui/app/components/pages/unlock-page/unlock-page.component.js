@@ -22,7 +22,7 @@ export default class UnlockPage extends Component {
     useOldInterface: PropTypes.func,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -34,7 +34,7 @@ export default class UnlockPage extends Component {
     this.animationEventEmitter = new EventEmitter()
   }
 
-  async componentWillMount () {
+  async componentWillMount() {
     const { isUnlocked, history, tryUnlockMetamask } = this.props
 
     if (isUnlocked) {
@@ -50,7 +50,7 @@ export default class UnlockPage extends Component {
     }
   }
 
-  async handleSubmit (event) {
+  async handleSubmit(event) {
     event.preventDefault()
     event.stopPropagation()
 
@@ -74,7 +74,7 @@ export default class UnlockPage extends Component {
     }
   }
 
-  handleInputChange ({ target }) {
+  handleInputChange({ target }) {
     this.setState({ password: target.value, error: null })
 
     // tell mascot to look at page action
@@ -87,9 +87,9 @@ export default class UnlockPage extends Component {
     })
   }
 
-  renderSubmitButton () {
+  renderSubmitButton() {
     const style = {
-      backgroundColor: '#f7861c',
+      backgroundColor: '#0AC18E',
       color: 'white',
       marginTop: '20px',
       height: '60px',
@@ -114,7 +114,7 @@ export default class UnlockPage extends Component {
     )
   }
 
-  render () {
+  render() {
     const { password, error } = this.state
     const { t } = this.context
     const { markPasswordForgotten, history } = this.props

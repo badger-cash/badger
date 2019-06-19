@@ -14,11 +14,11 @@ Notice.contextTypes = {
 module.exports = connect()(Notice)
 
 inherits(Notice, Component)
-function Notice () {
+function Notice() {
   Component.call(this)
 }
 
-Notice.prototype.render = function () {
+Notice.prototype.render = function() {
   const { notice, onConfirm } = this.props
   const { title, date, body } = notice
   const state = this.state || { disclaimerDisabled: true }
@@ -88,7 +88,7 @@ Notice.prototype.render = function () {
         }
 
         .markdown a {
-          color: #df6b0e;
+          color: #2d7cc2;
         }
 
       `
@@ -141,7 +141,7 @@ Notice.prototype.render = function () {
   )
 }
 
-Notice.prototype.componentDidMount = function () {
+Notice.prototype.componentDidMount = function() {
   // eslint-disable-next-line react/no-find-dom-node
   var node = findDOMNode(this)
   linker.setupListener(node)
@@ -150,7 +150,7 @@ Notice.prototype.componentDidMount = function () {
   }
 }
 
-Notice.prototype.componentWillUnmount = function () {
+Notice.prototype.componentWillUnmount = function() {
   // eslint-disable-next-line react/no-find-dom-node
   var node = findDOMNode(this)
   linker.teardownListener(node)

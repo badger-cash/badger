@@ -16,7 +16,7 @@ class Info extends Component {
   renderLogo () {
     return (
       <div className="settings__info-logo-wrapper">
-        <img className="settings__info-logo" src="images/bch_logo.svg" />
+        <img className="settings__info-logo" src="images/icon-512.png" />
       </div>
     )
   }

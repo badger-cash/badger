@@ -235,16 +235,16 @@ class AccountDropdowns extends Component {
           },
           this.context.t('copyAddress')
         ),
-        h(
-          DropdownMenuItem,
-          {
-            closeMenu: () => {},
-            onClick: () => {
-              actions.requestAccountExport()
-            },
-          },
-          this.context.t('exportPrivateKey')
-        ),
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     closeMenu: () => {},
+        //     onClick: () => {
+        //       actions.requestAccountExport()
+        //     },
+        //   },
+        //   this.context.t('exportPrivateKey')
+        // ),
       ]
     )
   }

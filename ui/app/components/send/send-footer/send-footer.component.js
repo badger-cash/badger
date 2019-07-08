@@ -75,7 +75,7 @@ export default class SendFooter extends Component {
         const isTokenAware = payment.length >= 2
 
         if (selectedToken && !isTokenAware) {
-          this.setState({
+          return this.setState({
             err:
               'That account is not token aware and may result in lost tokens.',
           })

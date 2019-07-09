@@ -38,7 +38,7 @@ class CashAccountRegistration extends Component {
     err: '',
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const {
       from: { address: from },
       updateSendTo,
@@ -49,7 +49,7 @@ class CashAccountRegistration extends Component {
     updateSendTo(from, '')
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const { selectedAddress } = this.props
     if (prevProps.selectedAddress !== selectedAddress) {
       this.checkCashAccountStatus()
@@ -105,19 +105,15 @@ class CashAccountRegistration extends Component {
     const { username } = this.state
     localStorage.set('pendingCashAccount', username)
 
-    let rawOpReturn = await cashaccount.createRawOpReturn(
-      username,
-      selectedAddress,
-      selectedSlpAddress
-    )
-
-    rawOpReturn = rawOpReturn.split(' ')
+    const accountName = cashaccount.encodeUsername(username)
+    const bchHex = cashaccount.getHashFromAddress(selectedAddress)
+    const slpHex = cashaccount.getHashFromAddress(selectedSlpAddress)
 
     const data = [
-      rawOpReturn[2],
-      rawOpReturn[4],
-      rawOpReturn[6],
-      rawOpReturn[8],
+      '0x01010101',
+      `0x${accountName}`,
+      `0x01${bchHex.p2pkh}`,
+      `0x81${slpHex.p2pkh}`,
     ]
 
     await sign({ data, selectedToken, to, amount, from })
@@ -180,7 +176,7 @@ class CashAccountRegistration extends Component {
     )
   }
 
-  render () {
+  render() {
     const { history, cashaccount, cashaccountRegistrations } = this.props
     const { err } = this.state
 

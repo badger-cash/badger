@@ -48,7 +48,12 @@ export default class TransactionList extends PureComponent {
 
   renderTransactions () {
     const { t } = this.context
-    const { pendingTransactions = [], completedTransactions = [], selectedAddress } = this.props
+    const {
+      pendingTransactions = [],
+      completedTransactions = [],
+      selectedAddress,
+    } = this.props
+
     return (
       <div className="transaction-list__transactions">
         {pendingTransactions.length > 0 && (
@@ -73,14 +78,13 @@ export default class TransactionList extends PureComponent {
           <Button
             type="default"
             style={{ margin: '15px auto', width: '70%' }}
-            onClick={ () => {
+            onClick={() => {
               const url = `https://explorer.bitcoin.com/bch/address/${selectedAddress}`
               global.platform.openWindow({ url })
             }}
           >
             View history on explorer
           </Button>
-           
         </div>
       </div>
     )
@@ -97,6 +101,7 @@ export default class TransactionList extends PureComponent {
         token={selectedToken}
         assetImages={assetImages}
         selectedAddress={selectedAddress}
+        index={index}
       />
     )
   }

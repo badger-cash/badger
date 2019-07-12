@@ -10,6 +10,7 @@ const recipientWhitelist = require('../../../../app/scripts/controllers/transact
 import { CONFIRM_TRANSACTION_ROUTE } from '../../routes'
 import { UNAPPROVED_STATUS } from '../../constants/transactions'
 import { BCH } from '../../constants/common'
+import CashAccountUtils from '../../../../app/scripts/lib/cashaccountutils'
 
 export default class TransactionListItem extends PureComponent {
   static propTypes = {
@@ -25,6 +26,7 @@ export default class TransactionListItem extends PureComponent {
     assetImages: PropTypes.object,
     tokenData: PropTypes.object,
     selectedAddress: PropTypes.string,
+    index: PropTypes.number,
   }
 
   state = {
@@ -115,6 +117,22 @@ export default class TransactionListItem extends PureComponent {
     )
   }
 
+  upsertRegistration = async transaction => {
+    const { setCashAccountRegistration } = this.props
+    const exists = CashAccountUtils.checkRegistrationExistsAlready(
+      transaction.hash
+    )
+
+    if (!exists) {
+      const registration = { txid: transaction.hash }
+
+      await CashAccountUtils.saveRegistration(registration)
+      await CashAccountUtils.upsertAccounts()
+
+      setCashAccountRegistration(registration)
+    }
+  }
+
   render () {
     const {
       transaction,
@@ -125,6 +143,7 @@ export default class TransactionListItem extends PureComponent {
       tokenData,
       selectedAddress,
       token,
+      index,
     } = this.props
     const { txParams = {} } = transaction
     const { showTransactionDetails } = this.state
@@ -152,22 +171,42 @@ export default class TransactionListItem extends PureComponent {
     let actionPrefix = ''
     let img = assetImages[toAddress]
     if (fromAddress === toAddress) {
+      const isCashAccountRegistration =
+        txParams.opReturn !== undefined &&
+        txParams.opReturn.data[0] === '0x01010101'
+
+      if (isCashAccountRegistration && index === 0) {
+        this.upsertRegistration(transaction)
+      }
+
       // Send to self
     } else if (selectedAddress === fromAddress) {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
-      if (toAddress && toAddress.split(':')[1] === 'pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g') {
+      if (
+        toAddress &&
+        toAddress.split(':')[1] === 'pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g'
+      ) {
         actionPrefix = 'Sent to eatBCH VE'
         img = 'images/addresses/pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g.png'
-      } else if (toAddress && toAddress.split(':')[1] === 'qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950') {
+      } else if (
+        toAddress &&
+        toAddress.split(':')[1] === 'qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950'
+      ) {
         actionPrefix = 'Sent to eatBCH SS'
         img = 'images/addresses/qrsrvtc95gg8rrag7dge3jlnfs4j9pe0ugrmeml950.png'
-      } else if (toAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
+      } else if (
+        toAddresses.some(address =>
+          recipientWhitelist.satoshidice.includes(address.split(':')[1])
+        )
+      ) {
         actionPrefix = 'Sent to SatoshiDice'
         img = 'images/satoshidice.png'
       } else if (
-        toAddresses.some(address => recipientWhitelist.satoshistack.includes(address.split(':')[1]))
+        toAddresses.some(address =>
+          recipientWhitelist.satoshistack.includes(address.split(':')[1])
+        )
       ) {
         actionPrefix = 'Sent to SatoshiStack'
         img = 'images/satoshidice.png'
@@ -176,10 +215,18 @@ export default class TransactionListItem extends PureComponent {
       // Received tx
       currencyPrefix = '+'
       actionPrefix = 'Received'
-      if (fromAddresses.some(address => recipientWhitelist.satoshidice.includes(address.split(':')[1]))) {
+      if (
+        fromAddresses.some(address =>
+          recipientWhitelist.satoshidice.includes(address.split(':')[1])
+        )
+      ) {
         actionPrefix = 'SatoshiDice Win'
         img = 'images/satoshidice.png'
-      } else if (fromAddresses.some(address => recipientWhitelist.satoshistack.includes(address.split(':')[1]))) {
+      } else if (
+        fromAddresses.some(address =>
+          recipientWhitelist.satoshistack.includes(address.split(':')[1])
+        )
+      ) {
         actionPrefix = 'SatoshiStack Win'
         img = 'images/satoshidice.png'
       }
@@ -214,8 +261,12 @@ export default class TransactionListItem extends PureComponent {
             }
             transaction={transaction}
           /> */}
-          {this.renderPrimaryCurrency(currencyPrefix)}
-          {this.renderSecondaryCurrency(currencyPrefix)}
+          {fromAddress !== toAddress
+            ? this.renderPrimaryCurrency(currencyPrefix)
+            : ''}
+          {fromAddress !== toAddress
+            ? this.renderSecondaryCurrency(currencyPrefix)
+            : ''}
         </div>
         {showTransactionDetails && (
           <div className="transaction-list-item__details-container">

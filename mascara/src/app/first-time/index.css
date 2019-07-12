@@ -452,6 +452,7 @@
   background: #0ac18e;
   padding: 0.5rem;
   width: 75px;
+  cursor:pointer;
 }
 
 .backup-phrase__back-button {

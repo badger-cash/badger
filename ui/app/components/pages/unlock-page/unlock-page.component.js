@@ -125,7 +125,7 @@ export default class UnlockPage extends Component {
           <div className="unlock-page__mascot-container">
             <img
               className="app-header__metafox-logo app-header__metafox-logo--icon"
-              src="/images/bch_logo.svg"
+              src="/images/icon-512.png"
               height={120}
               width={125}
             />

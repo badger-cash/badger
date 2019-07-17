@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.7.4
+
+- CashAccount registration and send support
+
+## 0.7.3
+
+- Update icons and logo
+
+## 0.7.2
+
+- Brand update
+- Add latest token icons
+- Remove individual account export
+
+## 0.7.1
+
+- Patch CashID regression
+- Update dependencies
+
 ## 0.7.0
 
 - Instant wallets created for new users

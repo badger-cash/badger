@@ -73,6 +73,8 @@ var actions = {
   SHOW_NEW_VAULT_SEED: 'SHOW_NEW_VAULT_SEED',
   SHOW_INFO_PAGE: 'SHOW_INFO_PAGE',
   SHOW_IMPORT_PAGE: 'SHOW_IMPORT_PAGE',
+  SHOW_REGISTER_CASHACCOUNT_PAGE: 'SHOW_REGISTER_CASHACCOUNT_PAGE',
+  SHOW_IMPORT_CASHACCOUNT_PAGE: 'SHOW_IMPORT_CASHACCOUNT_PAGE',
   SHOW_NEW_ACCOUNT_PAGE: 'SHOW_NEW_ACCOUNT_PAGE',
   SET_NEW_ACCOUNT_FORM: 'SET_NEW_ACCOUNT_FORM',
   unlockMetamask: unlockMetamask,
@@ -82,6 +84,8 @@ var actions = {
   showRestoreVault: showRestoreVault,
   showInitializeMenu: showInitializeMenu,
   showImportPage,
+  showRegisterCashaccountPage,
+  showImportCashaccountPage,
   showNewAccountPage,
   setNewAccountForm,
   createNewVaultAndKeychain: createNewVaultAndKeychain,
@@ -116,6 +120,10 @@ var actions = {
   lockMetamask: lockMetamask,
   MARK_UNENCRYPTED: 'MARK_UNENCRYPTED',
   checkUnencrypted: checkUnencrypted,
+  SET_CASHACCOUNT: 'SET_CASHACCOUNT',
+  SET_CASHACCOUNT_REGISTRATION: 'SET_CASHACCOUNT_REGISTRATION',
+  setCashAccount: setCashAccount,
+  setCashAccountRegistration: setCashAccountRegistration,
 
   unlockInProgress: unlockInProgress,
   // error handling
@@ -494,6 +502,20 @@ function checkUnencrypted () {
         resolve()
       })
     })
+  }
+}
+
+function setCashAccount (account) {
+  return {
+    type: actions.SET_CASHACCOUNT,
+    value: account,
+  }
+}
+
+function setCashAccountRegistration (account) {
+  return {
+    type: actions.SET_CASHACCOUNT_REGISTRATION,
+    value: account,
   }
 }
 
@@ -1146,8 +1168,13 @@ function updateTransaction (txData) {
   }
 }
 
-function updateAndApproveTx (txData) {
-  // log.info('actions: updateAndApproveTx: ' + JSON.stringify(txData))
+function updateAndApproveTx (txData, isCashAccountRegistration = false) {
+  if (isCashAccountRegistration) {
+    // txData.txParams.to = ''
+    // txData.txParams.value
+    txData.isCashAccountRegistration = true
+  }
+
   return (dispatch, getState) => {
     // log.debug(`actions calling background.updateAndApproveTx`)
     dispatch(actions.showLoadingIndication())
@@ -1395,6 +1422,17 @@ function showInitializeMenu () {
 function showImportPage () {
   return {
     type: actions.SHOW_IMPORT_PAGE,
+  }
+}
+
+function showRegisterCashaccountPage () {
+  return {
+    type: actions.SHOW_REGISTER_CASHACCOUNT_PAGE,
+  }
+}
+function showImportCashaccountPage () {
+  return {
+    type: actions.SHOW_IMPORT_CASHACCOUNT_PAGE,
   }
 }
 

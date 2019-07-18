@@ -22,7 +22,13 @@ import { getHexGasTotal } from '../../../helpers/confirm-transaction/util'
 import { isBalanceSufficient } from '../../send/send.utils'
 import { conversionGreaterThan } from '../../../conversion-util'
 import { MIN_GAS_LIMIT_DEC } from '../../send/send.constants'
+import { getUtxos, getSelectedAddress } from '../../send/send.selectors'
 import { addressSlicer } from '../../../util'
+import {
+  pendingTransactionsSelector,
+  submittedPendingTransactionsSelector,
+  completedTransactionsSelector,
+} from '../../../selectors/transactions'
 
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
   return {
@@ -48,6 +54,13 @@ const mapStateToProps = (state, props) => {
     tokenProps,
     nonce,
   } = confirmTransaction
+
+  const pendingTransactions = pendingTransactionsSelector(state)
+  const submittedPendingTransactions = submittedPendingTransactionsSelector(
+    state
+  )
+  const networkNonce = state.appState.networkNonce
+
   const { txParams = {}, lastGasPrice, id: transactionId } = txData
   const { from: fromAddress, to: txParamsToAddress } = txParams
   const {
@@ -59,6 +72,7 @@ const mapStateToProps = (state, props) => {
     selectedAddressTxList,
     assetImages,
     accountTokens,
+    historicalBchTransactions,
   } = metamask
   const assetImage = assetImages[txParamsToAddress]
   const { balance } = accounts[selectedAddress]
@@ -67,8 +81,8 @@ const mapStateToProps = (state, props) => {
   const toName = identities[toAddress]
     ? identities[toAddress].name
     : casedContractMap[toAddress]
-      ? casedContractMap[toAddress].name
-      : addressSlicer(toAddress)
+    ? casedContractMap[toAddress].name
+    : addressSlicer(toAddress)
 
   const isTxReprice = Boolean(lastGasPrice)
 
@@ -76,7 +90,8 @@ const mapStateToProps = (state, props) => {
     selectedAddressTxList
   )
   const transactionStatus = transaction ? transaction.status : ''
-
+  const utxo = getUtxos(state)
+  const bchAddress = getSelectedAddress(state)
   return {
     balance,
     fromAddress,
@@ -102,6 +117,12 @@ const mapStateToProps = (state, props) => {
     nonce,
     assetImage,
     accountTokens,
+    historicalBchTransactions,
+    completedTransactions: completedTransactionsSelector(state),
+    pendingTransactions,
+    submittedPendingTransactions,
+    utxo,
+    bchAddress,
   }
 }
 
@@ -121,7 +142,8 @@ const mapDispatchToProps = dispatch => {
       return dispatch(updateGasAndCalculate({ gasLimit, gasPrice }))
     },
     cancelTransaction: ({ id }) => dispatch(cancelTx({ id })),
-    sendTransaction: txData => dispatch(updateAndApproveTx(txData)),
+    sendTransaction: (txData, isCashAccountRegistration) =>
+      dispatch(updateAndApproveTx(txData, isCashAccountRegistration)),
   }
 }
 

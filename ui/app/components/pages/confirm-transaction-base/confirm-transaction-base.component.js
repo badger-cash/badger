@@ -7,6 +7,8 @@ import { formatCurrency } from '../../../helpers/confirm-transaction/util'
 import {
   isBalanceSufficient,
   isTokenBalanceSufficient,
+  removeUnspendableUtxo,
+  signAndPublishBchTransaction,
 } from '../../send/send.utils'
 import { DEFAULT_ROUTE } from '../../../routes'
 import {
@@ -14,6 +16,9 @@ import {
   TRANSACTION_ERROR_KEY,
   INSUFFICIENT_TOKENS_ERROR_KEY,
 } from '../../../constants/error-keys'
+import { PageContainerFooter } from '../../page-container'
+import ConfirmPageContainerHeader from '../../confirm-page-container/confirm-page-container-header'
+import localStorage from 'store'
 
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
@@ -25,7 +30,7 @@ export default class ConfirmTransactionBase extends Component {
     match: PropTypes.object,
     history: PropTypes.object,
     // Redux props
-    balance: PropTypes.string,
+    balance: PropTypes.any,
     cancelTransaction: PropTypes.func,
     clearConfirmTransaction: PropTypes.func,
     clearSend: PropTypes.func,
@@ -54,6 +59,7 @@ export default class ConfirmTransactionBase extends Component {
     toName: PropTypes.string,
     transactionStatus: PropTypes.string,
     txData: PropTypes.object,
+    opReturn: PropTypes.object,
     // Component props
     action: PropTypes.string,
     contentComponent: PropTypes.node,
@@ -76,11 +82,13 @@ export default class ConfirmTransactionBase extends Component {
     title: PropTypes.string,
     valid: PropTypes.bool,
     warning: PropTypes.string,
+    historicalBchTransactions: PropTypes.object,
   }
 
   state = {
     submitting: false,
     submitError: null,
+    pendingCashAccount: localStorage.get('pendingCashAccount'),
   }
 
   componentDidUpdate() {
@@ -286,6 +294,9 @@ export default class ConfirmTransactionBase extends Component {
       clearConfirmTransaction,
     } = this.props
 
+    localStorage.remove('cashAccount')
+    localStorage.remove('pendingCashAccount')
+
     if (onCancel) {
       onCancel(txData)
     } else {
@@ -303,8 +314,16 @@ export default class ConfirmTransactionBase extends Component {
       txData,
       history,
       onSubmit,
+      txParams,
     } = this.props
     const { submitting } = this.state
+
+    localStorage.remove('cashAccount')
+    localStorage.remove('pendingCashAccount')
+
+    const isCashAccountRegistration =
+      txParams.opReturn !== undefined &&
+      txParams.opReturn.data[0] === '0x01010101'
 
     if (submitting) {
       return
@@ -317,9 +336,9 @@ export default class ConfirmTransactionBase extends Component {
         this.setState({ submitting: false })
       )
     } else {
-      sendTransaction(txData)
-        .then(() => {
-          clearConfirmTransaction()
+      sendTransaction(txData, isCashAccountRegistration)
+        .then(async x => {
+          await clearConfirmTransaction()
           this.setState({ submitting: false })
           history.push(DEFAULT_ROUTE)
         })
@@ -327,6 +346,39 @@ export default class ConfirmTransactionBase extends Component {
           this.setState({ submitting: false, submitError: error.message })
         })
     }
+  }
+  renderRegistration = () => {
+    const { pendingCashAccount } = this.state
+
+    return (
+      <div className="page-container">
+        <div className="confirm-page-container-header__row">
+          <h1>
+            Pending handle is{' '}
+            <span style={{ fontWeight: 'bold' }}>{pendingCashAccount}</span>
+          </h1>
+        </div>
+
+        <div className="confirm-page-container-summary">
+          <p>
+            Your number will be determined once the registration is confirmed.
+          </p>
+          <br />
+          <br />
+          <small>
+            A tiny amount of BCH will be spent to cover the mining fee if you
+            continue.
+          </small>
+        </div>
+
+        <PageContainerFooter
+          onCancel={() => this.handleCancel()}
+          onSubmit={() => this.handleSubmit()}
+          submitText={this.context.t('confirm')}
+          submitButtonType="confirm"
+        />
+      </div>
+    )
   }
 
   render() {
@@ -358,6 +410,13 @@ export default class ConfirmTransactionBase extends Component {
       accountTokens,
     } = this.props
     const { submitting, submitError } = this.state
+    const isCashAccountRegistration =
+      txParams.opReturn !== undefined &&
+      txParams.opReturn.data[0] === '0x01010101'
+
+    if (isCashAccountRegistration) {
+      return this.renderRegistration()
+    }
 
     const { name } = methodData
     const fiatConvertedAmount = formatCurrency(

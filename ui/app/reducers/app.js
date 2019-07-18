@@ -238,6 +238,24 @@ function reduceApp (state, action) {
         warning: null,
       })
 
+    case actions.SHOW_REGISTER_CASHACCOUNT_PAGE:
+      return extend(appState, {
+        currentView: {
+          name: 'register-cashaccount',
+        },
+        transForward: true,
+        warning: null,
+      })
+
+    case actions.SHOW_IMPORT_CASHACCOUNT_PAGE:
+      return extend(appState, {
+        currentView: {
+          name: 'import-cashaccount',
+        },
+        transForward: true,
+        warning: null,
+      })
+
     case actions.SHOW_NEW_ACCOUNT_PAGE:
       return extend(appState, {
         currentView: {

@@ -1,3 +1,7 @@
+const CashaccountClass = require('cashaccounts')
+const cashaccount = new CashaccountClass()
+
+
 const {
   REQUIRED_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,
@@ -31,8 +35,7 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
 }
 
 function isValidCashAccount (string) {
-  const cashAccountRegex = /^([a-zA-Z0-9_]+)(#([0-9]+)(([0-9]+))).([0-9]+)?$/i
-  return cashAccountRegex.test(string)
+  return cashaccount.isCashAccount(string)
 }
 
 function isValidBchAddress (address) {

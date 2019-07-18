@@ -10,7 +10,7 @@ const axios = require('axios')
 const toBuffer = require('blob-to-buffer')
 
 class BitboxUtils {
-  static async getLargestUtxo(address) {
+  static async getLargestUtxo (address) {
     return new Promise((resolve, reject) => {
       SLP.Address.utxo(address).then(
         result => {
@@ -30,7 +30,7 @@ class BitboxUtils {
     })
   }
 
-  static async getAllUtxo(address) {
+  static async getAllUtxo (address) {
     return new Promise((resolve, reject) => {
       SLP.Address.utxo(address).then(
         result => {
@@ -51,7 +51,7 @@ class BitboxUtils {
     })
   }
 
-  static async getTransactionDetails(txid) {
+  static async getTransactionDetails (txid) {
     return new Promise((resolve, reject) => {
       SLP.Transaction.details(txid).then(
         result => {
@@ -68,7 +68,7 @@ class BitboxUtils {
     })
   }
 
-  static encodeOpReturn(dataArray) {
+  static encodeOpReturn (dataArray) {
     const script = [SLP.Script.opcodes.OP_RETURN]
     dataArray.forEach(data => {
       if (typeof data === 'string' && data.substring(0, 2) === '0x') {
@@ -80,7 +80,7 @@ class BitboxUtils {
     return SLP.Script.encode(script)
   }
 
-  static async publishTx(hex) {
+  static async publishTx (hex) {
     return new Promise((resolve, reject) => {
       SLP.RawTransactions.sendRawTransaction(hex).then(
         result => {
@@ -105,7 +105,7 @@ class BitboxUtils {
     })
   }
 
-  static signAndPublishBchTransaction(txParams, spendableUtxos) {
+  static signAndPublishBchTransaction (txParams, spendableUtxos) {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
@@ -155,14 +155,29 @@ class BitboxUtils {
           )
         }
 
+        const isCashAccountRegistration =
+          txParams.isCashAccountRegistration !== undefined &&
+          txParams.isCashAccountRegistration
+
+        if (isCashAccountRegistration) {
+          // Op Return
+          // TODO: Allow dev to pass in "position" property for vout of opReturn
+          if (txParams.opReturn) {
+            const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
+            transactionBuilder.addOutput(encodedOpReturn, 0)
+          }
+        }
+
         // Destination output
         transactionBuilder.addOutput(to, satoshisToSend)
 
-        // Op Return
-        // TODO: Allow dev to pass in "position" property for vout of opReturn
-        if (txParams.opReturn) {
-          const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
-          transactionBuilder.addOutput(encodedOpReturn, 0)
+        if (!isCashAccountRegistration) {
+          // Op Return
+          // TODO: Allow dev to pass in "position" property for vout of opReturn
+          if (txParams.opReturn) {
+            const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
+            transactionBuilder.addOutput(encodedOpReturn, 0)
+          }
         }
 
         // Return remaining balance output
@@ -192,7 +207,7 @@ class BitboxUtils {
     })
   }
 
-  static txidFromHex(hex) {
+  static txidFromHex (hex) {
     const buffer = Buffer.from(hex, 'hex')
     const hash = SLP.Crypto.hash256(buffer).toString('hex')
     const txid = hash
@@ -354,7 +369,7 @@ class BitboxUtils {
   //   })
   // }
 
-  static signAndPublishSlpTransaction(
+  static signAndPublishSlpTransaction (
     txParams,
     spendableUtxos,
     tokenMetadata,

@@ -5,10 +5,12 @@ import { connect } from 'react-redux'
 import {
   createNewVaultAndRestore,
   unMarkPasswordForgotten,
+  lockMetamask,
 } from '../../../../ui/app/actions'
 import {
   INITIALIZE_NOTICE_ROUTE,
   REVEAL_SEED_ROUTE,
+  DEFAULT_ROUTE,
 } from '../../../../ui/app/routes'
 import TextField from '../../../../ui/app/components/text-field'
 
@@ -103,12 +105,16 @@ class ImportSeedPhraseScreen extends Component {
       const {
         createNewVaultAndRestore,
         leaveImportSeedScreenState,
+        lockMetamask,
         history,
       } = this.props
 
       leaveImportSeedScreenState()
       createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
-        () => history.push(INITIALIZE_NOTICE_ROUTE)
+        () => {
+          lockMetamask()
+          history.push(DEFAULT_ROUTE)
+        }
       )
     }
   }
@@ -310,5 +316,8 @@ export default connect(
     },
     createNewVaultAndRestore: (pw, seed) =>
       dispatch(createNewVaultAndRestore(pw, seed)),
+    lockMetamask: () => {
+      dispatch(lockMetamask())
+    },
   })
 )(ImportSeedPhraseScreen)

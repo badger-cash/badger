@@ -43,6 +43,7 @@ export default class UnlockPage extends Component {
 
     try {
       await tryUnlockMetamask('')
+      // await tryUnlockMetamask('')
       this.submitting = false
       history.push(DEFAULT_ROUTE)
     } catch ({ message }) {

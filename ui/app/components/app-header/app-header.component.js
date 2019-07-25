@@ -42,7 +42,7 @@ export default class AppHeader extends PureComponent {
 
   async componentDidMount () {
     const { checkUnencrypted } = this.props
-    checkUnencrypted()
+    //   checkUnencrypted()
 
     await CashAccountUtils.upsertAccounts()
     await this.checkCashAccountStatus()

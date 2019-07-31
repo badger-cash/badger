@@ -49,20 +49,16 @@ class NoticeScreen extends Component {
     this.acceptTerms()
   }
 
-  acceptTerms = () => {
+  acceptTerms = async () => {
     const { markNoticeRead, nextUnreadNotice, history } = this.props
-    markNoticeRead(nextUnreadNotice).then(hasActiveNotices => {
+    try {
+      if (nextUnreadNotice.body !== undefined) {
+        await markNoticeRead(nextUnreadNotice)
+      }
       history.push(DEFAULT_ROUTE)
-      // skip seed notice page
-      // if (!hasActiveNotices) {
-      //   alert('case 1')
-      //   history.push(DEFAULT_ROUTE)
-      // } else {
-      //   alert('case 2')
-      //   this.setState({ atBottom: false })
-      //   this.onScroll()
-      // }
-    })
+    } catch (error) {
+      console.log('error in acceptTerms', error)
+    }
   }
 
   onScroll = debounce(() => {

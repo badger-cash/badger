@@ -34,6 +34,16 @@ export default class UnlockPage extends Component {
     this.animationEventEmitter = new EventEmitter()
   }
 
+  async componentDidMount() {
+    const { isUnlocked, history, tryUnlockMetamask } = this.props
+
+    if (!isUnlocked) {
+      await tryUnlockMetamask('')
+      this.submitting = false
+      history.push(DEFAULT_ROUTE)
+    }
+  }
+
   async componentWillMount() {
     const { isUnlocked, history, tryUnlockMetamask } = this.props
 
@@ -43,6 +53,7 @@ export default class UnlockPage extends Component {
 
     try {
       await tryUnlockMetamask('')
+      // await tryUnlockMetamask('')
       this.submitting = false
       history.push(DEFAULT_ROUTE)
     } catch ({ message }) {

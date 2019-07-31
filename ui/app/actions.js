@@ -493,15 +493,12 @@ function verifyPassword (password) {
 }
 
 function checkUnencrypted () {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      background.checkVaultEncrypted('', error => {
-        if (!error) {
-          dispatch(markUnencrypted())
-        }
-        resolve()
-      })
-    })
+  return async dispatch => {
+    try {
+      await verifyPassword('')
+      dispatch(markUnencrypted())
+    } catch (error) {
+    }
   }
 }
 

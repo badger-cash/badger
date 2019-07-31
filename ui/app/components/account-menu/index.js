@@ -5,7 +5,6 @@ const connect = require('react-redux').connect
 const { compose } = require('recompose')
 const { withRouter } = require('react-router-dom')
 const PropTypes = require('prop-types')
-const h = require('react-hyperscript')
 const actions = require('../../actions')
 const {
   Menu,
@@ -15,10 +14,7 @@ const {
 } = require('../dropdowns/components/menu')
 const Identicon = require('../identicon')
 const { formatBalance } = require('../../util')
-const { ENVIRONMENT_TYPE_POPUP } = require('../../../../app/scripts/lib/enums')
-const { getEnvironmentType } = require('../../../../app/scripts/lib/util')
 const Tooltip = require('../tooltip')
-const classNames = require('classnames')
 
 const {
   SETTINGS_ROUTE,
@@ -97,24 +93,26 @@ AccountMenu.prototype.render = function () {
     isUnencrypted,
   } = this.props
 
-  const logoutClass = classNames({
-    'button.account-menu__logout-button.hidden': isUnencrypted,
-    'button.account-menu__logout-button.test': !isUnencrypted,
-  })
-
   return (
     <Menu className="account-menu" isShowing={isAccountMenuOpen}>
       <CloseArea onClick={toggleAccountMenu} />
       <Item className="account-menu__header">
         {this.context.t('myAccounts')}
-        <logoutClass
-          onClick={() => {
-            lockMetamask()
-            history.push(DEFAULT_ROUTE)
-          }}
-        >
-          {this.context.t('logout')}
-        </logoutClass>
+
+        {!isUnencrypted ? (
+          <div
+            style={{ cursor: 'pointer' }}
+            className="account-menu__logout-button"
+            onClick={() => {
+              lockMetamask()
+              history.push(DEFAULT_ROUTE)
+            }}
+          >
+            {this.context.t('logout')}
+          </div>
+        ) : (
+          ''
+        )}
       </Item>
       <Divider />
       <div className="account-menu__accounts">{this.renderAccounts()}</div>
@@ -203,6 +201,7 @@ AccountMenu.prototype.renderAccounts = function () {
         <div
           className="account-menu__account menu__item--clickable"
           onClick={() => showAccountDetail(identity.address)}
+          key={address}
         >
           <div className="account-menu__check-mark">
             {isSelected ? (

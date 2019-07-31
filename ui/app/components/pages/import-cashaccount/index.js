@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import Button from '../../button'
 import CashAccountUtils from '../../../../../app/scripts/lib/cashaccountutils'
 
@@ -24,67 +25,85 @@ class ImportCashAccount extends Component {
   state = {
     username: '',
     results: '',
+    loading: true,
     err: '',
   }
 
-  // componentDidMount () {
-  //
-  // }
+  componentDidMount() {
+    const { selectedSlpAddress } = this.props
+    const badgerSlpAddress = cashaccount.toSlpAddress(selectedSlpAddress)
 
-  onChange = e => {
-    const { value } = e.target
-
-    this.setState({ username: value })
-
-    if (value.length >= 4) {
-      if (!cashaccount.isCashAccount(value)) {
-        this.setState({ err: 'Not a valid Cashaccount' })
-      } else {
-        this.setState({ err: '' })
-      }
-    }
+    this.performReverseLookup(badgerSlpAddress)
   }
 
-  performSearch = async () => {
-    const { username } = this.state
+  performReverseLookup = async address => {
+    const validArray = []
     const { selectedAddress, selectedSlpAddress } = this.props
-    const results = await CashAccountUtils.getMatchingRegistration(
-      username,
-      selectedAddress,
-      selectedSlpAddress
-    )
+    const badgerSlpAddress = cashaccount.toSlpAddress(selectedSlpAddress)
 
-    if (results === undefined) {
-      this.setState({
-        err: 'No cash accounts for your wallet were found.',
+    const { data } = await axios
+      .get(`https://rest.bitcoin.com/v2/cashAccounts/reverselookup/${address}`)
+      .catch(err => {
+        return this.setState({ loading: false, results: validArray })
       })
+
+    for (const each of data.results) {
+      const resp = await cashaccount.trustedSearch(
+        `${each.nameText}#${each.accountNumber}`
+      )
+      for (const registration of resp) {
+        const bchAddr = registration.information.payment[0].address
+        const slpAddr = registration.information.payment[1].address
+
+        const isValid =
+          bchAddr === selectedAddress && slpAddr === badgerSlpAddress
+        if (isValid) {
+          validArray.push(registration)
+        }
+      }
     }
-    this.setState({ results })
+
+    this.setState({ loading: false, results: validArray })
   }
 
   renderResults = () => {
     const { results } = this.state
 
+    if (!results.length) {
+      return (
+        <div className="cashaccount-import"> No valid registrations found </div>
+      )
+    }
+
     return (
       <div className="cashaccount-import">
-        Please confirm that you are
-        <p className="identity">
-          {results.information.emoji}&nbsp;{results.identifier}.
-          {results.information.collision.hash}
-        </p>
-        <Button
-          type="primary"
-          large={true}
-          className="new-account-create-form__button"
-          onClick={() => {
-            this.restoreCashAccount(results)
-          }}
-        >
-          {this.context.t('confirm')}
-        </Button>
+        {results
+          ? results.map((x, i) => {
+              return (
+                <div key={i}>
+                  <p className="identity">
+                    {x.information.emoji}&nbsp;
+                    {x.identifier}
+                  </p>
+
+                  <Button
+                    type="primary"
+                    large={true}
+                    className="new-account-create-form__button"
+                    onClick={() => {
+                      this.restoreCashAccount(x)
+                    }}
+                  >
+                    {this.context.t('restore')}
+                  </Button>
+                </div>
+              )
+            })
+          : ''}
       </div>
     )
   }
+
   restoreCashAccount = async results => {
     const { txid } = results
     const { setCashAccount, history } = this.props
@@ -115,9 +134,24 @@ class ImportCashAccount extends Component {
     )
   }
 
-  render () {
+  renderSpinner = () => {
+    return (
+      <div className="lds-roller">
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+    )
+  }
+
+  render() {
     const { history } = this.props
-    const { err, results } = this.state
+    const { err, results, loading } = this.state
 
     return (
       <div>
@@ -126,31 +160,17 @@ class ImportCashAccount extends Component {
           <div className="cashaccount-import title">
             Import your existing Cashaccount
           </div>
-          <p className="cashaccount-import notice">
-            ie: Jonathan#100. Note, only accounts registered in Badger can be
-            recovered.
-          </p>
-          <div className="new-account-create-form__input-wrapper">
-            <input
-              className="new-account-create-form__input"
-              onChange={this.onChange}
-            />
-          </div>
-          {err !== '' && <aside className="error-message"> {err}</aside>}
-          <div className="new-account-create-form__buttons">
-            <Button
-              type="primary"
-              large={true}
-              className="new-account-create-form__button"
-              disabled={err !== ''}
-              onClick={() => {
-                this.performSearch()
-              }}
-            >
-              {this.context.t('search')}
-            </Button>
-          </div>
-          {results && this.renderResults()}
+
+          {loading ? (
+            <div style={{ textAlign: 'center' }}>{this.renderSpinner()}</div>
+          ) : (
+            <div>
+              <p className="cashaccount-import notice">
+                Note, only accounts registered in Badger can be recovered.
+              </p>
+              {results && this.renderResults()}
+            </div>
+          )}
         </div>
       </div>
     )

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import debounce from 'lodash.debounce'
-import { markNoticeRead } from '../../../../ui/app/actions'
+import { markNoticeRead, checkUnencrypted } from '../../../../ui/app/actions'
 import Identicon from '../../../../ui/app/components/identicon'
 import Breadcrumbs from './breadcrumbs'
 import { DEFAULT_ROUTE } from '../../../../ui/app/routes'
@@ -28,6 +28,7 @@ class NoticeScreen extends Component {
     history: PropTypes.object,
     isLoading: PropTypes.bool,
     noActiveNotices: PropTypes.bool,
+    checkUnencrypted: PropTypes.func,
   }
 
   static defaultProps = {
@@ -39,6 +40,7 @@ class NoticeScreen extends Component {
   }
 
   componentDidMount () {
+    this.props.checkUnencrypted()
     this.acceptTerms()
   }
 
@@ -116,6 +118,7 @@ export default compose(
     mapStateToProps,
     dispatch => ({
       markNoticeRead: notice => dispatch(markNoticeRead(notice)),
+      checkUnencrypted: () => dispatch(checkUnencrypted()),
     })
   )
 )(NoticeScreen)

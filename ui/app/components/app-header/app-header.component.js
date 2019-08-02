@@ -161,7 +161,7 @@ export default class AppHeader extends PureComponent {
             {cashaccount === undefined &&
               cashaccountRegistrations &&
               cashaccountRegistrations.length >= 1 && (
-                <div className="pending">registration pending</div>
+                <div className="pending">Registration pending</div>
               )}
           </div>
           <div className="app-header__account-menu-container">

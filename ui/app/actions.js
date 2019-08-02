@@ -119,6 +119,7 @@ var actions = {
   tryUnlockMetamask: tryUnlockMetamask,
   lockMetamask: lockMetamask,
   MARK_UNENCRYPTED: 'MARK_UNENCRYPTED',
+  MARK_ENCRYPTED: 'MARK_ENCRYPTED',
   checkUnencrypted: checkUnencrypted,
   SET_CASHACCOUNT: 'SET_CASHACCOUNT',
   SET_CASHACCOUNT_REGISTRATION: 'SET_CASHACCOUNT_REGISTRATION',
@@ -442,6 +443,7 @@ function createNewVaultAndRestore (password, seed) {
       })
     })
       .then(() => dispatch(actions.unMarkPasswordForgotten()))
+      .then(() => dispatch(actions.checkUnencrypted()))
       .then(() => {
         dispatch(actions.showAccountsPage())
         dispatch(actions.hideLoadingIndication())
@@ -498,6 +500,7 @@ function checkUnencrypted () {
       await verifyPassword('')
       dispatch(markUnencrypted())
     } catch (error) {
+      dispatch(markEncrypted())
     }
   }
 }
@@ -1512,6 +1515,11 @@ function unlockMetamask (account) {
 function markUnencrypted () {
   return {
     type: actions.MARK_UNENCRYPTED,
+  }
+}
+function markEncrypted () {
+  return {
+    type: actions.MARK_ENCRYPTED,
   }
 }
 

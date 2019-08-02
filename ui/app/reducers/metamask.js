@@ -101,6 +101,11 @@ function reduceMetamask(state, action) {
         isUnencrypted: true,
       })
 
+    case actions.MARK_ENCRYPTED:
+      return extend(metamaskState, {
+        isUnencrypted: false,
+      })
+
     case actions.SET_RPC_LIST:
       return extend(metamaskState, {
         frequentRpcList: action.value,

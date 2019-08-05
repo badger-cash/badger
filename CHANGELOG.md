@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.6
+
+- Re-enable CashAccounts
+- Automatic discovery of pre-existing CashAccounts on import
+- Re-enable BIP70 API preview
+- Fix: logout button displayed for accounts with no password
+
+## 0.7.5
+
+- Temporarily disable CashAccounts (revert to 0.7.3)
+
 ## 0.7.4
 
 - CashAccount registration and send support

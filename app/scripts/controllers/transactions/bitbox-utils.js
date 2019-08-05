@@ -391,7 +391,7 @@ class BitboxUtils {
             'Amount below minimum for this token. Increase the send amount and try again.'
           )
         }
-
+        
         const sortedSpendableTokenUtxos = spendableTokenUtxos.sort((a, b) => {
           const aQuantity = new BigNumber(a.slp.quantity)
           const bQuantity = new BigNumber(b.slp.quantity)
@@ -411,7 +411,7 @@ class BitboxUtils {
             break
           }
         }
-
+        
         if (!tokenBalance.gte(tokenSendAmount)) {
           throw new Error('Insufficient tokens')
         }
@@ -459,7 +459,7 @@ class BitboxUtils {
             break
           }
         }
-
+        
         const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {
@@ -475,18 +475,26 @@ class BitboxUtils {
             'Not enough Bitcoin Cash for fee. Deposit a small amount and try again.'
           )
         }
-
+        
         // SLP data output
         transactionBuilder.addOutput(sendOpReturn, 0)
-
+        
         // Token destination output
-        transactionBuilder.addOutput(to, 546)
-
+        if(to)
+          transactionBuilder.addOutput(to, 546)
+        else if(txParams.paymentData) {
+          // Payment Request multi outputs
+          let outputs = txParams.paymentData.outputs
+          for(let i = 1; i < outputs.length; i++) {
+            let toAddr = bitbox.Address.fromOutputScript(Buffer.from(outputs[i].script, 'hex'))
+            transactionBuilder.addOutput(toAddr, 546)
+          }
+        }
         // Return remaining token balance output
         if (tokenChangeAmount.isGreaterThan(0)) {
           transactionBuilder.addOutput(tokenChangeAddress, 546)
         }
-
+        
         // Return remaining bch balance output
         transactionBuilder.addOutput(from, satoshisRemaining + 546)
 
@@ -506,6 +514,7 @@ class BitboxUtils {
         const txid = await this.publishTx(hex)
         resolve(txid)
       } catch (err) {
+        console.log(err)
         reject(err)
       }
     })

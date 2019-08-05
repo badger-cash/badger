@@ -18,6 +18,7 @@ const {
 } = require('./enums')
 
 const bitboxUtils = require('./bitbox-utils')
+const slpUtils = require('./slp-utils')
 const PaymentProtocol = require('bitcore-payment-protocol')
 
 /**
@@ -211,18 +212,44 @@ class TransactionController extends EventEmitter {
     // Check for payment url
     // TODO: Payment requests
     if (txParams.paymentRequestUrl) {
-      const headers = {
+      var headers = {
         'Accept': 'application/bitcoincash-paymentrequest',
         'Content-Type': 'application/octet-stream',
       }
-  
-      const paymentResponse = await axios.get(txParams.paymentRequestUrl, {
-        headers,
-        responseType: 'blob',
-      })
+      
+      // Assume BCH, but fail over to SLP
+      var paymentResponse
+      var txType
+      try {
+        paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+          headers,
+          responseType: 'blob',
+        })
+        txType = 'BCH'
+      } catch(err) {
+        headers.Accept = 'application/simpleledger-paymentrequest'
+        paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+          headers,
+          responseType: 'blob',
+        })
+        txType = 'SLP'
+      }
 
       txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
       txParams.value = txParams.paymentData.totalValue
+      txParams.paymentData.type = txType
+      if (txType == 'SLP') {
+        var opReturnScript = txParams.paymentData.outputs[0].script
+        var decodedScript = slpUtils.decodeScriptPubKey(opReturnScript, txParams.paymentData.outputs.length - 1)
+        var tokenInfo = await slpUtils.getTokenInfo(decodedScript.token)
+        txParams.sendTokenData = {
+          tokenId: decodedScript.token,
+          tokenProtocol: 'slp',
+          tokenSymbol: tokenInfo.symbol
+        }
+        txParams.value = decodedScript.quantity.toNumber()
+      }
+      
     }
 
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)
@@ -231,6 +258,7 @@ class TransactionController extends EventEmitter {
       initialTxMeta,
       '#newUnapprovedTransaction - adding the origin'
     )
+    console.log(initialTxMeta)
     // listen for tx completion (success, fail)
     return new Promise((resolve, reject) => {
       this.txStateManager.once(

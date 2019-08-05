@@ -78,7 +78,11 @@ class SlpUtils {
       throw new Error('Not a SLP OP_RETURN')
     }
 
-    if (script[2] != 'OP_1') {
+    if (
+      script[2] !== 'OP_1' &&
+      script[2] !== 'OP_1NEGATE' &&
+      script[2] !== '41'
+    ) {
       // NOTE: bitcoincashlib-js converts hex 01 to OP_1 due to BIP62.3 enforcement
       throw new Error('Unknown token type')
     }

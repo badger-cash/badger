@@ -18,7 +18,7 @@ const {
 } = require('./enums')
 
 const bitboxUtils = require('./bitbox-utils')
-// var PaymentProtocol = require('bitcore-payment-protocol')
+const PaymentProtocol = require('bitcore-payment-protocol')
 
 /**
   Transaction Controller is an aggregate of sub-controllers and trackers
@@ -125,79 +125,79 @@ class TransactionController extends EventEmitter {
   }
 
   // TODO: Payment requests
-  // async decodePaymentRequest (requestData) {
-  //   return new Promise((resolve, reject) => {
-  //     toBuffer(requestData, function (err, buffer) {
-  //       if (err) reject(err)
+  async decodePaymentRequest (requestData) {
+    return new Promise((resolve, reject) => {
+      toBuffer(requestData, function (err, buffer) {
+        if (err) reject(err)
        
-  //       try {
-  //         var body = PaymentProtocol.PaymentRequest.decode(buffer)
-  //         var request = new PaymentProtocol().makePaymentRequest(body)
+        try {
+          var body = PaymentProtocol.PaymentRequest.decode(buffer)
+          var request = new PaymentProtocol().makePaymentRequest(body)
 
-  //         const detailsData = {}
-  //         var serializedDetails = request.get('serialized_payment_details')
+          const detailsData = {}
+          var serializedDetails = request.get('serialized_payment_details')
 
-  //         // Verify the request signature
-  //         const verifiedData = request.verify(true)
-  //         detailsData.verified = false
-  //         if (verifiedData.caTrusted && verifiedData.chainVerified && verifiedData.isChain &&
-  //           verifiedData.selfSigned === 0 && verifiedData.verified) {
-  //           detailsData.verified = true
-  //         } else {
-  //           reject(new Error('Request could not be verified'))
-  //         }
+          // Verify the request signature
+          const verifiedData = request.verify(true)
+          detailsData.verified = false
+          if (verifiedData.caTrusted && verifiedData.chainVerified && verifiedData.isChain &&
+            verifiedData.selfSigned === 0 && verifiedData.verified) {
+            detailsData.verified = true
+          } else {
+            reject(new Error('Request could not be verified'))
+          }
 
-  //         // Get the payment details
-  //         var decodedDetails = PaymentProtocol.PaymentDetails.decode(serializedDetails)
-  //         var details = new PaymentProtocol().makePaymentDetails(decodedDetails)
+          // Get the payment details
+          var decodedDetails = PaymentProtocol.PaymentDetails.decode(serializedDetails)
+          var details = new PaymentProtocol().makePaymentDetails(decodedDetails)
           
-  //         // Verify network is mainnet
-  //         detailsData.network = details.get('network')
-  //         if (detailsData.network !== 'main') {
-  //           reject(new Error('Network must be mainnet'))
-  //         }
+          // Verify network is mainnet
+          detailsData.network = details.get('network')
+          if (detailsData.network !== 'main') {
+            reject(new Error('Network must be mainnet'))
+          }
           
-  //         // Sanity check time created is in the past
-  //         const currentUnixTime = Math.floor(Date.now() / 1000)
-  //         detailsData.time = details.get('time')
-  //         if (currentUnixTime < detailsData.time) {
-  //           reject(new Error('Payment request time not valid'))
-  //         }
+          // Sanity check time created is in the past
+          const currentUnixTime = Math.floor(Date.now() / 1000)
+          detailsData.time = details.get('time')
+          if (currentUnixTime < detailsData.time) {
+            reject(new Error('Payment request time not valid'))
+          }
 
-  //         // Verify request is not yet expired
-  //         detailsData.expires = details.get('expires')
-  //         if (detailsData.expires < currentUnixTime) {
-  //           reject(new Error('Payment request expired'))
-  //         }
+          // Verify request is not yet expired
+          detailsData.expires = details.get('expires')
+          if (detailsData.expires < currentUnixTime) {
+            reject(new Error('Payment request expired'))
+          }
 
-  //         // Get memo, paymentUrl, merchantData and requiredFeeRate
-  //         detailsData.memo = details.get('memo')
-  //         detailsData.paymentUrl = details.get('payment_url')
-  //         const merchantData = details.get('merchant_data')
-  //         detailsData.merchantData = merchantData.toString()
-  //         detailsData.requiredFeeRate = details.get('required_fee_rate')
+          // Get memo, paymentUrl, merchantData and requiredFeeRate
+          detailsData.memo = details.get('memo')
+          detailsData.paymentUrl = details.get('payment_url')
+          const merchantData = details.get('merchant_data')
+          detailsData.merchantData = merchantData.toString()
+          detailsData.requiredFeeRate = details.get('required_fee_rate')
 
-  //         // Parse outputs as number amount and hex string script
-  //         detailsData.outputs = details.get('outputs').map(output => {
-  //           return {
-  //             amount: output.amount.toNumber(),
-  //             script: output.script.toString('hex'),
-  //           }
-  //         })
+          // Parse outputs as number amount and hex string script
+          detailsData.outputs = details.get('outputs').map(output => {
+            return {
+              amount: output.amount.toNumber(),
+              script: output.script.toString('hex'),
+            }
+          })
 
-  //         // Calculate total output value
-  //         let totalValue = 0
-  //         for (const output of detailsData.outputs) {
-  //           totalValue += output.amount
-  //         }
-  //         detailsData.totalValue = totalValue
-  //         resolve(detailsData)
-  //       } catch (ex) {
-  //         reject(ex)
-  //       }
-  //     })
-  //   })
-  // }
+          // Calculate total output value
+          let totalValue = 0
+          for (const output of detailsData.outputs) {
+            totalValue += output.amount
+          }
+          detailsData.totalValue = totalValue
+          resolve(detailsData)
+        } catch (ex) {
+          reject(ex)
+        }
+      })
+    })
+  }
 
   /**
   add a new unapproved transaction to the pipeline
@@ -210,20 +210,20 @@ class TransactionController extends EventEmitter {
   async newUnapprovedTransaction (txParams, opts = {}) {
     // Check for payment url
     // TODO: Payment requests
-    // if (txParams.paymentRequestUrl) {
-    //   const headers = {
-    //     'Accept': 'application/bitcoincash-paymentrequest',
-    //     'Content-Type': 'application/octet-stream',
-    //   }
+    if (txParams.paymentRequestUrl) {
+      const headers = {
+        'Accept': 'application/bitcoincash-paymentrequest',
+        'Content-Type': 'application/octet-stream',
+      }
   
-    //   const paymentResponse = await axios.get(txParams.paymentRequestUrl, {
-    //     headers,
-    //     responseType: 'blob',
-    //   })
+      const paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+        headers,
+        responseType: 'blob',
+      })
 
-    //   txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
-    //   txParams.value = txParams.paymentData.totalValue
-    // }
+      txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
+      txParams.value = txParams.paymentData.totalValue
+    }
 
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)
     initialTxMeta.origin = opts.origin

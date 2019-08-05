@@ -1,10 +1,10 @@
+import React from 'react'
 const inherits = require('util').inherits
 const Component = require('react').Component
 const connect = require('react-redux').connect
 const { compose } = require('recompose')
 const { withRouter } = require('react-router-dom')
 const PropTypes = require('prop-types')
-const h = require('react-hyperscript')
 const actions = require('../../actions')
 const {
   Menu,
@@ -14,17 +14,12 @@ const {
 } = require('../dropdowns/components/menu')
 const Identicon = require('../identicon')
 const { formatBalance } = require('../../util')
-const { ENVIRONMENT_TYPE_POPUP } = require('../../../../app/scripts/lib/enums')
-const { getEnvironmentType } = require('../../../../app/scripts/lib/util')
 const Tooltip = require('../tooltip')
-const classNames = require('classnames')
 
 const {
   SETTINGS_ROUTE,
   INFO_ROUTE,
   NEW_ACCOUNT_ROUTE,
-  IMPORT_ACCOUNT_ROUTE,
-  CONNECT_HARDWARE_ROUTE,
   REGISTER_CASHACCOUNT,
   DEFAULT_ROUTE,
 } = require('../../routes')
@@ -98,96 +93,77 @@ AccountMenu.prototype.render = function () {
     isUnencrypted,
   } = this.props
 
-  const logoutClass = classNames({
-    'button.account-menu__logout-button.hidden': isUnencrypted,
-    'button.account-menu__logout-button.test': !isUnencrypted,
-  })
+  return (
+    <Menu className="account-menu" isShowing={isAccountMenuOpen}>
+      <CloseArea onClick={toggleAccountMenu} />
+      <Item className="account-menu__header">
+        {this.context.t('myAccounts')}
 
-  return h(Menu, { className: 'account-menu', isShowing: isAccountMenuOpen }, [
-    h(CloseArea, { onClick: toggleAccountMenu }),
-    h(
-      Item,
-      {
-        className: 'account-menu__header',
-      },
-      [
-        this.context.t('myAccounts'),
-        h(
-          logoutClass,
-          {
-            onClick: () => {
+        {!isUnencrypted ? (
+          <div
+            style={{ cursor: 'pointer' }}
+            className="account-menu__logout-button"
+            onClick={() => {
               lockMetamask()
               history.push(DEFAULT_ROUTE)
-            },
-          },
-          this.context.t('logout')
-        ),
-      ]
-    ),
-    h(Divider),
-    h('div.account-menu__accounts', this.renderAccounts()),
-    h(Divider),
-    h(Item, {
-      onClick: () => {
-        toggleAccountMenu()
-        history.push(NEW_ACCOUNT_ROUTE)
-      },
-      icon: h('img.account-menu__item-icon', {
-        src: 'images/plus-btn-white.svg',
-      }),
-      text: this.context.t('createAccount'),
-    }),
-    h(Item, {
-      onClick: () => {
-        toggleAccountMenu()
-        history.push(REGISTER_CASHACCOUNT)
-      },
-      icon: h('img.account-menu__item-icon', {
-        src: 'images/cashaccount.svg',
-      }),
-      text: 'Register Username',
-    }),
-    // TODO: Import account
-    // h(Item, {
-    //   onClick: () => {
-    //     toggleAccountMenu()
-    //     history.push(IMPORT_ACCOUNT_ROUTE)
-    //   },
-    //   icon: h('img.account-menu__item-icon', { src: 'images/import-account.svg' }),
-    //   text: this.context.t('importAccount'),
-    // }),
-    // h(Item, {
-    //   onClick: () => {
-    //     toggleAccountMenu()
-    //     if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
-    //       global.platform.openExtensionInBrowser(CONNECT_HARDWARE_ROUTE)
-    //     } else {
-    //       history.push(CONNECT_HARDWARE_ROUTE)
-    //     }
-    //   },
-    //   icon: h('img.account-menu__item-icon', { src: 'images/connect-icon.svg' }),
-    //   text: this.context.t('connectHardwareWallet'),
-    // }),
-    h(Divider),
-    h(Item, {
-      onClick: () => {
-        toggleAccountMenu()
-        history.push(INFO_ROUTE)
-      },
-      icon: h('img', { src: 'images/mm-info-icon.svg' }),
-      text: this.context.t('infoHelp'),
-    }),
-    h(Item, {
-      onClick: () => {
-        toggleAccountMenu()
-        history.push(SETTINGS_ROUTE)
-      },
-      icon: h('img.account-menu__item-icon', {
-        src: 'images/settings.svg',
-      }),
-      text: this.context.t('settings'),
-    }),
-  ])
+            }}
+          >
+            {this.context.t('logout')}
+          </div>
+        ) : (
+          ''
+        )}
+      </Item>
+      <Divider />
+      <div className="account-menu__accounts">{this.renderAccounts()}</div>
+      <Divider />
+      <Item
+        onClick={() => {
+          toggleAccountMenu()
+          history.push(NEW_ACCOUNT_ROUTE)
+        }}
+        icon={
+          <img
+            className="account-menu__item-icon"
+            src="images/plus-btn-white.svg"
+          />
+        }
+        text={this.context.t('createAccount')}
+      />
+      <Item
+        onClick={() => {
+          toggleAccountMenu()
+          history.push(REGISTER_CASHACCOUNT)
+        }}
+        icon={
+          <img
+            className="account-menu__item-icon"
+            src="images/cashaccount.svg"
+          />
+        }
+        text="Register Username"
+      />
+      <Divider />
+      <Item
+        onClick={() => {
+          toggleAccountMenu()
+          history.push(INFO_ROUTE)
+        }}
+        icon={<img src="images/mm-info-icon.svg" />}
+        text={this.context.t('infoHelp')}
+      />
+      <Item
+        onClick={() => {
+          toggleAccountMenu()
+          history.push(SETTINGS_ROUTE)
+        }}
+        icon={
+          <img className="account-menu__item-icon" src="images/settings.svg" />
+        }
+        text={this.context.t('settings')}
+      />
+    </Menu>
+  )
 }
 
 AccountMenu.prototype.renderAccounts = function () {
@@ -199,10 +175,9 @@ AccountMenu.prototype.renderAccounts = function () {
     showAccountDetail,
   } = this.props
 
-  const accountOrder = keyrings.slice(0, 1).reduce(
-    (list, keyring) => list.concat(keyring.accounts),
-    []
-  )
+  const accountOrder = keyrings
+    .slice(0, 1)
+    .reduce((list, keyring) => list.concat(keyring.accounts), [])
   return accountOrder
     .filter(address => !!identities[address])
     .map(address => {
@@ -222,27 +197,25 @@ AccountMenu.prototype.renderAccounts = function () {
         )
       })
 
-      return h(
-        'div.account-menu__account.menu__item--clickable',
-        { onClick: () => showAccountDetail(identity.address) },
-        [
-          h('div.account-menu__check-mark', [
-            isSelected ? h('div.account-menu__check-mark-icon') : null,
-          ]),
-
-          h(Identicon, {
-            address: identity.address,
-            diameter: 24,
-          }),
-
-          h('div.account-menu__account-info', [
-            h('div.account-menu__name', identity.name || ''),
-            h('div.account-menu__balance', formattedBalance),
-          ]),
-
-          this.renderKeyringType(keyring),
-          this.renderRemoveAccount(keyring, identity),
-        ]
+      return (
+        <div
+          className="account-menu__account menu__item--clickable"
+          onClick={() => showAccountDetail(identity.address)}
+          key={address}
+        >
+          <div className="account-menu__check-mark">
+            {isSelected ? (
+              <div className="account-menu__check-mark-icon" />
+            ) : null}
+          </div>
+          <Identicon address={identity.address} diameter={24} />
+          <div className="account-menu__account-info">
+            <div className="account-menu__name">{identity.name || ''}</div>
+            <div className="account-menu__balance">{formattedBalance}</div>
+          </div>
+          {this.renderKeyringType(keyring)}
+          {this.renderRemoveAccount(keyring, identity)}
+        </div>
       )
     })
 }
@@ -252,21 +225,13 @@ AccountMenu.prototype.renderRemoveAccount = function (keyring, identity) {
   const type = keyring.type
   const isRemovable = type !== 'HD Key Tree'
   if (isRemovable) {
-    return h(
-      Tooltip,
-      {
-        title: this.context.t('removeAccount'),
-        position: 'bottom',
-      },
-      [
-        h(
-          'a.remove-account-icon',
-          {
-            onClick: e => this.removeAccount(e, identity),
-          },
-          ''
-        ),
-      ]
+    return (
+      <Tooltip title={this.context.t('removeAccount')} position="bottom">
+        <a
+          className="remove-account-icon"
+          onClick={e => this.removeAccount(e, identity)}
+        />
+      </Tooltip>
     )
   }
   return null
@@ -296,7 +261,9 @@ AccountMenu.prototype.renderKeyringType = function (keyring) {
         label = ''
     }
 
-    return label !== '' ? h('.keyring-label.allcaps', label) : null
+    return label !== '' ? (
+      <div className="keyring-label allcaps">{label}</div>
+    ) : null
   } catch (e) {
     return
   }

@@ -59,7 +59,26 @@ class SlpUtils {
       Buffer.from(txOut.tx.vout[0].scriptPubKey.hex, 'hex')
     ).split(' ')
 
-    const type = this.getSLPTxType(script)
+    if (script[0] !== 'OP_RETURN') {
+      throw new Error('Not an OP_RETURN')
+    }
+
+    if (script[1] !== this.lokadIdHex) {
+      throw new Error('Not a SLP OP_RETURN')
+    }
+
+    if (
+      script[2] !== 'OP_1' &&
+      script[2] !== 'OP_1NEGATE' &&
+      script[2] !== '41'
+    ) {
+      // NOTE: bitcoincashlib-js converts hex 01 to OP_1 due to BIP62.3 enforcement
+      throw new Error('Unknown token type')
+    }
+
+    const type = Buffer.from(script[3], 'hex')
+      .toString('ascii')
+      .toLowerCase()
 
     if (type === 'genesis') {
       if (typeof script[9] === 'string' && script[9].startsWith('OP_')) {

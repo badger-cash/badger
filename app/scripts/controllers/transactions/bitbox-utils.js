@@ -510,8 +510,67 @@ class BitboxUtils {
         })
 
         const hex = transactionBuilder.build().toHex()
+        // Define txid
+        var txid
+        
+        // Begin BIP70 SLP
+        if (txParams.paymentRequestUrl) {
+          // send the payment transaction
+          var payment = new PaymentProtocol().makePayment()
+          payment.set(
+            'merchant_data',
+            Buffer.from(txParams.paymentData.merchantData, 'utf-8')
+          )
+          payment.set('transactions', [Buffer.from(hex, 'hex')])
 
-        const txid = await this.publishTx(hex)
+          // calculate refund script pubkey from change address
+          //const refundPubkey = SLP.ECPair.toPublicKey(keyPair)
+          //const refundHash160 = SLP.Crypto.hash160(Buffer.from(refundPubkey))
+          const addressType = SLP.Address.detectAddressType(tokenChangeAddress)
+          const addressFormat = SLP.Address.detectAddressFormat(tokenChangeAddress)
+          var refundHash160 = SLP.Address.cashToHash160(tokenChangeAddress)
+          var encodingFunc = SLP.Script.pubKeyHash.output.encode
+          if (addressType == 'p2sh')
+            encodingFunc = SLP.Script.scriptHash.output.encode
+          if (addressFormat == 'legacy')
+            refundHash160 = SLP.Address.legacyToHash160(tokenChangeAddress)
+          const refundScriptPubkey = encodingFunc(
+            Buffer.from(refundHash160, 'hex')
+          )
+
+          // define the refund outputs
+          var refundOutputs = []
+          var refundOutput = new PaymentProtocol().makeOutput()
+          refundOutput.set('amount', 0)
+          refundOutput.set('script', refundScriptPubkey)
+          refundOutputs.push(refundOutput.message)
+          payment.set('refund_to', refundOutputs)
+          payment.set('memo', '')
+
+          // serialize and send
+          const rawbody = payment.serialize()
+          const headers = {
+            Accept:
+              'application/simpleledger-paymentrequest, application/simpleledger-paymentack',
+            'Content-Type': 'application/simpleledger-payment',
+            'Content-Transfer-Encoding': 'binary',
+          }
+          const response = await axios.post(
+            txParams.paymentData.paymentUrl,
+            rawbody,
+            {
+              headers,
+              responseType: 'blob',
+            }
+          )
+
+          const responseTxHex = await this.decodePaymentResponse(response.data)
+          txid = this.txidFromHex(responseTxHex)
+        } else {
+          // Standard SLP
+          txid = await this.publishTx(hex)
+        }
+
         resolve(txid)
       } catch (err) {
         console.log(err)

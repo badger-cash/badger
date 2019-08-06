@@ -247,7 +247,10 @@ class TransactionController extends EventEmitter {
           tokenProtocol: 'slp',
           tokenSymbol: tokenInfo.symbol
         }
-        txParams.value = decodedScript.quantity.toNumber()
+        var decimals = tokenInfo.decimals
+        txParams.value = decodedScript.quantity
+          .dividedBy(10 ** decimals)
+          .toNumber()
       }
       
     }
@@ -258,7 +261,7 @@ class TransactionController extends EventEmitter {
       initialTxMeta,
       '#newUnapprovedTransaction - adding the origin'
     )
-    console.log(initialTxMeta)
+    //console.log(initialTxMeta)
     // listen for tx completion (success, fail)
     return new Promise((resolve, reject) => {
       this.txStateManager.once(

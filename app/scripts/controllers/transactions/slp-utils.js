@@ -141,9 +141,9 @@ class SlpUtils {
   }
 
   
-  static decodeScriptPubKey (scriptPubKeyHexString, numOutputs) {
+  static decodeScriptPubKey (scriptPubKeyHexString, outputIndex) {
     const txOut = {
-      vout: numOutputs,
+      vout: outputIndex,
       tx: {
         vout: [
           {

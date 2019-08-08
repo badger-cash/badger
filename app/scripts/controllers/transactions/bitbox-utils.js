@@ -379,6 +379,14 @@ class BitboxUtils {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
+        // Get to addresses from payment request
+        if(!txParams.to && txParams.paymentRequestUrl) {
+          txParams.to = []
+          let outputs = txParams.paymentData.outputs
+          for(let i = 1; i < outputs.length; i++) {
+            txParams.to.push(bitbox.Address.fromOutputScript(Buffer.from(outputs[i].script, 'hex')))
+          }
+        }
         const to = txParams.to
         const tokenDecimals = tokenMetadata.decimals
         const scaledTokenSendAmount = new BigNumber(
@@ -419,20 +427,24 @@ class BitboxUtils {
         const tokenChangeAmount = tokenBalance.minus(tokenSendAmount)
 
         let sendOpReturn
+        // Handle multi-output SLP
+        let tokenSendArray = txParams.valueArray ? 
+          txParams.valueArray.map(num => new BigNumber(num)) : [tokenSendAmount]
 
         if (tokenChangeAmount.isGreaterThan(0)) {
+          tokenSendArray.push(tokenChangeAmount)
           sendOpReturn = SLPJS.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [tokenSendAmount, tokenChangeAmount],
+            outputQtyArray: tokenSendArray,
           })
         } else {
           sendOpReturn = SLPJS.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [tokenSendAmount],
+            outputQtyArray: tokenSendArray,
           })
         }
 
-        const tokenReceiverAddressArray = [to]
+        const tokenReceiverAddressArray = Array.isArray(to) ? to.slice(0) : [to]
         if (tokenChangeAmount.isGreaterThan(0)) {
           tokenReceiverAddressArray.push(tokenChangeAddress)
         }
@@ -480,16 +492,16 @@ class BitboxUtils {
         transactionBuilder.addOutput(sendOpReturn, 0)
         
         // Token destination output
-        if(to)
-          transactionBuilder.addOutput(to, 546)
-        else if(txParams.paymentData) {
-          // Payment Request multi outputs
-          let outputs = txParams.paymentData.outputs
-          for(let i = 1; i < outputs.length; i++) {
-            let toAddr = bitbox.Address.fromOutputScript(Buffer.from(outputs[i].script, 'hex'))
-            transactionBuilder.addOutput(toAddr, 546)
+        if(to) {
+          if(Array.isArray(to)) {
+            for(const addr of to) {
+              transactionBuilder.addOutput(addr, 546)
+            }
+          } else {
+            transactionBuilder.addOutput(to, 546)
           }
         }
+
         // Return remaining token balance output
         if (tokenChangeAmount.isGreaterThan(0)) {
           transactionBuilder.addOutput(tokenChangeAddress, 546)

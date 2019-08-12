@@ -1,3 +1,4 @@
+import React from 'react'
 const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
@@ -11,6 +12,7 @@ const currencies = require('currency-formatter/currencies')
 const ethUtil = require('ethereumjs-util')
 const PropTypes = require('prop-types')
 // import { formatTokenAmount } from '../../../helpers/formatter-numbers.util'
+import TokenList from '../../pages/add-token/token-list/token-list.container'
 
 CurrencyDisplay.contextTypes = {
   t: PropTypes.func,
@@ -146,14 +148,12 @@ CurrencyDisplay.prototype.onlyRenderConversions = function (
     convertedBalanceClassName = 'currency-display__converted-value',
     convertedCurrency,
   } = this.props
-  return h(
-    'div',
-    {
-      className: convertedBalanceClassName,
-    },
-    convertedValueToRender == null
-      ? this.context.t('noConversionRateAvailable')
-      : `${convertedValueToRender} ${convertedCurrency.toUpperCase()}`
+  return (
+    <div className={convertedBalanceClassName}>
+      {convertedValueToRender == null
+        ? this.context.t('noConversionRateAvailable')
+        : `${convertedValueToRender} ${convertedCurrency.toUpperCase()}`}
+    </div>
   )
 }
 
@@ -166,6 +166,7 @@ CurrencyDisplay.prototype.render = function () {
     inError = false,
     onBlur,
     step,
+    swap,
   } = this.props
   const { valueToRender } = this.state
 
@@ -177,46 +178,53 @@ CurrencyDisplay.prototype.render = function () {
     convertedValueToRender = null
   }
 
-  return h(
-    'div',
-    {
-      className,
-      style: {
-        borderColor: inError ? 'red' : null,
-      },
-      onClick: () => {
-        this.currencyInput && this.currencyInput.focus()
-      },
-    },
-    [
-      h('div.currency-display__primary-row', [
-        h('div.currency-display__input-wrapper', [
-          h('input', {
-            className: primaryBalanceClassName,
-            value: `${valueToRender}`,
-            placeholder: '0',
-            type: 'number',
-            readOnly,
-            ...(!readOnly
-              ? {
-                  onChange: e => this.handleChange(e.target.value),
-                  onBlur: () => onBlur(this.getAmount(valueToRender)),
-                }
-              : {}),
-            ref: input => {
-              this.currencyInput = input
-            },
-            style: {
-              width: this.getInputWidth(valueToRender, readOnly),
-            },
-            min: 0,
-            step,
-          }),
+  return (
+    <div className="currency-display-fl">
+      <div
+        className={className}
+        style={{
+          borderColor: inError ? 'red' : null,
+        }}
+        onClick={() => {
+          this.currencyInput && this.currencyInput.focus()
+        }}
+      >
+        <div className="currency-display__primary-row">
+          <div className="currency-display__input-wrapper">
+            <input
+              className={primaryBalanceClassName}
+              value={`${valueToRender}`}
+              placeholder="0"
+              type="number"
+              readOnly={readOnly}
+              {...(!readOnly
+                ? {
+                    onChange: e => this.handleChange(e.target.value),
+                    onBlur: () => onBlur(this.getAmount(valueToRender)),
+                  }
+                : {})}
+              ref={input => {
+                this.currencyInput = input
+              }}
+              style={{
+                width: this.getInputWidth(valueToRender, readOnly),
+              }}
+              min={0}
+              step={step}
+            />
+            <span className="currency-display__currency-symbol">
+              {primaryCurrency}
+            </span>
+          </div>
+        </div>
 
-          h('span.currency-display__currency-symbol', primaryCurrency),
-        ]),
-      ]),
-      this.onlyRenderConversions(convertedValueToRender),
-    ]
+        {this.onlyRenderConversions(convertedValueToRender)}
+      </div>
+      {swap && (
+        <div className="swap-currency">
+          <img src="/images/swap-currency.svg" />
+        </div>
+      )}
+    </div>
   )
 }

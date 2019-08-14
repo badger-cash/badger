@@ -96,4 +96,15 @@
     color: #ffffffe6;
     border-radius: 5px;
   }
+
+  .pending:hover{
+    opacity: 0.8;
+  }
+
+  .tooltip-cashaccount {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

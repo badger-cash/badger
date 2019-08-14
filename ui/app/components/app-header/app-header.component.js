@@ -17,6 +17,8 @@ const {
 } = require('../../routes')
 const Identicon = require('../identicon')
 const NetworkIndicator = require('../network')
+const copyToClipboard = require('copy-to-clipboard')
+const Tooltip = require('../tooltip-v2.js').default
 
 export default class AppHeader extends PureComponent {
   static propTypes = {
@@ -38,6 +40,10 @@ export default class AppHeader extends PureComponent {
 
   static contextTypes = {
     t: PropTypes.func,
+  }
+
+  state = {
+    copyToClipboardPressed: false,
   }
 
   async componentDidMount () {
@@ -152,9 +158,36 @@ export default class AppHeader extends PureComponent {
           </div>
           <div>
             {cashaccount && cashaccount.information !== undefined ? (
-              <div className="pending">
-                {cashaccount.information.emoji} {cashaccount.identifier}
-              </div>
+              <Tooltip
+                position="bottom"
+                title={
+                  this.state.hasCopied
+                    ? this.context.t('copiedExclamation')
+                    : this.context.t('copyToClipboard')
+                }
+                wrapperClassName="tooltip-cashaccount"
+              >
+                <div
+                  className={`pending`}
+                  onClick={() => {
+                    copyToClipboard(cashaccount.identifier)
+                    this.setState({ hasCopied: true })
+                    setTimeout(() => this.setState({ hasCopied: false }), 3000)
+                  }}
+                  onMouseDown={() => {
+                    this.setState({ copyToClipboardPressed: true })
+                  }}
+                  onMouseUp={() => {
+                    this.setState({ copyToClipboardPressed: false })
+                  }}
+                >
+                  {cashaccount.information.emoji} {cashaccount.identifier}
+                  <i
+                    className="fa fa-clipboard"
+                    style={{ marginLeft: '8px' }}
+                  />
+                </div>
+              </Tooltip>
             ) : (
               ''
             )}

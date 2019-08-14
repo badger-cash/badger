@@ -18,6 +18,7 @@ const {
 } = require('./enums')
 
 const bitboxUtils = require('./bitbox-utils')
+const slpUtils = require('./slp-utils')
 const PaymentProtocol = require('bitcore-payment-protocol')
 
 /**
@@ -211,18 +212,55 @@ class TransactionController extends EventEmitter {
     // Check for payment url
     // TODO: Payment requests
     if (txParams.paymentRequestUrl) {
-      const headers = {
+      var headers = {
         'Accept': 'application/bitcoincash-paymentrequest',
         'Content-Type': 'application/octet-stream',
       }
-  
-      const paymentResponse = await axios.get(txParams.paymentRequestUrl, {
-        headers,
-        responseType: 'blob',
-      })
+      
+      // Assume BCH, but fail over to SLP
+      var paymentResponse
+      var txType
+      try {
+        paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+          headers,
+          responseType: 'blob',
+        })
+        txType = 'BCH'
+      } catch(err) {
+        headers.Accept = 'application/simpleledger-paymentrequest'
+        paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+          headers,
+          responseType: 'blob',
+        })
+        txType = 'SLP'
+      }
 
       txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
       txParams.value = txParams.paymentData.totalValue
+      txParams.paymentData.type = txType
+      // Handle SLP payment requests
+      if (txType == 'SLP') {
+        txParams.value = 0
+        var opReturnScript = txParams.paymentData.outputs[0].script
+        var decodedScriptArray = []
+        for(let i = 1; i < txParams.paymentData.outputs.length; i++) {
+          let decodedScript = slpUtils.decodeScriptPubKey(opReturnScript, i)
+          decodedScriptArray.push(decodedScript)
+        }
+        var tokenInfo = await slpUtils.getTokenInfo(decodedScriptArray[0].token)
+        txParams.sendTokenData = {
+          tokenId: decodedScriptArray[0].token,
+          tokenProtocol: 'slp',
+          tokenSymbol: tokenInfo.symbol
+        }
+        var decimals = tokenInfo.decimals
+        txParams.value = decodedScriptArray.reduce(function sum(total, decoded) {
+          return total + decoded.quantity.dividedBy(10 ** decimals).toNumber()
+        }, 0)
+
+        txParams.valueArray = decodedScriptArray.map(decoded => decoded.quantity)
+      }
+      
     }
 
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)

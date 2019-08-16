@@ -1,4 +1,5 @@
 import React from 'react'
+
 const Component = require('react').Component
 const inherits = require('util').inherits
 const {
@@ -22,6 +23,7 @@ export default class CurrencyDisplay extends Component {
   state = {
     swapCurrency: false,
     valueToRender: '',
+    swappedValueToRender: '',
   }
 
   componentWillMount = () => {
@@ -98,6 +100,7 @@ export default class CurrencyDisplay extends Component {
     })
 
     convertedValue = Number(convertedValue).toFixed(2)
+
     const upperCaseCurrencyCode = convertedCurrency.toUpperCase()
     return currencies.find(currency => currency.code === upperCaseCurrencyCode)
       ? currencyFormatter.format(Number(convertedValue), {
@@ -106,11 +109,58 @@ export default class CurrencyDisplay extends Component {
       : convertedValue
   }
 
+  getBCHValue = value => {
+    const { conversionRate } = this.props
+    const swappedValue = value / conversionRate
+
+    return Number(swappedValue).toFixed(8)
+  }
+
   handleChange = newVal => {
     this.setState({
       valueToRender: removeLeadingZeroes(newVal),
     })
+
     this.props.onChange(this.getAmount(newVal))
+  }
+
+  handleChangeSwap = newVal => {
+    const { primaryCurrency, convertedCurrency, conversionRate } = this.props
+
+    const bchValue = this.getBCHValue(floatValue || newVal)
+
+    if (
+      conversionRate === 0 ||
+      conversionRate === null ||
+      conversionRate === undefined
+    ) {
+      if (newVal !== 0) {
+        return null
+      }
+    }
+
+    let usdValue = conversionUtil(bchValue, {
+      fromNumericBase: 'dec',
+      fromCurrency: primaryCurrency,
+      toCurrency: convertedCurrency,
+      numberOfDecimals: 2,
+      conversionRate,
+    })
+    usdValue = Number(usdValue).toFixed(2)
+
+    const formattedValue = currencies.find(
+      currency => currency.code === convertedCurrency.toUpperCase()
+    )
+      ? currencyFormatter.format(Number(usdValue), {
+          code: convertedCurrency.toUpperCase(),
+        })
+      : usdValue
+
+    this.setState({
+      swappedValueToRender: bchValue,
+      formattedValue,
+      valueToRender: newVal,
+    })
   }
 
   onlyRenderConversions = convertedValueToRender => {
@@ -136,10 +186,85 @@ export default class CurrencyDisplay extends Component {
 
   handleSwap = props => {
     const { swapCurrency } = this.state
-    console.log('do something', props)
-    this.setState({ swapCurrency: !swapCurrency })
+
+    // prevent accident values
+    this.handleChange('0')
+    this.setState({
+      swapCurrency: !swapCurrency,
+      swappedValueToRender: 0,
+      formattedValue: 0,
+    })
   }
 
+  bchInput = () => {
+    const {
+      primaryBalanceClassName = 'currency-display__input',
+      primaryCurrency,
+      readOnly = false,
+      onBlur,
+      step,
+    } = this.props
+    const { valueToRender } = this.state
+
+    return (
+      <div>
+        <input
+          className={primaryBalanceClassName}
+          value={`${valueToRender}`}
+          placeholder="0"
+          readOnly={readOnly}
+          {...(!readOnly
+            ? {
+                onChange: e => {
+                  this.handleChange(e.target.value)
+                },
+                onBlur: () => onBlur(this.getAmount(valueToRender)),
+              }
+            : {})}
+          ref={input => {
+            this.currencyInput = input
+          }}
+          style={{
+            width: this.getInputWidth(valueToRender, readOnly),
+          }}
+          min={0}
+          step={step}
+        />
+        <span className="currency-display__currency-symbol">
+          {primaryCurrency}
+        </span>
+      </div>
+    )
+  }
+
+  swapInput = () => {
+    const {
+      primaryBalanceClassName = 'currency-display__input',
+      convertedCurrency,
+    } = this.props
+
+    const upperCaseCurrencyCode = convertedCurrency.toUpperCase()
+
+    const { valueToRender, formattedValue } = this.state
+
+    return (
+      <div>
+        <input
+          className={primaryBalanceClassName}
+          onChange={e => {
+            this.handleChangeSwap(e.target.value)
+          }}
+          value={valueToRender}
+          onBlur={() => {}}
+          style={{ maxWidth: '80px' }}
+        />
+
+        <span>
+          {formattedValue} {upperCaseCurrencyCode}
+        </span>
+      </div>
+    )
+  }
   render () {
     let {
       className = 'currency-display',
@@ -152,7 +277,7 @@ export default class CurrencyDisplay extends Component {
       swap,
       convertedCurrency,
     } = this.props
-    const { valueToRender } = this.state
+    const { valueToRender, swapCurrency, swappedValueToRender } = this.state
 
     let convertedValueToRender = this.getConvertedValueToRender(valueToRender)
 
@@ -161,8 +286,6 @@ export default class CurrencyDisplay extends Component {
       primaryCurrency = selectedToken.symbol
       convertedValueToRender = null
     }
-
-    console.log('valueToRender', valueToRender)
 
     return (
       <div>
@@ -177,34 +300,13 @@ export default class CurrencyDisplay extends Component {
         >
           <div className="currency-display__primary-row">
             <div className="currency-display__input-wrapper">
-              <input
-                className={primaryBalanceClassName}
-                value={`${valueToRender}`}
-                placeholder="0"
-                type="number"
-                readOnly={readOnly}
-                {...(!readOnly
-                  ? {
-                      onChange: e => this.handleChange(e.target.value),
-                      onBlur: () => onBlur(this.getAmount(valueToRender)),
-                    }
-                  : {})}
-                ref={input => {
-                  this.currencyInput = input
-                }}
-                style={{
-                  width: this.getInputWidth(valueToRender, readOnly),
-                }}
-                min={0}
-                step={step}
-              />
-              <span className="currency-display__currency-symbol">
-                {primaryCurrency}
-              </span>
+              {!swapCurrency ? this.bchInput() : this.swapInput()}
             </div>
           </div>
 
-          {this.onlyRenderConversions(convertedValueToRender)}
+          {!swapCurrency
+            ? this.onlyRenderConversions(convertedValueToRender)
+            : `${swappedValueToRender} ${primaryCurrency}`}
         </div>
         {swap && (
           <div
@@ -214,7 +316,9 @@ export default class CurrencyDisplay extends Component {
             }}
           >
             <img src="/images/swap-currency.svg" />
-            <p className="swap"> {convertedCurrency}</p>
+            <p className="swap">
+              {!swapCurrency ? convertedCurrency : primaryCurrency}
+            </p>
           </div>
         )}
       </div>

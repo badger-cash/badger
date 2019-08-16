@@ -117,6 +117,7 @@ export default class SendAmountRow extends Component {
           selectedToken={selectedToken}
           value={amount}
           step="any"
+          swap={true}
         />
       </SendRowWrapper>
     )

@@ -16,6 +16,8 @@ import TokenList from '../../pages/add-token/token-list/token-list.container'
 export default class CurrencyDisplay extends Component {
   static propTypes = {
     calculateTxFee: PropTypes.func,
+    updateSendAmount: PropTypes.func,
+    setMaxModeTo: PropTypes.func,
   }
 
   static contextTypes = { t: PropTypes.func }
@@ -24,6 +26,7 @@ export default class CurrencyDisplay extends Component {
     swapCurrency: false,
     valueToRender: '',
     swappedValueToRender: '',
+    inputValue: '',
   }
 
   componentWillMount = () => {
@@ -35,6 +38,20 @@ export default class CurrencyDisplay extends Component {
   componentWillReceiveProps = nextProps => {
     const currentValueToRender = this.getValueToRender(this.props)
     const newValueToRender = this.getValueToRender(nextProps)
+    const { swap } = nextProps
+
+    if (swap) {
+      const usdValue = conversionUtil(newValueToRender, {
+        fromNumericBase: 'dec',
+        fromCurrency: this.props.primaryCurrency,
+        toCurrency: this.props.convertedCurrency,
+        numberOfDecimals: 2,
+        conversionRate: this.props.conversionRate,
+      })
+
+      this.handleChangeSwap(usdValue)
+    }
+
     if (currentValueToRender !== newValueToRender) {
       this.setState({
         valueToRender: newValueToRender,
@@ -125,9 +142,15 @@ export default class CurrencyDisplay extends Component {
   }
 
   handleChangeSwap = newVal => {
-    const { primaryCurrency, convertedCurrency, conversionRate } = this.props
+    const {
+      primaryCurrency,
+      convertedCurrency,
+      conversionRate,
+      updateSendAmount,
+    } = this.props
 
-    const bchValue = this.getBCHValue(floatValue || newVal)
+    const bchValue = this.getBCHValue(newVal)
+    updateSendAmount(this.getAmount(bchValue))
 
     if (
       conversionRate === 0 ||
@@ -159,7 +182,7 @@ export default class CurrencyDisplay extends Component {
     this.setState({
       swappedValueToRender: bchValue,
       formattedValue,
-      valueToRender: newVal,
+      inputValue: newVal,
     })
   }
 
@@ -184,15 +207,20 @@ export default class CurrencyDisplay extends Component {
     return valueLength + decimalPointDeficit + 0.75 + 'ch'
   }
 
-  handleSwap = props => {
+  handleSwap = () => {
     const { swapCurrency } = this.state
+    const { setMaxModeTo } = this.props
+
+    setMaxModeTo(false)
 
     // prevent accident values
     this.handleChange('0')
+
     this.setState({
       swapCurrency: !swapCurrency,
-      swappedValueToRender: 0,
-      formattedValue: 0,
+      swappedValueToRender: '',
+      formattedValue: '',
+      inputValue: '',
     })
   }
 
@@ -241,11 +269,12 @@ export default class CurrencyDisplay extends Component {
     const {
       primaryBalanceClassName = 'currency-display__input',
       convertedCurrency,
+      updateSendAmount,
     } = this.props
 
     const upperCaseCurrencyCode = convertedCurrency.toUpperCase()
 
-    const { valueToRender, formattedValue } = this.state
+    const { inputValue, formattedValue, swappedValueToRender } = this.state
 
     return (
       <div>
@@ -254,29 +283,30 @@ export default class CurrencyDisplay extends Component {
           onChange={e => {
             this.handleChangeSwap(e.target.value)
           }}
-          value={valueToRender}
-          onBlur={() => {}}
+          onBlur={() => {
+            updateSendAmount(this.getAmount(swappedValueToRender))
+          }}
+          placeholder={`0 ${upperCaseCurrencyCode}`}
+          value={inputValue}
           style={{ maxWidth: '80px' }}
         />
-
-        <span>
-          {formattedValue} {upperCaseCurrencyCode}
-        </span>
+        {inputValue && (
+          <span>
+            {formattedValue} {upperCaseCurrencyCode}
+          </span>
+        )}
       </div>
     )
   }
   render () {
     let {
       className = 'currency-display',
-      primaryBalanceClassName = 'currency-display__input',
       primaryCurrency,
-      readOnly = false,
       inError = false,
-      onBlur,
-      step,
       swap,
       convertedCurrency,
     } = this.props
+
     const { valueToRender, swapCurrency, swappedValueToRender } = this.state
 
     let convertedValueToRender = this.getConvertedValueToRender(valueToRender)
@@ -312,7 +342,7 @@ export default class CurrencyDisplay extends Component {
           <div
             className="swap-currency"
             onClick={() => {
-              this.handleSwap(this.props)
+              this.handleSwap()
             }}
           >
             <img src="/images/swap-currency.svg" />

@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../button'
 const Component = require('react').Component
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
@@ -11,7 +12,7 @@ const genAccountLink = require('../../../lib/account-link.js')
 const QrView = require('../qr-code')
 const EditableLabel = require('../editable-label')
 
-import Button from '../button'
+const bchaddr = require('bchaddrjs-slp')
 
 function mapStateToProps (state) {
   return {
@@ -65,7 +66,9 @@ AccountDetailsModal.prototype.render = function () {
     keyrings,
   } = this.props
 
-  const { name, address } = selectedIdentity
+  const { showSLP } = this.state
+  let { name, address, slpAddress } = selectedIdentity
+  slpAddress = bchaddr.toSlpAddress(slpAddress)
 
   const keyring = keyrings.find(kr => {
     return kr.accounts.includes(address)
@@ -86,15 +89,32 @@ AccountDetailsModal.prototype.render = function () {
       />
       <QrView
         Qr={{
-          data: address,
+          data: showSLP ? slpAddress : address,
         }}
       />
+      <div
+        style={{ marginTop: '0.8rem' }}
+        className="div flex-column flex-center"
+      >
+        <button
+          className="button btn-primary btn--large settings__button--orange"
+          onClick={() => {
+            this.setState({ showSLP: !showSLP })
+          }}
+        >
+          {!showSLP ? 'View SLP Details' : 'View BCH Details'}
+        </button>
+      </div>
+
       <div className="account-modal-divider" />
+
       <Button
         type="primary"
         className="account-modal__button"
         onClick={() =>
-          global.platform.openWindow({ url: genAccountLink(address, 1) })
+          global.platform.openWindow({
+            url: genAccountLink(showSLP ? slpAddress : address, 1),
+          })
         }
       >
         {this.context.t('etherscanView')}

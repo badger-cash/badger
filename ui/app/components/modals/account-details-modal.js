@@ -1,3 +1,4 @@
+import React from 'react'
 const Component = require('react').Component
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
@@ -37,6 +38,10 @@ function mapDispatchToProps (dispatch) {
 inherits(AccountDetailsModal, Component)
 function AccountDetailsModal () {
   Component.call(this)
+
+  this.state = {
+    showSLP: false,
+  }
 }
 
 AccountDetailsModal.contextTypes = {
@@ -59,6 +64,7 @@ AccountDetailsModal.prototype.render = function () {
     setAccountLabel,
     keyrings,
   } = this.props
+
   const { name, address } = selectedIdentity
 
   const keyring = keyrings.find(kr => {
@@ -71,45 +77,28 @@ AccountDetailsModal.prototype.render = function () {
     exportPrivateKeyFeatureEnabled = false
   }
 
-  return h(AccountModalContainer, {}, [
-    h(EditableLabel, {
-      className: 'account-modal__name',
-      defaultValue: name,
-      onSubmit: label => setAccountLabel(address, label),
-    }),
-
-    h(QrView, {
-      Qr: {
-        data: address,
-      },
-    }),
-
-    h('div.account-modal-divider'),
-
-    h(
-      Button,
-      {
-        type: 'primary',
-        className: 'account-modal__button',
-        // onClick: () => global.platform.openWindow({ url: genAccountLink(address, network) }),
-        onClick: () =>
-          global.platform.openWindow({ url: genAccountLink(address, 1) }),
-      },
-      this.context.t('etherscanView')
-    ),
-
-    // Holding on redesign for Export Private Key functionality
-
-    // exportPrivateKeyFeatureEnabled
-    //   ? h(
-    //       Button,
-    //       {
-    //         type: 'primary',
-    //         className: 'account-modal__button',
-    //         onClick: () => showExportPrivateKeyModal(),
-    //       },
-    //       this.context.t('exportPrivateKey')
-    //     )
-    //   : null,
-  ])
+  return (
+    <AccountModalContainer>
+      <EditableLabel
+        className="account-modal__name"
+        defaultValue={name}
+        onSubmit={label => setAccountLabel(address, label)}
+      />
+      <QrView
+        Qr={{
+          data: address,
+        }}
+      />
+      <div className="account-modal-divider" />
+      <Button
+        type="primary"
+        className="account-modal__button"
+        onClick={() =>
+          global.platform.openWindow({ url: genAccountLink(address, 1) })
+        }
+      >
+        {this.context.t('etherscanView')}
+      </Button>
+    </AccountModalContainer>
+  )
 }

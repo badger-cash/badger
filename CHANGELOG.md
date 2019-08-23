@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.7
+
+- SLP support for BIP70 API transactions
+- Click to copy CashAccount
+- Sort tokens alphabetically
+- Display transaction history for SLP dividend payments
+- Display QR code for SLP account
+- Skip seed backup prompt when restoring existing wallet
+- Fix incorrect password error
+
 ## 0.7.6
 
 - Re-enable CashAccounts

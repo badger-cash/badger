@@ -38,9 +38,9 @@ export default class CurrencyDisplay extends Component {
   componentWillReceiveProps = nextProps => {
     const currentValueToRender = this.getValueToRender(this.props)
     const newValueToRender = this.getValueToRender(nextProps)
-    const { swap } = nextProps
+    const { swapCurrency } = this.state
 
-    if (swap) {
+    if (swapCurrency) {
       const usdValue = conversionUtil(newValueToRender, {
         fromNumericBase: 'dec',
         fromCurrency: this.props.primaryCurrency,

@@ -1,3 +1,5 @@
+import React from 'react'
+import Button from '../button'
 const Component = require('react').Component
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
@@ -10,7 +12,7 @@ const genAccountLink = require('../../../lib/account-link.js')
 const QrView = require('../qr-code')
 const EditableLabel = require('../editable-label')
 
-import Button from '../button'
+const bchaddr = require('bchaddrjs-slp')
 
 function mapStateToProps (state) {
   return {
@@ -37,6 +39,10 @@ function mapDispatchToProps (dispatch) {
 inherits(AccountDetailsModal, Component)
 function AccountDetailsModal () {
   Component.call(this)
+
+  this.state = {
+    showSLP: false,
+  }
 }
 
 AccountDetailsModal.contextTypes = {
@@ -59,7 +65,10 @@ AccountDetailsModal.prototype.render = function () {
     setAccountLabel,
     keyrings,
   } = this.props
-  const { name, address } = selectedIdentity
+
+  const { showSLP } = this.state
+  let { name, address, slpAddress } = selectedIdentity
+  slpAddress = bchaddr.toSlpAddress(slpAddress)
 
   const keyring = keyrings.find(kr => {
     return kr.accounts.includes(address)
@@ -71,45 +80,45 @@ AccountDetailsModal.prototype.render = function () {
     exportPrivateKeyFeatureEnabled = false
   }
 
-  return h(AccountModalContainer, {}, [
-    h(EditableLabel, {
-      className: 'account-modal__name',
-      defaultValue: name,
-      onSubmit: label => setAccountLabel(address, label),
-    }),
+  return (
+    <AccountModalContainer>
+      <EditableLabel
+        className="account-modal__name"
+        defaultValue={name}
+        onSubmit={label => setAccountLabel(address, label)}
+      />
+      <QrView
+        Qr={{
+          data: showSLP ? slpAddress : address,
+        }}
+      />
+      <div
+        style={{ marginTop: '0.8rem' }}
+        className="div flex-column flex-center"
+      >
+        <button
+          className="button btn-primary btn--large settings__button--orange"
+          onClick={() => {
+            this.setState({ showSLP: !showSLP })
+          }}
+        >
+          {!showSLP ? 'View SLP Details' : 'View BCH Details'}
+        </button>
+      </div>
 
-    h(QrView, {
-      Qr: {
-        data: address,
-      },
-    }),
+      <div className="account-modal-divider" />
 
-    h('div.account-modal-divider'),
-
-    h(
-      Button,
-      {
-        type: 'primary',
-        className: 'account-modal__button',
-        // onClick: () => global.platform.openWindow({ url: genAccountLink(address, network) }),
-        onClick: () =>
-          global.platform.openWindow({ url: genAccountLink(address, 1) }),
-      },
-      this.context.t('etherscanView')
-    ),
-
-    // Holding on redesign for Export Private Key functionality
-
-    // exportPrivateKeyFeatureEnabled
-    //   ? h(
-    //       Button,
-    //       {
-    //         type: 'primary',
-    //         className: 'account-modal__button',
-    //         onClick: () => showExportPrivateKeyModal(),
-    //       },
-    //       this.context.t('exportPrivateKey')
-    //     )
-    //   : null,
-  ])
+      <Button
+        type="primary"
+        className="account-modal__button"
+        onClick={() =>
+          global.platform.openWindow({
+            url: genAccountLink(showSLP ? slpAddress : address, 1),
+          })
+        }
+      >
+        {this.context.t('etherscanView')}
+      </Button>
+    </AccountModalContainer>
+  )
 }

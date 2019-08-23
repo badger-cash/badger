@@ -10,7 +10,10 @@ const validUrl = require('valid-url')
 const { exportAsFile } = require('../../../util')
 const SimpleDropdown = require('../../dropdowns/simple-dropdown')
 const ToggleButton = require('react-toggle-button')
-const { INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE, REVEAL_SEED_ROUTE } = require('../../../routes')
+const {
+  INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
+  REVEAL_SEED_ROUTE,
+} = require('../../../routes')
 const locales = require('../../../../../app/_locales/index.json')
 // const log = require('loglevel')
 
@@ -399,7 +402,7 @@ class Settings extends Component {
     const { warning } = this.props
 
     return h('div.settings__content', [
-      warning && h('div.settings__error', warning),
+      warning !== 'Incorrect password' && h('div.settings__error', warning),
       this.renderCurrentConversion(),
       this.renderCurrentLocale(),
       // this.renderCurrentProvider(),

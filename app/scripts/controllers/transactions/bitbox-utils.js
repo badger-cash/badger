@@ -379,6 +379,14 @@ class BitboxUtils {
     return new Promise(async (resolve, reject) => {
       try {
         const from = txParams.from
+        // Get to addresses from payment request
+        if(!txParams.to && txParams.paymentRequestUrl) {
+          txParams.to = []
+          let outputs = txParams.paymentData.outputs
+          for(let i = 1; i < outputs.length; i++) {
+            txParams.to.push(bitbox.Address.fromOutputScript(Buffer.from(outputs[i].script, 'hex')))
+          }
+        }
         const to = txParams.to
         const tokenDecimals = tokenMetadata.decimals
         const scaledTokenSendAmount = new BigNumber(
@@ -391,7 +399,7 @@ class BitboxUtils {
             'Amount below minimum for this token. Increase the send amount and try again.'
           )
         }
-
+        
         const sortedSpendableTokenUtxos = spendableTokenUtxos.sort((a, b) => {
           const aQuantity = new BigNumber(a.slp.quantity)
           const bQuantity = new BigNumber(b.slp.quantity)
@@ -411,7 +419,7 @@ class BitboxUtils {
             break
           }
         }
-
+        
         if (!tokenBalance.gte(tokenSendAmount)) {
           throw new Error('Insufficient tokens')
         }
@@ -419,20 +427,24 @@ class BitboxUtils {
         const tokenChangeAmount = tokenBalance.minus(tokenSendAmount)
 
         let sendOpReturn
+        // Handle multi-output SLP
+        let tokenSendArray = txParams.valueArray ? 
+          txParams.valueArray.map(num => new BigNumber(num)) : [tokenSendAmount]
 
         if (tokenChangeAmount.isGreaterThan(0)) {
+          tokenSendArray.push(tokenChangeAmount)
           sendOpReturn = SLPJS.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [tokenSendAmount, tokenChangeAmount],
+            outputQtyArray: tokenSendArray,
           })
         } else {
           sendOpReturn = SLPJS.buildSendOpReturn({
             tokenIdHex: txParams.sendTokenData.tokenId,
-            outputQtyArray: [tokenSendAmount],
+            outputQtyArray: tokenSendArray,
           })
         }
 
-        const tokenReceiverAddressArray = [to]
+        const tokenReceiverAddressArray = Array.isArray(to) ? to.slice(0) : [to]
         if (tokenChangeAmount.isGreaterThan(0)) {
           tokenReceiverAddressArray.push(tokenChangeAddress)
         }
@@ -459,7 +471,7 @@ class BitboxUtils {
             break
           }
         }
-
+        
         const transactionBuilder = new bitbox.TransactionBuilder('mainnet')
         let totalUtxoAmount = 0
         inputUtxos.forEach(utxo => {
@@ -475,18 +487,26 @@ class BitboxUtils {
             'Not enough Bitcoin Cash for fee. Deposit a small amount and try again.'
           )
         }
-
+        
         // SLP data output
         transactionBuilder.addOutput(sendOpReturn, 0)
-
+        
         // Token destination output
-        transactionBuilder.addOutput(to, 546)
+        if(to) {
+          if(Array.isArray(to)) {
+            for(const addr of to) {
+              transactionBuilder.addOutput(addr, 546)
+            }
+          } else {
+            transactionBuilder.addOutput(to, 546)
+          }
+        }
 
         // Return remaining token balance output
         if (tokenChangeAmount.isGreaterThan(0)) {
           transactionBuilder.addOutput(tokenChangeAddress, 546)
         }
-
+        
         // Return remaining bch balance output
         transactionBuilder.addOutput(from, satoshisRemaining + 546)
 
@@ -502,10 +522,70 @@ class BitboxUtils {
         })
 
         const hex = transactionBuilder.build().toHex()
+        // Define txid
+        var txid
+        
+        // Begin BIP70 SLP
+        if (txParams.paymentRequestUrl) {
+          // send the payment transaction
+          var payment = new PaymentProtocol().makePayment()
+          payment.set(
+            'merchant_data',
+            Buffer.from(txParams.paymentData.merchantData, 'utf-8')
+          )
+          payment.set('transactions', [Buffer.from(hex, 'hex')])
 
-        const txid = await this.publishTx(hex)
+          // calculate refund script pubkey from change address
+          //const refundPubkey = SLP.ECPair.toPublicKey(keyPair)
+          //const refundHash160 = SLP.Crypto.hash160(Buffer.from(refundPubkey))
+          const addressType = SLP.Address.detectAddressType(tokenChangeAddress)
+          const addressFormat = SLP.Address.detectAddressFormat(tokenChangeAddress)
+          var refundHash160 = SLP.Address.cashToHash160(tokenChangeAddress)
+          var encodingFunc = SLP.Script.pubKeyHash.output.encode
+          if (addressType == 'p2sh')
+            encodingFunc = SLP.Script.scriptHash.output.encode
+          if (addressFormat == 'legacy')
+            refundHash160 = SLP.Address.legacyToHash160(tokenChangeAddress)
+          const refundScriptPubkey = encodingFunc(
+            Buffer.from(refundHash160, 'hex')
+          )
+
+          // define the refund outputs
+          var refundOutputs = []
+          var refundOutput = new PaymentProtocol().makeOutput()
+          refundOutput.set('amount', 0)
+          refundOutput.set('script', refundScriptPubkey)
+          refundOutputs.push(refundOutput.message)
+          payment.set('refund_to', refundOutputs)
+          payment.set('memo', '')
+
+          // serialize and send
+          const rawbody = payment.serialize()
+          const headers = {
+            Accept:
+              'application/simpleledger-paymentrequest, application/simpleledger-paymentack',
+            'Content-Type': 'application/simpleledger-payment',
+            'Content-Transfer-Encoding': 'binary',
+          }
+          const response = await axios.post(
+            txParams.paymentData.paymentUrl,
+            rawbody,
+            {
+              headers,
+              responseType: 'blob',
+            }
+          )
+
+          const responseTxHex = await this.decodePaymentResponse(response.data)
+          txid = this.txidFromHex(responseTxHex)
+        } else {
+          // Standard SLP
+          txid = await this.publishTx(hex)
+        }
+
         resolve(txid)
       } catch (err) {
+        console.log(err)
         reject(err)
       }
     })

@@ -59,6 +59,17 @@ TokenList.prototype.render = function() {
     tokens = []
   }
   if (!tokens) tokens = []
+
+  tokens.sort((a, b) => {
+    const nameA = a.symbol.toLowerCase()
+    const nameB = b.symbol.toLowerCase()
+    if (nameA < nameB) {
+      return -1
+    }
+    if (nameA > nameB) return 1
+    return 0
+  })
+
   // if (isLoading) {
   //   return this.message(this.context.t('loadingTokens'))
   // }

@@ -535,13 +535,18 @@ class AccountTracker {
     if (!historicalBchTransactions[address]) historicalBchTransactions[address] = []
 
     const latestConfirmedTx = historicalBchTransactions[address].sort((a, b) => b.block - a.block)[0]
+    const slpAddress = this._preferences.getSlpAddressForAccount(address)
     const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
-    const addressTransactions = await this.getHistoricalBchTransactions(address, latestBlock)
+    const addressTransactions = await this.getHistoricalBchTransactions(address, slpAddress, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
         .filter(input => input.e && input.e.a)
-        .map(input => `bitcoincash:${input.e.a}`)
+        .map(input => {
+          const addr = `bitcoincash:${input.e.a}`
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -556,7 +561,11 @@ class AccountTracker {
       // Determine to address
       const toAddresses = tx.out
         .filter(output => output.e && output.e.a)
-        .map(output => `bitcoincash:${output.e.a}`)
+        .map(output => {
+          const addr = `bitcoincash:${output.e.a}`
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -580,8 +589,9 @@ class AccountTracker {
         value = tx.out.reduce((accumulator, currentValue) => {
           if (
             currentValue.e &&
-            `bitcoincash:${currentValue.e.a}` === toAddress &&
-            currentValue.e.v
+            currentValue.e.v &&
+            `bitcoincash:${currentValue.e.a}` === toAddress ||
+            `bitcoincash:${currentValue.e.a}` === slpAddress
           ) {
             accumulator += currentValue.e.v
           }
@@ -622,7 +632,7 @@ class AccountTracker {
     this.store.updateState({ historicalBchTransactions })
   }
 
-  async getHistoricalBchTransactions (address, latestBlock) {
+  async getHistoricalBchTransactions (address, slpAddress, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -634,6 +644,12 @@ class AccountTracker {
               },
               {
                 'out.e.a': address.slice(12),
+              },
+              {
+                'in.e.a': slpAddress.slice(12),
+              },
+              {
+                'out.e.a': slpAddress.slice(12),
               },
             ],
             'out.h1': {

@@ -16,6 +16,7 @@ const BITBOX = require('bitbox-sdk').BITBOX
 const bitbox = new BITBOX()
 
 import Toggle from '../../../../ui/app/components/toggle/toggle.component'
+const localStorage = require('store')
 
 class ImportSeedPhraseScreen extends Component {
   static contextTypes = {
@@ -43,6 +44,10 @@ class ImportSeedPhraseScreen extends Component {
     seedPhraseError: null,
     passwordError: null,
     confirmPasswordError: null,
+  }
+
+  markAsBackedUp = () => {
+    localStorage.set('seedwordsBackedUp', true)
   }
 
   parseSeedPhrase = seedPhrase => {
@@ -108,7 +113,10 @@ class ImportSeedPhraseScreen extends Component {
 
       leaveImportSeedScreenState()
       createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
-        () => history.push(INITIALIZE_NOTICE_ROUTE)
+        () => {
+          this.markAsBackedUp()
+          history.push(INITIALIZE_NOTICE_ROUTE)
+        }
       )
     }
   }

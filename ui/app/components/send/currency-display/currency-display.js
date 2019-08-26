@@ -1,5 +1,6 @@
+import React from 'react'
+
 const Component = require('react').Component
-const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const {
   conversionUtil,
@@ -8,215 +9,349 @@ const {
 const { removeLeadingZeroes } = require('../send.utils')
 const currencyFormatter = require('currency-formatter')
 const currencies = require('currency-formatter/currencies')
-const ethUtil = require('ethereumjs-util')
 const PropTypes = require('prop-types')
 // import { formatTokenAmount } from '../../../helpers/formatter-numbers.util'
+import TokenList from '../../pages/add-token/token-list/token-list.container'
 
-CurrencyDisplay.contextTypes = {
-  t: PropTypes.func,
-}
+export default class CurrencyDisplay extends Component {
+  static propTypes = {
+    calculateTxFee: PropTypes.func,
+    updateSendAmount: PropTypes.func,
+    setMaxModeTo: PropTypes.func,
+  }
 
-module.exports = CurrencyDisplay
+  static contextTypes = { t: PropTypes.func }
 
-inherits(CurrencyDisplay, Component)
-function CurrencyDisplay () {
-  Component.call(this)
-}
+  state = {
+    swapCurrency: false,
+    valueToRender: '',
+    swappedValueToRender: '',
+    inputValue: '',
+  }
 
-function toHexWei (value) {
-  return conversionUtil(value, {
-    fromNumericBase: 'dec',
-    toNumericBase: 'hex',
-    toDenomination: 'WEI',
-  })
-}
-
-CurrencyDisplay.prototype.componentWillMount = function () {
-  this.setState({
-    valueToRender: this.getValueToRender(this.props),
-  })
-}
-
-CurrencyDisplay.prototype.componentWillReceiveProps = function (nextProps) {
-  const currentValueToRender = this.getValueToRender(this.props)
-  const newValueToRender = this.getValueToRender(nextProps)
-  if (currentValueToRender !== newValueToRender) {
+  componentWillMount = () => {
     this.setState({
-      valueToRender: newValueToRender,
+      valueToRender: this.getValueToRender(this.props),
     })
   }
-}
 
-CurrencyDisplay.prototype.getAmount = function (value) {
-  const { selectedToken } = this.props
-  if (selectedToken) return value
+  componentWillReceiveProps = nextProps => {
+    const currentValueToRender = this.getValueToRender(this.props)
+    const newValueToRender = this.getValueToRender(nextProps)
+    const { swapCurrency } = this.state
 
-  const { decimals } = selectedToken || {}
-  const multiplier = Math.pow(10, Number(decimals || 8))
-
-  const sendAmount = multiplyCurrencies(value || '0', multiplier)
-
-  return sendAmount.toString()
-
-  // return selectedToken
-  //   ? sendAmount
-  //   : value
-  // : toHexWei(value)
-}
-
-CurrencyDisplay.prototype.getValueToRender = function ({
-  selectedToken,
-  conversionRate,
-  value,
-  readOnly,
-}) {
-  if (value === '0') return readOnly ? '0' : ''
-  const { decimals, symbol } = selectedToken || {}
-  const multiplier = Math.pow(10, Number(decimals || 8))
-
-  return selectedToken
-    ? value
-    : // TODO: Convert token balances when required
-      // ? conversionUtil(value, {
-      //   fromNumericBase: 'dec',
-      //   toNumericBase: 'dec',
-      //   toCurrency: symbol,
-      //   conversionRate: multiplier,
-      //   invertConversionRate: true,
-      // })
-      conversionUtil(value, {
+    if (swapCurrency) {
+      const usdValue = conversionUtil(newValueToRender, {
         fromNumericBase: 'dec',
-        toNumericBase: 'dec',
-        fromDenomination: 'SAT',
-        numberOfDecimals: 8,
-        conversionRate,
+        fromCurrency: this.props.primaryCurrency,
+        toCurrency: this.props.convertedCurrency,
+        numberOfDecimals: 2,
+        conversionRate: this.props.conversionRate,
       })
-}
 
-CurrencyDisplay.prototype.getConvertedValueToRender = function (
-  nonFormattedValue
-) {
-  const { primaryCurrency, convertedCurrency, conversionRate } = this.props
+      this.handleChangeSwap(usdValue)
+    }
 
-  if (
-    conversionRate === 0 ||
-    conversionRate === null ||
-    conversionRate === undefined
-  ) {
-    if (nonFormattedValue !== 0) {
-      return null
+    if (currentValueToRender !== newValueToRender) {
+      this.setState({
+        valueToRender: newValueToRender,
+      })
     }
   }
 
-  let convertedValue = conversionUtil(nonFormattedValue, {
-    fromNumericBase: 'dec',
-    fromCurrency: primaryCurrency,
-    toCurrency: convertedCurrency,
-    numberOfDecimals: 2,
-    conversionRate,
-  })
+  getAmount = value => {
+    const { selectedToken } = this.props
+    if (selectedToken) return value
 
-  convertedValue = Number(convertedValue).toFixed(2)
-  const upperCaseCurrencyCode = convertedCurrency.toUpperCase()
-  return currencies.find(currency => currency.code === upperCaseCurrencyCode)
-    ? currencyFormatter.format(Number(convertedValue), {
-        code: upperCaseCurrencyCode,
-      })
-    : convertedValue
-}
+    const { decimals } = selectedToken || {}
+    const multiplier = Math.pow(10, Number(decimals || 8))
 
-CurrencyDisplay.prototype.handleChange = function (newVal) {
-  this.setState({
-    valueToRender: removeLeadingZeroes(newVal),
-  })
-  this.props.onChange(this.getAmount(newVal))
-}
+    const sendAmount = multiplyCurrencies(value || '0', multiplier)
 
-CurrencyDisplay.prototype.getInputWidth = function (valueToRender, readOnly) {
-  const valueString = String(valueToRender)
-  const valueLength = valueString.length || 1
-  const decimalPointDeficit = valueString.match(/\./) ? -0.5 : 0
-  return valueLength + decimalPointDeficit + 0.75 + 'ch'
-}
-
-CurrencyDisplay.prototype.onlyRenderConversions = function (
-  convertedValueToRender
-) {
-  const {
-    convertedBalanceClassName = 'currency-display__converted-value',
-    convertedCurrency,
-  } = this.props
-  return h(
-    'div',
-    {
-      className: convertedBalanceClassName,
-    },
-    convertedValueToRender == null
-      ? this.context.t('noConversionRateAvailable')
-      : `${convertedValueToRender} ${convertedCurrency.toUpperCase()}`
-  )
-}
-
-CurrencyDisplay.prototype.render = function () {
-  let {
-    className = 'currency-display',
-    primaryBalanceClassName = 'currency-display__input',
-    primaryCurrency,
-    readOnly = false,
-    inError = false,
-    onBlur,
-    step,
-  } = this.props
-  const { valueToRender } = this.state
-
-  let convertedValueToRender = this.getConvertedValueToRender(valueToRender)
-
-  const { selectedToken } = this.props
-  if (selectedToken) {
-    primaryCurrency = selectedToken.symbol
-    convertedValueToRender = null
+    return sendAmount.toString()
   }
 
-  return h(
-    'div',
-    {
-      className,
-      style: {
-        borderColor: inError ? 'red' : null,
-      },
-      onClick: () => {
-        this.currencyInput && this.currencyInput.focus()
-      },
-    },
-    [
-      h('div.currency-display__primary-row', [
-        h('div.currency-display__input-wrapper', [
-          h('input', {
-            className: primaryBalanceClassName,
-            value: `${valueToRender}`,
-            placeholder: '0',
-            type: 'number',
-            readOnly,
-            ...(!readOnly
-              ? {
-                  onChange: e => this.handleChange(e.target.value),
-                  onBlur: () => onBlur(this.getAmount(valueToRender)),
-                }
-              : {}),
-            ref: input => {
-              this.currencyInput = input
-            },
-            style: {
-              width: this.getInputWidth(valueToRender, readOnly),
-            },
-            min: 0,
-            step,
-          }),
+  getValueToRender = ({ selectedToken, conversionRate, value, readOnly }) => {
+    if (value === '0') return readOnly ? '0' : ''
+    const { decimals, symbol } = selectedToken || {}
+    const multiplier = Math.pow(10, Number(decimals || 8))
 
-          h('span.currency-display__currency-symbol', primaryCurrency),
-        ]),
-      ]),
-      this.onlyRenderConversions(convertedValueToRender),
-    ]
-  )
+    return selectedToken
+      ? value
+      : // TODO: Convert token balances when required
+        // ? conversionUtil(value, {
+        //   fromNumericBase: 'dec',
+        //   toNumericBase: 'dec',
+        //   toCurrency: symbol,
+        //   conversionRate: multiplier,
+        //   invertConversionRate: true,
+        // })
+        conversionUtil(value, {
+          fromNumericBase: 'dec',
+          toNumericBase: 'dec',
+          fromDenomination: 'SAT',
+          numberOfDecimals: 8,
+          conversionRate,
+        })
+  }
+
+  getConvertedValueToRender = nonFormattedValue => {
+    const { primaryCurrency, convertedCurrency, conversionRate } = this.props
+
+    if (
+      conversionRate === 0 ||
+      conversionRate === null ||
+      conversionRate === undefined
+    ) {
+      if (nonFormattedValue !== 0) {
+        return null
+      }
+    }
+
+    let convertedValue = conversionUtil(nonFormattedValue, {
+      fromNumericBase: 'dec',
+      fromCurrency: primaryCurrency,
+      toCurrency: convertedCurrency,
+      numberOfDecimals: 2,
+      conversionRate,
+    })
+
+    convertedValue = Number(convertedValue).toFixed(2)
+
+    const upperCaseCurrencyCode = convertedCurrency.toUpperCase()
+    return currencies.find(currency => currency.code === upperCaseCurrencyCode)
+      ? currencyFormatter.format(Number(convertedValue), {
+          code: upperCaseCurrencyCode,
+        })
+      : convertedValue
+  }
+
+  getBCHValue = value => {
+    const { conversionRate } = this.props
+    const swappedValue = value / conversionRate
+
+    return Number(swappedValue).toFixed(8)
+  }
+
+  handleChange = newVal => {
+    this.setState({
+      valueToRender: removeLeadingZeroes(newVal),
+    })
+
+    this.props.onChange(this.getAmount(newVal))
+  }
+
+  handleChangeSwap = newVal => {
+    const {
+      primaryCurrency,
+      convertedCurrency,
+      conversionRate,
+      updateSendAmount,
+    } = this.props
+
+    const bchValue = this.getBCHValue(newVal)
+    updateSendAmount(this.getAmount(bchValue))
+
+    if (
+      conversionRate === 0 ||
+      conversionRate === null ||
+      conversionRate === undefined
+    ) {
+      if (newVal !== 0) {
+        return null
+      }
+    }
+
+    let usdValue = conversionUtil(bchValue, {
+      fromNumericBase: 'dec',
+      fromCurrency: primaryCurrency,
+      toCurrency: convertedCurrency,
+      numberOfDecimals: 2,
+      conversionRate,
+    })
+    usdValue = Number(usdValue).toFixed(2)
+
+    const formattedValue = currencies.find(
+      currency => currency.code === convertedCurrency.toUpperCase()
+    )
+      ? currencyFormatter.format(Number(usdValue), {
+          code: convertedCurrency.toUpperCase(),
+        })
+      : usdValue
+
+    this.setState({
+      swappedValueToRender: bchValue,
+      formattedValue,
+      inputValue: newVal,
+    })
+  }
+
+  onlyRenderConversions = convertedValueToRender => {
+    const {
+      convertedBalanceClassName = 'currency-display__converted-value',
+      convertedCurrency,
+    } = this.props
+    return (
+      <div className={convertedBalanceClassName}>
+        {convertedValueToRender == null
+          ? this.context.t('noConversionRateAvailable')
+          : `${convertedValueToRender} ${convertedCurrency.toUpperCase()}`}
+      </div>
+    )
+  }
+
+  getInputWidth = (valueToRender, readOnly) => {
+    const valueString = String(valueToRender)
+    const valueLength = valueString.length || 1
+    const decimalPointDeficit = valueString.match(/\./) ? -0.5 : 0
+    return valueLength + decimalPointDeficit + 0.75 + 'ch'
+  }
+
+  handleSwap = () => {
+    const { swapCurrency } = this.state
+    const { setMaxModeTo } = this.props
+
+    setMaxModeTo(false)
+
+    // prevent accident values
+    this.handleChange('0')
+
+    this.setState({
+      swapCurrency: !swapCurrency,
+      swappedValueToRender: '',
+      formattedValue: '',
+      inputValue: '',
+    })
+  }
+
+  bchInput = () => {
+    const {
+      primaryBalanceClassName = 'currency-display__input',
+      primaryCurrency,
+      readOnly = false,
+      onBlur,
+      step,
+    } = this.props
+    const { valueToRender } = this.state
+
+    return (
+      <div>
+        <input
+          className={primaryBalanceClassName}
+          value={`${valueToRender}`}
+          placeholder="0"
+          readOnly={readOnly}
+          {...(!readOnly
+            ? {
+                onChange: e => {
+                  this.handleChange(e.target.value)
+                },
+                onBlur: () => onBlur(this.getAmount(valueToRender)),
+              }
+            : {})}
+          ref={input => {
+            this.currencyInput = input
+          }}
+          style={{
+            width: this.getInputWidth(valueToRender, readOnly),
+          }}
+          min={0}
+          step={step}
+        />
+        <span className="currency-display__currency-symbol">
+          {primaryCurrency}
+        </span>
+      </div>
+    )
+  }
+
+  swapInput = () => {
+    const {
+      primaryBalanceClassName = 'currency-display__input',
+      convertedCurrency,
+      updateSendAmount,
+    } = this.props
+
+    const upperCaseCurrencyCode = convertedCurrency.toUpperCase()
+
+    const { inputValue, formattedValue, swappedValueToRender } = this.state
+
+    return (
+      <div>
+        <input
+          className={primaryBalanceClassName}
+          onChange={e => {
+            this.handleChangeSwap(e.target.value)
+          }}
+          onBlur={() => {
+            updateSendAmount(this.getAmount(swappedValueToRender))
+          }}
+          placeholder={`0 ${upperCaseCurrencyCode}`}
+          value={inputValue}
+          style={{ maxWidth: '80px' }}
+        />
+        {inputValue && (
+          <span>
+            {formattedValue} {upperCaseCurrencyCode}
+          </span>
+        )}
+      </div>
+    )
+  }
+  render () {
+    let {
+      className = 'currency-display',
+      primaryCurrency,
+      inError = false,
+      swap,
+      convertedCurrency,
+    } = this.props
+
+    const { valueToRender, swapCurrency, swappedValueToRender } = this.state
+
+    let convertedValueToRender = this.getConvertedValueToRender(valueToRender)
+
+    const { selectedToken } = this.props
+    if (selectedToken) {
+      primaryCurrency = selectedToken.symbol
+      convertedValueToRender = null
+    }
+
+    return (
+      <div>
+        <div
+          className={className}
+          style={{
+            borderColor: inError ? 'red' : null,
+          }}
+          onClick={() => {
+            this.currencyInput && this.currencyInput.focus()
+          }}
+        >
+          <div className="currency-display__primary-row">
+            <div className="currency-display__input-wrapper">
+              {!swapCurrency ? this.bchInput() : this.swapInput()}
+            </div>
+          </div>
+
+          {!swapCurrency
+            ? this.onlyRenderConversions(convertedValueToRender)
+            : `${swappedValueToRender} ${primaryCurrency}`}
+        </div>
+        {swap && (
+          <div
+            className="swap-currency"
+            onClick={() => {
+              this.handleSwap()
+            }}
+          >
+            <img src="/images/swap-currency.svg" />
+            <p className="swap">
+              {!swapCurrency ? convertedCurrency : primaryCurrency}
+            </p>
+          </div>
+        )}
+      </div>
+    )
+  }
 }

@@ -298,14 +298,14 @@ export default class CurrencyDisplay extends Component {
       </div>
     )
   }
-  render () {
-    let {
+  render() {
+    const {
       className = 'currency-display',
-      primaryCurrency,
       inError = false,
-      swap,
       convertedCurrency,
     } = this.props
+
+    let { primaryCurrency, swap } = this.props
 
     const { valueToRender, swapCurrency, swappedValueToRender } = this.state
 
@@ -315,6 +315,7 @@ export default class CurrencyDisplay extends Component {
     if (selectedToken) {
       primaryCurrency = selectedToken.symbol
       convertedValueToRender = null
+      swap = false
     }
 
     return (

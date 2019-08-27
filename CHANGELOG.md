@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.8
+
+- Don't show USD conversion button when sending tokens
+
 ## 0.7.7
 
 - SLP support for BIP70 API transactions

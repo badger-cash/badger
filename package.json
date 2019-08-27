@@ -1,12 +1,16 @@
 {
   "name": "badger",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "license": "MIT",
   "homepage": "https://badger.bitcoin.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Bitcoin-com/badger.git"
   },
+  "contributors": [
+    "Gabriel Cardona <gabriel@bitcoin.com>",
+    "spendBCH <https://twitter.com/spendbch_io>"
+  ],
   "scripts": {
     "start": "gulp dev:extension",
     "mascara": "gulp dev:mascara & node ./mascara/example/server",

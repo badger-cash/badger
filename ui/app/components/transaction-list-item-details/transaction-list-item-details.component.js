@@ -71,6 +71,11 @@ export default class TransactionListItemDetails extends PureComponent {
             addressOnly
             recipientAddress={to}
             senderAddress={from}
+            symbol={
+              transaction.txParams.sendTokenData
+                ? transaction.txParams.sendTokenData.tokenSymbol
+                : 'BCH'
+            }
           />
         </div>
         {!sendTokenData && (

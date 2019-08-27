@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.8
+
+- Display slp addr in tx details
+
 ## 0.7.7
 
 - SLP support for BIP70 API transactions
@@ -77,9 +81,6 @@
 - Fix reset account issue
 - Fix wormhole transactions (soon deprecated, please move WH tokens to another wallet)
 
-## 0.4.3
-
-- Display slp addr in tx details
 ## 0.5.0
 
 - Add Simple Ledger token transaction history

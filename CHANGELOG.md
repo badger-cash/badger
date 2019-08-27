@@ -2,7 +2,7 @@
 
 ## 0.7.8
 
-- Display slp addr in tx details
+- Don't show USD conversion button when sending tokens
 
 ## 0.7.7
 

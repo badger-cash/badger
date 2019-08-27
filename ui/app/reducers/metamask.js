@@ -9,13 +9,14 @@ const {
 
 module.exports = reduceMetamask
 
-function reduceMetamask (state, action) {
+function reduceMetamask(state, action) {
   let newState
 
   // clone + defaults
   var metamaskState = extend(
     {
       isInitialized: false,
+      isUnencrypted: false,
       isUnlocked: false,
       isAccountMenuOpen: false,
       isMascara: window.platform instanceof MetamascaraPlatform,
@@ -23,6 +24,8 @@ function reduceMetamask (state, action) {
         getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP,
       rpcTarget: 'https://rawtestrpc.metamask.io/',
       identities: {},
+      cashaccount: {},
+      cashaccountRegistrations: [],
       unapprovedTxs: {},
       noActiveNotices: true,
       nextUnreadNotice: undefined,
@@ -91,6 +94,16 @@ function reduceMetamask (state, action) {
     case actions.LOCK_METAMASK:
       return extend(metamaskState, {
         isUnlocked: false,
+      })
+
+    case actions.MARK_UNENCRYPTED:
+      return extend(metamaskState, {
+        isUnencrypted: true,
+      })
+
+    case actions.MARK_ENCRYPTED:
+      return extend(metamaskState, {
+        isUnencrypted: false,
       })
 
     case actions.SET_RPC_LIST:
@@ -181,6 +194,16 @@ function reduceMetamask (state, action) {
         currentCurrency: action.value.currentCurrency,
         conversionRate: action.value.conversionRate,
         conversionDate: action.value.conversionDate,
+      })
+
+    case actions.SET_CASHACCOUNT:
+      return extend(metamaskState, {
+        cashaccount: action.value,
+      })
+
+    case actions.SET_CASHACCOUNT_REGISTRATION:
+      return extend(metamaskState, {
+        cashaccountRegistrations: action.value,
       })
 
     case actions.UPDATE_TOKENS:

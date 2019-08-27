@@ -7,6 +7,8 @@ import { formatCurrency } from '../../../helpers/confirm-transaction/util'
 import {
   isBalanceSufficient,
   isTokenBalanceSufficient,
+  removeUnspendableUtxo,
+  signAndPublishBchTransaction,
 } from '../../send/send.utils'
 import { DEFAULT_ROUTE } from '../../../routes'
 import {
@@ -14,6 +16,9 @@ import {
   TRANSACTION_ERROR_KEY,
   INSUFFICIENT_TOKENS_ERROR_KEY,
 } from '../../../constants/error-keys'
+import { PageContainerFooter } from '../../page-container'
+import ConfirmPageContainerHeader from '../../confirm-page-container/confirm-page-container-header'
+import localStorage from 'store'
 
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
@@ -25,7 +30,7 @@ export default class ConfirmTransactionBase extends Component {
     match: PropTypes.object,
     history: PropTypes.object,
     // Redux props
-    balance: PropTypes.string,
+    balance: PropTypes.any,
     cancelTransaction: PropTypes.func,
     clearConfirmTransaction: PropTypes.func,
     clearSend: PropTypes.func,
@@ -54,6 +59,7 @@ export default class ConfirmTransactionBase extends Component {
     toName: PropTypes.string,
     transactionStatus: PropTypes.string,
     txData: PropTypes.object,
+    opReturn: PropTypes.object,
     // Component props
     action: PropTypes.string,
     contentComponent: PropTypes.node,
@@ -76,14 +82,16 @@ export default class ConfirmTransactionBase extends Component {
     title: PropTypes.string,
     valid: PropTypes.bool,
     warning: PropTypes.string,
+    historicalBchTransactions: PropTypes.object,
   }
 
   state = {
     submitting: false,
     submitError: null,
+    pendingCashAccount: localStorage.get('pendingCashAccount'),
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const {
       transactionStatus,
       showTransactionConfirmedModal,
@@ -103,7 +111,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  getErrorKey () {
+  getErrorKey() {
     const {
       balance,
       conversionRate,
@@ -132,7 +140,11 @@ export default class ConfirmTransactionBase extends Component {
 
     let insufficientTokens = !!txParams.sendTokenData
     if (txParams.sendTokenData) {
-      if (accountTokens && accountTokens[txParams.from] && accountTokens[txParams.from]['mainnet']) {
+      if (
+        accountTokens &&
+        accountTokens[txParams.from] &&
+        accountTokens[txParams.from]['mainnet']
+      ) {
         const tokenToSend = accountTokens[txParams.from]['mainnet'].find(
           token => token.address === txParams.sendTokenData.tokenId
         )
@@ -167,7 +179,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleEditGas () {
+  handleEditGas() {
     const { onEditGas, showCustomizeGasModal } = this.props
 
     if (onEditGas) {
@@ -177,7 +189,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  renderDetails () {
+  renderDetails() {
     const {
       detailsComponent,
       fiatTransactionFee,
@@ -219,7 +231,7 @@ export default class ConfirmTransactionBase extends Component {
               ethText={ethTotalTextOverride || `\u2666 ${ethTransactionTotal}`}
               headerText="Amount + Gas Fee"
               headerTextClassName="confirm-detail-row__header-text--total"
-              fiatTextColor="#2f9ae0"
+              fiatTextColor="#2d7cc2"
             />
           </div>
         </div>
@@ -227,7 +239,7 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  renderData () {
+  renderData() {
     const { t } = this.context
     const {
       txData: { txParams: { data } = {} } = {},
@@ -268,12 +280,12 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  handleEdit () {
+  handleEdit() {
     const { txData, tokenData, tokenProps, onEdit } = this.props
     onEdit({ txData, tokenData, tokenProps })
   }
 
-  handleCancel () {
+  handleCancel() {
     const {
       onCancel,
       txData,
@@ -281,6 +293,9 @@ export default class ConfirmTransactionBase extends Component {
       history,
       clearConfirmTransaction,
     } = this.props
+
+    localStorage.remove('cashAccount')
+    localStorage.remove('pendingCashAccount')
 
     if (onCancel) {
       onCancel(txData)
@@ -292,15 +307,23 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleSubmit () {
+  handleSubmit() {
     const {
       sendTransaction,
       clearConfirmTransaction,
       txData,
       history,
       onSubmit,
+      txParams,
     } = this.props
     const { submitting } = this.state
+
+    localStorage.remove('cashAccount')
+    localStorage.remove('pendingCashAccount')
+
+    const isCashAccountRegistration =
+      txParams.opReturn !== undefined &&
+      txParams.opReturn.data[0] === '0x01010101'
 
     if (submitting) {
       return
@@ -313,9 +336,9 @@ export default class ConfirmTransactionBase extends Component {
         this.setState({ submitting: false })
       )
     } else {
-      sendTransaction(txData)
-        .then(() => {
-          clearConfirmTransaction()
+      sendTransaction(txData, isCashAccountRegistration)
+        .then(async x => {
+          await clearConfirmTransaction()
           this.setState({ submitting: false })
           history.push(DEFAULT_ROUTE)
         })
@@ -324,8 +347,41 @@ export default class ConfirmTransactionBase extends Component {
         })
     }
   }
+  renderRegistration = () => {
+    const { pendingCashAccount } = this.state
 
-  render () {
+    return (
+      <div className="page-container">
+        <div className="confirm-page-container-header__row">
+          <h1>
+            Pending handle is{' '}
+            <span style={{ fontWeight: 'bold' }}>{pendingCashAccount}</span>
+          </h1>
+        </div>
+
+        <div className="confirm-page-container-summary">
+          <p>
+            Your number will be determined once the registration is confirmed.
+          </p>
+          <br />
+          <br />
+          <small>
+            A tiny amount of BCH will be spent to cover the mining fee if you
+            continue.
+          </small>
+        </div>
+
+        <PageContainerFooter
+          onCancel={() => this.handleCancel()}
+          onSubmit={() => this.handleSubmit()}
+          submitText={this.context.t('confirm')}
+          submitButtonType="confirm"
+        />
+      </div>
+    )
+  }
+
+  render() {
     let {
       isTxReprice,
       fromName,
@@ -354,6 +410,13 @@ export default class ConfirmTransactionBase extends Component {
       accountTokens,
     } = this.props
     const { submitting, submitError } = this.state
+    const isCashAccountRegistration =
+      txParams.opReturn !== undefined &&
+      txParams.opReturn.data[0] === '0x01010101'
+
+    if (isCashAccountRegistration) {
+      return this.renderRegistration()
+    }
 
     const { name } = methodData
     const fiatConvertedAmount = formatCurrency(
@@ -381,7 +444,7 @@ export default class ConfirmTransactionBase extends Component {
       subtitle = tokenToSend
         ? txParams.sendTokenData.tokenProtocol === 'slp'
           ? 'Simple Ledger Protocol'
-          : 'Wormhole'
+          : 'UNKNOWN PROTOCOL'
         : ''
       hideSubtitle = !tokenToSend
 
@@ -398,7 +461,12 @@ export default class ConfirmTransactionBase extends Component {
         toName={toName}
         toAddress={toAddress}
         txParams={txParams}
-        showEdit={onEdit && !isTxReprice && !txParams.sendTokenData}
+        showEdit={
+          onEdit &&
+          !isTxReprice &&
+          !txParams.sendTokenData &&
+          !txParams.paymentData
+        }
         action={action || name || this.context.t('unknownFunction')}
         title={
           title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`

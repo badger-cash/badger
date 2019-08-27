@@ -112,7 +112,8 @@ class CurrencyController {
     let currentCurrency
     try {
       currentCurrency = this.getCurrentCurrency()
-      const rate = await SLP.Price.current(currentCurrency.toLowerCase())
+      const fullRate = await SLP.Price.current(currentCurrency.toLowerCase())
+      const rate = fullRate / 100.0
       this.setConversionRate(Number(rate))
       this.setConversionDate(Number(new Date()))
     } catch (err) {

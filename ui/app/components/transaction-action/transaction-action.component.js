@@ -48,9 +48,16 @@ export default class TransactionAction extends PureComponent {
       transaction.txParams &&
       transaction.txParams.sendTokenData
     ) {
-      action = `${actionPrefix} ${
-        tokenSymbol
-      }`
+      action = `${actionPrefix} ${tokenSymbol}`
+    }
+
+    if (
+      transaction &&
+      transaction.txParams &&
+      transaction.txParams.value === '600' &&
+      transaction.txParams.from === transaction.txParams.to
+    ) {
+      action = `Registration TX`
     }
 
     this.setState({ transactionAction: action })

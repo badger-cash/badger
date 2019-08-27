@@ -7,8 +7,9 @@ const TransactionStateManager = require('./tx-state-manager')
 const PendingTransactionTracker = require('./pending-tx-tracker')
 const txUtils = require('./lib/util')
 const cleanErrorStack = require('../../lib/cleanErrorStack')
+const axios = require('axios')
+const toBuffer = require('blob-to-buffer')
 const log = require('loglevel')
-const recipientBlacklistChecker = require('./lib/recipient-blacklist-checker')
 const {
   TRANSACTION_TYPE_CANCEL,
   TRANSACTION_TYPE_RETRY,
@@ -16,9 +17,9 @@ const {
   TRANSACTION_STATUS_APPROVED,
 } = require('./enums')
 
-const { hexToBn, bnToHex } = require('../../lib/util')
-
 const bitboxUtils = require('./bitbox-utils')
+const slpUtils = require('./slp-utils')
+const PaymentProtocol = require('bitcore-payment-protocol')
 
 /**
   Transaction Controller is an aggregate of sub-controllers and trackers
@@ -31,8 +32,6 @@ const bitboxUtils = require('./bitbox-utils')
       and emitting confirmed events
     <br>- txGasUtil
       gas calculations and safety buffering
-    <br>- nonceTracker
-      calculating nonces
 
 
   @class
@@ -126,6 +125,81 @@ class TransactionController extends EventEmitter {
     this.txStateManager.wipeTransactions(address)
   }
 
+  // TODO: Payment requests
+  async decodePaymentRequest (requestData) {
+    return new Promise((resolve, reject) => {
+      toBuffer(requestData, function (err, buffer) {
+        if (err) reject(err)
+       
+        try {
+          var body = PaymentProtocol.PaymentRequest.decode(buffer)
+          var request = new PaymentProtocol().makePaymentRequest(body)
+
+          const detailsData = {}
+          var serializedDetails = request.get('serialized_payment_details')
+
+          // Verify the request signature
+          const verifiedData = request.verify(true)
+          detailsData.verified = false
+          if (verifiedData.caTrusted && verifiedData.chainVerified && verifiedData.isChain &&
+            verifiedData.selfSigned === 0 && verifiedData.verified) {
+            detailsData.verified = true
+          } else {
+            reject(new Error('Request could not be verified'))
+          }
+
+          // Get the payment details
+          var decodedDetails = PaymentProtocol.PaymentDetails.decode(serializedDetails)
+          var details = new PaymentProtocol().makePaymentDetails(decodedDetails)
+          
+          // Verify network is mainnet
+          detailsData.network = details.get('network')
+          if (detailsData.network !== 'main') {
+            reject(new Error('Network must be mainnet'))
+          }
+          
+          // Sanity check time created is in the past
+          const currentUnixTime = Math.floor(Date.now() / 1000)
+          detailsData.time = details.get('time')
+          if (currentUnixTime < detailsData.time) {
+            reject(new Error('Payment request time not valid'))
+          }
+
+          // Verify request is not yet expired
+          detailsData.expires = details.get('expires')
+          if (detailsData.expires < currentUnixTime) {
+            reject(new Error('Payment request expired'))
+          }
+
+          // Get memo, paymentUrl, merchantData and requiredFeeRate
+          detailsData.memo = details.get('memo')
+          detailsData.paymentUrl = details.get('payment_url')
+          const merchantData = details.get('merchant_data')
+          detailsData.merchantData = merchantData.toString()
+          detailsData.requiredFeeRate = details.get('required_fee_rate')
+
+          // Parse outputs as number amount and hex string script
+          detailsData.outputs = details.get('outputs').map(output => {
+            return {
+              amount: output.amount.toNumber(),
+              script: output.script.toString('hex'),
+            }
+          })
+
+          // Calculate total output value
+          let totalValue = 0
+          for (const output of detailsData.outputs) {
+            totalValue += output.amount
+          }
+          detailsData.totalValue = totalValue
+          resolve(detailsData)
+        } catch (ex) {
+          reject(ex)
+        }
+      })
+    })
+  }
+
   /**
   add a new unapproved transaction to the pipeline
 
@@ -135,7 +209,60 @@ class TransactionController extends EventEmitter {
   */
 
   async newUnapprovedTransaction (txParams, opts = {}) {
-    // log.debug(`MetaMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`)
+    // Check for payment url
+    // TODO: Payment requests
+    if (txParams.paymentRequestUrl) {
+      var headers = {
+        'Accept': 'application/bitcoincash-paymentrequest',
+        'Content-Type': 'application/octet-stream',
+      }
+      
+      // Assume BCH, but fail over to SLP
+      var paymentResponse
+      var txType
+      try {
+        paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+          headers,
+          responseType: 'blob',
+        })
+        txType = 'BCH'
+      } catch(err) {
+        headers.Accept = 'application/simpleledger-paymentrequest'
+        paymentResponse = await axios.get(txParams.paymentRequestUrl, {
+          headers,
+          responseType: 'blob',
+        })
+        txType = 'SLP'
+      }
+
+      txParams.paymentData = await this.decodePaymentRequest(paymentResponse.data)
+      txParams.value = txParams.paymentData.totalValue
+      txParams.paymentData.type = txType
+      // Handle SLP payment requests
+      if (txType == 'SLP') {
+        txParams.value = 0
+        var opReturnScript = txParams.paymentData.outputs[0].script
+        var decodedScriptArray = []
+        for(let i = 1; i < txParams.paymentData.outputs.length; i++) {
+          let decodedScript = slpUtils.decodeScriptPubKey(opReturnScript, i)
+          decodedScriptArray.push(decodedScript)
+        }
+        var tokenInfo = await slpUtils.getTokenInfo(decodedScriptArray[0].token)
+        txParams.sendTokenData = {
+          tokenId: decodedScriptArray[0].token,
+          tokenProtocol: 'slp',
+          tokenSymbol: tokenInfo.symbol
+        }
+        var decimals = tokenInfo.decimals
+        txParams.value = decodedScriptArray.reduce(function sum(total, decoded) {
+          return total + decoded.quantity.dividedBy(10 ** decimals).toNumber()
+        }, 0)
+
+        txParams.valueArray = decodedScriptArray.map(decoded => decoded.quantity)
+      }
+      
+    }
+
     const initialTxMeta = await this.addUnapprovedTransaction(txParams)
     initialTxMeta.origin = opts.origin
     this.txStateManager.updateTx(
@@ -189,9 +316,18 @@ class TransactionController extends EventEmitter {
   */
 
   async addUnapprovedTransaction (txParams) {
+    // Default from address to selected account
+    if (!txParams.from) {
+      txParams.from = this.getSelectedAddress()
+    }
+    
     // validate & normalize
     const normalizedTxParams = txUtils.normalizeTxParams(txParams)
-    txUtils.validateTxParams(normalizedTxParams)
+
+    // TODO: Validate payment requests separately
+    // if (!txParams.paymentDetails) {
+      txUtils.validateTxParams(normalizedTxParams)
+    // }
 
     // construct txMeta
     const txMeta = this.txStateManager.generateTxMeta({
@@ -202,20 +338,6 @@ class TransactionController extends EventEmitter {
 
     this.emit('newUnapprovedTx', txMeta)
 
-    try {
-      // check whether recipient account is blacklisted
-      recipientBlacklistChecker.checkAccount(
-        txMeta.metamaskNetworkId,
-        normalizedTxParams.to
-      )
-      // add default tx params
-      // skip gas
-      // txMeta = await this.addTxGasDefaults(txMeta)
-    } catch (error) {
-      // log.warn(error)
-      this.txStateManager.setTxStatusFailed(txMeta.id, error)
-      throw error
-    }
     txMeta.loadingDefaults = false
     // save txMeta
     this.txStateManager.updateTx(txMeta)
@@ -342,12 +464,35 @@ class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction')
     const keyPair = await this.exportKeyPair(txParams.from)
 
+    const slpAddress = this.getSlpAddressForAccount(txParams.from)
+    const slpKeyPair = await this.exportKeyPair(slpAddress)
+
     const accountUtxoCache = Object.assign({}, this.getAccountUtxoCache())
     const utxoCache = accountUtxoCache[txParams.from]
+    const slpUtxoCache = accountUtxoCache[slpAddress]
     let spendableUtxos = []
 
     if (utxoCache && utxoCache.length) {
-      spendableUtxos = utxoCache.filter(utxo => utxo.spendable === true)
+      // Filter spendable utxos and map keypair to utxo
+      spendableUtxos = utxoCache.filter(utxo =>
+        utxo.spendable === true
+      ).map(utxo => {
+        utxo.keyPair = keyPair
+        return utxo
+      })
+    }
+
+    if (slpUtxoCache && slpUtxoCache.length) {
+      // Filter spendable SLP utxos and map keypair to utxo
+      const spendableSlpUtxos = slpUtxoCache.filter(utxo =>
+        utxo.spendable === true &&
+        utxo.slp === undefined
+      ).map(utxo => {
+        utxo.keyPair = slpKeyPair
+        return utxo
+      })
+
+      spendableUtxos = spendableUtxos.concat(spendableSlpUtxos)
     }
 
     let txHash
@@ -361,35 +506,37 @@ class TransactionController extends EventEmitter {
       )
 
       if (tokenProtocol === 'slp') {
-        const spendableTokenUtxos = utxoCache.filter(utxo => {
+        // Filter SLP tokens and map keypair to each utxo
+        const allTokenUtxos = utxoCache.concat(slpUtxoCache)
+        const spendableTokenUtxos = allTokenUtxos.filter(utxo => {
           return (
             utxo.slp &&
             utxo.slp.baton === false &&
             utxo.validSlpTx === true &&
             utxo.slp.token === tokenId
           )
+        }).map(utxo => {
+          utxo.keyPair = utxo.address === txParams.from ? keyPair : slpKeyPair
+          return utxo
         })
 
         txHash = await bitboxUtils.signAndPublishSlpTransaction(
           txParams,
-          keyPair,
           spendableUtxos,
           tokenMetadata,
-          spendableTokenUtxos
-        )
-      } else if (tokenProtocol === 'wormhole') {
-        const propertyId = tokenId.slice(42)
-        txHash = await bitboxUtils.signAndPublishWormholeTransaction(
-          txParams,
-          keyPair,
-          spendableUtxos,
-          propertyId
+          spendableTokenUtxos,
+          slpAddress
         )
       }
+    } else if (txParams.paymentData) {
+      txHash = await bitboxUtils.signAndPublishPaymentRequestTransaction(
+        txParams,
+        keyPair,
+        spendableUtxos
+      )
     } else {
       txHash = await bitboxUtils.signAndPublishBchTransaction(
         txParams,
-        keyPair,
         spendableUtxos
       )
     }
@@ -470,6 +617,10 @@ class TransactionController extends EventEmitter {
     /** @returns the user selected address */
     this.getSelectedAddress = () =>
       this.preferencesStore.getState().selectedAddress
+    this.getSlpAddressForAccount = (address) => {
+      const selectedIdentity = this.preferencesStore.getState().identities[address]
+      return selectedIdentity.slpAddress
+    }
     /** @returns the utxo cache for accounts */
     this.getAccountUtxoCache = () =>
       this.accountTrackerStore.getState().accountUtxoCache
@@ -627,6 +778,10 @@ class TransactionController extends EventEmitter {
           tx.txParams.from === this.getSelectedAddress() ||
           tx.txParams.to === this.getSelectedAddress()
       )
+      .reduce((txSet, tx) => {
+        const txExists = txSet.find((item) => item.hash === tx.hash)
+        return txExists ? txSet : [...txSet, tx]
+      }, [])
     this.memStore.updateState({ unapprovedTxs, selectedAddressTxList })
   }
 }

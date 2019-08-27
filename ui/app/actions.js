@@ -73,6 +73,8 @@ var actions = {
   SHOW_NEW_VAULT_SEED: 'SHOW_NEW_VAULT_SEED',
   SHOW_INFO_PAGE: 'SHOW_INFO_PAGE',
   SHOW_IMPORT_PAGE: 'SHOW_IMPORT_PAGE',
+  SHOW_REGISTER_CASHACCOUNT_PAGE: 'SHOW_REGISTER_CASHACCOUNT_PAGE',
+  SHOW_IMPORT_CASHACCOUNT_PAGE: 'SHOW_IMPORT_CASHACCOUNT_PAGE',
   SHOW_NEW_ACCOUNT_PAGE: 'SHOW_NEW_ACCOUNT_PAGE',
   SET_NEW_ACCOUNT_FORM: 'SET_NEW_ACCOUNT_FORM',
   unlockMetamask: unlockMetamask,
@@ -82,6 +84,8 @@ var actions = {
   showRestoreVault: showRestoreVault,
   showInitializeMenu: showInitializeMenu,
   showImportPage,
+  showRegisterCashaccountPage,
+  showImportCashaccountPage,
   showNewAccountPage,
   setNewAccountForm,
   createNewVaultAndKeychain: createNewVaultAndKeychain,
@@ -105,7 +109,6 @@ var actions = {
   // seed recovery actions
   REVEAL_SEED_CONFIRMATION: 'REVEAL_SEED_CONFIRMATION',
   revealSeedConfirmation: revealSeedConfirmation,
-  requestRevealSeed: requestRevealSeed,
   requestRevealSeedWords,
   // unlock screen
   UNLOCK_IN_PROGRESS: 'UNLOCK_IN_PROGRESS',
@@ -115,6 +118,14 @@ var actions = {
   LOCK_METAMASK: 'LOCK_METAMASK',
   tryUnlockMetamask: tryUnlockMetamask,
   lockMetamask: lockMetamask,
+  MARK_UNENCRYPTED: 'MARK_UNENCRYPTED',
+  MARK_ENCRYPTED: 'MARK_ENCRYPTED',
+  checkUnencrypted: checkUnencrypted,
+  SET_CASHACCOUNT: 'SET_CASHACCOUNT',
+  SET_CASHACCOUNT_REGISTRATION: 'SET_CASHACCOUNT_REGISTRATION',
+  setCashAccount: setCashAccount,
+  setCashAccountRegistration: setCashAccountRegistration,
+
   unlockInProgress: unlockInProgress,
   // error handling
   displayWarning: displayWarning,
@@ -432,6 +443,7 @@ function createNewVaultAndRestore (password, seed) {
       })
     })
       .then(() => dispatch(actions.unMarkPasswordForgotten()))
+      .then(() => dispatch(actions.checkUnencrypted()))
       .then(() => {
         dispatch(actions.showAccountsPage())
         dispatch(actions.hideLoadingIndication())
@@ -455,16 +467,7 @@ function createNewVaultAndKeychain (password) {
           return reject(err)
         }
 
-        // log.debug(`background.placeSeedWords`)
-
-        background.placeSeedWords(err => {
-          if (err) {
-            dispatch(actions.displayWarning(err.message))
-            return reject(err)
-          }
-
-          resolve()
-        })
+        resolve()
       })
     })
       .then(() => forceUpdateMetamaskState(dispatch))
@@ -491,6 +494,31 @@ function verifyPassword (password) {
   })
 }
 
+function checkUnencrypted () {
+  return async dispatch => {
+    try {
+      await verifyPassword('')
+      dispatch(markUnencrypted())
+    } catch (error) {
+      dispatch(markEncrypted())
+    }
+  }
+}
+
+function setCashAccount (account) {
+  return {
+    type: actions.SET_CASHACCOUNT,
+    value: account,
+  }
+}
+
+function setCashAccountRegistration (account) {
+  return {
+    type: actions.SET_CASHACCOUNT_REGISTRATION,
+    value: account,
+  }
+}
+
 function verifySeedPhrase () {
   return new Promise((resolve, reject) => {
     background.verifySeedPhrase((error, seedWords) => {
@@ -501,33 +529,6 @@ function verifySeedPhrase () {
       resolve(seedWords)
     })
   })
-}
-
-function requestRevealSeed (password) {
-  return dispatch => {
-    dispatch(actions.showLoadingIndication())
-    // log.debug(`background.submitPassword`)
-    return new Promise((resolve, reject) => {
-      background.submitPassword(password, err => {
-        if (err) {
-          dispatch(actions.displayWarning(err.message))
-          return reject(err)
-        }
-
-        // log.debug(`background.placeSeedWords`)
-        background.placeSeedWords((err, result) => {
-          if (err) {
-            dispatch(actions.displayWarning(err.message))
-            return reject(err)
-          }
-
-          dispatch(actions.showNewVaultSeed(result))
-          dispatch(actions.hideLoadingIndication())
-          resolve()
-        })
-      })
-    })
-  }
 }
 
 function requestRevealSeedWords (password) {
@@ -1167,8 +1168,13 @@ function updateTransaction (txData) {
   }
 }
 
-function updateAndApproveTx (txData) {
-  // log.info('actions: updateAndApproveTx: ' + JSON.stringify(txData))
+function updateAndApproveTx (txData, isCashAccountRegistration = false) {
+  if (isCashAccountRegistration) {
+    // txData.txParams.to = ''
+    // txData.txParams.value
+    txData.isCashAccountRegistration = true
+  }
+
   return (dispatch, getState) => {
     // log.debug(`actions calling background.updateAndApproveTx`)
     dispatch(actions.showLoadingIndication())
@@ -1419,6 +1425,17 @@ function showImportPage () {
   }
 }
 
+function showRegisterCashaccountPage () {
+  return {
+    type: actions.SHOW_REGISTER_CASHACCOUNT_PAGE,
+  }
+}
+function showImportCashaccountPage () {
+  return {
+    type: actions.SHOW_IMPORT_CASHACCOUNT_PAGE,
+  }
+}
+
 function showNewAccountPage (formToSelect) {
   return {
     type: actions.SHOW_NEW_ACCOUNT_PAGE,
@@ -1492,6 +1509,17 @@ function unlockMetamask (account) {
   return {
     type: actions.UNLOCK_METAMASK,
     value: account,
+  }
+}
+
+function markUnencrypted () {
+  return {
+    type: actions.MARK_UNENCRYPTED,
+  }
+}
+function markEncrypted () {
+  return {
+    type: actions.MARK_ENCRYPTED,
   }
 }
 

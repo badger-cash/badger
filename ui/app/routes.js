@@ -33,6 +33,9 @@ const CONFIRM_TRANSFER_FROM_PATH = '/transfer-from'
 const CONFIRM_TOKEN_METHOD_PATH = '/token-method'
 const SIGNATURE_REQUEST_PATH = '/signature-request'
 
+const REGISTER_CASHACCOUNT = '/register-cashaccount'
+const IMPORT_CASHACCOUNT = '/import-cashaccount'
+
 module.exports = {
   DEFAULT_ROUTE,
   UNLOCK_ROUTE,
@@ -66,4 +69,6 @@ module.exports = {
   CONFIRM_TRANSFER_FROM_PATH,
   CONFIRM_TOKEN_METHOD_PATH,
   SIGNATURE_REQUEST_PATH,
+  REGISTER_CASHACCOUNT,
+  IMPORT_CASHACCOUNT,
 }

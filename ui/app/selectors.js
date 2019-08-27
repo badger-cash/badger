@@ -6,6 +6,7 @@ const { multiplyCurrencies } = require('./conversion-util')
 
 const selectors = {
   getSelectedAddress,
+  getSelectedSlpAddress,
   getSelectedIdentity,
   getSelectedAccount,
   getSelectedToken,
@@ -38,6 +39,13 @@ function getSelectedAddress (state) {
     state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
 
   return selectedAddress
+}
+
+function getSelectedSlpAddress (state) {
+  const selectedSlpAddress =
+    state.metamask.selectedSlpAddress
+
+  return selectedSlpAddress
 }
 
 function getSelectedIdentity (state) {

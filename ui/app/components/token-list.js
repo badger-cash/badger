@@ -8,7 +8,7 @@ const connect = require('react-redux').connect
 const selectors = require('../selectors')
 const log = require('loglevel')
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     network: state.metamask.network,
     tokens: state.metamask.tokens,
@@ -36,7 +36,7 @@ TokenList.contextTypes = {
 module.exports = connect(mapStateToProps)(TokenList)
 
 inherits(TokenList, Component)
-function TokenList () {
+function TokenList() {
   this.state = {
     tokens: [],
     isLoading: false,
@@ -45,7 +45,7 @@ function TokenList () {
   Component.call(this)
 }
 
-TokenList.prototype.render = function () {
+TokenList.prototype.render = function() {
   const { userAddress, assetImages } = this.props
   const state = this.state
   const { isLoading, error } = state
@@ -59,6 +59,17 @@ TokenList.prototype.render = function () {
     tokens = []
   }
   if (!tokens) tokens = []
+
+  tokens.sort((a, b) => {
+    const nameA = a.symbol.toLowerCase()
+    const nameB = b.symbol.toLowerCase()
+    if (nameA < nameB) {
+      return -1
+    }
+    if (nameA > nameB) return 1
+    return 0
+  })
+
   // if (isLoading) {
   //   return this.message(this.context.t('loadingTokens'))
   // }
@@ -73,7 +84,7 @@ TokenList.prototype.render = function () {
   //     this.context.t('troubleTokenBalances'),
   //     h('span.hotFix', {
   //       style: {
-  //         color: 'rgba(247, 134, 28, 1)',
+  //         color: 'rgba(10,193,142, 1)',
   //         cursor: 'pointer',
   //       },
   //       onClick: () => {
@@ -94,7 +105,7 @@ TokenList.prototype.render = function () {
   )
 }
 
-TokenList.prototype.message = function (body) {
+TokenList.prototype.message = function(body) {
   return h(
     'div',
     {
@@ -110,7 +121,7 @@ TokenList.prototype.message = function (body) {
   )
 }
 
-TokenList.prototype.componentDidMount = function () {
+TokenList.prototype.componentDidMount = function() {
   // this.createFreshTokenTracker()
 }
 
@@ -151,7 +162,7 @@ TokenList.prototype.componentDidMount = function () {
 //     })
 // }
 
-TokenList.prototype.componentDidUpdate = function (nextProps) {
+TokenList.prototype.componentDidUpdate = function(nextProps) {
   const { network: oldNet, userAddress: oldAddress, tokens } = this.props
   const {
     network: newNet,
@@ -173,14 +184,14 @@ TokenList.prototype.componentDidUpdate = function (nextProps) {
   // this.createFreshTokenTracker()
 }
 
-TokenList.prototype.updateBalances = function (tokens) {
+TokenList.prototype.updateBalances = function(tokens) {
   // if (!this.tracker.running) {
   //   return
   // }
   this.setState({ tokens, isLoading: false })
 }
 
-TokenList.prototype.componentWillUnmount = function () {
+TokenList.prototype.componentWillUnmount = function() {
   // if (!this.tracker) return
   // this.tracker.stop()
   // this.tracker.removeListener('update', this.balanceUpdater)

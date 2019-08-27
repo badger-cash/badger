@@ -18,12 +18,6 @@ const axios = require('axios')
 const bitboxUtils = require('../controllers/transactions/bitbox-utils')
 const slpUtils = require('../controllers/transactions/slp-utils')
 
-const WH = require('wormhole-sdk/lib/Wormhole').default
-const Wormhole = new WH({
-  restURL: `https://rest.bitcoin.com/v1/`,
-})
-const whcTokens = require('../../whc-tokens.json')
-
 const SLPSDK = require('slp-sdk')
 const SLP = new SLPSDK()
 
@@ -51,7 +45,6 @@ class AccountTracker {
       currentBlockGasLimit: '',
       tokenCache: {
         slp: [],
-        wormhole: [],
       },
       historicalBchTransactions: {},
       historicalSlpTransactions: {},
@@ -175,7 +168,7 @@ class AccountTracker {
 
     // query balance
     let balance = await this._updateAccountTokens(address)
-    if (!balance) {
+    if (balance === null || balance === undefined) {
       balance = accounts[address].balance ? accounts[address].balance : balance
     }
 
@@ -191,11 +184,6 @@ class AccountTracker {
     try {
       let tokens = []
       try {
-        const wormholeTokens = await this._getWormholeTokens(address)
-        if (wormholeTokens) {
-          tokens = tokens.concat(wormholeTokens)
-        }
-
         const { slpTokens, bchBalanceSatoshis } = await this._getSlpTokens(
           address
         )
@@ -204,7 +192,28 @@ class AccountTracker {
           tokens = tokens.concat(slpTokens)
         }
 
-        balance = bchBalanceSatoshis
+        // Get SLP tokens for 245 SLP address
+        const slpAddress = this._preferences.getSlpAddressForAccount(address)
+        const getSlpTokens245Response = await this._getSlpTokens(
+          slpAddress
+        )
+        const slpTokens245 = getSlpTokens245Response.slpTokens
+        if (slpTokens245) {
+          slpTokens245.forEach(token => {
+            const existingTokenIndex = tokens.findIndex(t => t.address === token.address)
+            if (existingTokenIndex >= 0) {
+              const existingToken = tokens[existingTokenIndex]
+              const firstBalance = new BigNumber(existingToken.string)
+              const secondBalance = new BigNumber(token.string)
+              const finalBalance = firstBalance.plus(secondBalance)
+              tokens[existingTokenIndex].string = finalBalance.toString()
+            } else {
+              tokens.push(token)
+            }
+          })
+        }
+
+        balance = bchBalanceSatoshis + getSlpTokens245Response.bchBalanceSatoshis
       } catch (err) {
         log.error(
           'AccountTracker::_updateAccountTokens - Token update failed',
@@ -224,8 +233,11 @@ class AccountTracker {
       tokens.forEach(async token => {
         await this._preferences.addTokenByAccount(address, 'mainnet', token)
       })
-    } catch (error) {
-      // log.error('AccountTracker::_updateAccountTokens', error)
+    } catch (err) {
+      log.error(
+        'AccountTracker::_updateAccountTokens - Token update failed',
+        err
+      )
     }
 
     return balance
@@ -283,8 +295,10 @@ class AccountTracker {
       // concat the chunked arrays
       txDetails = [].concat(...txDetails)
 
+      // Add tx and address property to each utxo
       for (let i = 0; i < uncachedUtxos.length; i++) {
         uncachedUtxos[i].tx = txDetails[i]
+        uncachedUtxos[i].address = address
       }
 
       // Parse the txDetails for txid and run list against slp/validate
@@ -493,61 +507,9 @@ class AccountTracker {
     return { slpTokens, bchBalanceSatoshis }
   }
 
-  async _getWormholeTokens (address) {
-    const rtnTokens = []
-
-    try {
-      const tokens = await this._getTokenBalance(address)
-
-      if (!tokens) return rtnTokens
-
-      for (const token of tokens) {
-        let tokenData
-        whcTokens.forEach(async (whcToken, indx) => {
-          if (token.propertyid === whcToken.propertyid) {
-            tokenData = whcToken
-          }
-        })
-
-        if (!tokenData) {
-          tokenData = await Wormhole.DataRetrieval.property(token.propertyid)
-        }
-
-        const addTokenData = {
-          address: `qqqqqqqqqqqqqqqqqqqqqqqqqqqqqu08dsyxz98whc${
-            tokenData.propertyid
-          }`,
-          symbol: tokenData.name,
-          decimals: tokenData.precision,
-          string: token.balance.toString(), // token balance string
-          protocol: 'wormhole',
-          protocolData: {
-            ...tokenData,
-          },
-        }
-
-        rtnTokens.push(addTokenData)
-      }
-    } catch (error) {
-      // log.error('AccountTracker::_getWormholeTokens', error)
-    }
-
-    return rtnTokens
-  }
-
   async getBchBalance (address) {
     const balance = await this._updateAccountTokens(address)
     return balance
-  }
-
-  async _getTokenBalance (address) {
-    let balances
-    try {
-      balances = await Wormhole.DataRetrieval.balancesForAddress(address)
-    } catch (error) {
-      // log.debug("AccountTracker::_getTokenBalance no wh tokens", error)
-    }
-    return balances
   }
 
   async _updateHistoricalTransactions (address) {
@@ -573,13 +535,18 @@ class AccountTracker {
     if (!historicalBchTransactions[address]) historicalBchTransactions[address] = []
 
     const latestConfirmedTx = historicalBchTransactions[address].sort((a, b) => b.block - a.block)[0]
+    const slpAddress = this._preferences.getSlpAddressForAccount(address)
     const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
-    const addressTransactions = await this.getHistoricalBchTransactions(address, latestBlock)
+    const addressTransactions = await this.getHistoricalBchTransactions(address, slpAddress, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
         .filter(input => input.e && input.e.a)
-        .map(input => `bitcoincash:${input.e.a}`)
+        .map(input => {
+          const addr = `bitcoincash:${input.e.a}`
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -594,7 +561,11 @@ class AccountTracker {
       // Determine to address
       const toAddresses = tx.out
         .filter(output => output.e && output.e.a)
-        .map(output => `bitcoincash:${output.e.a}`)
+        .map(output => {
+          const addr = `bitcoincash:${output.e.a}`
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -618,8 +589,9 @@ class AccountTracker {
         value = tx.out.reduce((accumulator, currentValue) => {
           if (
             currentValue.e &&
-            `bitcoincash:${currentValue.e.a}` === toAddress &&
-            currentValue.e.v
+            currentValue.e.v &&
+            `bitcoincash:${currentValue.e.a}` === toAddress ||
+            `bitcoincash:${currentValue.e.a}` === slpAddress
           ) {
             accumulator += currentValue.e.v
           }
@@ -660,7 +632,7 @@ class AccountTracker {
     this.store.updateState({ historicalBchTransactions })
   }
 
-  async getHistoricalBchTransactions (address, latestBlock) {
+  async getHistoricalBchTransactions (address, slpAddress, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -672,6 +644,12 @@ class AccountTracker {
               },
               {
                 'out.e.a': address.slice(12),
+              },
+              {
+                'in.e.a': slpAddress.slice(12),
+              },
+              {
+                'out.e.a': slpAddress.slice(12),
               },
             ],
             'out.h1': {
@@ -725,12 +703,17 @@ class AccountTracker {
 
     const latestConfirmedTx = historicalSlpTransactions[address].sort((a, b) => b.block - a.block)[0]
     const latestBlock = latestConfirmedTx && latestConfirmedTx.block ? latestConfirmedTx.block : 0
-    const addressTransactions = await this.getHistoricalSlpTransactions(address, latestBlock)
+    const slpAddress = this._preferences.getSlpAddressForAccount(address)
+    const addressTransactions = await this.getHistoricalSlpTransactions(address, slpAddress, latestBlock)
 
     addressTransactions.forEach(tx => {
       const fromAddresses = tx.in
         .filter(input => input.e && input.e.a)
-        .map(input => `bitcoincash:${input.e.a}`)
+        .map(input => {
+          const addr = `bitcoincash:${input.e.a}`
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -745,7 +728,11 @@ class AccountTracker {
       // Determine to address
       const toAddresses = tx.slp.detail.outputs
         .filter(output => output.address)
-        .map(output => SLP.Address.toCashAddress(output.address))
+        .map(output => {
+          const addr = SLP.Address.toCashAddress(output.address)
+          if (addr === slpAddress) return address
+          else return addr
+        })
         .reduce((accumulator, currentValue) => {
           if (!accumulator.find(element => element === currentValue)) {
             accumulator.push(currentValue)
@@ -769,10 +756,12 @@ class AccountTracker {
         value = tx.slp.detail.outputs.reduce((accumulator, currentValue) => {
           if (
             currentValue.address &&
-            SLP.Address.toCashAddress(currentValue.address) === toAddress &&
             currentValue.amount
           ) {
-            accumulator = accumulator.plus(new BigNumber(currentValue.amount))
+            const outputAddress = SLP.Address.toCashAddress(currentValue.address)
+            if (outputAddress === toAddress || (toAddress === address && outputAddress === slpAddress)) {
+              accumulator = accumulator.plus(new BigNumber(currentValue.amount))
+            }
           }
           return accumulator
         }, new BigNumber(0))
@@ -813,7 +802,7 @@ class AccountTracker {
     this.store.updateState({ historicalSlpTransactions })
   }
 
-  async getHistoricalSlpTransactions (address, latestBlock) {
+  async getHistoricalSlpTransactions (address, slpAddress, latestBlock) {
     const query = {
       v: 3,
       q: {
@@ -826,6 +815,12 @@ class AccountTracker {
               },
               {
                 'slp.detail.outputs.address': SLP.Address.toSLPAddress(address),
+              },
+              {
+                'in.e.a': slpAddress.slice(12),
+              },
+              {
+                'slp.detail.outputs.address': SLP.Address.toSLPAddress(slpAddress),
               },
             ],
             'slp.valid': true,

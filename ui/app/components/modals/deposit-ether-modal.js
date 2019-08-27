@@ -17,14 +17,14 @@ let BUY_ROW_TITLE
 let BUY_ROW_TEXT
 let FAUCET_ROW_TITLE
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     network: state.metamask.network,
     address: state.metamask.selectedAddress,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     toBuyBch: address => {
       dispatch(actions.buyEth({ network: '1', address, amount: 0 }))
@@ -43,7 +43,7 @@ function mapDispatchToProps (dispatch) {
 }
 
 inherits(DepositEtherModal, Component)
-function DepositEtherModal (props, context) {
+function DepositEtherModal(props, context) {
   Component.call(this)
 
   // need to set after i18n locale has loaded
@@ -67,11 +67,11 @@ module.exports = connect(
   mapDispatchToProps
 )(DepositEtherModal)
 
-DepositEtherModal.prototype.facuetRowText = function (networkName) {
+DepositEtherModal.prototype.facuetRowText = function(networkName) {
   return this.context.t('getEtherFromFaucet', [networkName])
 }
 
-DepositEtherModal.prototype.renderRow = function ({
+DepositEtherModal.prototype.renderRow = function({
   logo,
   title,
   text,
@@ -130,7 +130,7 @@ DepositEtherModal.prototype.renderRow = function ({
   )
 }
 
-DepositEtherModal.prototype.render = function () {
+DepositEtherModal.prototype.render = function() {
   const { network, toBuyBch, address, toFaucet } = this.props
   // const { buyingWithShapeshift } = this.state
   const buyingWithShapeshift = false
@@ -183,7 +183,7 @@ DepositEtherModal.prototype.render = function () {
           this.renderRow({
             logo: h('div.deposit-ether-modal__logo', {
               style: {
-                backgroundImage: "url('./images/BTC_full_logo_standard_S.png')",
+                backgroundImage: "url('./images/bitcoin-com-logo.png')",
                 height: '40px',
               },
             }),
@@ -201,7 +201,7 @@ DepositEtherModal.prototype.render = function () {
   )
 }
 
-DepositEtherModal.prototype.goToAccountDetailsModal = function () {
+DepositEtherModal.prototype.goToAccountDetailsModal = function() {
   this.props.hideWarning()
   this.props.hideModal()
   this.props.showAccountDetailModal()

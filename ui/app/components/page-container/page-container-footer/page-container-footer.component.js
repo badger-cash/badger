@@ -24,6 +24,7 @@ export default class PageContainerFooter extends Component {
       submitText,
       disabled,
       submitButtonType,
+      children,
     } = this.props
 
     return (
@@ -46,6 +47,7 @@ export default class PageContainerFooter extends Component {
         >
           {submitText || this.context.t('next')}
         </Button>
+        {children && children}
       </div>
     )
   }

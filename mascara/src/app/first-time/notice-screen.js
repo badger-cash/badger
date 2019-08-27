@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import debounce from 'lodash.debounce'
-import { markNoticeRead } from '../../../../ui/app/actions'
+import { markNoticeRead, checkUnencrypted } from '../../../../ui/app/actions'
 import Identicon from '../../../../ui/app/components/identicon'
 import Breadcrumbs from './breadcrumbs'
 import { DEFAULT_ROUTE } from '../../../../ui/app/routes'
@@ -28,45 +28,42 @@ class NoticeScreen extends Component {
     history: PropTypes.object,
     isLoading: PropTypes.bool,
     noActiveNotices: PropTypes.bool,
-  };
+    checkUnencrypted: PropTypes.func,
+  }
 
   static defaultProps = {
     nextUnreadNotice: {},
-  };
+  }
 
   state = {
     atBottom: false,
   }
 
   componentDidMount () {
-    if (this.props.noActiveNotices) {
-      this.props.history.push(DEFAULT_ROUTE)
-    }
-
-    this.onScroll()
+    this.props.checkUnencrypted()
+    this.acceptTerms()
   }
 
-  acceptTerms = () => {
+  acceptTerms = async () => {
     const { markNoticeRead, nextUnreadNotice, history } = this.props
-    markNoticeRead(nextUnreadNotice)
-      .then(hasActiveNotices => {
-        if (!hasActiveNotices) {
-          history.push(DEFAULT_ROUTE)
-        } else {
-          this.setState({ atBottom: false })
-          this.onScroll()
-        }
-      })
+    try {
+      if (nextUnreadNotice.body !== undefined) {
+        await markNoticeRead(nextUnreadNotice)
+      }
+      history.push(DEFAULT_ROUTE)
+    } catch (error) {
+      console.log('error in acceptTerms', error)
+    }
   }
 
   onScroll = debounce(() => {
     if (this.state.atBottom) return
 
     const target = document.querySelector('.tou__body')
-    const {scrollTop, offsetHeight, scrollHeight} = target
+    const { scrollTop, offsetHeight, scrollHeight } = target
     const atBottom = scrollTop + offsetHeight >= scrollHeight
 
-    this.setState({atBottom: atBottom})
+    this.setState({ atBottom: atBottom })
   }, 25)
 
   render () {
@@ -77,37 +74,28 @@ class NoticeScreen extends Component {
     } = this.props
     const { atBottom } = this.state
 
-    return (
-      isLoading
-        ? <LoadingScreen />
-        : (
-          <div className="first-time-flow">
-            <div className="first-view-main-wrapper">
-              <div className="first-view-main">
-                <div
-                  className="tou"
-                  onScroll={this.onScroll}
-                >
-                  <Identicon address={address} diameter={70} />
-                  <div className="tou__title">{title}</div>
-                  <Markdown
-                    className="tou__body markdown"
-                    source={body}
-                    skipHtml
-                  />
-                  <button
-                    className="first-time-flow__button"
-                    onClick={atBottom && this.acceptTerms}
-                    disabled={!atBottom}
-                  >
-                    Accept
-                  </button>
-                  <Breadcrumbs total={3} currentIndex={2} />
-                </div>
-              </div>
+    return isLoading ? (
+      <LoadingScreen />
+    ) : (
+      <div className="first-time-flow">
+        <div className="first-view-main-wrapper">
+          <div className="first-view-main">
+            <div className="tou" onScroll={this.onScroll}>
+              <Identicon address={address} diameter={70} />
+              <div className="tou__title">{title}</div>
+              <Markdown className="tou__body markdown" source={body} skipHtml />
+              <button
+                className="first-time-flow__button"
+                onClick={atBottom && this.acceptTerms}
+                disabled={!atBottom}
+              >
+                Accept
+              </button>
+              <Breadcrumbs total={2} currentIndex={2} />
             </div>
           </div>
-        )
+        </div>
+      </div>
     )
   }
 }
@@ -130,6 +118,7 @@ export default compose(
     mapStateToProps,
     dispatch => ({
       markNoticeRead: notice => dispatch(markNoticeRead(notice)),
+      checkUnencrypted: () => dispatch(checkUnencrypted()),
     })
   )
 )(NoticeScreen)

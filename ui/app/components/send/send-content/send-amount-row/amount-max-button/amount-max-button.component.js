@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {
+  removeUnspendableUtxo,
+  calculateMaxSendSatoshis,
+} from '../../../send.utils'
 
 export default class AmountMaxButton extends Component {
   static propTypes = {
-    balance: PropTypes.string,
+    balance: PropTypes.any,
     gasTotal: PropTypes.string,
     maxModeOn: PropTypes.bool,
     selectedToken: PropTypes.object,
+    utxo: PropTypes.object,
     setAmountToMax: PropTypes.func,
     setMaxModeTo: PropTypes.func,
     tokenBalance: PropTypes.string,
@@ -16,33 +21,37 @@ export default class AmountMaxButton extends Component {
     t: PropTypes.func,
   }
 
-  setMaxAmount () {
+  handleOnClick = async e => {
     const {
       balance,
-      gasTotal,
       selectedToken,
-      setAmountToMax,
       tokenBalance,
+      setAmountToMax,
+      setMaxModeTo,
+      selectedAddress,
+      selectedSlpAddress,
+      utxo,
     } = this.props
 
-    setAmountToMax({
-      balance,
-      gasTotal,
-      selectedToken,
-      tokenBalance,
-    })
+    let bchUtxo = utxo[selectedAddress]
+    if (selectedSlpAddress && utxo[selectedSlpAddress]) {
+      bchUtxo = bchUtxo.concat(utxo[selectedSlpAddress])
+    }
+    const cleanUtxo = removeUnspendableUtxo(bchUtxo)
+    const maxSendSatoshis = calculateMaxSendSatoshis(cleanUtxo)
+
+    setMaxModeTo(true)
+    setAmountToMax({ balance, selectedToken, tokenBalance, maxSendSatoshis })
   }
 
   render () {
-    const { setMaxModeTo, maxModeOn } = this.props
+    const { maxModeOn } = this.props
 
     return (
       <div
         className="send-v2__amount-max"
-        onClick={event => {
-          event.preventDefault()
-          setMaxModeTo(true)
-          this.setMaxAmount()
+        onClick={e => {
+          this.handleOnClick(e)
         }}
       >
         {!maxModeOn ? this.context.t('max') : ''}

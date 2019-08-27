@@ -3,10 +3,13 @@ const SLP = new SLPSDK()
 const BigNumber = require('bignumber.js')
 
 class SlpUtils {
+  
+  
   static get lokadIdHex () {
     return '534c5000'
   }
 
+  
   static decodeMetadata (txDetails) {
     // txOut = {
     //     txid:
@@ -21,22 +24,7 @@ class SlpUtils {
       Buffer.from(txDetails.vout[0].scriptPubKey.hex, 'hex')
     ).split(' ')
 
-    if (script[0] !== 'OP_RETURN') {
-      throw new Error('Not an OP_RETURN')
-    }
-
-    if (script[1] !== this.lokadIdHex) {
-      throw new Error('Not a SLP OP_RETURN')
-    }
-
-    if (script[2] != 'OP_1') {
-      // NOTE: bitcoincashlib-js converts hex 01 to OP_1 due to BIP62.3 enforcement
-      throw new Error('Unknown token type')
-    }
-
-    const type = Buffer.from(script[3], 'hex')
-      .toString('ascii')
-      .toLowerCase()
+    const type = this.getSLPTxType(script)
 
     if (type === 'genesis') {
       out.token = txDetails.txid
@@ -53,6 +41,7 @@ class SlpUtils {
     return out
   }
 
+  
   static decodeTxOut (txOut) {
     // txOut = {
     //     txid:
@@ -78,7 +67,11 @@ class SlpUtils {
       throw new Error('Not a SLP OP_RETURN')
     }
 
-    if (script[2] != 'OP_1') {
+    if (
+      script[2] !== 'OP_1' &&
+      script[2] !== 'OP_1NEGATE' &&
+      script[2] !== '41'
+    ) {
       // NOTE: bitcoincashlib-js converts hex 01 to OP_1 due to BIP62.3 enforcement
       throw new Error('Unknown token type')
     }
@@ -145,6 +138,52 @@ class SlpUtils {
     }
 
     return out
+  }
+
+  
+  static decodeScriptPubKey (scriptPubKeyHexString, outputIndex) {
+    const txOut = {
+      vout: outputIndex,
+      tx: {
+        vout: [
+          {
+            scriptPubKey: {
+              hex: scriptPubKeyHexString
+            }
+          }
+        ]
+      }
+    }
+    
+    return this.decodeTxOut(txOut)
+  }
+
+
+  static async getTokenInfo (tokenId) {
+    const info = await SLP.Utils.list(tokenId)
+    return info
+  }
+
+  
+  static getSLPTxType (scriptASMArray) {
+    if (scriptASMArray[0] !== 'OP_RETURN') {
+      throw new Error('Not an OP_RETURN')
+    }
+
+    if (scriptASMArray[1] !== this.lokadIdHex) {
+      throw new Error('Not a SLP OP_RETURN')
+    }
+
+    if (scriptASMArray[2] != 'OP_1') {
+      // NOTE: bitcoincashlib-js converts hex 01 to OP_1 due to BIP62.3 enforcement
+      throw new Error('Unknown token type')
+    }
+
+    var type = Buffer.from(scriptASMArray[3], 'hex')
+      .toString('ascii')
+      .toLowerCase()
+    
+    return type
   }
 }
 

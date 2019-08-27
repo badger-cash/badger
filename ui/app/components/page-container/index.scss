@@ -48,6 +48,7 @@
     border-top: 1px solid $geyser;
     padding: 16px;
     flex: 0 0 auto;
+    position:relative;
 
     .btn-default,
     .btn-confirm {
@@ -67,7 +68,7 @@
   }
 
   &__back-button {
-    color: #2f9ae0;
+    color: #2d7cc2;
     font-size: 1rem;
     cursor: pointer;
     font-weight: 400;

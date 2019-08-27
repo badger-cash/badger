@@ -22,7 +22,7 @@ export default class UnlockPage extends Component {
     useOldInterface: PropTypes.func,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -34,22 +34,41 @@ export default class UnlockPage extends Component {
     this.animationEventEmitter = new EventEmitter()
   }
 
-  componentWillMount () {
-    const { isUnlocked, history } = this.props
+  async componentDidMount() {
+    const { isUnlocked, history, tryUnlockMetamask } = this.props
 
-    if (isUnlocked) {
+    if (!isUnlocked) {
+      await tryUnlockMetamask('')
+      this.submitting = false
       history.push(DEFAULT_ROUTE)
     }
   }
 
-  async handleSubmit (event) {
+  async componentWillMount() {
+    const { isUnlocked, history, tryUnlockMetamask } = this.props
+
+    if (isUnlocked) {
+      history.push(DEFAULT_ROUTE)
+    }
+
+    try {
+      await tryUnlockMetamask('')
+      // await tryUnlockMetamask('')
+      this.submitting = false
+      history.push(DEFAULT_ROUTE)
+    } catch ({ message }) {
+      this.submitting = false
+    }
+  }
+
+  async handleSubmit(event) {
     event.preventDefault()
     event.stopPropagation()
 
     const { password } = this.state
     const { tryUnlockMetamask, history } = this.props
 
-    if (password === '' || this.submitting) {
+    if (this.submitting) {
       return
     }
 
@@ -66,7 +85,7 @@ export default class UnlockPage extends Component {
     }
   }
 
-  handleInputChange ({ target }) {
+  handleInputChange({ target }) {
     this.setState({ password: target.value, error: null })
 
     // tell mascot to look at page action
@@ -79,9 +98,9 @@ export default class UnlockPage extends Component {
     })
   }
 
-  renderSubmitButton () {
+  renderSubmitButton() {
     const style = {
-      backgroundColor: '#f7861c',
+      backgroundColor: '#0AC18E',
       color: 'white',
       marginTop: '20px',
       height: '60px',
@@ -106,7 +125,7 @@ export default class UnlockPage extends Component {
     )
   }
 
-  render () {
+  render() {
     const { password, error } = this.state
     const { t } = this.context
     const { markPasswordForgotten, history } = this.props
@@ -117,7 +136,7 @@ export default class UnlockPage extends Component {
           <div className="unlock-page__mascot-container">
             <img
               className="app-header__metafox-logo app-header__metafox-logo--icon"
-              src="/images/bch_logo.svg"
+              src="/images/icon-512.png"
               height={120}
               width={125}
             />
@@ -165,12 +184,13 @@ export default class UnlockPage extends Component {
                 markPasswordForgotten()
                 history.push(RESTORE_VAULT_ROUTE)
 
-                if (
-                  getEnvironmentType(window.location.href) ===
-                  ENVIRONMENT_TYPE_POPUP
-                ) {
-                  global.platform.openExtensionInBrowser()
-                }
+                // force extension to remain open
+                // if (
+                //   getEnvironmentType(window.location.href) ===
+                //   ENVIRONMENT_TYPE_POPUP
+                // ) {
+                //   global.platform.openExtensionInBrowser()
+                // }
               }}
             >
               {t('importUsingSeed')}

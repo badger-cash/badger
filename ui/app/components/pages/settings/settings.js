@@ -10,7 +10,10 @@ const validUrl = require('valid-url')
 const { exportAsFile } = require('../../../util')
 const SimpleDropdown = require('../../dropdowns/simple-dropdown')
 const ToggleButton = require('react-toggle-button')
-const { REVEAL_SEED_ROUTE } = require('../../../routes')
+const {
+  INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
+  REVEAL_SEED_ROUTE,
+} = require('../../../routes')
 const locales = require('../../../../../app/_locales/index.json')
 // const log = require('loglevel')
 
@@ -320,6 +323,31 @@ class Settings extends Component {
     ])
   }
 
+  renderImportAccount () {
+    const { history } = this.props
+
+    return h('div.settings__content-row', [
+      h('div.settings__content-item', this.context.t('importAccount')),
+      h('div.settings__content-item', [
+        h('div.settings__content-item-col', [
+          h(
+            Button,
+            {
+              type: 'primary',
+              large: true,
+              className: 'settings__button',
+              onClick: event => {
+                event.preventDefault()
+                history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE)
+              },
+            },
+            this.context.t('importAccount')
+          ),
+        ]),
+      ]),
+    ])
+  }
+
   renderOldUI () {
     const { setFeatureFlagToBeta } = this.props
 
@@ -374,13 +402,14 @@ class Settings extends Component {
     const { warning } = this.props
 
     return h('div.settings__content', [
-      warning && h('div.settings__error', warning),
+      warning !== 'Incorrect password' && h('div.settings__error', warning),
       this.renderCurrentConversion(),
       this.renderCurrentLocale(),
       // this.renderCurrentProvider(),
       // this.renderNewRpcUrl(),
       this.renderStateLogs(),
       this.renderSeedWords(),
+      this.renderImportAccount(),
       // !isMascara && this.renderOldUI(),
       this.renderResetAccount(),
       // this.renderBlockieOptIn(),

@@ -16,15 +16,28 @@ export default class SendToRow extends Component {
     updateSendTo: PropTypes.func,
     updateSendToError: PropTypes.func,
     scanQrCode: PropTypes.func,
+    tokenContract: PropTypes.object,
+    selectedToken: PropTypes.object,
   }
 
   static contextTypes = {
     t: PropTypes.func,
   }
 
+  // immediate validation
+  componentDidMount () {
+    this.handleToChange('', '', '')
+  }
+
   handleToChange (to, nickname = '', toError) {
-    const { updateSendTo, updateSendToError } = this.props
+    const {
+      updateSendTo,
+      updateSendToError,
+      selectedToken,
+      tokenContract,
+    } = this.props
     const toErrorObject = getToErrorObject(to, toError)
+
     updateSendTo(to, nickname)
     updateSendToError(toErrorObject)
     if (toErrorObject.to === null) {

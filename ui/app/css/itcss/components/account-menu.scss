@@ -21,7 +21,7 @@
   }
 
   &__icon {
-    margin-left: 20px;
+    // margin-left: 20px;
     cursor: pointer;
 
     &--disabled {
@@ -44,6 +44,9 @@
     font-size: 12px;
     line-height: 23px;
     padding: 0 24px;
+    &.hidden {
+      visibility: hidden;
+    }
   }
 
   &__item-icon {

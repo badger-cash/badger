@@ -19,10 +19,13 @@ const selectors = {
   getGasPrice,
   getGasPriceFromRecentBlocks,
   getGasTotal,
+  getBchFee,
+  getUtxos,
   getPrimaryCurrency,
   getRecentBlocks,
   getSelectedAccount,
   getSelectedAddress,
+  getSelectedSlpAddress,
   getSelectedIdentity,
   getSelectedToken,
   getSelectedTokenContract,
@@ -135,6 +138,14 @@ function getGasTotal (state) {
   return state.metamask.send.gasTotal
 }
 
+function getBchFee (state) {
+  return state.metamask.send.bchFee
+}
+
+function getUtxos (state) {
+  return state.metamask.accountUtxoCache
+}
+
 function getPrimaryCurrency (state) {
   const selectedToken = getSelectedToken(state)
   return selectedToken && selectedToken.symbol
@@ -156,6 +167,12 @@ function getSelectedAddress (state) {
     state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
 
   return selectedAddress
+}
+
+function getSelectedSlpAddress (state) {
+  const selectedSlpAddress = state.metamask.selectedSlpAddress
+
+  return selectedSlpAddress
 }
 
 function getSelectedIdentity (state) {

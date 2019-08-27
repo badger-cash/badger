@@ -25,11 +25,24 @@ class RevealSeedPage extends Component {
     }
   }
 
-  componentDidMount () {
+  async componentDidMount () {
+    this.tryUnencrypted()
     const passwordBox = document.getElementById('password-box')
     if (passwordBox) {
       passwordBox.focus()
     }
+  }
+
+  tryUnencrypted = async () => {
+    const { requestRevealSeedWords } = this.props
+    const seed = await requestRevealSeedWords('')
+
+    this.setState({
+      seedWords: seed,
+      screen: REVEAL_SEED_SCREEN,
+    })
+
+    return this.renderContent()
   }
 
   handleSubmit (event) {
@@ -163,7 +176,6 @@ class RevealSeedPage extends Component {
         ),
       ]),
       h('.page-container__content', [
-        this.renderWarning(),
         h('.reveal-seed__content', [this.renderContent()]),
       ]),
       this.renderFooter(),

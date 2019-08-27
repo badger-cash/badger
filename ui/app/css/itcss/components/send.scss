@@ -943,3 +943,23 @@
 .sliders-icon {
   color: $curious-blue;
 }
+
+.swap-currency {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  flex-basis: 100%;
+  max-width: 100%;
+  justify-content: flex-end;
+  &:hover {
+    opacity: 0.8;
+  }
+  .swap {
+    color: #2d7cc2;
+    font-family: Roboto;
+    font-size: 12px;
+    left: 8px;
+    border: none;
+    text-transform: uppercase;
+  }
+}

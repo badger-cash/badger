@@ -733,6 +733,9 @@
   "pasteSeed": {
     "message": "Paste your seed phrase here!"
   },
+  "paymentRequest": {
+    "message": "Payment Request"
+  },
   "pending": {
     "message": "pending"
   },

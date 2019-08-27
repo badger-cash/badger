@@ -3,6 +3,23 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Identicon from '../../../identicon'
 
+const commaFormat = (text, subtitle) => {
+  if (subtitle !== 'Simple Ledger Protocol') {
+    return text
+  }
+  const split = text.split(' ')
+
+  let decimalCount = split[0].split('.')
+
+  decimalCount = decimalCount.length > 1 ? decimalCount[1].length : 0
+  const number = parseFloat(split[0])
+  const formatted = new Intl.NumberFormat('en-US', {
+    maximumFractionDigits: decimalCount,
+  }).format(number)
+
+  return `${formatted} ${split[1]}`
+}
+
 const ConfirmPageContainerSummary = props => {
   const {
     action,
@@ -11,7 +28,6 @@ const ConfirmPageContainerSummary = props => {
     hideSubtitle,
     className,
     identiconAddress,
-    nonce,
     assetImage,
   } = props
 
@@ -19,13 +35,6 @@ const ConfirmPageContainerSummary = props => {
     <div className={classnames('confirm-page-container-summary', className)}>
       <div className="confirm-page-container-summary__action-row">
         <div className="confirm-page-container-summary__action">{action}</div>
-        {/* {
-          nonce && (
-            <div className="confirm-page-container-summary__nonce">
-              { `#${nonce}` }
-            </div>
-          )
-        } */}
       </div>
       <div className="confirm-page-container-summary__title">
         {identiconAddress && (
@@ -37,7 +46,7 @@ const ConfirmPageContainerSummary = props => {
           />
         )}
         <div className="confirm-page-container-summary__title-text">
-          {title}
+          {commaFormat(title, subtitle)}
         </div>
       </div>
       {hideSubtitle || (

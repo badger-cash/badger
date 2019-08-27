@@ -51,6 +51,7 @@
     justify-content: space-between;
     flex-flow: row nowrap;
     width: 100%;
+    align-items: center;
 
     @media screen and (max-width: 575px) {
       height: 100%;
@@ -85,6 +86,25 @@
   &__network-component-wrapper {
     display: flex;
     flex-direction: row;
+    align-items: center;
+  }
+
+  .pending {
+    font-size: 0.7rem;
+    background: #0ac18e;
+    padding: 0.5rem;
+    color: #ffffffe6;
+    border-radius: 5px;
+  }
+
+  .pending:hover{
+    opacity: 0.8;
+  }
+
+  .tooltip-cashaccount {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
 }

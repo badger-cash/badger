@@ -11,6 +11,7 @@ const variantHash = {
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
 }
 const bchaddr = require('bchaddrjs-slp')
+import localStorage from 'store'
 
 export default class SenderToRecipient extends PureComponent {
   static propTypes = {
@@ -37,9 +38,10 @@ export default class SenderToRecipient extends PureComponent {
   state = {
     senderAddressCopied: false,
     recipientAddressCopied: false,
+    cashAccount: localStorage.get('cashAccount'),
   }
 
-  renderSenderIdenticon () {
+  renderSenderIdenticon() {
     return (
       !this.props.addressOnly && (
         <div className="sender-to-recipient__sender-icon">
@@ -49,7 +51,7 @@ export default class SenderToRecipient extends PureComponent {
     )
   }
 
-  renderSenderAddress () {
+  renderSenderAddress() {
     const { t } = this.context
     const { senderName, senderAddress, addressOnly, symbol } = this.props
 
@@ -76,7 +78,7 @@ export default class SenderToRecipient extends PureComponent {
     )
   }
 
-  renderRecipientIdenticon () {
+  renderRecipientIdenticon() {
     const { recipientAddress, assetImage } = this.props
 
     return (
@@ -92,12 +94,28 @@ export default class SenderToRecipient extends PureComponent {
     )
   }
 
-  renderRecipientWithAddress () {
-    const { t } = this.context
-    const { subtitle, addressOnly } = this.props
-    let { recipientAddress, recipientName, symbol } = this.props
+  renderEmoji(emoji) {
+    return (
+      <span className="emoji" role="img" aria-label={emoji}>
+        {emoji}
+      </span>
+    )
+  }
 
-    if (symbol !== 'BCH') {
+  renderRecipientWithAddress() {
+    const { t } = this.context
+    const { subtitle, addressOnly, symbol } = this.props
+    let { recipientAddress, recipientName } = this.props
+    const { cashAccount } = this.state
+
+    if (cashAccount !== undefined) {
+      recipientName = `${cashAccount.name}#${cashAccount.number}`
+    }
+
+    if (
+      (subtitle === 'Simple Ledger Protocol' && cashAccount === undefined) ||
+      symbol !== 'BCH'
+    ) {
       recipientAddress = bchaddr.toSlpAddress(recipientAddress)
       recipientName = `${recipientAddress.substring(
         0,
@@ -113,7 +131,9 @@ export default class SenderToRecipient extends PureComponent {
           copyToClipboard(recipientAddress)
         }}
       >
-        {this.renderRecipientIdenticon()}
+        {cashAccount !== undefined
+          ? this.renderEmoji(cashAccount.emoji)
+          : this.renderRecipientIdenticon()}
         <Tooltip
           position="bottom"
           title={
@@ -135,7 +155,7 @@ export default class SenderToRecipient extends PureComponent {
     )
   }
 
-  renderRecipientWithoutAddress () {
+  renderRecipientWithoutAddress() {
     return (
       <div className="sender-to-recipient__party sender-to-recipient__party--recipient">
         {!this.props.addressOnly && <i className="fa fa-file-text-o" />}
@@ -146,7 +166,7 @@ export default class SenderToRecipient extends PureComponent {
     )
   }
 
-  renderArrow () {
+  renderArrow() {
     return this.props.variant === CARDS_VARIANT ? (
       <div className="sender-to-recipient__arrow-container">
         <img height={20} src="./images/caret-right.svg" />
@@ -160,7 +180,7 @@ export default class SenderToRecipient extends PureComponent {
     )
   }
 
-  render () {
+  render() {
     const { senderAddress, recipientAddress, variant } = this.props
 
     return (
@@ -177,10 +197,8 @@ export default class SenderToRecipient extends PureComponent {
           {this.renderSenderIdenticon()}
           {this.renderSenderAddress()}
         </div>
-        {this.renderArrow()}
-        {recipientAddress
-          ? this.renderRecipientWithAddress()
-          : this.renderRecipientWithoutAddress()}
+        {recipientAddress ? this.renderArrow() : ''}
+        {recipientAddress ? this.renderRecipientWithAddress() : ''}
       </div>
     )
   }

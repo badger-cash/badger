@@ -242,7 +242,6 @@ class BitboxUtils {
     })
   }
 
-  // TODO: Payment requests
   static signAndPublishPaymentRequestTransaction(
     txParams,
     keyPair,

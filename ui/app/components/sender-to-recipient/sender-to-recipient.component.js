@@ -56,7 +56,7 @@ export default class SenderToRecipient extends PureComponent {
     const { senderName, senderAddress, addressOnly, symbol } = this.props
 
     let sa = senderAddress
-    if (symbol !== 'BCH') {
+    if (symbol !== 'BCH' && senderAddress) {
       sa = bchaddr.toSlpAddress(senderAddress)
     }
     return (
@@ -112,7 +112,7 @@ export default class SenderToRecipient extends PureComponent {
       recipientName = `${cashAccount.name}#${cashAccount.number}`
     }
 
-    if (
+    if ( recipientAddress &&
       (subtitle === 'Simple Ledger Protocol' && cashAccount === undefined) ||
       symbol !== 'BCH'
     ) {

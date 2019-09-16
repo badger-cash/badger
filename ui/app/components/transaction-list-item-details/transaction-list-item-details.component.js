@@ -84,10 +84,10 @@ export default class TransactionListItemDetails extends PureComponent {
               transaction={transaction}
               className="transaction-list-item-details__transaction-breakdown"
             />
-            <TransactionActivityLog
+            {/* <TransactionActivityLog
               transaction={transaction}
               className="transaction-list-item-details__transaction-activity-log"
-            />
+            /> */}
           </div>
         )}
       </div>

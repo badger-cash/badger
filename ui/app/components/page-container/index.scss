@@ -129,6 +129,12 @@
     flex: 1;
   }
 
+  &__success {
+    font-size: 20rem;
+    text-align: center;
+    color: #0ac18e;
+  }
+
   &__warning-container {
     background: $linen;
     padding: 20px;

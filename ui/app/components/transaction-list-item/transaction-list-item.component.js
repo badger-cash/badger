@@ -147,6 +147,7 @@ export default class TransactionListItem extends PureComponent {
     } = this.props
     const { txParams = {} } = transaction
     const { showTransactionDetails } = this.state
+    const showMemo = txParams.paymentData && txParams.paymentData.memo
     const fromAddress = txParams.from
     const toAddress = tokenData
       ? (tokenData.params &&
@@ -268,6 +269,11 @@ export default class TransactionListItem extends PureComponent {
             ? this.renderSecondaryCurrency(currencyPrefix)
             : ''}
         </div>
+        {showMemo && (
+          <div className="transaction-list-item__memo-container">
+            {txParams.paymentData.memo}
+          </div>
+        )}
         {showTransactionDetails && (
           <div className="transaction-list-item__details-container">
             <TransactionListItemDetails

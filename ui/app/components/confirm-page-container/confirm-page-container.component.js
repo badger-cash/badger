@@ -48,7 +48,7 @@ export default class ConfirmPageContainer extends Component {
     disabled: PropTypes.bool,
   }
 
-  render () {
+  render() {
     const {
       showEdit,
       onEdit,
@@ -76,6 +76,7 @@ export default class ConfirmPageContainer extends Component {
       assetImage,
       warning,
     } = this.props
+
     const renderAssetImage =
       contentComponent || (!contentComponent && !identiconAddress)
 
@@ -89,6 +90,7 @@ export default class ConfirmPageContainer extends Component {
             recipientAddress={toAddress}
             assetImage={renderAssetImage ? assetImage : undefined}
             subtitle={subtitle}
+            symbol={this.props.txParams.sendTokenData ? 'SLP' : 'BCH'}
           />
         </ConfirmPageContainerHeader>
         {contentComponent || (

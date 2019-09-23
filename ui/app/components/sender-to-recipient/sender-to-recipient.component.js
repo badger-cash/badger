@@ -24,6 +24,7 @@ export default class SenderToRecipient extends PureComponent {
     addressOnly: PropTypes.bool,
     assetImage: PropTypes.string,
     subtitle: PropTypes.string,
+    symbol: PropTypes.string,
   }
 
   static defaultProps = {
@@ -52,8 +53,12 @@ export default class SenderToRecipient extends PureComponent {
 
   renderSenderAddress () {
     const { t } = this.context
-    const { senderName, senderAddress, addressOnly } = this.props
+    const { senderName, senderAddress, addressOnly, symbol } = this.props
 
+    let sa = senderAddress
+    if (symbol !== 'BCH' && senderAddress) {
+      sa = bchaddr.toSlpAddress(senderAddress)
+    }
     return (
       <Tooltip
         position="bottom"
@@ -67,7 +72,7 @@ export default class SenderToRecipient extends PureComponent {
         onHidden={() => this.setState({ senderAddressCopied: false })}
       >
         <div className="sender-to-recipient__name">
-          {addressOnly ? `${t('from')}: ${senderAddress}` : senderName}
+          {addressOnly ? `${t('from')}: ${sa}` : senderName}
         </div>
       </Tooltip>
     )
@@ -99,7 +104,7 @@ export default class SenderToRecipient extends PureComponent {
 
   renderRecipientWithAddress () {
     const { t } = this.context
-    const { subtitle, addressOnly } = this.props
+    const { subtitle, addressOnly, symbol } = this.props
     let { recipientAddress, recipientName } = this.props
     const { cashAccount } = this.state
 
@@ -107,11 +112,16 @@ export default class SenderToRecipient extends PureComponent {
       recipientName = `${cashAccount.name}#${cashAccount.number}`
     }
 
-    if (subtitle === 'Simple Ledger Protocol' && cashAccount === undefined) {
+    if (
+      (recipientAddress &&
+        (subtitle === 'Simple Ledger Protocol' && cashAccount === undefined)) ||
+      symbol !== 'BCH'
+    ) {
       recipientAddress = bchaddr.toSlpAddress(recipientAddress)
+
       recipientName = `${recipientAddress.substring(
-        0,
-        6
+        13,
+        19
       )}...${recipientAddress.substr(-4)}`
     }
 
@@ -189,10 +199,8 @@ export default class SenderToRecipient extends PureComponent {
           {this.renderSenderIdenticon()}
           {this.renderSenderAddress()}
         </div>
-        {recipientAddress ? this.renderArrow() : ""}
-        {recipientAddress
-          ? this.renderRecipientWithAddress()
-          : ""}
+        {recipientAddress ? this.renderArrow() : ''}
+        {recipientAddress ? this.renderRecipientWithAddress() : ''}
       </div>
     )
   }

@@ -6,6 +6,7 @@
 - Don't show USD conversion button when sending tokens
 - Remove SLP prefix on confirmation screen
 - Display payment memo in transaction list
+- Remove transaction activity log
 
 ## 0.7.7
 

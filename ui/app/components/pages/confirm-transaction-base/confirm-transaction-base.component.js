@@ -89,6 +89,7 @@ export default class ConfirmTransactionBase extends Component {
     submitting: false,
     submitError: null,
     pendingCashAccount: localStorage.get('pendingCashAccount'),
+    submitSuccess: false,
   }
 
   componentDidUpdate() {
@@ -338,15 +339,19 @@ export default class ConfirmTransactionBase extends Component {
     } else {
       sendTransaction(txData, isCashAccountRegistration)
         .then(async x => {
-          await clearConfirmTransaction()
-          this.setState({ submitting: false })
-          history.push(DEFAULT_ROUTE)
+          this.setState({ submitting: false, submitSuccess: true })
+
+          setTimeout(async function () {
+            await clearConfirmTransaction()
+            history.push(DEFAULT_ROUTE)
+          }, 3 * 1000)
         })
         .catch(error => {
           this.setState({ submitting: false, submitError: error.message })
         })
     }
   }
+
   renderRegistration = () => {
     const { pendingCashAccount } = this.state
 
@@ -381,6 +386,21 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
+  renderSuccess = () => {
+    return (
+      <div className="page-container">
+        <div className="page-container__header">
+          <div className="page-container__title">
+            Payment Sent
+          </div>
+        </div>
+        <div className="page-container__success">
+          <i className="fa fa-check-circle"></i>
+        </div>
+      </div>
+    )
+  }
+
   render() {
     let {
       isTxReprice,
@@ -409,10 +429,14 @@ export default class ConfirmTransactionBase extends Component {
       txParams,
       accountTokens,
     } = this.props
-    const { submitting, submitError } = this.state
+    const { submitting, submitError, submitSuccess } = this.state
     const isCashAccountRegistration =
       txParams.opReturn !== undefined &&
       txParams.opReturn.data[0] === '0x01010101'
+
+    if (submitSuccess) {
+      return this.renderSuccess()
+    }
 
     if (isCashAccountRegistration) {
       return this.renderRegistration()

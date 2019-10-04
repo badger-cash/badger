@@ -1,3 +1,4 @@
+import React from 'react'
 const Component = require('react').Component
 const PropTypes = require('prop-types')
 const connect = require('react-redux').connect
@@ -89,23 +90,22 @@ WalletView.prototype.renderWalletBalance = function () {
     : 'wallet-balance-wrapper--active'
   const className = `flex-column wallet-balance-wrapper ${selectedClass}`
 
-  return h('div', { className }, [
-    h(
-      'div.wallet-balance',
-      {
-        onClick: () => {
+  return (
+    <div className={className}>
+      <div
+        className="wallet-balance"
+        onClick={() => {
           unsetSelectedToken()
           selectedTokenAddress && sidebarOpen && hideSidebar()
-        },
-      },
-      [
-        h(BalanceComponent, {
-          balanceValue: selectedAccount ? selectedAccount.balance : '',
-          style: {},
-        }),
-      ]
-    ),
-  ])
+        }}
+      >
+        <BalanceComponent
+          balanceValue={selectedAccount ? selectedAccount.balance : ''}
+          style={{}}
+        />
+      </div>
+    </div>
+  )
 }
 
 WalletView.prototype.render = function () {
@@ -148,147 +148,91 @@ WalletView.prototype.render = function () {
     }
   }
 
-  return h(
-    'div.wallet-view.flex-column',
-    {
-      style: {},
-      className: responsiveDisplayClassname,
-    },
-    [
-      // TODO: Separate component: wallet account details
-      h(
-        'div.flex-column.wallet-view-account-details',
-        {
-          style: {},
-        },
-        [
-          h('div.wallet-view__sidebar-close', {
-            onClick: hideSidebar,
-          }),
-
-          h('div.wallet-view__keyring-label.allcaps', label),
-
-          h(
-            'div.flex-column.flex-center.wallet-view__name-container',
-            {
-              style: { margin: '0 auto' },
-              onClick: showAccountDetailModal,
-            },
-            [
-              h(Identicon, {
-                diameter: 54,
-                address: checksummedAddress,
-              }),
-
-              h(
-                'span.account-name',
-                {
-                  style: {},
-                },
-                [identities[selectedAddress].name]
-              ),
-
-              h(
-                'button.btn-clear.wallet-view__details-button.allcaps',
-                this.context.t('details')
-              ),
-            ]
-          ),
-        ]
-      ),
-
-      h(
-        Tooltip,
-        {
-          position: 'bottom',
-          title: this.state.hasCopied
+  return (
+    <div className={`wallet-view flex-column ${responsiveDisplayClassname}`}>
+      <div className="flex-column wallet-view-account-details" style={{}}>
+        <div className="wallet-view__sidebar-close" onClick={hideSidebar} />
+        <div className="wallet-view__keyring-label allcaps">{label}</div>
+        <div
+          className="flex-column flex-center wallet-view__name-container"
+          style={{ margin: '0 auto' }}
+          onClick={showAccountDetailModal}
+        >
+          <Identicon diameter={54} address={checksummedAddress} />
+          <span className="account-name" style={{}}>
+            {identities[selectedAddress].name}
+          </span>
+          <button className="btn-clear wallet-view__details-button allcaps">
+            {this.context.t('details')}
+          </button>
+        </div>
+      </div>
+      <Tooltip
+        position="bottom"
+        title={
+          this.state.hasCopied
             ? this.context.t('copiedExclamation')
-            : this.context.t('copyToClipboard'),
-          wrapperClassName: 'wallet-view__tooltip',
-        },
-        [
-          h(
-            'button.wallet-view__address',
-            {
-              className: classnames({
-                'wallet-view__address__pressed': this.state
-                  .copyToClipboardPressed,
-              }),
-              onClick: () => {
-                copyToClipboard(checksummedAddress)
-                this.setState({ hasCopied: true })
-                setTimeout(() => this.setState({ hasCopied: false }), 3000)
-              },
-              onMouseDown: () => {
-                this.setState({ copyToClipboardPressed: true })
-              },
-              onMouseUp: () => {
-                this.setState({ copyToClipboardPressed: false })
-              },
-            },
-            [
-              `${checksummedAddress.slice(0, 18)}...${checksummedAddress.slice(
-                -4
-              )}`,
-              h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),
-            ]
-          ),
-        ]
-      ),
-      h(
-        Tooltip,
-        {
-          position: 'bottom',
-          title: this.state.hasCopiedSlp
+            : this.context.t('copyToClipboard')
+        }
+        wrapperClassName="wallet-view__tooltip"
+      >
+        <button
+          className="wallet-view__address"
+          className={classnames({
+            'wallet-view__address__pressed': this.state.copyToClipboardPressed,
+          })}
+          onClick={() => {
+            copyToClipboard(checksummedAddress)
+            this.setState({ hasCopied: true })
+            setTimeout(() => this.setState({ hasCopied: false }), 3000)
+          }}
+          onMouseDown={() => {
+            this.setState({ copyToClipboardPressed: true })
+          }}
+          onMouseUp={() => {
+            this.setState({ copyToClipboardPressed: false })
+          }}
+        >
+          {`${checksummedAddress.slice(0, 18)}...${checksummedAddress.slice(
+            -4
+          )}`}
+          <i className="fa fa-clipboard" style={{ marginLeft: '8px' }} />
+        </button>
+      </Tooltip>
+      <Tooltip
+        position="bottom"
+        title={
+          this.state.hasCopiedSlp
             ? this.context.t('copiedExclamation')
-            : this.context.t('copyToClipboard'),
-          wrapperClassName: 'wallet-view__tooltip',
-        },
-        [
-          h(
-            'button.wallet-view__address',
-            {
-              className: classnames({
-                'wallet-view__address__pressed': this.state
-                  .copySlpToClipboardPressed,
-              }),
-              onClick: () => {
-                copyToClipboard(slpAddress)
-                this.setState({ hasCopiedSlp: true })
-                setTimeout(() => this.setState({ hasCopiedSlp: false }), 3000)
-              },
-              onMouseDown: () => {
-                this.setState({ copySlpToClipboardPressed: true })
-              },
-              onMouseUp: () => {
-                this.setState({ copySlpToClipboardPressed: false })
-              },
-            },
-            [
-              `${slpAddress.slice(0, 18)}...${slpAddress.slice(-4)}`,
-              h('i.fa.fa-clipboard', { style: { marginLeft: '8px' } }),
-            ]
-          ),
-        ]
-      ),
-
-      this.renderWalletBalance(),
-
-      h(TokenList),
-
-      // h(
-      //   Button,
-      //   {
-      //     type: 'primary',
-      //     className: 'wallet-view__add-token-button',
-      //     onClick: () => {
-      //       history.push(ADD_TOKEN_ROUTE)
-      //       sidebarOpen && hideSidebar()
-      //     },
-      //   },
-      //   this.context.t('addToken')
-      // ),
-    ]
+            : this.context.t('copyToClipboard')
+        }
+        wrapperClassName="wallet-view__tooltip"
+      >
+        <button
+          className="wallet-view__address"
+          className={classnames({
+            'wallet-view__address__pressed': this.state
+              .copySlpToClipboardPressed,
+          })}
+          onClick={() => {
+            copyToClipboard(slpAddress)
+            this.setState({ hasCopiedSlp: true })
+            setTimeout(() => this.setState({ hasCopiedSlp: false }), 3000)
+          }}
+          onMouseDown={() => {
+            this.setState({ copySlpToClipboardPressed: true })
+          }}
+          onMouseUp={() => {
+            this.setState({ copySlpToClipboardPressed: false })
+          }}
+        >
+          {`${slpAddress.slice(0, 18)}...${slpAddress.slice(-4)}`}
+          <i className="fa fa-clipboard" style={{ marginLeft: '8px' }} />
+        </button>
+      </Tooltip>
+      {this.renderWalletBalance()}
+      <TokenList />
+    </div>
   )
 }
 

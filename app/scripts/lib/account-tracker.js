@@ -364,7 +364,7 @@ class AccountTracker {
           accountUtxoCache[address] = accountUtxoCache[address].concat(
             uncachedUtxos
           )
-        } catch (validateSLPTxException) {
+        } catch (validateSLPTxException) {      
           // Validation incomplete. Ignore all uncached SLP UTXOs
           const nonSLPUtxos = uncachedUtxos.filter(txOut => {
             if (txOut.slp === undefined) {
@@ -459,9 +459,11 @@ class AccountTracker {
           const tokenMetadata = tokenMetadataCache.slp.find(
             token => token.id === key
           )
+          if (!tokenMetadata) return
+
           const addTokenData = {
             address: key,
-            symbol: tokenMetadata.ticker
+            symbol: tokenMetadata.ticker 
               ? tokenMetadata.ticker.slice(0, 24)
               : tokenMetadata.name
                 ? tokenMetadata.name.slice(0, 24)
@@ -500,7 +502,7 @@ class AccountTracker {
       mutableAccountUtxoCache[address] = accountUtxoCache[address]
       this.store.updateState({ accountUtxoCache, tokenMetadataCache })
     } catch (error) {
-      // log.error('AccountTracker::_updateAccountTokens', error)
+      log.error('AccountTracker::_updateAccountTokens', error)
     }
 
     const slpTokens = rtnTokens

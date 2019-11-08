@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.9
+- Fix for problems sending some tokens
+- Add new token icon
+
 ## 0.7.8
 
 - Show success page after completing transaction

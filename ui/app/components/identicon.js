@@ -155,7 +155,7 @@ IdenticonComponent.prototype.componentDidUpdate = function () {
 
 function _generateBlockie (container, address, diameter) {
   const img = new Image()
-  img.src = toDataUrl(address.slice(12))
+  img.src = toDataUrl(address)
   img.height = diameter
   img.width = diameter
   container.appendChild(img)

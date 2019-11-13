@@ -1,3 +1,4 @@
+import React from 'react'
 const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
@@ -24,7 +25,7 @@ function mapStateToProps (state) {
   }
 }
 
-IdenticonComponent.prototype.render = function () {
+IdenticonComponent.prototype.render = () => {
   var props = this.props
   const { className = '', address, image } = props
   var diameter = props.diameter || this.defaultDiameter
@@ -76,39 +77,45 @@ IdenticonComponent.prototype.render = function () {
   }
 
   if (tmpImg) {
-    return h('img', {
-      className: `${className} identicon`,
-      src: tmpImg,
-      style: {
-        ...style,
-      },
-    })
+    return (
+      <img
+        className={`${className} identicon`}
+        src={tmpImg}
+        style={{
+          ...style,
+        }}
+      />
+    )
   } else if (address) {
-    return h('div', {
-      className: `${className} identicon`,
-      key: 'identicon-' + address,
-      style: {
-        display: 'flex',
-        flexShrink: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-        ...style,
-        overflow: 'hidden',
-      },
-    })
+    return (
+      <div
+        className={`${className} identicon`}
+        key={'identicon-' + address}
+        style={{
+          display: 'flex',
+          flexShrink: 0,
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...style,
+          overflow: 'hidden',
+        }}
+      />
+    )
   } else {
-    return h('img.balance-icon', {
-      className,
-      // src: '../../../../node_modules/bch-token-icons/svg/icon/bch.svg',
-      src: './images/bch_logo.svg',
-      style: {
-        ...style,
-      },
-    })
+    return (
+      <img
+        className="balance-icon"
+        className={className}
+        src="./images/bch_logo.svg"
+        style={{
+          ...style,
+        }}
+      />
+    )
   }
 }
 
-IdenticonComponent.prototype.componentDidMount = function () {
+IdenticonComponent.prototype.componentDidMount = () => {
   var props = this.props
   const { address, useBlockie } = props
 
@@ -128,7 +135,7 @@ IdenticonComponent.prototype.componentDidMount = function () {
   }
 }
 
-IdenticonComponent.prototype.componentDidUpdate = function () {
+IdenticonComponent.prototype.componentDidUpdate = () => {
   var props = this.props
   const { address, useBlockie } = props
 

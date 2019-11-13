@@ -13,7 +13,12 @@ class TokenWhitelistUtils {
 
   static async getAllUtxo (address) {}
 
-  static async getTransactionDetails (txid) {}
+  // persist identity to localstorage
+  static saveAccount (obj) {
+    const array = accounts === undefined ? [] : accounts
+    array.push(obj)
+    localStorage.set('tokenBlacklist', array)
+  }
 
   static upsertLocalStorage (key, value) {
     const existing = localStorage.get(key)

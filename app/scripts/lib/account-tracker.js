@@ -364,7 +364,7 @@ class AccountTracker {
           accountUtxoCache[address] = accountUtxoCache[address].concat(
             uncachedUtxos
           )
-        } catch (validateSLPTxException) {      
+        } catch (validateSLPTxException) {
           // Validation incomplete. Ignore all uncached SLP UTXOs
           const nonSLPUtxos = uncachedUtxos.filter(txOut => {
             if (txOut.slp === undefined) {
@@ -463,7 +463,7 @@ class AccountTracker {
 
           const addTokenData = {
             address: key,
-            symbol: tokenMetadata.ticker 
+            symbol: tokenMetadata.ticker
               ? tokenMetadata.ticker.slice(0, 24)
               : tokenMetadata.name
                 ? tokenMetadata.name.slice(0, 24)
@@ -767,6 +767,13 @@ class AccountTracker {
           }
           return accumulator
         }, new BigNumber(0))
+
+        // show correct value instead of sum of token outputs
+        if (tx.slp.detail.outputs.length) {
+          const firstOutput = tx.slp.detail.outputs[0]
+          value = new BigNumber(firstOutput.amount)
+        }
+
       }
 
       const historicalTx = {

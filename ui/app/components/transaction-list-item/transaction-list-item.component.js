@@ -6,11 +6,14 @@ import TransactionAction from '../transaction-action'
 import CurrencyDisplay from '../currency-display'
 import TokenCurrencyDisplay from '../token-currency-display'
 import TransactionListItemDetails from '../transaction-list-item-details'
-const recipientWhitelist = require('../../../../app/scripts/controllers/transactions/lib/recipient-whitelist')
 import { CONFIRM_TRANSACTION_ROUTE } from '../../routes'
 import { UNAPPROVED_STATUS } from '../../constants/transactions'
 import { BCH } from '../../constants/common'
 import CashAccountUtils from '../../../../app/scripts/lib/cashaccountutils'
+
+const recipientWhitelist = require('../../../../app/scripts/controllers/transactions/lib/recipient-whitelist')
+const SLPSDK = require('slp-sdk')
+const SLP = new SLPSDK()
 
 export default class TransactionListItem extends PureComponent {
   static propTypes = {
@@ -74,6 +77,7 @@ export default class TransactionListItem extends PureComponent {
   renderPrimaryCurrency (currencyPrefix) {
     const {
       token,
+      transaction,
       transaction: { txParams: { data } = {} } = {},
       transaction: { txParams } = {},
       value,
@@ -88,7 +92,7 @@ export default class TransactionListItem extends PureComponent {
       <TokenCurrencyDisplay
         className="transaction-list-item__amount transaction-list-item__amount--primary"
         token={token}
-        transactionData={data}
+        transactionData={transaction}
         prefix={currencyPrefix}
         amount={txParams.value}
       />
@@ -133,6 +137,16 @@ export default class TransactionListItem extends PureComponent {
     }
   }
 
+  fixSLPdbString = badAddresss => {
+    if (
+      badAddresss !== null &&
+      badAddresss.startsWith('bitcoincash:simpleledger')
+    ) {
+      return badAddresss.substring(12)
+    }
+    return badAddresss
+  }
+
   render () {
     const {
       transaction,
@@ -148,13 +162,15 @@ export default class TransactionListItem extends PureComponent {
     const { txParams = {} } = transaction
     const { showTransactionDetails } = this.state
     const showMemo = txParams.paymentData && txParams.paymentData.memo
-    const fromAddress = txParams.from
-    const toAddress = tokenData
+    const fromAddress = this.fixSLPdbString(txParams.from)
+    let toAddress = tokenData
       ? (tokenData.params &&
           tokenData.params[0] &&
           tokenData.params[0].value) ||
         txParams.to
       : txParams.to
+    toAddress = this.fixSLPdbString(toAddress)
+
     const tokenSymbol = token && token.symbol ? token.symbol : ''
 
     const toAddresses = txParams.toAddresses ? txParams.toAddresses : []
@@ -162,10 +178,12 @@ export default class TransactionListItem extends PureComponent {
       toAddresses.push(toAddress)
     }
 
-    const fromAddresses = txParams.fromAddresses ? txParams.fromAddresses : []
+    let fromAddresses = txParams.fromAddresses ? txParams.fromAddresses : []
     if (fromAddress) {
-      fromAddresses.push(toAddress)
+      fromAddresses.push(fromAddress)
     }
+    fromAddresses = fromAddresses.map(x => this.fixSLPdbString(x))
+
 
     // Determine sent or received
     let currencyPrefix = ''
@@ -179,9 +197,11 @@ export default class TransactionListItem extends PureComponent {
       if (isCashAccountRegistration && index === 0) {
         this.upsertRegistration(transaction)
       }
-
       // Send to self
-    } else if (selectedAddress === fromAddress) {
+    } else if (
+      selectedAddress === fromAddress ||
+      selectedAddress === SLP.Address.toCashAddress(fromAddress)
+    ) {
       // Sent tx
       currencyPrefix = '-'
       actionPrefix = 'Sent'
@@ -212,7 +232,11 @@ export default class TransactionListItem extends PureComponent {
         actionPrefix = 'Sent to SatoshiStack'
         img = 'images/satoshidice.png'
       }
-    } else if (selectedAddress === toAddress) {
+    } else if (
+      selectedAddress === toAddress ||
+      selectedAddress === SLP.Address.toCashAddress(toAddress)
+    ) {
+
       // Received tx
       currencyPrefix = '+'
       actionPrefix = 'Received'

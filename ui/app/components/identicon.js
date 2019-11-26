@@ -67,6 +67,7 @@ IdenticonComponent.prototype.render = function () {
     'f8448bef6a4dd0d43272e69a795ba95d6198446b550de7120c35a9f4d5a80cc4',
     '6391445f8cdeca6f18dff1fa326b0ec40aba55c89864da27cc4645c4b44cfdb7',
     '29d353a3d19cdd7324f1c14b3fe289293976842869fed1bea3f9510558f6f006',
+    '3f83fa9f168f01d68933ef5fdb77143b2376ba7bf3a78175258861982d90d500',
   ]
   let tmpImg
   if (icons.includes(address)) {
@@ -155,7 +156,10 @@ IdenticonComponent.prototype.componentDidUpdate = function () {
 
 function _generateBlockie (container, address, diameter) {
   const img = new Image()
-  img.src = toDataUrl(address.slice(12))
+  if (address.startsWith('bitcoincash:')) {
+    address = address.slice(12)
+  }
+  img.src = toDataUrl(address)
   img.height = diameter
   img.width = diameter
   container.appendChild(img)

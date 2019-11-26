@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.10
+- Fix Identicons to match badger mobile
+- Add new token icon
+
 ## 0.7.9
 - Fix for problems sending some tokens
 - Add new token icon

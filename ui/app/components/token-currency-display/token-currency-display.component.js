@@ -8,9 +8,9 @@ import { formatTokenAmount } from '../../helpers/formatter-numbers.util'
 
 export default class TokenCurrencyDisplay extends PureComponent {
   static propTypes = {
-    transactionData: PropTypes.string,
+    transactionData: PropTypes.object,
     token: PropTypes.object,
-    amount: PropTypes.number,
+    amount: PropTypes.any,
   }
 
   state = {
@@ -33,7 +33,6 @@ export default class TokenCurrencyDisplay extends PureComponent {
   setDisplayValue () {
     const { transactionData: data, token } = this.props
     const { decimals = '', symbol = '' } = token
-    // const tokenData = getTokenData(data)
     const { amount } = this.props
 
     const displayValue = `${formatTokenAmount(amount)} ${symbol}`

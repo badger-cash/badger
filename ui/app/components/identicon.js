@@ -156,6 +156,9 @@ IdenticonComponent.prototype.componentDidUpdate = function () {
 
 function _generateBlockie (container, address, diameter) {
   const img = new Image()
+  if (address.startsWith('bitcoincash:')) {
+    address = address.slice(12)
+  }
   img.src = toDataUrl(address)
   img.height = diameter
   img.width = diameter

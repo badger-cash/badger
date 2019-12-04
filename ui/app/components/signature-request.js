@@ -54,10 +54,7 @@ SignatureRequest.contextTypes = {
 
 module.exports = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(SignatureRequest)
 
 inherits(SignatureRequest, Component)
@@ -185,6 +182,43 @@ SignatureRequest.prototype.renderTypedDataV3 = function (data) {
   ]
 }
 
+SignatureRequest.prototype.handleCashID = function (data) {
+  const cashId = parseCashIdUri(data)
+
+  if (cashId === undefined) {
+    return [
+      {
+        name: 'Error',
+        value: 'invalid cashid URI',
+      },
+    ]
+  }
+
+  const rows = [
+    {
+      name: 'Domain',
+      value: cashId.domain,
+    },
+  ]
+
+  let action = cashId.parameters.action
+  if (!action) {
+    action = 'default'
+  }
+  rows.push({
+    name: 'Action',
+    value: action,
+  })
+
+  if (cashId.parameters.data) {
+    rows.push({
+      name: 'Data',
+      value: cashId.parameters.data,
+    })
+  }
+
+  return rows
+}
 SignatureRequest.prototype.renderBody = function () {
   let rows
   let notice = this.context.t('youSign') + ':'
@@ -200,20 +234,9 @@ SignatureRequest.prototype.renderBody = function () {
   } else if (type === 'eth_signTypedData') {
     rows = data
   } else if (type === 'eth_sign') {
-    const cashId = parseCashIdUri(data)
-
-    rows = [{ name: 'Domain', value: cashId.domain }]
-
-    let action = cashId.parameters.action
-    if (!action) {
-      action = 'default'
+    if (data.startsWith('cashid:')) {
+      rows = this.handleCashID(data)
     }
-    rows.push({ name: 'Action', value: action })
-
-    if (cashId.parameters.data) {
-      rows.push({ name: 'Data', value: cashId.parameters.data })
-    }
-
     notice = [this.context.t('signNotice')]
   }
 

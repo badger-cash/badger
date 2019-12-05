@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.11
+- Fix broken UI from bad bip70/cashid URIs
+
 ## 0.7.10
 - Fix Identicons to match badger mobile
 - Add new token icon

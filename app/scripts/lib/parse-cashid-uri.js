@@ -5,7 +5,7 @@ module.exports = parseCashIDRequest
 function parseCashIDRequest(requestURI)
 {
 	// Regular expressions from the specification to simplify parsing.
-	let regnames = 
+	let regnames =
 	{
 		request:
 		{
@@ -52,10 +52,15 @@ function parseCashIDRequest(requestURI)
 	{
 		'request': /(cashid:)(?:[\/]{2})?([^\/]+)(\/[^\?]+)(\?.+)/,
 		'parameters': /(?:(?:[\?\&]{1}a=)([^\&]+))?(?:(?:[\?\&]{1}d=)([^\&]+))?(?:(?:[\?\&]{1}r=)([^\&]+))?(?:(?:[\?\&]{1}o=))?([^\&]+)?(?:[\?\&]{1}x=)([^\&]+)?/,
-		'metadata': /(?:i((?![1-9]+))?(1)?(2)?(3)?(4)?(5)?(6)?(8)?(9)?)?(?:p((?![1-9]+))?(1)?(2)?(3)?(4)?(6)?(9)?)?(?:c((?![1-9]+))?(1)?(2)?(3)?(4)?(7)?)?/	
+		'metadata': /(?:i((?![1-9]+))?(1)?(2)?(3)?(4)?(5)?(6)?(8)?(9)?)?(?:p((?![1-9]+))?(1)?(2)?(3)?(4)?(6)?(9)?)?(?:c((?![1-9]+))?(1)?(2)?(3)?(4)?(7)?)?/
 	}
 
 	let requestParts = regexps.request.exec(requestURI);
+
+	if (requestParts == null) {
+		return
+	}
+
 	let requestParameters = regexps.parameters.exec(requestParts[regnames['request']['parameters']]);
 	let requestRequired = regexps.metadata.exec(requestParameters[regnames['parameters']['required']]);
 	let requestOptional = regexps.metadata.exec(requestParameters[regnames['parameters']['optional']]);

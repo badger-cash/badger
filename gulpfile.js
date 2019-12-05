@@ -253,13 +253,15 @@ function createScssBuildTask ({ src, dest, devMode, pattern }) {
   }
 
   function buildScss () {
-    return gulp
-      .src(src)
-      .pipe(sourcemaps.init())
-      .pipe(sass().on('error', sass.logError))
-      .pipe(sourcemaps.write())
-      .pipe(autoprefixer())
-      .pipe(gulp.dest(dest))
+    return (
+      gulp
+        .src(src)
+        // .pipe(sourcemaps.init())
+        .pipe(sass().on('error', sass.logError))
+        // .pipe(sourcemaps.write())
+        .pipe(autoprefixer())
+        .pipe(gulp.dest(dest))
+    )
   }
 }
 
@@ -310,8 +312,8 @@ function createTasksForBuildJsExtension ({
   const destinations = browserPlatforms.map(platform => `./dist/${platform}`)
   bundleTaskOpts = Object.assign(
     {
-      buildSourceMaps: true,
-      sourceMapDir: devMode ? './' : '../sourcemaps',
+      buildSourceMaps: false,
+      // sourceMapDir: devMode ? './' : '../sourcemaps',
       minifyBuild: !devMode,
       buildWithFullPaths: devMode,
       watch: devMode,
@@ -340,8 +342,8 @@ function createTasksForBuildJsMascara ({
   const destinations = ['./dist/mascara']
   bundleTaskOpts = Object.assign(
     {
-      buildSourceMaps: true,
-      sourceMapDir: './',
+      buildSourceMaps: false,
+      // sourceMapDir: './',
       minifyBuild: !devMode,
       buildWithFullPaths: devMode,
       watch: devMode,
@@ -565,7 +567,7 @@ function bundleTask (opts) {
     buildStream.on('error', err => {
       beep()
       if (opts.watch) {
-        console.warn(err.stack)
+        // console.warn(err.stack)
       } else {
         throw err
       }

@@ -24,6 +24,15 @@ function normalizeTxParams (txParams) {
   if (typeof txParams.opReturn !== 'undefined') {
     if (!txParams.to) txParams.to = txParams.from
     if (!txParams.value) txParams.value = 546
+    if (typeof txParams.opReturn.position !== 'undefined') {
+      if (txParams.opReturn.position !== '0' && txParams.opReturn.position !== '1') txParams.opReturn.position = '1'
+    }
+    if (!txParams.opReturn.isEncoded) txParams.opReturn.isEncoded = false
+    if (txParams.opReturn.isEncoded && txParams.opReturn.data) {
+      txParams.opReturn.data = Object.keys(txParams.opReturn.data).map(function (key) {
+        return txParams.opReturn.data[key]
+      })
+    }
   }
 
   // Set from and to addresses to cash addr
@@ -113,13 +122,20 @@ function validateOpReturn (opReturn) {
     throw new Error('Op return data property invalid')
   }
 
-  // Only strings in data array
-  opReturn.data.forEach(pushData => {
-    if (typeof pushData !== 'string') throw new Error('Only utf and hex strings supported in OP Return')
-  })
+  // Only strings in unencoded data array
+  if (!opReturn.isEncoded) {
+    opReturn.data.forEach(pushData => {
+      if (typeof pushData !== 'string') throw new Error('Only utf and hex strings supported in OP Return')
+    })
+  }
+
+  // Encoded data must start with OP Return byte
+  if (opReturn.isEncoded) {
+    if (opReturn.data[0] !== 106) throw new Error('Invalid encoded OP Return data')
+  }
 
   // Max length
-  const encodedScript = bitboxUtils.encodeOpReturn(opReturn.data)
+  const encodedScript = bitboxUtils.encodeOpReturn(opReturn.data, opReturn.isEncoded)
   if (encodedScript.byteLength > 223) throw new Error('OP Return too large')
 }
 

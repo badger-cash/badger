@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.12
+- Add token creation demo page
+
 ## 0.7.11
 - Fix broken UI from bad bip70/cashid URIs
 

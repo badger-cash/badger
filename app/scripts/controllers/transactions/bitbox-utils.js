@@ -68,7 +68,11 @@ class BitboxUtils {
     })
   }
 
-  static encodeOpReturn (dataArray) {
+  static encodeOpReturn (dataArray, isEncoded) {
+    if (isEncoded) {
+      return Buffer.from(dataArray)
+    }
+
     const script = [SLP.Script.opcodes.OP_RETURN]
     dataArray.forEach(data => {
       if (typeof data === 'string' && data.substring(0, 2) === '0x') {
@@ -138,7 +142,7 @@ class BitboxUtils {
           )
           if (txParams.opReturn) {
             byteCount +=
-              this.encodeOpReturn(txParams.opReturn.data).byteLength + 10
+              this.encodeOpReturn(txParams.opReturn.data, txParams.opReturn.isEncoded).byteLength + 10
           }
 
           if (totalUtxoAmount >= byteCount + satoshisToSend) {
@@ -159,11 +163,12 @@ class BitboxUtils {
           txParams.isCashAccountRegistration !== undefined &&
           txParams.isCashAccountRegistration
 
-        if (isCashAccountRegistration) {
+        const isOpReturnFirstOutput = isCashAccountRegistration || (txParams.opReturn && txParams.opReturn.position === '0')
+
+        if (isOpReturnFirstOutput) {
           // Op Return
-          // TODO: Allow dev to pass in "position" property for vout of opReturn
           if (txParams.opReturn) {
-            const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
+            const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data, txParams.opReturn.isEncoded)
             transactionBuilder.addOutput(encodedOpReturn, 0)
           }
         }
@@ -171,11 +176,10 @@ class BitboxUtils {
         // Destination output
         transactionBuilder.addOutput(to, satoshisToSend)
 
-        if (!isCashAccountRegistration) {
+        if (!isOpReturnFirstOutput) {
           // Op Return
-          // TODO: Allow dev to pass in "position" property for vout of opReturn
           if (txParams.opReturn) {
-            const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data)
+            const encodedOpReturn = this.encodeOpReturn(txParams.opReturn.data, txParams.opReturn.isEncoded)
             transactionBuilder.addOutput(encodedOpReturn, 0)
           }
         }

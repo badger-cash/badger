@@ -1,0 +1,93 @@
+<html>
+  <head>
+      <script src='lib/bignumber.js'></script>
+      <script src='https://unpkg.com/slpjs'></script>
+  </head>
+<body>
+  Update properties in source of this page to change token parameters.
+  <br/><br/>
+  <button
+    class="badger-button"
+    data-satoshis="1000"
+    data-paywall-id="paywall"
+    data-success-callback="badgerCallback"
+  >
+    Create token
+  </button>
+
+  <br/><br/>
+
+  <div id="paywall" style="display:none">
+    Token created
+  </div>
+
+  <script>
+    function badgerCallback(txid) {
+      alert(txid)
+    }
+
+    var badgerButtons = document.body.getElementsByClassName("badger-button")
+
+    for (var i = 0; i < badgerButtons.length; i++) {
+      var badgerButton = badgerButtons[i]
+      badgerButton.addEventListener('click', function(event) {
+        if (typeof web4bch !== 'undefined') {
+          web4bch = new Web4Bch(web4bch.currentProvider)
+
+          // Build SLP Genesis OP Return
+          let name = "SLP Genesis from Badger Token";
+          let ticker = "BADGER";
+          let documentUri = "developer.bitcoin.com";
+          let documentHash = null;
+          let decimals = 0;
+          let batonReceiverAddress = null;
+          let initialTokenQty = 1000;
+          initialTokenQty = (new BigNumber(initialTokenQty)).times(10**decimals);
+
+          var encodedData = slpjs.Slp.buildGenesisOpReturn({ 
+            ticker: ticker,
+            name: name,
+            documentUri: documentUri,
+            hash: documentHash, 
+            decimals: decimals,
+            batonVout: batonReceiverAddress ? 2 : null,
+            initialQuantity: initialTokenQty
+          });
+
+          var txParams = {
+            from: web4bch.bch.defaultAccount,
+            to: web4bch.bch.defaultAccount,
+            value: "1000",
+            opReturn: {
+              data: encodedData,
+              isEncoded: true,
+              position: "0"
+            }
+          }
+          web4bch.bch.sendTransaction(txParams, (err, res) => {
+            if (err) {
+              // console.log('send err', err)
+            } else {
+              // console.log('send success:', res)
+              var paywallId = badgerButton.getAttribute("data-paywall-id")
+              if (paywallId) {
+                var paywall = document.getElementById("paywall")
+                paywall.style.display = "block"
+              }
+
+              var successCallback = badgerButton.getAttribute("data-success-callback")
+              if (successCallback) {
+                window[successCallback](res)
+              }
+            }
+          })
+        } else {
+          window.open('https://badger.bitcoin.com')
+        }
+      })
+    }
+
+  </script>
+</body>
+
+</html>

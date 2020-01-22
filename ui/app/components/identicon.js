@@ -68,6 +68,8 @@ IdenticonComponent.prototype.render = function () {
     '6391445f8cdeca6f18dff1fa326b0ec40aba55c89864da27cc4645c4b44cfdb7',
     '29d353a3d19cdd7324f1c14b3fe289293976842869fed1bea3f9510558f6f006',
     '3f83fa9f168f01d68933ef5fdb77143b2376ba7bf3a78175258861982d90d500',
+    'eebaa04d0e715b7bd21901cb60e10d7f71d219626daf24c57ce6ea9584333149',
+    'f66c6d0ac6b8c5c4ed469234ec9734f6d3499b0351b22349f40e617d22254fec',
   ]
   let tmpImg
   if (icons.includes(address)) {

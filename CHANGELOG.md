@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.13
+- Add new token icons
+
 ## 0.7.12
 - Add token creation demo page
 

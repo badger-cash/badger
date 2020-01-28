@@ -92,7 +92,7 @@ export default class ConfirmTransactionBase extends Component {
     submitSuccess: false,
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     const {
       transactionStatus,
       showTransactionConfirmedModal,
@@ -112,7 +112,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  getErrorKey() {
+  getErrorKey () {
     const {
       balance,
       conversionRate,
@@ -180,7 +180,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleEditGas() {
+  handleEditGas () {
     const { onEditGas, showCustomizeGasModal } = this.props
 
     if (onEditGas) {
@@ -190,7 +190,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  renderDetails() {
+  renderDetails () {
     const {
       detailsComponent,
       fiatTransactionFee,
@@ -240,7 +240,7 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  renderData() {
+  renderData () {
     const { t } = this.context
     const {
       txData: { txParams: { data } = {} } = {},
@@ -281,12 +281,12 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  handleEdit() {
+  handleEdit () {
     const { txData, tokenData, tokenProps, onEdit } = this.props
     onEdit({ txData, tokenData, tokenProps })
   }
 
-  handleCancel() {
+  handleCancel () {
     const {
       onCancel,
       txData,
@@ -308,7 +308,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleSubmit() {
+  handleSubmit () {
     const {
       sendTransaction,
       clearConfirmTransaction,
@@ -386,6 +386,37 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
+
+  renderFeeError = () => {
+
+    return (
+      <div className="page-container">
+        <div className="confirm-page-container-header__row">
+          <h1>Not enough funds</h1>
+        </div>
+
+        <div className="confirm-page-container-summary">
+          <p>
+            Tokens require Bitcoin Cash (BCH) to pay the transaction fee, and
+            your balance does not cover this.
+          </p>
+          <br />
+          <br />
+          <small>please acquire some BCH and try again.</small>
+        </div>
+
+        <PageContainerFooter
+          onCancel={() => this.handleCancel()}
+          onSubmit={() => this.handleSubmit()}
+          disabled= {true}
+          submitText={this.context.t('confirm')}
+          submitButtonType="confirm"
+        />
+      </div>
+    )
+  }
+
+
   renderSuccess = () => {
     return (
       <div className="page-container">
@@ -401,7 +432,7 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  render() {
+  render () {
     let {
       isTxReprice,
       fromName,
@@ -428,7 +459,17 @@ export default class ConfirmTransactionBase extends Component {
       warning,
       txParams,
       accountTokens,
+      balance,
+      bchAddress,
+      utxo,
     } = this.props
+
+    const cantAffordFees = balance < 546 || utxo[bchAddress].length <= 0
+
+    if (cantAffordFees) {
+      return this.renderFeeError()
+    }
+
     const { submitting, submitError, submitSuccess } = this.state
     const isCashAccountRegistration =
       txParams.opReturn !== undefined &&

@@ -105,23 +105,42 @@ export default class QrScanner extends Component {
       })
   }
 
+  getAmount (uri) {
+    const split = uri.split('amount=')
+    if (split.length <= 1) {
+      return
+    }
+    const amount = split[1]
+    return this.toSatoshis(amount)
+  }
+
+  toSatoshis (amount) {
+    amount = parseFloat(amount)
+    amount = amount * 100000000
+    return amount.toString()
+  }
+
   parseContent (content) {
     let type = 'unknown'
     let values = {}
+
+    const amount = this.getAmount(content)
+    const cleanAddress = content.split('?')[0]
+
     if (
-      (content.split('bitcoincash:').length > 1 && content.length === 54) ||
-      (content.split('simpleledger:').length > 1 && content.length === 55)
+      (content.split('bitcoincash:').length > 1 && content.length >= 54) ||
+      (content.split('simpleledger:').length > 1 && content.length >= 55)
     ) {
       // Cash and SimpleLedger Address format
       type = 'address'
-      values = { address: content }
+      values = { address: cleanAddress, amount }
     } else if (
       (content.substring(0, 1).toLowerCase() === 'q' &&
         content.length === 42) ||
       (content.substring(0, 1).toLowerCase() === 'p' || content.length === 42)
     ) {
       type = 'address'
-      values = { address: content }
+      values = { address: cleanAddress, amount }
     }
     return { type, values }
   }

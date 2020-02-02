@@ -32,6 +32,17 @@ export default class SendAmountRow extends Component {
     t: PropTypes.func,
   }
 
+
+  componentWillReceiveProps (nextProps) {
+    const { amount } = nextProps
+    if (amount) {
+      if (amount !== this.props.amount) {
+        this.validateAmount(amount)
+        this.updateAmount(amount)
+      }
+    }
+  }
+
   validateAmount (amount) {
     const {
       amountConversionRate,

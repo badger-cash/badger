@@ -28,6 +28,7 @@ import {
   updateSendTo,
   updateSendTokenBalance,
   updateGasData,
+  updateSendAmount,
   setGasTotal,
   showQrScanner,
   qrCodeDetected,
@@ -110,5 +111,6 @@ function mapDispatchToProps (dispatch) {
     scanQrCode: () => dispatch(showQrScanner(SEND_ROUTE)),
     qrCodeDetected: data => dispatch(qrCodeDetected(data)),
     updateSendTo: (to, nickname) => dispatch(updateSendTo(to, nickname)),
+    updateSendAmount: newAmount => dispatch(updateSendAmount(newAmount)),
   }
 }

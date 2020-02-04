@@ -49,15 +49,19 @@ export default class SendTransactionScreen extends PersistentForm {
   componentWillReceiveProps (nextProps) {
     if (nextProps.qrCodeData) {
       if (nextProps.qrCodeData.type === 'address') {
-        const scannedAddress = nextProps.qrCodeData.values.address.toLowerCase()
+        const { address, amount } = nextProps.qrCodeData.values
+
+        const scannedAddress = address.toLowerCase()
         const currentAddress = this.props.to && this.props.to.toLowerCase()
-        if (currentAddress !== scannedAddress) {
+        if (currentAddress !== scannedAddress) { 
           this.props.updateSendTo(scannedAddress)
+          amount && this.props.updateSendAmount(amount)
+          // this.updateGas({ to: scannedAddress })
           this.updateGas({ to: scannedAddress })
           // Clean up QR code data after handling
           this.props.qrCodeDetected(null)
         }
-      }
+      } 
     }
   }
 

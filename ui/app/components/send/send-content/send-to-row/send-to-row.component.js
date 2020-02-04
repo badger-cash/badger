@@ -29,6 +29,15 @@ export default class SendToRow extends Component {
     this.handleToChange('', '', '')
   }
 
+  componentWillReceiveProps (nextProps) {
+    const { to } = nextProps
+    if (to) {
+      if (to !== this.props.to) {
+        this.handleToChange(to, '', '')
+      }
+    }
+  }
+
   handleToChange (to, nickname = '', toError) {
     const {
       updateSendTo,

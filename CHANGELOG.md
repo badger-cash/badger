@@ -1,6 +1,10 @@
 # Changelog
 
 ## 0.7.13
+- Fix error msg for sending tokens with no BCH
+- fix qrcode scanning for BCH uri schemes
+
+## 0.7.13
 - Add new token icons
 
 ## 0.7.12

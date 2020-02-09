@@ -12,6 +12,8 @@ const mapStateToProps = state => {
       historicalSlpTransactions,
       selectedAddress,
       selectedSlpAddress,
+      identities,
+      accounts,
     },
   } = state
 
@@ -21,6 +23,8 @@ const mapStateToProps = state => {
     historicalSlpTransactions,
     selectedAddress,
     selectedSlpAddress,
+    identities,
+    accounts,
   }
 }
 
@@ -30,8 +34,5 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(TransactionView)

@@ -38,14 +38,14 @@ export default class SendToRow extends Component {
     }
   }
 
-  handleToChange (to, nickname = '', toError) {
+  async handleToChange (to, nickname = '', toError) {
     const {
       updateSendTo,
       updateSendToError,
       selectedToken,
       tokenContract,
     } = this.props
-    const toErrorObject = getToErrorObject(to, toError)
+    const toErrorObject = await getToErrorObject(to, toError)
 
     updateSendTo(to, nickname)
     updateSendToError(toErrorObject)

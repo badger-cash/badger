@@ -40,10 +40,12 @@ class CurrencyController {
 
   async getUSDPrice () {
     const {
-      data: { data },
+      data: {
+        data: { BCH },
+      },
     } = await axios.get('https://markets.api.bitcoin.com/live/bitcoin')
 
-    const formattedPrice = parseFloat(data.BCH.toFixed(2))
+    const formattedPrice = parseFloat(BCH.toFixed(2))
     return formattedPrice
   }
 

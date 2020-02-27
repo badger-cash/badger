@@ -19,6 +19,7 @@ export default class TransactionView extends Component {
     selectedAddress: PropTypes.string,
     selectedSlpAddress: PropTypes.string,
     history: PropTypes.object,
+    identities: PropTypes.object,
   }
 
   renderSeedWarning = () => {
@@ -65,12 +66,57 @@ export default class TransactionView extends Component {
     }
   }
 
+  toggleAccountWarning = () => {
+    localStorage.set('accountWarningDismissed', true)
+  }
+
+  renderAccountConsolidation = () => {
+    const { identities } = this.props
+    const copy = { ...identities }
+    delete copy.isAccountMenuOpen
+    delete copy.isUnencrypted
+    const hasMultipleAccounts = Object.keys(copy).length >= 2
+
+    const accountWarning = localStorage.get('accountWarningDismissed')
+
+    if (!hasMultipleAccounts || accountWarning) {
+      return
+    }
+    return (
+      <div className="seed-warning" style={{ background: '#c10a1b' }}>
+        <p>
+          WARNING: Accounts are being deprecated! Please consolidate your funds
+          or you may lose access to them!
+        </p>
+        <a
+          style={{ fontSize: '18px', lineHeight: '32px' }}
+          href="https://github.com/Bitcoin-com/badger/wiki/Badger-v0.7.14-Account-Consolidation"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read More Here
+        </a>
+        <p
+          onClick={() => {
+            this.toggleAccountWarning()
+          }}
+        >
+          [X] Dismiss warning.
+        </p>
+      </div>
+    )
+
+    // determine "main" addresses
+    // create transaction(s) for each account to send to main address
+  }
   render () {
     const seedBackedUp = localStorage.get('seedwordsBackedUp')
 
     return (
       <div className="transaction-view">
         <Media query="(max-width: 575px)" render={() => <MenuBar />} />
+        {this.renderAccountConsolidation()}
+
         {seedBackedUp !== undefined && seedBackedUp
           ? ''
           : this.renderSeedWarning()}

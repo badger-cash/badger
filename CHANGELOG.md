@@ -2,6 +2,7 @@
 
 ## 0.7.15
 - Add account consolidation warning
+- Disable legacy address sending
 
 ## 0.7.14
 - Fix error msg for sending tokens with no BCH

@@ -19,6 +19,7 @@ export default class TransactionView extends Component {
     selectedAddress: PropTypes.string,
     selectedSlpAddress: PropTypes.string,
     history: PropTypes.object,
+    identities: PropTypes.object,
   }
 
   renderSeedWarning = () => {
@@ -71,7 +72,7 @@ export default class TransactionView extends Component {
 
   renderAccountConsolidation = () => {
     const { identities } = this.props
-    const copy = identities
+    const copy = { ...identities }
     delete copy.isAccountMenuOpen
     delete copy.isUnencrypted
     const hasMultipleAccounts = Object.keys(copy).length >= 2

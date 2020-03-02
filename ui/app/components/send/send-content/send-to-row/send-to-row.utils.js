@@ -1,26 +1,22 @@
 const CashaccountClass = require('cashaccounts')
 const cashaccount = new CashaccountClass()
 
+const SLPSDK = require('slp-sdk')
+const SLP = new SLPSDK()
 
 const {
   REQUIRED_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,
 } = require('../../send.constants')
-// const { isValidAddress } = require('../../../../util')
-const bchaddr = require('bchaddrjs-slp')
 
-function getToErrorObject (to, toError = null, selectedToken = null) {
-  try {
-    isValidBchAddress(to)
-  } catch (error) {
+async function getToErrorObject (to, toError = null, selectedToken = null) {
+  const cashAddr = await SLP.Address.isCashAddress(to)
+  const slpAddr = await SLP.Address.isSLPAddress(to)
+
+  const isValid = cashAddr === true || slpAddr === true
+
+  if (!isValid) {
     toError = INVALID_RECIPIENT_ADDRESS_ERROR
-  }
-  if (toError !== null) {
-    try {
-      isValidSlpAddress(to)
-    } catch (error) {
-      toError = INVALID_RECIPIENT_ADDRESS_ERROR
-    }
   }
 
   if (to === '') {
@@ -36,17 +32,6 @@ function getToErrorObject (to, toError = null, selectedToken = null) {
 
 function isValidCashAccount (string) {
   return cashaccount.isCashAccount(string)
-}
-
-function isValidBchAddress (address) {
-  return (
-    (bchaddr.isMainnetAddress(address) && bchaddr.isLegacyAddress(address)) ||
-    bchaddr.isCashAddress(address)
-  )
-}
-
-function isValidSlpAddress (address) {
-  return bchaddr.isMainnetAddress(address) && bchaddr.isSlpAddress(address)
 }
 
 module.exports = {

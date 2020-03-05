@@ -2,8 +2,7 @@ const ObservableStore = require('obs-store')
 const extend = require('xtend')
 const log = require('loglevel')
 
-const SLPSDK = require('slp-sdk')
-const SLP = new SLPSDK()
+const axios = require('axios')
 
 // every ten minutes
 const POLLING_INTERVAL = 600000
@@ -35,6 +34,17 @@ class CurrencyController {
       opts.initState
     )
     this.store = new ObservableStore(initState)
+  }
+
+  async getRates (currency) {
+    const { data } = await axios.get(
+      `https://markets.api.bitcoin.com/rates/convertor?c=BCH&q=${currency}`
+    )
+
+    const { rate } = data[currency]
+
+    const formattedPrice = parseFloat(rate.toFixed(2))
+    return formattedPrice
   }
 
   //
@@ -112,8 +122,9 @@ class CurrencyController {
     let currentCurrency
     try {
       currentCurrency = this.getCurrentCurrency()
-      const fullRate = await SLP.Price.current(currentCurrency.toLowerCase())
-      const rate = fullRate / 100.0
+
+      const rate = await this.getRates(currentCurrency.toUpperCase())
+
       this.setConversionRate(Number(rate))
       this.setConversionDate(Number(new Date()))
     } catch (err) {

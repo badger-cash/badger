@@ -1,5 +1,0 @@
-export const ETH = 'ETH'
-export const GWEI = 'GWEI'
-export const WEI = 'WEI'
-export const BCH = 'BCH'
-export const SAT = 'SAT'

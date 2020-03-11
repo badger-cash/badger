@@ -22,7 +22,11 @@ temp
 app/.DS_Store
 
 coverage/
-dist
+dist/chrome
+dist/edge
+dist/firefox
+dist/opera
+dist/mascara
 builds/
 disc/
 builds.zip

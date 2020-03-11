@@ -2,14 +2,15 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@ui/*": ["ui/*"]
     },
     "target": "es5",
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "dist/js",
-    "strict": true,
+    "strict": false,
     "sourceMap": true,
     "jsx": "react",
     "esModuleInterop": true,

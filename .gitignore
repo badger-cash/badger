@@ -27,6 +27,7 @@ dist/edge
 dist/firefox
 dist/opera
 dist/mascara
+dist/js/*
 builds/
 disc/
 builds.zip

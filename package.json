@@ -384,7 +384,7 @@
     "webpack-merge": "^4.2.2"
   },
   "prettier": {
-    "singleQuote": true,
+    "singleQuote": false,
     "printWidth": 80
   }
 }

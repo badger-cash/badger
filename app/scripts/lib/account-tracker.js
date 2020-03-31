@@ -681,7 +681,7 @@ class AccountTracker {
     }
     const s = JSON.stringify(query)
     const b64 = Buffer.from(s).toString('base64')
-    const url = `https://bitdb.bitcoin.com/q/${b64}`
+    const url = `https://bitdb.fountainhead.cash/q/${b64}`
     const result = await axios.get(url)
     let transactions = []
     if (result.data && result.data.c) {
@@ -849,7 +849,7 @@ class AccountTracker {
     }
     const s = JSON.stringify(query)
     const b64 = Buffer.from(s).toString('base64')
-    const url = `https://slpdb.bitcoin.com/q/${b64}`
+    const url = `https://slpdb.fountainhead.cash/q/${b64}`
     const result = await axios.get(url)
     let transactions = []
     if (result.data && result.data.c) {

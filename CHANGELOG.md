@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.16
+- Update SLPDB to use Fountainhead.cash
+- Update BitDB to use Fountainhead.cash
+
 ## 0.7.15
 - Add account consolidation warning
 - Disable legacy address sending

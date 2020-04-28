@@ -9,6 +9,22 @@
 
 https://developer.bitcoin.com/badger/docs/getting-started
 
+## Docker build distribution
+
+Notes:
+- Recent docker version needed to build.
+- OSX or Linux build environment preferred.
+- Execute commands from the source directory.
+
+Steps:
+1. Build and run the image, run command:
+docker build -f Dockerfile -t badger:0.7.16 .  && docker run --name badger0716 badger:0.7.16
+
+2. After the build is complete, copy the distribution files to your local folder:
+docker cp badger0716:/app/builds/. ./
+
+3. A distribution file for each supported browser will be copied, such as badgerwallet-firefox-0.7.16.zip for Firefox browsers.
+
 ## Intro
 
 Badger is a secure identity vault for Bitcoin Cash. It allows you to hold BCH & tokens, and serves as your bridge to decentralized applications (dapps).

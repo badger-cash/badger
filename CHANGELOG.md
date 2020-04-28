@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.17
+- Update distribution process for easier review and verification
+
 ## 0.7.16
 - Update SLPDB to use Fountainhead.cash
 - Update BitDB to use Fountainhead.cash

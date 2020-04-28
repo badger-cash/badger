@@ -17,5 +17,4 @@ RUN cat npm_log && cat npm_err
 # Build browser distribution packages
 RUN npm run dist
 
-
 CMD echo "Build complete"

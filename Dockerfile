@@ -1,25 +1,21 @@
-FROM node:7
-MAINTAINER kumavis
+FROM node:8
 
-# setup app dir
-RUN mkdir -p /www/
-WORKDIR /www/
+# Install build dependencies
+RUN apt-get update && apt-get install -y build-essential python curl
 
-# install dependencies
-COPY ./package.json /www/package.json
-# RUN npm install -g node-gyp
+# Setup app directory
+RUN mkdir -p /app/
+WORKDIR /app/
+
+# Copy source to app directory
+COPY ./ /app/
+
+# Install dependencies
 RUN npm install >> npm_log 2>> npm_err || true
-
 RUN cat npm_log && cat npm_err
 
-# copy over app dir
-COPY ./ /www/
-
-# run tests
-# RUN npm test
-
-# build app
+# Build browser distribution packages
 RUN npm run dist
 
-# start server
-CMD node mascara/example/server.js
+
+CMD echo "Build complete"

@@ -226,7 +226,7 @@
     "sha3": "^2.0.6",
     "shallow-copy": "0.0.1",
     "slp-sdk": "^4.4.0",
-    "slpjs": "0.18.0",
+    "slpjs": "0.27.2",
     "store": "^2.0.12",
     "sw-controller": "^1.0.3",
     "sw-stream": "^2.0.2",

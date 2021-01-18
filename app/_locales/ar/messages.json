@@ -1,0 +1,1281 @@
+{
+  "accept": {
+    "message": "أقبل"
+  },
+  "accessingYourCamera": {
+    "message": "الوصول للكميرا..."
+  },
+  "account": {
+    "message": "الحساب"
+  },
+  "accountDetails": {
+    "message": "تفاصيل الحساب"
+  },
+  "accountName": {
+    "message": "اسم الحساب"
+  },
+  "accountSelectionRequired": {
+    "message": "عليك اختيار حساب!"
+  },
+  "activityLog": {
+    "message": "سجل النشاطات"
+  },
+  "address": {
+    "message": "العنوان"
+  },
+  "addCustomToken": {
+    "message": "أضف توكن مخصصة"
+  },
+  "addToken": {
+    "message": "أضف توكن"
+  },
+  "addTokens": {
+    "message": "أضف توكنات"
+  },
+  "addSuggestedTokens": {
+    "message": "أضف التوكنات المقترحة"
+  },
+  "addAcquiredTokens": {
+    "message": "Coming Soon"
+  },
+  "amount": {
+    "message": "المقدار"
+  },
+  "amountPlusGas": {
+    "message": "المقدار + الرسوم"
+  },
+  "appDescription": {
+    "message": "إضافة المتصفح لبيتكوين كاش",
+    "description": "وصف البرنامج"
+  },
+  "appName": {
+    "message": "محفظة بادجر",
+    "description": "اسم البرنامج"
+  },
+  "approve": {
+    "message": "اقبل"
+  },
+  "approved": {
+    "message": "مقبول"
+  },
+  "attemptingConnect": {
+    "message": "يحاول الاتصال بسلسلة الكتل."
+  },
+  "attributions": {
+    "message": "شكر"
+  },
+  "available": {
+    "message": "متاحة"
+  },
+  "back": {
+    "message": "وراء"
+  },
+  "balance": {
+    "message": "الرصيد"
+  },
+  "balances": {
+    "message": "رصيد التوكنات"
+  },
+  "balanceIsInsufficientGas": {
+    "message": "الرصيد لا يكفي لدفع الرسوم الحالية"
+  },
+  "beta": {
+    "message": "بيتا"
+  },
+  "betweenMinAndMax": {
+    "message":
+      "يجب أن يكون أكثر أو يساوي $1 وأقل أو مساوي لـ $2.",
+    "description": "helper for inputting hex as decimal input"
+  },
+  "blockiesIdenticon": {
+    "message": "Use Blockies Identicon"
+  },
+  "borrowDharma": {
+    "message": "Borrow With Dharma (Beta)"
+  },
+  "browserNotSupported": {
+    "message": "متصفحك غير مدعوم..."
+  },
+  "builtInCalifornia": {
+    "message": "بادجر مصممة ومبنية في الأرض."
+  },
+  "buy": {
+    "message": "شراء"
+  },
+  "buyCoinbase": {
+    "message": "شراء على كوين بيس"
+  },
+  "buyCoinbaseExplainer": {
+    "message":
+      "كوين بيس هي الوسيلة الأكثر شعبية لشراء وبيع بيتكوين كاش."
+  },
+  "bytes": {
+    "message": "بايت"
+  },
+  "ok": {
+    "message": "تمام"
+  },
+  "cancel": {
+    "message": "ألغ"
+  },
+  "classicInterface": {
+    "message": "استخدم الواجهة التقليدية"
+  },
+  "clickCopy": {
+    "message": "انقر للنسخ"
+  },
+  "close": {
+    "message": "أغلق"
+  },
+  "chromeRequiredForHardwareWallets": {
+    "message":
+      "عليك استخدام بادجر على جوجل كروم للاتصال بالمحفظة العتادية."
+  },
+  "confirm": {
+    "message": "أكّد"
+  },
+  "confirmed": {
+    "message": "مؤكّد"
+  },
+  "confirmContract": {
+    "message": "أكّد العقد"
+  },
+  "confirmPassword": {
+    "message": "أكّد كلمة السر"
+  },
+  "confirmTransaction": {
+    "message": "أكّد التحويل"
+  },
+  "connectHardwareWallet": {
+    "message": "اتصل بالمحفظة العتادية"
+  },
+  "connect": {
+    "message": "اتصل"
+  },
+  "connecting": {
+    "message": "يتصل..."
+  },
+  "connectToLedger": {
+    "message": "اتصل بـ Ledger"
+  },
+  "connectToTrezor": {
+    "message": "اتصل بـ Trezor"
+  },
+  "continue": {
+    "message": "تابع"
+  },
+  "continueToCoinbase": {
+    "message": "تابع إلى كوين بيس"
+  },
+  "contractDeployment": {
+    "message": "إقرار العقد"
+  },
+  "conversionProgress": {
+    "message": "جاري التحويل"
+  },
+  "copiedButton": {
+    "message": "نُسخت"
+  },
+  "copiedClipboard": {
+    "message": "نُسخت إلى الحافظة"
+  },
+  "copiedExclamation": {
+    "message": "نُسخت!"
+  },
+  "copiedSafe": {
+    "message": "نَسختها إلى مكان آمن"
+  },
+  "copy": {
+    "message": "انسخ"
+  },
+  "copyContractAddress": {
+    "message": "انسخ معرف التوكن"
+  },
+  "copyAddress": {
+    "message": "انسخ العنوان إلى الحافظة"
+  },
+  "copyToClipboard": {
+    "message": "انسخ إلى الحافظة"
+  },
+  "copyButton": {
+    "message": " انسخ "
+  },
+  "copyPrivateKey": {
+    "message": "هذا هو مفتاحك الخاص (انقر للنسخ)"
+  },
+  "create": {
+    "message": "أنشئ"
+  },
+  "createAccount": {
+    "message": "أنشئ الحساب"
+  },
+  "createDen": {
+    "message": "أنشئ"
+  },
+  "crypto": {
+    "message": "كريبتو",
+    "description": "نوع المبادلة (عملات رقمية)"
+  },
+  "currentConversion": {
+    "message": "التحويل الحالي"
+  },
+  "currentNetwork": {
+    "message": "الشبكة الحالية"
+  },
+  "customGas": {
+    "message": "عدّل الرسوم"
+  },
+  "customToken": {
+    "message": "توكن مخصصة"
+  },
+  "customize": {
+    "message": "خصّص"
+  },
+  "customRPC": {
+    "message": "RPC مخصص"
+  },
+  "decimalsMustZerotoTen": {
+    "message": "الفواصل العشرية يجب أن تكون على الأقل 0, ولا أكثر من 36."
+  },
+  "decimal": {
+    "message": "Decimals of Precision"
+  },
+  "defaultNetwork": {
+    "message": "الشبكة الافتراضية لمعاملات بيتكوين كاش هي الشبكة الأساسية."
+  },
+  "denExplainer": {
+    "message": "إن DEN هو المخزن المشفر بكلمة السر في بادجر."
+  },
+  "deposit": {
+    "message": "أودع"
+  },
+  "depositBTC": {
+    "message": "أودع BTC إلى العنوان أدناه:"
+  },
+  "depositCoin": {
+    "message": "أودع $1 إلى العنوان أدناه",
+    "description":
+      "يخبر المستخدم عن العملة التي اختار إيداعها باستخدام shapeshift"
+  },
+  "depositEth": {
+    "message": "أودع إيثر"
+  },
+  "depositEther": {
+    "message": "أودع بيتكوين كاش"
+  },
+  "depositFiat": {
+    "message": "أودع عملات رسمية"
+  },
+  "depositFromAccount": {
+    "message": "أودع من حساب آخر"
+  },
+  "depositShapeShift": {
+    "message": "أودع باستخدام ShapeShift"
+  },
+  "depositShapeShiftExplainer": {
+    "message":
+      "إن كنت تملك عملات أخرى، يمكنك تداول وإيداع بيتكوين كاش مباشرة في محفظة بادجر. لا داعي لحساب."
+  },
+  "details": {
+    "message": "التفاصيل"
+  },
+  "directDeposit": {
+    "message": "إيداع مباشر"
+  },
+  "directDepositEther": {
+    "message": "إيداع مباشر لبيتكوين كاش"
+  },
+  "directDepositEtherExplainer": {
+    "message":
+      "إن كنت تملك بيتكوين كاش، فإن أسرع وسيلة لوضع BCH في محفظتك هو الإيداع المباشر."
+  },
+  "done": {
+    "message": "تم"
+  },
+  "downloadGoogleChrome": {
+    "message": "نزّل جوجل كروم"
+  },
+  "downloadStateLogs": {
+    "message": "نزل سجلات الحالة"
+  },
+  "dontHaveAHardwareWallet": {
+    "message": "لا تملك محفظة عتادية?"
+  },
+  "dropped": {
+    "message": "أهملت"
+  },
+  "edit": {
+    "message": "حرر"
+  },
+  "editAccountName": {
+    "message": "حرر اسم الحساب"
+  },
+  "editingTransaction": {
+    "message": "أجر تغييرات على المعاملة"
+  },
+  "emailUs": {
+    "message": "أرسل لنا رسالة!"
+  },
+  "encryptNewDen": {
+    "message": "شفّر DEN الجديد"
+  },
+  "ensNameNotFound": {
+    "message": "تعذر إيجاد اسم ENS"
+  },
+  "enterPassword": {
+    "message": "أدخل كلمة السر"
+  },
+  "enterPasswordConfirm": {
+    "message": "أدخل كلمة السر للتأكيد"
+  },
+  "enterPasswordContinue": {
+    "message": "أدخل كلمة السر للمتابعة"
+  },
+  "parameters": {
+    "message": "المعطيات"
+  },
+  "passwordNotLongEnough": {
+    "message": "كلمة السر ليست طويلة كفاية"
+  },
+  "passwordsDontMatch": {
+    "message": "لم تتطابق كلمتا السر"
+  },
+  "etherscanView": {
+    "message": "أعرض الحساب على المستعرض"
+  },
+  "exchangeRate": {
+    "message": "سعر التبادل"
+  },
+  "exportPrivateKey": {
+    "message": "صدّر المفتاح الخاص"
+  },
+  "exportPrivateKeyWarning": {
+    "message": "أنت تتحمل مسؤولية تصدير المفاتيح الخاصة."
+  },
+  "failed": {
+    "message": "فشل"
+  },
+  "fiat": {
+    "message": "FIAT",
+    "description": "نوع التبادل"
+  },
+  "fileImportFail": {
+    "message": "أتعذر استيراد الملف؟ اضغط هنا!",
+    "description": "يساعد المستخدم على استيراد حسابه من ملف JSON"
+  },
+  "followTwitter": {
+    "message": "تابعنا على تويتر"
+  },
+  "forgetDevice": {
+    "message": "انْس هذا الجهاز"
+  },
+  "from": {
+    "message": "من"
+  },
+  "fromToSame": {
+    "message": "لا يمكن أن يكون عنوان المرسل والمستقبل نفسه"
+  },
+  "fromShapeShift": {
+    "message": "من ShapeShift"
+  },
+  "functionType": {
+    "message": "نوع الوظيفة"
+  },
+  "gas": {
+    "message": "وقود",
+    "description": "تعبير مقتضب عن سعر الوقود"
+  },
+  "gasFee": {
+    "message": "رسوم"
+  },
+  "gasLimit": {
+    "message": "حد الوقود"
+  },
+  "gasLimitCalculation": {
+    "message":
+      "نحسب حد الوقود اعتمادا على معدل نجاح الشبكة."
+  },
+  "gasLimitRequired": {
+    "message": "حد الوقود المطلوب"
+  },
+  "gasLimitTooLow": {
+    "message": "حد الوقود يجب أن يكون على الأقل 21000"
+  },
+  "generatingSeed": {
+    "message": "توليد البذور..."
+  },
+  "gasPrice": {
+    "message": "سعر الوقود (GWEI)"
+  },
+  "gasPriceCalculation": {
+    "message":
+      "نحسب سعر الوقود المقترح اعتمادا على معدل نجاح الشبكة."
+  },
+  "gasPriceRequired": {
+    "message": "سعر الوقود المطلوب"
+  },
+  "generatingTransaction": {
+    "message": "توليد المعاملة"
+  },
+  "getBitcoinCash": {
+    "message": "احصل على بيتكوين كاش"
+  },
+  "getEtherFromFaucet": {
+    "message": "احصل على بيتكوين كاش من صنبور",
+    "description": "يعرض اسم الشبكة لصنبور بيتكوين كاش"
+  },
+  "getHelp": {
+    "message": "احصل على المساعدة."
+  },
+  "greaterThanMin": {
+    "message": "يجب أن يكون أكبر أو مساوي لـ $1.",
+    "description": "helper for inputting hex as decimal input"
+  },
+  "hardware": {
+    "message": "عتاد"
+  },
+  "hardwareWalletConnected": {
+    "message": "المحفظة العتادية متصلة"
+  },
+  "hardwareWallets": {
+    "message": "صل محفظة عتادية"
+  },
+  "hardwareWalletsMsg": {
+    "message": "اختر محفظة عتادية تريد استخدامها مع بادجر"
+  },
+  "havingTroubleConnecting": {
+    "message": "أتواجه مشاكل في الاتصال?"
+  },
+  "here": {
+    "message": "هنا",
+    "description":
+      "كما في -انقر هنا- لمزيد من المعلومات (يستخدم مع troubleTokenBalances)"
+  },
+  "hereList": {
+    "message": "هذه قائمة!!!!"
+  },
+  "hexData": {
+    "message": "بيانات Hex"
+  },
+  "hide": {
+    "message": "أخف"
+  },
+  "hideToken": {
+    "message": "أخف التوكن"
+  },
+  "hideTokenPrompt": {
+    "message": "أاخفِ التوكن?"
+  },
+  "history": {
+    "message": "تاريخ المعاملات"
+  },
+  "howToDeposit": {
+    "message": "كيف تريد إيداع بيتكوين كاش؟"
+  },
+  "holdEther": {
+    "message":
+      "تمكنك من الاحتفاظ ببيتكوين كاش وتوكنات، وتخدمك كجسر إلى التطبيقات اللامركزية."
+  },
+  "import": {
+    "message": "استورد",
+    "description": "زر لاستيراد حساب من ملف مختار"
+  },
+  "importAccount": {
+    "message": "استورد حسابا"
+  },
+  "importAccountMsg": {
+    "message":
+      " Import account feature coming soon. Imported accounts will not be associated with your originally created Badger account seedphrase. Learn more about imported accounts "
+  },
+  "importAnAccount": {
+    "message": "استورد حسابا"
+  },
+  "importDen": {
+    "message": "استورد DEN موجود مسبقا"
+  },
+  "imported": {
+    "message": "تم الاستيراد",
+    "description":
+      "حالة تبين أن الحساب قد استورد بشكل كامل في حلقة المفاتيح"
+  },
+  "importUsingSeed": {
+    "message": "استورد باستخدام بذور الحساب"
+  },
+  "infoHelp": {
+    "message": "معلومات ومساعدة"
+  },
+  "initialTransactionConfirmed": {
+    "message":
+      "جرى تأكيد معاملتك الابتدائية من الشبكة. اضغط تم للعودة."
+  },
+  "insufficientFunds": {
+    "message": "رصيد غير كافي."
+  },
+  "insufficientTokens": {
+    "message": "التوكن غير كافي."
+  },
+  "invalidAddress": {
+    "message": "عنوان غير صالح"
+  },
+  "invalidAddressRecipient": {
+    "message": "عنوان المستلم غير صالح"
+  },
+  "invalidGasParams": {
+    "message": "معطيات الوقود غير صالحة"
+  },
+  "invalidInput": {
+    "message": "المدخلات غير صالحة."
+  },
+  "invalidRequest": {
+    "message": "الطلب غير صالح"
+  },
+  "invalidRPC": {
+    "message": "RPC URI غير صالح"
+  },
+  "invalidSeedPhrase": {
+    "message": "عبارة بذور غير صالحة"
+  },
+  "jsonFail": {
+    "message":
+      "شيء ما خطأ. تأكد من أن ملف JSON مهيئ بشكل جيد."
+  },
+  "jsonFile": {
+    "message": "ملف JSON",
+    "description": "هيئة لاستيراد حساب"
+  },
+  "keepTrackTokens": {
+    "message":
+      "تعقب التوكنات التي اشتريتها عبر حساب بادجر."
+  },
+  "kovan": {
+    "message": "الشبكة الاختبارية لـ Kovan"
+  },
+  "knowledgeDataBase": {
+    "message": "زر مصادر المعلومات"
+  },
+  "max": {
+    "message": "أعظمي"
+  },
+  "learnMore": {
+    "message": "تعلم المزيد"
+  },
+  "ledgerAccountRestriction": {
+    "message":
+      "عليك استخدام حسابك السابق قبل اضافة حساب جديد."
+  },
+  "lessThanMax": {
+    "message": "يجب أن يكون أقل أو مساوٍ لـ $1.",
+    "description": "helper for inputting hex as decimal input"
+  },
+  "likeToAddTokens": {
+    "message": "أتريد إضافة هذه التوكنات?"
+  },
+  "links": {
+    "message": "روابط"
+  },
+  "limit": {
+    "message": "الحد"
+  },
+  "loading": {
+    "message": "تحميل..."
+  },
+  "loadingTokens": {
+    "message": "تحميل التوكنات..."
+  },
+  "localhost": {
+    "message": "Localhost 8545"
+  },
+  "login": {
+    "message": "الولوج"
+  },
+  "logout": {
+    "message": "الخروج"
+  },
+  "loose": {
+    "message": "خسائر"
+  },
+  "loweCaseWords": {
+    "message": "كلمات البذور تكتب بأحرف صغيرة فقط"
+  },
+  "mainnet": {
+    "message": "الشبكة الأساسية"
+  },
+  "menu": {
+    "message": "قائمة"
+  },
+  "message": {
+    "message": "رسالة"
+  },
+  "metamaskDescription": {
+    "message": "بادجر هي مخزن هوية آمن على بيتكوين كاش."
+  },
+  "metamaskSeedWords": {
+    "message": "كلمات بذور ليدجر"
+  },
+  "min": {
+    "message": "الأدنى"
+  },
+  "myAccounts": {
+    "message": "حساباتي"
+  },
+  "mustSelectOne": {
+    "message": "عليك اختيار توكن واحد على الأقل."
+  },
+  "needEtherInWallet": {
+    "message":
+      "للتفاعل مع التطبيقات اللامركزية باستخدام بادجر، يجب أن تحوي محفظتك على بيتكوين كاش."
+  },
+  "needImportFile": {
+    "message": "عليك اختيار ملف لاستيراده.",
+    "description":
+      "User is important an account and needs to add a file to continue"
+  },
+  "needImportPassword": {
+    "message": "عليك ادخال كلمة سر للملف المختار.",
+    "description": "يشترط كلمة سر وملف لاستيراد حساب"
+  },
+  "negativeETH": {
+    "message": "لا يمكن إرسال قيمة سلبية من BCH."
+  },
+  "networks": {
+    "message": "الشبكات"
+  },
+  "nevermind": {
+    "message": "لاتهتم"
+  },
+  "newAccount": {
+    "message": "حساب جديد"
+  },
+  "newAccountNumberName": {
+    "message": "حساب $1",
+    "description":
+      "الاسم الافتراضي للحساب التالي الذي سينشأ في نافذة إنشاء الحسابات"
+  },
+  "newContract": {
+    "message": "عقد جديد"
+  },
+  "newPassword": {
+    "message": "كلمة سر جديدة (8 محارف على الأقل)"
+  },
+  "newRecipient": {
+    "message": "مستقبل جديد"
+  },
+  "newRPC": {
+    "message": "RPC URL جديد"
+  },
+  "next": {
+    "message": "التالي"
+  },
+  "noAddressForName": {
+    "message": "لم يضبط عنوان لهذا الاسم."
+  },
+  "noDeposits": {
+    "message": "لم يستقبل إي إيداعات"
+  },
+  "noConversionRateAvailable": {
+    "message": "سعر التحويل غير متوفر"
+  },
+  "noTransactionHistory": {
+    "message": "لا يوجد سجل للمعاملات."
+  },
+  "noTransactions": {
+    "message": "لا يوجد لديك معاملات"
+  },
+  "notFound": {
+    "message": "لا يوجد"
+  },
+  "notStarted": {
+    "message": "لم يبدأ"
+  },
+  "noWebcamFoundTitle": {
+    "message": "لا يوجد كميرا وب"
+  },
+  "noWebcamFound": {
+    "message": ".لم يعثر على كمرا وب في حاسوبك. حاول مجددا."
+  },
+  "oldUI": {
+    "message": "واجهة قديمة"
+  },
+  "oldUIMessage": {
+    "message":
+      "لقد عدت إلى الواجهة القديمة. يمكنك الرجوع إلى الواجهة الجديدة من القائمة المنسدلة العلوية اليسرى."
+  },
+  "openInTab": {
+    "message": "افتح في لسان"
+  },
+  "or": {
+    "message": "أو",
+    "description": "خيار بين استيراد أو إنشاء حساب جديد"
+  },
+  "origin": {
+    "message": "الأصل"
+  },
+  "password": {
+    "message": "كلم السر"
+  },
+  "passwordCorrect": {
+    "message": "تأكد من أن كلمة السر صحيحة."
+  },
+  "passwordMismatch": {
+    "message": "كلمات السر غير متطابقة",
+    "description":
+      "أثناء إنشاء كلمة السر، حقلا كلمة السر الجديدة غير متطابقين"
+  },
+  "passwordShort": {
+    "message": "كلمة السر ليست طويلة كفاية",
+    "description":
+      "in password creation process, the password is not long enough to be secure"
+  },
+  "pastePrivateKey": {
+    "message": "ألصق نص مفتاحك الخاص هنا:",
+    "description": "For importing an account from a private key"
+  },
+  "pasteSeed": {
+    "message": "ألصق عبارة البذورة هنا!"
+  },
+  "paymentRequest": {
+    "message": "طلب دفع"
+  },
+  "pending": {
+    "message": "ينتظر"
+  },
+  "personalAddressDetected": {
+    "message": "عثر على عنوان شخصي. أدرج عنوان عقد التوكن."
+  },
+  "pleaseReviewTransaction": {
+    "message": "راجع معاملتك."
+  },
+  "popularTokens": {
+    "message": "توكنات شائعة"
+  },
+  "prev": {
+    "message": "سابق"
+  },
+  "privacyMsg": {
+    "message": "سياسة الخصوصية"
+  },
+  "privateKey": {
+    "message": "المفتاح الخاص",
+    "description": "select this type of file to use to import an account"
+  },
+  "privateKeyWarning": {
+    "message":
+      "تحذير: لا تكشف هذا المفتاح لأحد. أي شخص عنده المفاتيح الخاصة يمكنه سرقة أية أصول موجودة في حسابك."
+  },
+  "privateNetwork": {
+    "message": "شبكة خاصة"
+  },
+  "qrCode": {
+    "message": "أظهر الرمز "
+  },
+  "queue": {
+    "message": "الدور"
+  },
+  "readdToken": {
+    "message":
+      "يمكنك إضافة هذه التوكن مجددا إلى المستقبل بالذهاب إلى ”أضف توكن“ في قائمة خيارات حساباتك."
+  },
+  "readMore": {
+    "message": "اقرأ أكثر هنا."
+  },
+  "readMore2": {
+    "message": "اقرأ المزيد."
+  },
+  "receive": {
+    "message": "استقبل"
+  },
+  "recipientAddress": {
+    "message": "عنوان المستلم"
+  },
+  "refundAddress": {
+    "message": "عنوان التعويض"
+  },
+  "rejected": {
+    "message": "رُفضت"
+  },
+  "reset": {
+    "message": "تصفير"
+  },
+  "resetAccount": {
+    "message": "تصفير الحساب"
+  },
+  "resetAccountDescription": {
+    "message": "تصفير حسابك سيمسح سجل معاملاتك."
+  },
+  "restoreFromSeed": {
+    "message": "استعد الحساب?"
+  },
+  "restoreVault": {
+    "message": "استعد الخزنة"
+  },
+  "restoreAccountWithSeed": {
+    "message": "استعد حسابك باستخدام عبارة البذور"
+  },
+  "required": {
+    "message": "مطلوب"
+  },
+  "retryWithMoreGas": {
+    "message": "حاول باستخدام وقود أكثر هنا"
+  },
+  "walletSeed": {
+    "message": "بذور المحفظة"
+  },
+  "restore": {
+    "message": "استعادة"
+  },
+  "revealSeedWords": {
+    "message": "أظهر كلمات البذور"
+  },
+  "revealSeedWordsTitle": {
+    "message": "كلمات البذور"
+  },
+  "revealSeedWordsDescription": {
+    "message":
+      "إن غيرت المتصفح أو تنقلت بين الحواسيب، ستحتاج عبارة البذورة هذه للوصول لحساباتك. احفظها في مكان آمن وسري."
+  },
+  "revealSeedWordsWarningTitle": {
+    "message": "لا تشارك هذه العبارة مع أحد!"
+  },
+  "revealSeedWordsWarning": {
+    "message": "يمكن استخدام هذه الكلمات لسرقة كل حساباتك."
+  },
+  "revert": {
+    "message": "تراجع"
+  },
+  "remove": {
+    "message": "احذف"
+  },
+  "removeAccount": {
+    "message": "احذف الحساب"
+  },
+  "removeAccountDescription": {
+    "message":
+      "سيحذف هذا الحساب من محفظتك. تأكد من أنك تحتفظ بعبارة البذور أو المفتاح الخاص لهذا الحساب المستورد قبل المتابعة. يمكنك إنشاء حسابات مجددا من القائمة المنسدلة"
+  },
+  "readyToConnect": {
+    "message": "مستعد للاتصال؟"
+  },
+  "rinkeby": {
+    "message": "شبكة اختبار Rinkeby"
+  },
+  "ropsten": {
+    "message": "شبكة الاختبار"
+  },
+  "rpc": {
+    "message": "RPC مخصص"
+  },
+  "currentRpc": {
+    "message": "RPC الحالي"
+  },
+  "connectingToMainnet": {
+    "message": "الاتصال بالشبكة الأساسية"
+  },
+  "connectingToRopsten": {
+    "message": "الاتصال بالشبكة الاختبارية"
+  },
+  "connectingToKovan": {
+    "message": "الاتصال بشبكة Kovan الاختبارية"
+  },
+  "connectingToRinkeby": {
+    "message": "الاتصال بشبكة Rinkeby الاختبارية"
+  },
+  "connectingToUnknown": {
+    "message": "الاتصال بشبكة مجهولة"
+  },
+  "sampleAccountName": {
+    "message": "مثال، حسابي الجديد",
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
+  },
+  "save": {
+    "message": "احفظ"
+  },
+  "speedUp": {
+    "message": "سرّع"
+  },
+  "speedUpTitle": {
+    "message": "سرّع المعاملة"
+  },
+  "speedUpSubtitle": {
+    "message":
+      "Increase your gas price to attempt to overwrite and speed up your transaction"
+  },
+  "saveAsCsvFile": {
+    "message": "احفظ كملف CSV"
+  },
+  "saveAsFile": {
+    "message": "احفظ كملف",
+    "description": "Account export process"
+  },
+  "saveSeedAsFile": {
+    "message": "Save Seed Words As File"
+  },
+  "search": {
+    "message": "ابحث"
+  },
+  "searchResults": {
+    "message": "نتائج البحث"
+  },
+  "secretPhrase": {
+    "message": "أدخل عبارتك السرية هنا لاستعادة خزانتك."
+  },
+  "showHexData": {
+    "message": "أظهر بيانات Hex"
+  },
+  "showHexDataDescription": {
+    "message": "اختر هذا لإظهار حقل بيانات hex في شاشة الإرسال"
+  },
+  "newPassword8Chars": {
+    "message": "كلمة سر جديدة (8 محارف على الأقل)"
+  },
+  "seedPhraseReq": {
+    "message": "عبارات البذور تتألف من 12 كلمة"
+  },
+  "select": {
+    "message": "اختر"
+  },
+  "selectCurrency": {
+    "message": "اختر عملة"
+  },
+  "selectService": {
+    "message": "اختر خدمة"
+  },
+  "selectType": {
+    "message": "اختر نوع"
+  },
+  "send": {
+    "message": "أرسل"
+  },
+  "sendETH": {
+    "message": "أرسل BCH"
+  },
+  "sendTokens": {
+    "message": "أرسل توكن"
+  },
+  "sentBitcoinCash": {
+    "message": "أرسل بيتكوين كاش"
+  },
+  "sentTokens": {
+    "message": "أرسل توكنز"
+  },
+  "separateEachWord": {
+    "message": "افصل بين الكلمات بمسافة واحدة"
+  },
+  "onlySendToEtherAddress": {
+    "message": "أرسل BCH إلى عنوان بيتكوين كاش حصرا."
+  },
+  "onlySendTokensToAccountAddress": {
+    "message": "أرسل $1 إلى عناوين Simple Ledger حصرا.",
+    "description": "displays token symbol"
+  },
+  "orderOneHere": {
+    "message": "اشتر ليدجر أو تريزور واحتفظ بأموالك في محفظة باردة"
+  },
+  "outgoing": {
+    "message": "صادر"
+  },
+  "searchTokens": {
+    "message": "ابحث في التوكنات"
+  },
+  "selectAnAddress": {
+    "message": "اختر عنوانا"
+  },
+  "selectAnAccount": {
+    "message": "اختر حسابا"
+  },
+  "selectAnAccountHelp": {
+    "message": "حدد حسابا لعرضه في بادجر"
+  },
+  "selectHdPath": {
+    "message": "اختر HD Path"
+  },
+  "selectPathHelp": {
+    "message":
+      "إذا كنت لا ترى حسابات ليدجر السباقة هنا، حاول تغيير المسار إلى \"Legacy (MEW / MyCrypto)\""
+  },
+  "sendTokensAnywhere": {
+    "message": "أرسل توكنات لأي شخص يملك حساب بيتكوين كاش"
+  },
+  "settings": {
+    "message": "إعدادات"
+  },
+  "step1HardwareWallet": {
+    "message": "1. صل محفظة عتادية"
+  },
+  "step1HardwareWalletMsg": {
+    "message": "صل محفظتك العتادية مباشرة إلى الكمبيوتر."
+  },
+  "step2HardwareWallet": {
+    "message": "2. اختر حسابا"
+  },
+  "step2HardwareWalletMsg": {
+    "message":
+      "اختر الحساب الذي تريد عرضه. يمكنك اختيار حساب واحد في كل مرة."
+  },
+  "step3HardwareWallet": {
+    "message": "3. ابدأ استخدم dApps وأكثَر من ذلك!"
+  },
+  "step3HardwareWalletMsg": {
+    "message":
+      "استخدم حساب المحفظة العتادية كما تستخدم أي حساب بيتكوين كاش. لج إلى dApps، أرسل إيثر، اشتر وخزن توكنات ERC20 وتوكنات غير مجزئة مثل كريبتو كيتيز."
+  },
+  "info": {
+    "message": "معلومات"
+  },
+  "scanInstructions": {
+    "message": "ضع الرمز التربيعي أمام الكمرا"
+  },
+  "scanQrCode": {
+    "message": "مسح الرمز التربيعي"
+  },
+  "shapeshiftBuy": {
+    "message": "اشتر باستخدام Shapeshift"
+  },
+  "showPrivateKeys": {
+    "message": "أظهر المفاتيح الخاصة"
+  },
+  "showQRCode": {
+    "message": "أظهر الكود التربيعي"
+  },
+  "sign": {
+    "message": "توقيع"
+  },
+  "signatureRequest": {
+    "message": "طلب توقيع"
+  },
+  "signed": {
+    "message": "موقّع"
+  },
+  "signMessage": {
+    "message": "وقّع الرسالة"
+  },
+  "signNotice": {
+    "message": "وقع الطلبات من المواقع \nالتي تثق بها تماما فقط."
+  },
+  "sigRequest": {
+    "message": "طلب CashID"
+  },
+  "sigRequested": {
+    "message": "طُلب التوقيع"
+  },
+  "spaceBetween": {
+    "message": "لا يسمح إلا بمسافات بين الكلمات"
+  },
+  "status": {
+    "message": "الحالة"
+  },
+  "stateLogs": {
+    "message": "سجل الحالة"
+  },
+  "stateLogsDescription": {
+    "message":
+      "سجل الحالة يحوي عناوين حسابك العام والمعاملات المرسلة."
+  },
+  "stateLogError": {
+    "message": "خطأ في جلب سجل الحالة."
+  },
+  "submit": {
+    "message": "قدّم"
+  },
+  "submitted": {
+    "message": "قُدّم"
+  },
+  "supportCenter": {
+    "message": "زر مركز الدعم"
+  },
+  "symbolBetweenZeroTen": {
+    "message": "الرمز يجب أن يكون بين 0 و 10 محارف."
+  },
+  "takesTooLong": {
+    "message": "طال انتظارك؟"
+  },
+  "terms": {
+    "message": "شروط الاستخدام"
+  },
+  "testFaucet": {
+    "message": "صنبور"
+  },
+  "to": {
+    "message": "إلى"
+  },
+  "toETHviaShapeShift": {
+    "message": "$1 إلى BCH عبر ShapeShift",
+    "description": "system will fill in deposit type in start of message"
+  },
+  "token": {
+    "message": "توكن"
+  },
+  "tokenAddress": {
+    "message": "عنوان توكن"
+  },
+  "tokenAlreadyAdded": {
+    "message": "أضيفت التوكن مسبقا."
+  },
+  "tokenBalance": {
+    "message": "رصيدك من توكن:"
+  },
+  "tokenSelection": {
+    "message": "ابحث عن توكن أو اختر واحدة من قائمة التوكن الشائعة."
+  },
+  "tokenSymbol": {
+    "message": "رمز التوكن"
+  },
+  "tokenWarning1": {
+    "message":
+      "تعقب التوكنات التي اشتريتها باستخدام حساب بادجر. إذا اشتريت توكنات مستخدما حسابا آخر، لن تظهر التوكنات تلك هنا."
+  },
+  "total": {
+    "message": "الكلي"
+  },
+  "transaction": {
+    "message": "معاملة"
+  },
+  "transactionConfirmed": {
+    "message": "أكدت المعاملة في $2."
+  },
+  "transactionCreated": {
+    "message": "أنشئت المعاملة بقيمة $1 من $2."
+  },
+  "transactionDropped": {
+    "message": "أسقطت المعاملة في $2."
+  },
+  "transactionSubmitted": {
+    "message": "رفعت المعاملة في $2."
+  },
+  "transactionUpdated": {
+    "message": "حدثت المعاملة في $2."
+  },
+  "transactionUpdatedGas": {
+    "message": "حدثت المعاملة بسعر وقود $1 من $2."
+  },
+  "transactions": {
+    "message": "transactions"
+  },
+  "transactionError": {
+    "message": "خطأ معاملة. أرجع استثناء في نص العقد."
+  },
+  "transactionMemo": {
+    "message": "خاطرة للمعاملة (خياري)"
+  },
+  "transactionNumber": {
+    "message": "رقم المعاملة"
+  },
+  "transfer": {
+    "message": "تحويل"
+  },
+  "transfers": {
+    "message": "تحويلات"
+  },
+  "trezorHardwareWallet": {
+    "message": "محفظة TREZOR العتادية"
+  },
+  "troubleTokenBalances": {
+    "message": " تعذر علينا تحميل رصيد التوكنات. يمكنك استعرضهم",
+    "description": "Followed by a link (here) to view token balances"
+  },
+  "tryAgain": {
+    "message": "حاول مجددا"
+  },
+  "twelveWords": {
+    "message":
+      "هذه 12 كلمة هي طريقتك الوحيدة لاسترجاع حسابات بادجر. \n احفظها في مكان آمن وسري."
+  },
+  "typePassword": {
+    "message": "اكتب كلمة السر"
+  },
+  "uiWelcome": {
+    "message": "مرحبا بك في الواجهة الجديدة (بيتا)"
+  },
+  "uiWelcomeMessage": {
+    "message": "أنت الآن على الواجهة الجديدة."
+  },
+  "unapproved": {
+    "message": "غير موافق عليه"
+  },
+  "unavailable": {
+    "message": "غير متاح"
+  },
+  "units": {
+    "message": "وحدات"
+  },
+  "unknown": {
+    "message": "مجهول"
+  },
+  "unknownFunction": {
+    "message": "Unknown Function"
+  },
+  "unknownNetwork": {
+    "message": "شبكة خاصة مجهولة"
+  },
+  "unknownNetworkId": {
+    "message": "معرف ID شبكة مجهول"
+  },
+  "unknownQrCode": {
+    "message": "خطأ: تعذر التعرف على الكود التربيعي"
+  },
+  "unknownCameraErrorTitle": {
+    "message": "عذرا! خطأ ما حدث...."
+  },
+  "unknownCameraError": {
+    "message":
+      "حدث خطأ أثناء محاولة الوصول للكمرا. حاول مجددا..."
+  },
+  "unlock": {
+    "message": "ارفع القفل"
+  },
+  "unlockMessage": {
+    "message": "الوب اللامركزية تنتظر"
+  },
+  "uriErrorMsg": {
+    "message": "URIs تتطلب سابقة HTTP/HTTPS مناسبة."
+  },
+  "usaOnly": {
+    "message": "فقط في أمريكا",
+    "description": "Using this exchange is limited to people inside the USA"
+  },
+  "usedByClients": {
+    "message": "تستخدم من عملاء مختلفين"
+  },
+  "useOldUI": {
+    "message": "استخدم الواجهة القديمة"
+  },
+  "validFileImport": {
+    "message": "عليك اختيار ملف صالح للاستيراد."
+  },
+  "vaultCreated": {
+    "message": "أنشئت الخزانة"
+  },
+  "viewAccount": {
+    "message": "اعرض الحساب"
+  },
+  "viewOnEtherscan": {
+    "message": "اعرض على المستكشف"
+  },
+  "visitWebSite": {
+    "message": "زر موقعنا على الشبكة"
+  },
+  "warning": {
+    "message": "تحذير"
+  },
+  "welcomeBack": {
+    "message": "مرحبا مجددا!"
+  },
+  "welcomeBeta": {
+    "message": "مرحبا في بادجرا"
+  },
+  "whatsThis": {
+    "message": "ما هذا؟"
+  },
+  "youNeedToAllowCameraAccess": {
+    "message": "عليك السماح بالوصول للكمرا لاستخدام هذه الميزة."
+  },
+  "yourSigRequested": {
+    "message": "يجري طلب توقيعك"
+  },
+  "youSign": {
+    "message": "أنت توقع"
+  },
+  "yourPrivateSeedPhrase": {
+    "message": "عبارة البذور الخاصة بك"
+  }
+}
